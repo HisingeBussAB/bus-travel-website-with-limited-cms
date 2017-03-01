@@ -1,0 +1,12 @@
+{
+	"version": 3,
+	"file": "admin.min.css",
+	"sources": [
+		"sass/admin.scss"
+	],
+	"sourcesContent": [
+		""
+	],
+	"names": [],
+	"mappings": ""
+}
