@@ -15,22 +15,24 @@
 
 </head>
 <body>
-  <script src="dependencies/jquery-3.1.1/jquery-3.1.1.min.js"></script>
+  <script src="../dependencies/jquery-3.1.1/jquery-3.1.1.min.js"></script>
+  <script src="js/login.js"></script>
 
   <img class="login-screen" src="../img/logo.gif" alt="Rekå Resor AB">
 
-  <form action="php/take-login.php" method="post" accept-charset="utf-8">
+  <form action="php/take-login.php" method="post" accept-charset="utf-8" if="login-form">
     <fieldset>
       <label for="user">Användarnamn:</label>
-      <input type="input" name="user">
+      <input type="input" name="user" id="login-user">
     </fieldset>
     <fieldset>
       <label for="pwd">Lösenord:</label>
-      <input type="password" name="pwd">
+      <input type="password" name="pwd" id="loginpwd">
     </fieldset>
     <fieldset>
-      <input type="submit" value="Logga in">
+      <input type="submit" value="Logga in" id="login-submit">
     </fieldset>
+    <p id="login-response"></p>
   </form>
 </body>
 </html>
