@@ -10,5 +10,8 @@ define('LOGGED_IN_KEY',    'enter salt');
 define('AUTH_SALT',        'enter salt');
 define('LOGGED_IN_SALT',   'enter salt');
 
+define('RECAPTCHA_PUBLIC', 'enter public google recaptcha key');
+define('RECAPTCHA_SECRET', 'enter secret google recaptcha key');
+
 $table_prefix  = 'site17_';
 ?>
