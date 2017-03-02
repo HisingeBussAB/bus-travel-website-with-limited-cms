@@ -44,9 +44,13 @@ function sendLogin(event) {
       setTimeout(function(){
         grecaptcha.reset();
         $('contact-submit').disabled = false;
-      }, 2000);
+        }, 2000);
 
-      // Set the message text.
+      console.log(response);
+      document.location.href=response;
+
+
+    // Set the message text.
       if (data.responseText !== '') {
           $(formMessages).text(data.responseText);
         } else {
@@ -54,4 +58,3 @@ function sendLogin(event) {
         };
         $('#contact-submit').disabled = false;
       });
-};

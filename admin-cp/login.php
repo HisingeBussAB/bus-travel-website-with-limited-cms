@@ -18,26 +18,26 @@
 <body>
   <script src="../dependencies/jquery-3.1.1/jquery-3.1.1.min.js"></script>
   <script src="js/login.js"></script>
+
   <?php
-  ini_set('error_reporting', E_ALL);
     include ('../config/config.php');
     include('../includes/functions.php');
     sec_session_start();
     $_SESSION['FIX_TOKEN'] = FIXED_LOGIN_TOKEN;
     echo $_SESSION['FIX_TOKEN'];;
-    df;:asd2
   ?>
 
   <img class="login-screen" src="../img/logo.gif" alt="Rekå Resor AB">
 
   <form action="php/take-login.php" method="post" accept-charset="utf-8" id="login-form">
+
     <fieldset>
       <label for="user">Användarnamn:</label>
-      <input type="input" name="user">
+      <input type="input" name="user" id="login-user">
     </fieldset>
     <fieldset>
       <label for="pwd">Lösenord:</label>
-      <input type="password" name="pwd">
+      <input type="password" name="pwd" id="loginpwd">
     </fieldset>
     <fieldset>
       <input type="submit" value="Logga in" id="login-submit">
