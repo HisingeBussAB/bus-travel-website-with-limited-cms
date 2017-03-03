@@ -13,18 +13,20 @@
 
   <link rel="stylesheet" href="css/admin.min.css" />
 
-  <script src='https://www.google.com/recaptcha/api.js'></script>
+  <!--<script src='https://www.google.com/recaptcha/api.js'></script>-->
 </head>
 <body>
   <script src="../dependencies/jquery-3.1.1/jquery-3.1.1.min.js"></script>
-  <script src="js/login.js"></script>
+  <!--<script src="js/login.js"></script>-->
 
   <?php
-    include ('../config/config.php');
-    include('../includes/functions.php');
+    require '../config/config.php';
+    require '../includes/functions.php';
     sec_session_start();
-    $_SESSION['FIX_TOKEN'] = FIXED_LOGIN_TOKEN;
-    echo $_SESSION['FIX_TOKEN'];;
+    $_SESSION['FIX_TOKEN'] = "YOLO";
+    //FIXED_LOGIN_TOKEN;
+    echo $_SESSION['FIX_TOKEN'];
+    print_r( $_SESSION );
   ?>
 
   <img class="login-screen" src="../img/logo.gif" alt="Rekå Resor AB">

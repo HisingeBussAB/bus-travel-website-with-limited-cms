@@ -1,11 +1,12 @@
 <?php
-include ('../../config/config.php');
-include('../../includes/functions.php');
+require '../../config/config.php';
+require '../../includes/functions.php';
 
 sec_session_start();
-
+echo "hi<br>";
 echo $_SESSION['FIX_TOKEN'];
-
+print_r( $_SESSION );
+/*
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   if ($_SESSION['FIX_TOKEN'] == FIXED_LOGIN_TOKEN) {
@@ -97,6 +98,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   echo "Förbjuden metod GET. 403";
   exit;
 }
-
+*/
 
 ?>
