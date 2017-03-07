@@ -1,5 +1,5 @@
 <?php
-//needs config.php included before
+require_once __DIR__ . '/../config/config.php';
 
 function sec_session_start() {
    $session_name = 'name';   // Set a custom session name
@@ -8,7 +8,6 @@ function sec_session_start() {
      */
     session_name($session_name);
 
-    $secure = false;
     // This stops JavaScript being able to access the session id.
     $httponly = true;
     ini_set('session.use_only_cookies', 1);
@@ -29,8 +28,6 @@ function sec_session_start() {
 
     session_regenerate_id(true);    // regenerated the session, delete the old one.
 
-
-print_r($_SESSION);
 
 }
 ?>

@@ -13,5 +13,14 @@ define('LOGGED_IN_SALT',   'enter salt');
 define('RECAPTCHA_PUBLIC', 'enter public google recaptcha key');
 define('RECAPTCHA_SECRET', 'enter secret google recaptcha key');
 
-$table_prefix  = 'site17_';
+define('DOMAIN', 'www.example.com');
+
+$secure = false; //set false for http:// true for https://
+$table_prefix  = 'site17';
+
+if ($secure == true) {
+  $append_ssl = "s";
+} else {
+  $append_ssl = "";
+}
 ?>
