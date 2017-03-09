@@ -7,7 +7,7 @@
     från korta endagsresor i närområdet runt Göteborg till veckolånga resor runt om i Europa. Alla bussresor kryddas med det lilla extra.</p>
   </article>
   <article>
-    <h1>Månadens resa</h1>
+    <h2>Månadens resa</h2>
     <figure class="trip-featured-img-list">
       <img src="upload/resor/timthumb.png"  alt="Månadens resa insert title"/>
     </figure>
@@ -21,7 +21,7 @@
     I foajén välkomnar en gigantisk lampa av glasdroppar designad av mästaren Bertil Vallien. Välkommen till glasriket med stort G!</p>
   </article>
   <article>
-    <h1>Några nyheter</h1>
+    <h2>Några nyheter</h2>
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam a metus non enim elementum egestas at ac urna.
     Integer ultricies, arcu ac consequat porttitor, nibh nisi accumsan eros, ac pretium felis erat et lectus. Nullam pulvinar fermentum interdum. Integer lacinia orci elit,
     a commodo odio scelerisque in. Pellentesque sed tincidunt libero. Quisque dignissim odio ut nisl efficitur sollicitudin. Ut at justo vitae metus varius gravida.
@@ -30,7 +30,7 @@
     Quisque porttitor sed enim sit amet vulputate. Nunc hendrerit, dui vel molestie pharetra, risus odio mattis lacus, gravida porta nunc ligula non ligula.</p>
   </article>
   <article>
-    <h1>Lorem ipsum</h1>
+    <h2>Lorem ipsum</h2>
     <figure class="trip-featured-img-list">
       <img src="upload/resor/timthumb.png"  alt="Månadens resa insert title"/>
     </figure>
@@ -45,7 +45,7 @@
     Quisque porttitor sed enim sit amet vulputate. Nunc hendrerit, dui vel molestie pharetra, risus odio mattis lacus, gravida porta nunc ligula non ligula.</p>
   </article>
   <article>
-    <h1>Lorem ipsum</h1>
+    <h2>Lorem ipsum</h2>
     <figure class="trip-featured-img-list">
       <img src="upload/resor/timthumb.png"  alt="Månadens resa insert title"/>
     </figure>
@@ -62,7 +62,7 @@
     Quisque porttitor sed enim sit amet vulputate. Nunc hendrerit, dui vel molestie pharetra, risus odio mattis lacus, gravida porta nunc ligula non ligula.</p>
   </article>
   <article>
-    <h1>Lorem ipsum</h1>
+    <h2>Lorem ipsum</h2>
     <figure class="trip-featured-img-list">
       <img src="upload/resor/timthumb.png"  alt="Månadens resa insert title"/>
     </figure>
@@ -75,7 +75,7 @@
     Integer ultricies, arcu ac consequat porttitor, nibh nisi accumsan eros, ac pretium felis erat et lectus. Nullam pulvinar fermentum interdum. Integer lacinia orci elit.</p>
   </article>
   <article>
-    <h1>Lorem ipsum</h1>
+    <h2>Lorem ipsum</h2>
     <figure class="trip-featured-img-list">
       <img src="upload/resor/timthumb.png"  alt="Månadens resa insert title"/>
     </figure>
@@ -91,7 +91,7 @@
     Quisque porttitor sed enim sit amet vulputate. Nunc hendrerit, dui vel molestie pharetra, risus odio mattis lacus, gravida porta nunc ligula non ligula.</p>
   </article>
   <article>
-    <h1>Lorem ipsum</h1>
+    <h2>Lorem ipsum</h2>
     <figure class="trip-featured-img-list">
       <img src="upload/resor/timthumb.png"  alt="Månadens resa insert title"/>
     </figure>
@@ -106,7 +106,7 @@
     Quisque porttitor sed enim sit amet vulputate. Nunc hendrerit, dui vel molestie pharetra, risus odio mattis lacus, gravida porta nunc ligula non ligula.</p>
   </article>
   <article>
-    <h1>Lorem ipsum</h1>
+    <h2>Lorem ipsum</h2>
     <figure class="trip-featured-img-list">
       <img src="upload/resor/timthumb.png"  alt="Månadens resa insert title"/>
     </figure>

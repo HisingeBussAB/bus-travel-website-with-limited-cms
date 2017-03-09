@@ -150,6 +150,9 @@ footer {
 }
 
 
+
+
+
 /*
 * === MEDIA QUERIES ===
 */
@@ -165,3 +168,23 @@ footer {
 /*
 * — Footer —
 */
+
+
+/*
+* === TEST ZONE & DEBUG ===
+*/
+
+#resekategorier-test2 {
+  padding: 15px;
+  max-width: 1000px;
+  width: 70%;
+  margin: auto;
+  background: #fff;
+  border-radius: 10px;
+  list-style: none;
+
+  li {
+    display: inline-block;
+  }
+
+}
