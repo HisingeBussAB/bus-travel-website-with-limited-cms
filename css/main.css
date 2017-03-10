@@ -144,17 +144,35 @@ footer {
 * === TEST ZONE & DEBUG ===
 */
 #resekategorier-test2 {
-  padding: 15px;
+  border: white 1px solid;
+  background-color: #0d61de;
+  border-radius: 10px;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  overflow: hidden;
   max-width: 1000px;
   width: 70%;
   margin: auto;
-  background: #fff;
-  border-radius: 10px;
-  list-style: none;
+  padding: 0;
 }
 
 #resekategorier-test2 li {
-  display: inline-block;
+  display: block;
+  background-color: #0d61de;
+  font-weight: bold;
+  font-size: 1.6rem;
+  padding: 10px 15px;
+  flex: 1 0 auto;
+  text-align: center;
+  outline-color: white;
+  outline-style: solid;
+  outline-width: 1px;
+  white-space: nowrap;
+}
+
+#resekategorier-test2 li a {
+  color: #fff;
 }
 
 /*# sourceMappingURL=main.css.map */
