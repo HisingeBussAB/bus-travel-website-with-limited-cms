@@ -43,20 +43,21 @@ body::after {
 * — Header and Navigation —
 */
 header {
-  padding: 40px;
+  padding: 40px 0;
 }
 
 header .header-wrap {
-  padding-bottom: 20px;
+  padding-bottom: 35px;
   width: 80%;
+  max-width: 1200px;
   overflow: hidden;
   margin: 0 auto;
 }
 
 header .header-wrap figure {
-  display: inline-block;
-  vertical-align: middle;
   float: left;
+  display: block;
+  position: relative;
 }
 
 header .header-wrap figure figcaption {
@@ -65,21 +66,29 @@ header .header-wrap figure figcaption {
 }
 
 header .header-wrap nav {
-  float: right;
-  display: inline-block;
+  display: block;
   margin-left: 50px;
-  vertical-align: middle;
+  text-align: right;
+}
+
+header .header-wrap nav .nav {
+  text-align: right;
+  display: block;
+}
+
+header .header-wrap nav .nav li {
+  display: inline-block;
+  float: none;
 }
 
 header .header-wrap nav .nav-pills a {
   color: white;
 }
 
-header .categories-wrap .btn-group {
-  margin: 20px auto;
-}
-
-header .btn-default {
+/*
+* — Start Page —
+*/
+.btn-default {
   background-color: #0d61de;
   color: #fff;
   font-weight: bold;
@@ -87,13 +96,10 @@ header .btn-default {
   padding: 10px 15px;
 }
 
-/*
-* — Start Page —
-*/
 .main-section {
   padding: 15px;
-  max-width: 1000px;
-  width: 70%;
+  max-width: 1200px;
+  width: 80%;
   margin: auto;
   background: #fff;
   border-radius: 10px;
@@ -122,8 +128,8 @@ footer {
   background-color: #0d61de;
   border-radius: 10px;
   max-width: 1200px;
-  width: 90%;
-  padding: 5px;
+  width: 80%;
+  padding: 10px;
   margin: 30px auto;
   text-align: center;
 }
@@ -151,10 +157,10 @@ footer {
   display: flex;
   flex-wrap: wrap;
   overflow: hidden;
-  max-width: 1000px;
-  width: 70%;
-  margin: auto;
   padding: 0;
+  max-width: 1200px;
+  width: 80%;
+  margin: auto;
 }
 
 #resekategorier-test2 li {
@@ -162,17 +168,29 @@ footer {
   background-color: #0d61de;
   font-weight: bold;
   font-size: 1.6rem;
-  padding: 10px 15px;
   flex: 1 0 auto;
   text-align: center;
   outline-color: white;
   outline-style: solid;
   outline-width: 1px;
   white-space: nowrap;
+  padding: 0 1px;
+}
+
+#resekategorier-test2 li:hover {
+  background-color: white;
+}
+
+#resekategorier-test2 li:hover a {
+  color: #0d61de;
 }
 
 #resekategorier-test2 li a {
   color: #fff;
+  text-decoration: none;
+  display: block;
+  width: 100%;
+  padding: 10px 14px;
 }
 
 /*# sourceMappingURL=main.css.map */

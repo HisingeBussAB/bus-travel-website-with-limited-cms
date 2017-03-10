@@ -54,19 +54,21 @@ body {
 */
 
 header {
-  padding: 40px;
+
+  padding: 40px 0;
 
   .header-wrap {
-    padding-bottom: 20px;
+    padding-bottom: 35px;
     width: 80%;
+    max-width: 1200px;
     overflow: hidden;
     margin: 0 auto;
 
 
     figure {
-      display: inline-block;
-      vertical-align: middle;
       float: left;
+      display: block;
+      position: relative;
 
 
       figcaption {
@@ -76,30 +78,25 @@ header {
     }
 
     nav {
-      float: right;
-      display: inline-block;
+      display: block;
       margin-left: 50px;
-      vertical-align: middle;
+      text-align: right;
+
+      .nav {
+        text-align: right;
+        display: block;
+
+        li {
+          display: inline-block;
+          float: none;
+        }
+      }
 
       .nav-pills a {
         color: white;
       }
     }
   }
-
-  .categories-wrap {
-    .btn-group {
-      margin: 20px auto;
-      }
-    }
-
-    .btn-default {
-      background-color: $blue;
-      color: $textonblue;
-      font-weight: bold;
-      font-size: 1.6rem;
-      padding: 10px 15px;
-    }
 }
 
 
@@ -107,10 +104,18 @@ header {
 * — Start Page —
 */
 
+.btn-default {
+  background-color: $blue;
+  color: $textonblue;
+  font-weight: bold;
+  font-size: 1.6rem;
+  padding: 10px 15px;
+}
+
 .main-section {
   padding: 15px;
-  max-width: 1000px;
-  width: 70%;
+  max-width: 1200px;
+  width: 80%;
   margin: auto;
   background: #fff;
   border-radius: 10px;
@@ -142,8 +147,8 @@ footer {
   background-color: $blue;
   border-radius: 10px;
   max-width: 1200px;
-  width: 90%;
-  padding: 5px;
+  width: 80%;
+  padding: 10px;
   margin: 30px auto;
   text-align: center;
 
@@ -183,33 +188,40 @@ footer {
   display: flex;
   flex-wrap: wrap;
   overflow:hidden;
-
-  max-width: 1000px;
-  width: 70%;
-  margin: auto;
   padding: 0;
+  max-width: 1200px;
+  width: 80%;
+  margin: auto;
 
   li {
     display: block;
     background-color: $blue;
     font-weight: bold;
     font-size: 1.6rem;
-    padding: 10px 15px;
     flex: 1 0 auto;
     text-align: center;
     outline-color: white;
     outline-style: solid;
     outline-width: 1px;
-
-
-
     white-space: nowrap;
+    padding: 0 1px;
 
+    &:hover {
+      background-color: white;
+      a {
+        color: $blue;
+      }
+    }
 
 
     a {
       color: $textonblue;
+      text-decoration: none;
+      display: block;
+      width: 100%;
+      padding: 10px 14px;
     }
+
 
 
   }

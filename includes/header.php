@@ -62,7 +62,7 @@
 <body>
 
   <header class="text-center">
-    <div class="text-center header-wrap">
+    <div class="text-right header-wrap">
       <figure>
         <img src="/img/logo.gif" alt="Rekå Resor AB">
         <figcaption>- mer än 60 år av resor -</figcaption>
@@ -80,7 +80,7 @@
       </nav>
     </div>
     <!--TODO: LÄS KATEGORIER FRÅN DATABAS-->
-    <div class="text-center categories-wrap">
+    <!--<div class="text-center categories-wrap">
       <div class="btn-group" role="group" aria-label="Resekategorier">
         <button type="button" class="btn btn-default">Dagsresor</button>
         <button type="button" class="btn btn-default">Opera</button>
@@ -92,18 +92,16 @@
         <button type="button" class="btn btn-default">Weekend</button>
         <button type="button" class="btn btn-default">Gruppresor</button>
       </div>
-    </div>
-    <div class="text-center categories-wrap">
-      <ul aria-label="Resekategorier" id="resekategorier-test2">
-        <li><a href="#">Dagsresor</a></li>
-        <li><a href="#">Opera</a></li>
-        <li><a href="#">Teater</a></li>
-        <li><a href="#">Marknader</a></li>
-        <li><a href="#">Storhelg</a></li>
-        <li><a href="#">Nöje &amp; dans</a></li>
-        <li><a href="#">Spa &amp; må bra</a></li>
-        <li><a href="#">Weekend</a></li>
-        <li><a href="#">Gruppresor</a></li>
-      </ul>
-    </div>
+    </div>-->
+    <ul aria-label="Resekategorier" id="resekategorier-test2">
+      <li><a href="#">Dagsresor</a></li>
+      <li><a href="#">Opera</a></li>
+      <li><a href="#">Teater</a></li>
+      <li><a href="#">Marknader</a></li>
+      <li><a href="#">Storhelg</a></li>
+      <li><a href="#">Nöje &amp; dans</a></li>
+      <li><a href="#">Spa &amp; må bra</a></li>
+      <li><a href="#">Weekend</a></li>
+      <li><a href="#">Gruppresor</a></li>
+    </ul>
   </header>
