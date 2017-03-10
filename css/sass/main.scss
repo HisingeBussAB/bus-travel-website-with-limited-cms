@@ -9,6 +9,10 @@ $logo-blue: rgb(0, 50, 153);
 $textonblue: #fff;
 $main-font-stack: 'Open Sans', sans-serif;
 
+$height-first-row: 300px;
+$page-max-width: 1300px;
+$page-desktop-relative-width: 80%;
+
 /*
 * === GLOBAL RESETS AND HELP CLASSES===
 */
@@ -38,6 +42,7 @@ body {
   &::after {
   content: " ";
   background-image: url('../upload/Winter_Winter.jpg');
+  background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
   z-index: -1;
@@ -59,8 +64,8 @@ header {
 
   .header-wrap {
     padding-bottom: 35px;
-    width: 80%;
-    max-width: 1200px;
+    max-width: $page-max-width;
+    width: $page-desktop-relative-width;
     overflow: hidden;
     margin: 0 auto;
 
@@ -114,14 +119,41 @@ header {
 
 .main-section {
   padding: 15px;
-  max-width: 1200px;
-  width: 80%;
+  max-width: $page-max-width;
+  width: $page-desktop-relative-width;
   margin: auto;
   background: #fff;
   border-radius: 10px;
 
   article {
     overflow: hidden;
+  &:first-child {
+    min-height: $height-first-row;
+    }
+  }
+
+
+
+  .trip-featured {
+    min-height: $height-first-row;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    padding: 0;
+    border-radius: 3px;
+    overflow: hidden;
+
+    h3 {
+      font-size: 1.045vw;
+      background-color: rgba(0, 0, 0, 0.6);
+      color: white;
+      margin: 0;
+      padding: 5px;
+      width: 100%;
+      position: absolute;
+      bottom: 0;
+
+    }
   }
 
   .trip-featured-img-list {
@@ -146,8 +178,8 @@ footer {
   color: $textonblue;
   background-color: $blue;
   border-radius: 10px;
-  max-width: 1200px;
-  width: 80%;
+  max-width: $page-max-width;
+  width: $page-desktop-relative-width;
   padding: 10px;
   margin: 30px auto;
   text-align: center;
@@ -189,8 +221,8 @@ footer {
   flex-wrap: wrap;
   overflow:hidden;
   padding: 0;
-  max-width: 1200px;
-  width: 80%;
+  max-width: $page-max-width;
+  width: $page-desktop-relative-width;
   margin: auto;
 
   li {

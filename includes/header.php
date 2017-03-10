@@ -68,7 +68,7 @@
         <figcaption>- mer än 60 år av resor -</figcaption>
       </figure>
       <nav>
-        <ul class="nav nav-pills">
+        <ul class="nav nav-pills" aria-label="Meny">
           <li role="presentation"><a href="#">Hem</a></li>
           <li role="presentation"><a href="#">Beställ katalog</a></li>
           <li role="presentation"><a href="#">Inför resan</a></li>

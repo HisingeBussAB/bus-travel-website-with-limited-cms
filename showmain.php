@@ -1,4 +1,4 @@
-<section class="main-section clearfix">
+<section class="main-section clearfix container">
   <article class="col-md-6 col-xs-12">
     <h1>Välkommen till Rekå Resor</h1>
     <p>För att genomföra en bra bussresa så krävs det planering och genomförande, oavsett om den ska gå inom Sverige eller ut i Europa.
@@ -6,19 +6,9 @@
     Med mer än 60 år i branschen har vi både erfarenheten såväl som kontaktnätet och det gör att vi kan ta fram i princip vilka gruppresor som helst –
     från korta endagsresor i närområdet runt Göteborg till veckolånga resor runt om i Europa. Alla bussresor kryddas med det lilla extra.</p>
   </article>
-  <article class="col-md-6 col-xs-12">
-    <h2>Månadens resa</h2>
-    <figure class="trip-featured-img-list">
-      <img src="upload/resor/timthumb.png"  alt="Månadens resa insert title"/>
-    </figure>
-    <div>
-      <p><i class="fa fa-hourglass blue" aria-hidden="true"></i> Antal dagar: 2 dagar</p>
-      <p><i class="fa fa-calendar blue" aria-hidden="true"></i> Avresedatum: 2017-03-27</p>
-      <p><i class="fa fa-money blue" aria-hidden="true"></i> Pris per person: 1775 kr</p>
-    </div>
-    <p>Mitt i glasriket bland gran och tall, strax intill Kostas masugnar och museum, reser sig Smålands senaste attraktion, det häpnadsväckande Kosta Boda Art Hotel.
-    Varje rum och vrå på hotellet är inrett med glas – från barstolar till poolens botten!
-    I foajén välkomnar en gigantisk lampa av glasdroppar designad av mästaren Bertil Vallien. Välkommen till glasriket med stort G!</p>
+  <article class="col-md-6 col-xs-12 trip-featured" style="background-image: url('upload/resor/timthumb.png')">
+    <h2 class="invisible">Månadens resa</h2>
+    <h3 aria-label="Månadens resa">Följ med till glasriket på en spaupplevelse utöver det vanliga <i class="fa fa-chevron-right pull-right" aria-hidden="true"></i></h3>
   </article>
   <article class="col-md-12 col-xs-12">
     <h2>Några nyheter</h2>
