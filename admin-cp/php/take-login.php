@@ -1,15 +1,24 @@
 <?php
-require '../../config/config.php';
-require '../../includes/functions.php';
+require_once __DIR__ . '/../../includes/functions/mainfunc.php';
+require_once __DIR__ . '/../../includes/db_connect.php';
 
 sec_session_start();
-echo "hi<br>";
-echo $_SESSION['FIX_TOKEN'];
-print_r( $_SESSION );
-/*
+
+$remoteip = $_SERVER['REMOTE_ADDR'];
+if (filter_var($remoteip, FILTER_VALIDATE_IP) === false) {
+  $remoteip = '0.0.0.0';
+}
+
+if (hammerguard($remoteip) === true) {
+  http_response_code(403);
+  echo "För många försök. Prova senare 403";
+  $pdo = NULL;
+  exit;
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-  if ($_SESSION['FIX_TOKEN'] == FIXED_LOGIN_TOKEN) {
+  if (($_SESSION['FIX_TOKEN'] == FIXED_LOGIN_TOKEN) && (filter_var ($_SESSION['RAND_TOKEN'], FILTER_SANITIZE_STRING) == filter_var ($_POST['rand_token'], FILTER_SANITIZE_STRING))) {
 
     //RECAPTA START Check I am not a robot recaptcha
 
@@ -32,72 +41,109 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       $result = json_decode($response);
       if (!$result->success) {
         http_response_code(403);
-        echo "reCAPTCHA verification failed.";
+        echo "reCAPTCHA missyckades.";
+        $pdo = NULL;
         exit;
       }
       //RECAPTCA END
 
+    $username = filter_var (trim($_POST['user']), FILTER_SANITIZE_STRING);
+    $result = false;
+    try {
+      $sql = "SELECT username, pwd FROM " . TABLE_PREFIX . "logins WHERE username = :user LIMIT 1;";
+      $sth = $pdo->prepare($sql);
+      $sth->bindParam(':user', $username);
+      $sth->execute();
+      $result = $sth->fetch(PDO::FETCH_ASSOC);
+    } catch(PDOException $e) {
+      echo "Databasen är nere. Inloggning kan inte verifieras.<br>";
+      echo $sql . "<br>" . $e->getMessage();
+      exit;
+    }
 
-
-
-    $username = trim($_POST['user']);
-
-    $conn = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-    if ($conn->connect_error) {
+    if ($result == false) {
       http_response_code(403);
-      echo "Något är fel med databasen<br>";
-      print_r($conn);
+      echo "Fel lösenord eller användare. Prova igen.";
       exit;
     };
 
-    $sql = "SELECT username, pwd FROM " . $table_prefix . "logins WHERE username='" . $username . "' LIMIT 1;";
-    echo $sql;
-
-    $result = $conn->query($sql);
-    if ($result == false || $result->num_rows <= 0) {
-      http_response_code(403);
-      echo "Användaren finns inte. Kontrollera användarnamnet.";
-      $conn->close();
-      exit;
-    };
-    $row = $result->fetch_array(MYSQLI_ASSOC);
-
-    if ($row["username"] == $username) {
-      if (password_verify(trim($_POST['pwd']), $row["pwd"])) {
+    if ($result["username"] == $username) {
+      if (password_verify(trim($_POST['pwd']), $result["pwd"])) {
       //login success
-      $token = md5(time() . microtime() . LOGGED_IN_TOKEN_SALT);
-      $usertoken = sha1($username . LOGGED_IN_USER_SALT);
+      $time = $_SERVER['REQUEST_TIME'];
+      $useragent = $_SERVER['HTTP_USER_AGENT'];
+      $microtime = microtime(false);
+      $token = hash('sha256', $username . $microtime . LOGGED_IN_TOKEN_SALT);
+      $usertoken = hash('sha256', $username . $useragent . LOGGED_IN_USER_SALT);
       $_SESSION['LOGGED_IN_TOKEN'] = $token;
       $_SESSION['LOGGED_IN_USER'] = $usertoken;
+      $_SESSION['USER'] = $username;
+      $_SESSION['MICROTIME'] = $microtime;
+
+      //GARBAGE COLLECTOR loggedin table
+      $timelimit = $_SERVER['REQUEST_TIME']-14400;
+      try {
+        $sql = "DELETE FROM " . TABLE_PREFIX . "loggedin WHERE time < :timelimit;";
+        $sth = $pdo->prepare($sql);
+        $sth->bindParam(':timelimit', $timelimit);
+        $sth->execute();
+      } catch(PDOException $e) {
+        echo "Databasfel:<br>";
+        echo $sql . "<br>" . $e->getMessage();
+        $pdo = NULL;
+        exit;
+      }
+
+      //Create logged in token in database loggedin.
+      try {
+        $sql = "INSERT INTO " . TABLE_PREFIX . "loggedin (
+          time,
+          microtime,
+          token,
+          user)
+          VALUES (
+          :time,
+          :microtime,
+          :token,
+          :user);";
+        $sth = $pdo->prepare($sql);
+        $sth->bindParam(':time', $time);
+        $sth->bindParam(':microtime', $microtime);
+        $sth->bindParam(':token', $token);
+        $sth->bindParam(':user', $username);
+        $sth->execute();
+      } catch(PDOException $e) {
+        echo "Databasfel:<br>";
+        echo $sql . "<br>" . $e->getMessage();
+        $pdo = NULL;
+        exit;
+      }
       http_response_code(200);
-      $conn->close();
+      echo "Login accepterad.";
       exit;
+
     } else {
       http_response_code(403);
-      echo "Fel lösenord. Prova igen.";
-      echo $row["username"]. "<br>";
-      echo $pwd. "<br>";
-      echo $row["pwd"]. "<br>";
+      echo "Fel lösenord eller användare. Prova igen.";
       exit;
     }
     } else {
       http_response_code(403);
-      echo "Användaren hämtades men matchar inte.";
-      $conn->close();
+      echo "Fel lösenord eller användare. Prova igen.";
       exit;
     }
 
   } else {
     http_response_code(403);
-    echo "Ingen session token hittades. 403";
+    echo "Felaktiga ursprungstokens. 403";
     exit;
   }
 
 } else {
   http_response_code(403);
-  echo "Förbjuden metod GET. 403";
+  echo "Förbjuden metod. 403";
   exit;
 }
-*/
+
 
 ?>

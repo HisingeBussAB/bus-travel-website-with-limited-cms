@@ -4,7 +4,8 @@
 * === SASS VARIABLES ===
 */
 
-$blue: #0d61de;
+$blue: rgb(13, 97, 222);
+$blue-transparent: rgba(13, 97, 222, .65);
 $logo-blue: rgb(0, 50, 153);
 $textonblue: #fff;
 $main-font-stack: 'Open Sans', sans-serif;
@@ -98,11 +99,60 @@ header {
       }
 
       .nav-pills a {
-        color: white;
+        color: $textonblue;
+
+        &:hover {
+          background-color: $blue-transparent;
+        }
+      }
+
+    }
+  }
+
+  #categories-wrap {
+    border: $textonblue 1px solid;
+    background-color: $blue;
+    border-radius: 10px;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    overflow:hidden;
+    padding: 0;
+    max-width: $page-max-width;
+    width: $page-desktop-relative-width;
+    margin: auto;
+
+    li {
+      display: block;
+      background-color: $blue;
+      font-weight: bold;
+      font-size: 1.6rem;
+      flex: 1 0 auto;
+      text-align: center;
+      outline-color: $textonblue;
+      outline-style: solid;
+      outline-width: 1px;
+      white-space: nowrap;
+      padding: 0 1px;
+
+      &:hover {
+        background-color: $textonblue;
+        a {
+          color: $blue;
+        }
+      }
+      a {
+        color: $textonblue;
+        text-decoration: none;
+        display: block;
+        width: 100%;
+        padding: 10px 14px;
       }
     }
   }
+
 }
+
 
 
 /*
@@ -210,52 +260,3 @@ footer {
 /*
 * === TEST ZONE & DEBUG ===
 */
-
-
-#resekategorier-test2 {
-  border: white 1px solid;
-  background-color: $blue;
-  border-radius: 10px;
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  overflow:hidden;
-  padding: 0;
-  max-width: $page-max-width;
-  width: $page-desktop-relative-width;
-  margin: auto;
-
-  li {
-    display: block;
-    background-color: $blue;
-    font-weight: bold;
-    font-size: 1.6rem;
-    flex: 1 0 auto;
-    text-align: center;
-    outline-color: white;
-    outline-style: solid;
-    outline-width: 1px;
-    white-space: nowrap;
-    padding: 0 1px;
-
-    &:hover {
-      background-color: white;
-      a {
-        color: $blue;
-      }
-    }
-
-
-    a {
-      color: $textonblue;
-      text-decoration: none;
-      display: block;
-      width: 100%;
-      padding: 10px 14px;
-    }
-
-
-
-  }
-
-}

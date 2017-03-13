@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . "/../config/config.php"; ?>
 <!DOCTYPE html>
 <html lang="sv">
 <head>
@@ -43,13 +44,13 @@
   <!--FAVICON END-->
 
 
-  <link rel="stylesheet" href="http<?php echo $append_ssl ?>://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-  <link href="http<?php echo $append_ssl ?>://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <link rel="stylesheet" href="http<?php echo APPEND_SSL ?>://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link href="http<?php echo APPEND_SSL ?>://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
   <link href="css/main.min.css" rel="stylesheet">
 
-  <script src="http<?php echo $append_ssl ?>://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+  <script src="http<?php echo APPEND_SSL ?>://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
   <script>window.jQuery || document.write('<script src="dependencies/jquery-3.1.1/jquery-3.1.1.min.js"><\/script>')</script>
-  <script src="http<?php echo $append_ssl ?>://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <script src="http<?php echo APPEND_SSL ?>://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
   <script>
     if(typeof($.fn.modal) === 'undefined') {
       document.write('<script src="/dependencies/bootstrap-3.3.7-dist/js/bootstrap.min.js"><\/script>');
@@ -64,44 +65,30 @@
   <header class="text-center">
     <div class="text-right header-wrap">
       <figure>
-        <img src="/img/logo.gif" alt="Rekå Resor AB">
+        <a href="/"><img src="/img/logo.gif" alt="Rekå Resor AB"></a>
         <figcaption>- mer än 60 år av resor -</figcaption>
       </figure>
       <nav>
         <ul class="nav nav-pills" aria-label="Meny">
-          <li role="presentation"><a href="#">Hem</a></li>
-          <li role="presentation"><a href="#">Beställ katalog</a></li>
-          <li role="presentation"><a href="#">Inför resan</a></li>
-          <li role="presentation"><a href="#">Bildgalleri</a></li>
-          <li role="presentation"><a href="#">Om Rekå Resor</a></li>
-          <li role="presentation"><a href="#">Kontakt</a></li>
-          <li role="presentation"><a href="#" aria-label="Besök oss på Facebook"><i class="fa fa-facebook-square" aria-hidden="true"></i></a></li>
+          <li role="presentation"><a href="/">Hem</a></li>
+          <li role="presentation"><a href="/bestallkatalog">Beställ katalog</a></li>
+          <li role="presentation"><a href="/inforresan">Inför resan</a></li>
+          <li role="presentation"><a href="/galleri">Bildgalleri</a></li>
+          <li role="presentation"><a href="/bussresorgoteborg">Om Rekå Resor</a></li>
+          <li role="presentation"><a href="/kontaktarekaresor">Kontakt</a></li>
+          <li role="presentation"><a href="https://sv-se.facebook.com/rekoresor/" aria-label="Besök oss på Facebook"><i class="fa fa-facebook-square" aria-hidden="true"></i></a></li>
         </ul>
       </nav>
     </div>
-    <!--TODO: LÄS KATEGORIER FRÅN DATABAS-->
-    <!--<div class="text-center categories-wrap">
-      <div class="btn-group" role="group" aria-label="Resekategorier">
-        <button type="button" class="btn btn-default">Dagsresor</button>
-        <button type="button" class="btn btn-default">Opera</button>
-        <button type="button" class="btn btn-default">Teater</button>
-        <button type="button" class="btn btn-default">Marknader</button>
-        <button type="button" class="btn btn-default">Storhelg</button>
-        <button type="button" class="btn btn-default">Nöje &amp; dans</button>
-        <button type="button" class="btn btn-default">Spa &amp; må bra</button>
-        <button type="button" class="btn btn-default">Weekend</button>
-        <button type="button" class="btn btn-default">Gruppresor</button>
-      </div>
-    </div>-->
-    <ul aria-label="Resekategorier" id="resekategorier-test2">
-      <li><a href="#">Dagsresor</a></li>
-      <li><a href="#">Opera</a></li>
-      <li><a href="#">Teater</a></li>
-      <li><a href="#">Marknader</a></li>
-      <li><a href="#">Storhelg</a></li>
-      <li><a href="#">Nöje &amp; dans</a></li>
-      <li><a href="#">Spa &amp; må bra</a></li>
-      <li><a href="#">Weekend</a></li>
-      <li><a href="#">Gruppresor</a></li>
+    <ul aria-label="Resekategorier" id="categories-wrap">
+      <li><a href="/kategori/dagsresor">Dagsresor</a></li>
+      <li><a href="/kategori/operaresor">Opera</a></li>
+      <li><a href="/kategori/teaterresor">Teater</a></li>
+      <li><a href="/kategori/marknader">Marknader</a></li>
+      <li><a href="/kategori/storhelg">Storhelg</a></li>
+      <li><a href="/kategori/noje">Nöje &amp; dans</a></li>
+      <li><a href="/kategori/sparesor">Spa &amp; må bra</a></li>
+      <li><a href="/kategori/weekendresor">Weekend</a></li>
+      <li><a href="/kategori/gruppresor">Gruppresor</a></li>
     </ul>
   </header>
