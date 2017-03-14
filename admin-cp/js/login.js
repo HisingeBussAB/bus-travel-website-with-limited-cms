@@ -1,16 +1,15 @@
 "use strict";
 
-window.addEventListener('load', function() {
-  document.getElementById('login-form').addEventListener('submit', function(e){
-    sendLogin(e);
-  })
+$(function() {
+  $('#login-form').submit(function(event){
+    event.preventDefault();
+    $("#login-submit").prop("disabled",true);
+    $("#login-message").text("Authorizing...");
+    sendLogin();
+  });
 });
 
-function sendLogin(event) {
-  event.preventDefault();
-  $("#login-submit").disabled = true;
-  $("#login-message").text("Sending...");
-
+function sendLogin() {
 
   var formData = $("#login-form").serialize();
   var formMessages = $("#login-message");
@@ -32,10 +31,10 @@ function sendLogin(event) {
       // Set the message text.
       $(formMessages).text(response);
 
-      //exit prevent doubleclick
+      //logged in. do reload
       setTimeout(function(){
-        $('#login-submit').disabled = false;
-      }, 9000);
+        location.reload();
+      }, 100);
 
     })
     .fail(function(data) {
@@ -43,11 +42,8 @@ function sendLogin(event) {
       //exit prevent doubleclick
       setTimeout(function(){
         grecaptcha.reset();
-        $('contact-submit').disabled = false;
-        }, 2000);
-
-      console.log(response);
-      document.location.href=response;
+        $('#login-submit').prop("disabled",false);
+      }, 1000);
 
 
     // Set the message text.
@@ -56,5 +52,6 @@ function sendLogin(event) {
         } else {
             $(formMessages).text('Okänt fel vid inloggingen. Tomt svar från take-login.php.');
         };
-        $('#contact-submit').disabled = false;
+
       });
+}

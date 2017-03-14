@@ -50,7 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = filter_var (trim($_POST['user']), FILTER_SANITIZE_STRING);
     $result = false;
     try {
-      $sql = "SELECT username, pwd FROM " . TABLE_PREFIX . "logins WHERE username = :user LIMIT 1;";
+      $sql = "SELECT id, username, pwd FROM " . TABLE_PREFIX . "logins WHERE username = :user LIMIT 1;";
       $sth = $pdo->prepare($sql);
       $sth->bindParam(':user', $username);
       $sth->execute();
@@ -68,11 +68,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     };
 
     if ($result["username"] == $username) {
-      if (password_verify(trim($_POST['pwd']), $result["pwd"])) {
+      if (password_verify(trim($_POST['pwd']), $result['pwd'])) {
       //login success
+      $username = $result['id']; //Change user identification to internal id.
       $uniquesalt = bin2hex(openssl_random_pseudo_bytes(32));
       $time = $_SERVER['REQUEST_TIME'];
-      $useragent = $_SERVER['HTTP_USER_AGENT'];
+      $useragent = filter_var ($_SERVER['HTTP_USER_AGENT'], FILTER_SANITIZE_STRING);
       $microtime = microtime(false);
       $token = hash('sha256', $username . $microtime . LOGGED_IN_TOKEN_SALT);
       $usertoken = hash('sha256', $username . $useragent . $uniquesalt);
@@ -100,14 +101,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $sql = "INSERT INTO " . TABLE_PREFIX . "loggedin (
           time,
           token,
-          user)
+          user,
+          salt)
           VALUES (
           :time,
           :token,
-          :user);";
+          :user,
+          :salt);";
         $sth = $pdo->prepare($sql);
         $sth->bindParam(':time', $time);
-        $sth->bindParam(':microtime', $microtime);
+        $sth->bindParam(':salt', $uniquesalt);
         $sth->bindParam(':token', $token);
         $sth->bindParam(':user', $username);
         $sth->execute();
@@ -118,7 +121,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
       }
       http_response_code(200);
-      echo "Login accepterad.";
+      echo "Login OK!";
       exit;
 
     } else {

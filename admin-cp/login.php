@@ -9,20 +9,20 @@
 
   <meta name="robots" content="noindex, nofollow">
 
-  <link rel="icon" href="../favicon/favicon.ico">
+  <link rel="icon" href="favicon/favicon.ico">
 
-  <link rel="stylesheet" href="css/admin.min.css" />
+  <link rel="stylesheet" href="admin-cp/css/admin.min.css" />
 
   <script src='https://www.google.com/recaptcha/api.js'></script>
 </head>
 <body>
-  <script src="../dependencies/jquery-3.1.1/jquery-3.1.1.min.js"></script>
-  <script src="js/login.js"></script>
+  <script src="http<?php echo APPEND_SSL ?>://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+  <script>window.jQuery || document.write('<script src="dependencies/jquery-3.1.1/jquery-3.1.1.min.js"><\/script>')</script>
+
+  <script src="admin-cp/js/login.js"></script>
 
   <?php
-    var_dump(microtime());
-    require_once  __DIR__ . '/../includes/functions/mainfunc.php';
-    sec_session_start();
+
     $_SESSION['FIX_TOKEN'] = FIXED_LOGIN_TOKEN;
     $token = hash('sha256', microtime());
     $_SESSION['RAND_TOKEN'] = $token;
