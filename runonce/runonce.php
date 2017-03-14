@@ -70,6 +70,7 @@ try {
     time INT,
     microtime VARCHAR(40),
     token CHAR(64),
+    salt CHAR(64),
     user  CHAR(64));";
   $sth = $pdo->prepare($sql);
   $sth->execute();

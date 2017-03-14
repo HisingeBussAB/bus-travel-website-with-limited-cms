@@ -70,11 +70,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($result["username"] == $username) {
       if (password_verify(trim($_POST['pwd']), $result["pwd"])) {
       //login success
+      $uniquesalt = bin2hex(openssl_random_pseudo_bytes(32));
       $time = $_SERVER['REQUEST_TIME'];
       $useragent = $_SERVER['HTTP_USER_AGENT'];
       $microtime = microtime(false);
       $token = hash('sha256', $username . $microtime . LOGGED_IN_TOKEN_SALT);
-      $usertoken = hash('sha256', $username . $useragent . LOGGED_IN_USER_SALT);
+      $usertoken = hash('sha256', $username . $useragent . $uniquesalt);
       $_SESSION['LOGGED_IN_TOKEN'] = $token;
       $_SESSION['LOGGED_IN_USER'] = $usertoken;
       $_SESSION['USER'] = $username;
@@ -98,12 +99,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       try {
         $sql = "INSERT INTO " . TABLE_PREFIX . "loggedin (
           time,
-          microtime,
           token,
           user)
           VALUES (
           :time,
-          :microtime,
           :token,
           :user);";
         $sth = $pdo->prepare($sql);
