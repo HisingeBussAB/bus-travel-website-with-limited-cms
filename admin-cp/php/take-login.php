@@ -58,29 +58,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } catch(PDOException $e) {
       echo "Databasen är nere. Inloggning kan inte verifieras.<br>";
       echo $sql . "<br>" . $e->getMessage();
+      $pdo = NULL;
       exit;
     }
 
     if ($result == false) {
       http_response_code(403);
       echo "Fel lösenord eller användare. Prova igen.";
+      $pdo = NULL;
       exit;
     };
 
     if ($result["username"] == $username) {
-      if (password_verify(trim($_POST['pwd']), $result['pwd'])) {
+      if (password_verify(trim($_POST['pwd']) . FIX_PWD_SALT, $result['pwd'])) {
       //login success
       $username = $result['id']; //Change user identification to internal id.
+      $sessionsalt = bin2hex(openssl_random_pseudo_bytes(6));
       $uniquesalt = bin2hex(openssl_random_pseudo_bytes(32));
       $time = $_SERVER['REQUEST_TIME'];
       $useragent = filter_var ($_SERVER['HTTP_USER_AGENT'], FILTER_SANITIZE_STRING);
       $microtime = microtime(false);
-      $token = hash('sha256', $username . $microtime . LOGGED_IN_TOKEN_SALT);
-      $usertoken = hash('sha256', $username . $useragent . $uniquesalt);
+      $token = hash('sha256', $username . $microtime . $sessionsalt . LOGGED_IN_TOKEN_SALT);
+      $usertoken = hash('sha256', $username . $useragent . $uniquesalt . LOGGED_IN_USER_SALT);
       $_SESSION['LOGGED_IN_TOKEN'] = $token;
       $_SESSION['LOGGED_IN_USER'] = $usertoken;
       $_SESSION['USER'] = $username;
       $_SESSION['MICROTIME'] = $microtime;
+      $_SESSION['SALT'] = $sessionsalt;
 
       //GARBAGE COLLECTOR loggedin table
       $timelimit = $_SERVER['REQUEST_TIME']-14400;
@@ -122,28 +126,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       }
       http_response_code(200);
       echo "Login OK!";
+      $pdo = NULL;
       exit;
 
     } else {
       http_response_code(403);
       echo "Fel lösenord eller användare. Prova igen.";
+      $pdo = NULL;
       exit;
     }
     } else {
       http_response_code(403);
       echo "Fel lösenord eller användare. Prova igen.";
+      $pdo = NULL;
       exit;
     }
 
   } else {
     http_response_code(403);
     echo "Felaktiga ursprungstokens. 403";
+    $pdo = NULL;
     exit;
   }
 
 } else {
   http_response_code(403);
   echo "Förbjuden metod. 403";
+  $pdo = NULL;
   exit;
 }
 

@@ -3,13 +3,13 @@ require_once __DIR__ . "/../includes/db_connect.php";
 
 function loginCheck() {
   global $pdo;
-
+  
   if (isset($_SESSION['LOGGED_IN_TOKEN']) && isset($_SESSION['LOGGED_IN_USER']) && isset($_SESSION['USER']) && isset($_SESSION['MICROTIME'])) {
     $orgtoken = $_SESSION['LOGGED_IN_TOKEN'];
     $orgusertoken = $_SESSION['LOGGED_IN_USER'];
     $user = $_SESSION['USER'];
     $microtime = $_SESSION['MICROTIME'];
-
+    $sessionsalt = $_SESSION['SALT'];
     $timelimit = $_SERVER['REQUEST_TIME']-14600;
 
     $flag = false;
@@ -38,8 +38,8 @@ function loginCheck() {
       /* We found the corresponding database token entry and only one of it.
       Proceed to check integrity of hashes */
       $result = $result[0];
-      $token = hash('sha256', $user . $microtime . LOGGED_IN_TOKEN_SALT);
-      $usertoken = hash('sha256', $user . filter_var ($_SERVER['HTTP_USER_AGENT'], FILTER_SANITIZE_STRING) . $result['salt']);
+      $token = hash('sha256', $user . $microtime . $sessionsalt . LOGGED_IN_TOKEN_SALT);
+      $usertoken = hash('sha256', $user . filter_var ($_SERVER['HTTP_USER_AGENT'], FILTER_SANITIZE_STRING) . $result['salt'] . LOGGED_IN_USER_SALT);
 
       if ($token === $orgtoken && $usertoken === $orgusertoken) {
         return true;
