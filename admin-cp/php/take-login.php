@@ -113,7 +113,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           :user,
           :salt);";
         $sth = $pdo->prepare($sql);
-        $sth->bindParam(':time', $time);
+        $sth->bindParam(':time', $time, PDP);
         $sth->bindParam(':salt', $uniquesalt);
         $sth->bindParam(':token', $token);
         $sth->bindParam(':user', $username);
@@ -155,6 +155,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $pdo = NULL;
   exit;
 }
-
-
-?>

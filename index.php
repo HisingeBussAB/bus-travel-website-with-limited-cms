@@ -38,4 +38,3 @@ if ($page == 'admin' || $page == 'api') {
     require_once __DIR__ . '/includes/footer.php';
   }
 }
-?>

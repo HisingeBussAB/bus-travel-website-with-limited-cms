@@ -5,5 +5,3 @@ fclose($fh);
 
 unlink('../upload/testa.txt');
 unlink('../upload/test.txt');
-
-?>

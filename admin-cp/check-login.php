@@ -3,7 +3,7 @@ require_once __DIR__ . "/../includes/db_connect.php";
 
 function loginCheck() {
   global $pdo;
-  
+
   if (isset($_SESSION['LOGGED_IN_TOKEN']) && isset($_SESSION['LOGGED_IN_USER']) && isset($_SESSION['USER']) && isset($_SESSION['MICROTIME'])) {
     $orgtoken = $_SESSION['LOGGED_IN_TOKEN'];
     $orgusertoken = $_SESSION['LOGGED_IN_USER'];
@@ -50,5 +50,3 @@ function loginCheck() {
 
   return false;
 }
-
-?>

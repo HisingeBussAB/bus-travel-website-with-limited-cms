@@ -89,4 +89,3 @@ function hammerguard($ip) {
     return true;
   }
 }
-?>
