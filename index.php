@@ -1,5 +1,13 @@
 <?php
-//ERRORS
+/**
+ * Rekå Resor (www.rekoresor.se)
+ *
+ * @link      https://github.com/HisingeBussAB/bus-travel-website-with-limited-cms
+ * @copyright CC BY-SA. http://creativecommons.org/licenses/by-sa/4.0/
+ * @license   GNU General Public License v3.0
+ */
+
+//ERRORS FIXME
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
