@@ -1,26 +1,27 @@
 <?php
-define('DB_NAME', 'database name');
-define('DB_USER', 'database user');
-define('DB_PASSWORD', 'database password');
-define('DB_HOST', 'database host');
-define('DB_CHARSET', 'utf8');
-define('DB_COLLATE', '');
+define('DB_NAME', 'db name');
+define('DB_USER', 'db user');
+define('DB_PASSWORD', 'db password');
+define('DB_HOST', 'localhost');
 
-define('LOGGED_IN_KEY',    'enter salt');
-define('AUTH_SALT',        'enter salt');
-define('LOGGED_IN_SALT',   'enter salt');
 
-define('RECAPTCHA_PUBLIC', 'enter public google recaptcha key');
-define('RECAPTCHA_SECRET', 'enter secret google recaptcha key');
+define('LOGGED_IN_USER_PEPPER',    'salt');
+define('FIXED_TRACKER_TOKEN',      'salt');
 
-define('DOMAIN', 'www.example.com');
+define('FIX_PWD_PEPPER',           'salt');
 
-$secure = false; //set false for http:// true for https://
-$table_prefix  = 'site17';
+define('DEFAULT_ADMIN_USER',  'admin');
+define('DEFAULT_ADMIN_PWD',   '12345');
 
-if ($secure == true) {
-  $append_ssl = "s";
+define('RECAPTCHA_PUBLIC', 'public recaptha key from Google');
+define('RECAPTCHA_SECRET', 'private recaptcha key frpm Goole');
+
+define('HTTPS', false); //set false for http:// true for https://
+
+define('TABLE_PREFIX', 'site17test_');
+
+if (HTTPS == true) {
+  define('APPEND_SSL', 's');
 } else {
-  $append_ssl = "";
+  define('APPEND_SSL', '');
 }
-?>

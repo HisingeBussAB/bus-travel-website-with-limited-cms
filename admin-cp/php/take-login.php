@@ -47,12 +47,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       }
       //RECAPTCA END
 
-    $username = filter_var (trim($_POST['user']), FILTER_SANITIZE_STRING);
+    $username = trim(filter_input (INPUT_POST, 'user', FILTER_SANITIZE_STRING));
     $result = false;
     try {
       $sql = "SELECT id, username, pwd FROM " . TABLE_PREFIX . "logins WHERE username = :user LIMIT 1;";
       $sth = $pdo->prepare($sql);
-      $sth->bindParam(':user', $username);
+      $sth->bindParam(':user', $username, PDO::PARAM_STR);
       $sth->execute();
       $result = $sth->fetch(PDO::FETCH_ASSOC);
     } catch(PDOException $e) {
@@ -70,28 +70,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     };
 
     if ($result["username"] == $username) {
-      if (password_verify(trim($_POST['pwd']) . FIX_PWD_SALT, $result['pwd'])) {
+      if (password_verify(trim($_POST['pwd']) . FIX_PWD_PEPPER, $result['pwd'])) {
       //login success
       $username = $result['id']; //Change user identification to internal id.
-      $sessionsalt = bin2hex(openssl_random_pseudo_bytes(6));
-      $uniquesalt = bin2hex(openssl_random_pseudo_bytes(32));
+      $loginsalt = bin2hex(openssl_random_pseudo_bytes(32));
       $time = $_SERVER['REQUEST_TIME'];
-      $useragent = filter_var ($_SERVER['HTTP_USER_AGENT'], FILTER_SANITIZE_STRING);
-      $microtime = microtime(false);
-      $token = hash('sha256', $username . $microtime . $sessionsalt . LOGGED_IN_TOKEN_SALT);
-      $usertoken = hash('sha256', $username . $useragent . $uniquesalt . LOGGED_IN_USER_SALT);
-      $_SESSION['LOGGED_IN_TOKEN'] = $token;
+      $useragent = trim(filter_var ($_SERVER['HTTP_USER_AGENT'], FILTER_SANITIZE_STRING));
+      $usertoken = hash('sha256', $username . $useragent . $loginsalt . LOGGED_IN_USER_PEPPER);
       $_SESSION['LOGGED_IN_USER'] = $usertoken;
       $_SESSION['USER'] = $username;
-      $_SESSION['MICROTIME'] = $microtime;
-      $_SESSION['SALT'] = $sessionsalt;
 
       //GARBAGE COLLECTOR loggedin table
       $timelimit = $_SERVER['REQUEST_TIME']-14400;
       try {
         $sql = "DELETE FROM " . TABLE_PREFIX . "loggedin WHERE time < :timelimit;";
         $sth = $pdo->prepare($sql);
-        $sth->bindParam(':timelimit', $timelimit);
+        $sth->bindParam(':timelimit', $timelimit, PDO::PARAM_INT);
         $sth->execute();
       } catch(PDOException $e) {
         echo "Databasfel:<br>";
@@ -104,19 +98,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       try {
         $sql = "INSERT INTO " . TABLE_PREFIX . "loggedin (
           time,
-          token,
           user,
           salt)
           VALUES (
           :time,
-          :token,
           :user,
           :salt);";
         $sth = $pdo->prepare($sql);
-        $sth->bindParam(':time', $time, PDP);
-        $sth->bindParam(':salt', $uniquesalt);
-        $sth->bindParam(':token', $token);
-        $sth->bindParam(':user', $username);
+        $sth->bindParam(':time', $time, PDO::PARAM_INT);
+        $sth->bindParam(':salt', $loginsalt, PDO::PARAM_STR);
+        $sth->bindParam(':user', $username, PDO::PARAM_STR);
         $sth->execute();
       } catch(PDOException $e) {
         echo "Databasfel:<br>";

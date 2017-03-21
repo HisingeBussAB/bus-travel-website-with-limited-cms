@@ -1,8 +1,8 @@
 <?php
 require_once '../includes/db_connect.php';
 
-$default_login = "admin";
-$default_pwd = password_hash("12345" . FIX_PWD_SALT, PASSWORD_DEFAULT);
+$default_login = DEFAULT_ADMIN_USER;
+$default_pwd = password_hash(DEFAULT_ADMIN_PWD . FIX_PWD_PEPPER, PASSWORD_DEFAULT);
 
 //FIXME REMOVE DROP TABLES DEBUG
 try {
@@ -101,8 +101,6 @@ try {
   $table = TABLE_PREFIX . 'loggedin';
   $sql = "CREATE TABLE " . $table . " (
     time INT,
-    microtime VARCHAR(40),
-    token CHAR(64),
     salt CHAR(64),
     user  CHAR(64));";
   $sth = $pdo->prepare($sql);
