@@ -2,22 +2,19 @@
 /**
  * Rekå Resor (www.rekoresor.se)
  * @author    Håkan Arnoldson
+ *
+ * SUB-ROUTER FOR ADMIN PANEL
+ *
  */
 
 namespace HisingeBussAB\RekoResor\website\admincp;
 
+use HisingeBussAB\RekoResor\website as root;
 
-includes\classes\Sessions::secSessionStart();
+root\includes\classes\Sessions::secSessionStart();
 
-require_once __DIR__ . "/check-login.php";
-$loggedin = loginCheck();
-
-if ($loggedin === true) {
-
-
-
-
+if (includes\classes\Login::isLoggedIn() === true) {
+  echo "YOU ARE LOGGED IN<br>\n";
 } else {
-  require_once __DIR__ . "/login.php";
-  exit;
+  includes\classes\Login::renderLoginForm();
 }

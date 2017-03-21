@@ -9,7 +9,7 @@ namespace HisingeBussAB\RekoResor\website\includes;
 class Router
 {
   private $map = array(
-   'admin' => __DIR__ . '/../admin-cp/admin.php',                         //admin panel router
+   'admin' => __DIR__ . '/../admincp/admin.php',                          //admin panel router
    'resa' => __DIR__ . '/pages/showtrip.php',                             //dynamic server specific trip
    'galleri' => __DIR__ . '/pages/showgallery.php',                       //static/dynamic fixed
    'kategori' => __DIR__ . '/pages/showcategory.php',                     //dynamic server trips per category

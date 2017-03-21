@@ -23,6 +23,7 @@ if (DEBUG_MODE) {
 spl_autoload_register(function($class){
   $class = strtolower(str_replace(__NAMESPACE__, '', $class));
   if(file_exists($file = __DIR__ . str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php')) require $file;
+  //var_dump($file); echo "<br>";
 });
 
 $router = new includes\Router();

@@ -2,7 +2,12 @@
 /**
  * Rekå Resor (www.rekoresor.se)
  * @author    Håkan Arnoldson
- */ ?>
+ */
+
+$statictoken = bin2hex(openssl_random_pseudo_bytes(48));
+$_SESSION['STATIC_TOKEN'] = $statictoken;
+
+?>
 <!DOCTYPE html>
 <html lang="sv">
 <head>
@@ -26,18 +31,10 @@
 
   <script src="admin-cp/js/login.js"></script>
 
-  <?php
-
-    $_SESSION['FIX_TOKEN'] = FIXED_LOGIN_TOKEN;
-    $token = hash('sha256', microtime());
-    $_SESSION['RAND_TOKEN'] = $token;
-
-  ?>
-
   <img class="login-screen" src="../img/logo.gif" alt="Rekå Resor AB">
 
   <form action="/api/adminlogin" method="post" accept-charset="utf-8" id="login-form">
-    <input type="hidden" name="rand_token" value="<?php echo $token ?>">
+    <input type="hidden" name="static_token" value="<?php echo $statictoken ?>">
     <fieldset>
       <label for="user">Användarnamn:</label>
       <input type="input" name="user" id="login-user">
