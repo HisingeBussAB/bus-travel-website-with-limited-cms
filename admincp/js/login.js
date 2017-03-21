@@ -29,12 +29,12 @@ function sendLogin() {
     .done(function(response) {
 
       // Set the message text.
-      $(formMessages).text(response);
+      $(formMessages).html(response);
 
       //logged in. do reload
       setTimeout(function(){
         location.reload();
-      }, 100);
+      }, 50000);
 
     })
     .fail(function(data) {
@@ -43,12 +43,12 @@ function sendLogin() {
       setTimeout(function(){
         grecaptcha.reset();
         $('#login-submit').prop("disabled",false);
-      }, 1000);
+      }, 50000);
 
 
     // Set the message text.
       if (data.responseText !== '') {
-          $(formMessages).text(data.responseText);
+          $(formMessages).html(data.responseText);
         } else {
             $(formMessages).text('Okänt fel vid inloggingen. Tomt svar från take-login.php.');
         };
