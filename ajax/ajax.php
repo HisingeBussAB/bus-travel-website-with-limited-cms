@@ -10,10 +10,11 @@ namespace HisingeBussAB\RekoResor\website\ajax;
 
 use HisingeBussAB\RekoResor\website as root;
 
+root\includes\classes\Sessions::secSessionStart();
+
 if ($id === 'admindologin') {
   //Login attempt requested
   if (!root\admincp\includes\classes\Login::setLogin()) {
-    http_response_code(403);
     exit;
   }
 }

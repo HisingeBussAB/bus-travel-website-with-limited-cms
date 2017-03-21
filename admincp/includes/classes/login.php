@@ -22,8 +22,15 @@ class Login
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
       if (root\includes\classes\HammerGuard::hammerGuard($_SERVER['REMOTE_ADDR']) === true) {
-        echo "För många försök. Prova senare HTTP 403.";
-        http_response_code(403);
+        echo "För många försök. Prova senare HTTP 406.";
+        http_response_code(406);
+        return false;
+        exit;
+      }
+
+      if ($_SESSION['TOKEN'] !== $_POST['token']) {
+        echo "Fel token skickad. HTTP 401.";
+        http_response_code(401);
         return false;
         exit;
       }
@@ -32,9 +39,10 @@ class Login
 
 
 
+
     } else {
-      echo "Felformaterad förfrågan HTTP 403.";
-      http_response_code(403);
+      echo "Felformaterad förfrågan HTTP 405.";
+      http_response_code(405);
       return false;
       exit;
     }

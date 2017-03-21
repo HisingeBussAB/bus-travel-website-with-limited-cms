@@ -34,7 +34,7 @@ $_SESSION['TOKEN'] = $token;
   <img class="login-screen" src="../img/logo.gif" alt="Rekå Resor AB">
 
   <form action="ajax/admindologin" method="post" accept-charset="utf-8" id="login-form">
-    <input type="hidden" name="static_token" value="<?php echo $token ?>">
+    <input type="hidden" name="token" value="<?php echo $token ?>">
     <fieldset>
       <label for="user">Användarnamn:</label>
       <input type="input" name="user" id="login-user">
