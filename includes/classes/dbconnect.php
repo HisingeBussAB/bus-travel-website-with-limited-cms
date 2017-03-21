@@ -1,11 +1,6 @@
 <?php
 /**
  * Rekå Resor (www.rekoresor.se)
- * (c) Rekå Resor AB
- *
- * @link      https://github.com/HisingeBussAB/bus-travel-website-with-limited-cms
- * @copyright CC BY-SA 4.0 (http://creativecommons.org/licenses/by-sa/4.0/)
- * @license   GNU General Public License v3.0
  * @author    Håkan Arnoldson
  */
 
@@ -22,7 +17,7 @@ class DBConnect
       $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION); //Error throw exceptions, catch with code.
       $this->pdo->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false); //Not compatible with all drives, defaults to false if not supported. Prepare each statement instead.
     } catch(\PDOException $e) {
-      if (DEBUG_MODE) { echo "Databasfel: " . $e->getMessage(); } else { echo "Databasen svarar inte. Kontakta <a href=\"mailto:webmaster@rekoresor.se\">webmaster@rekoresor.se</a>"; }
+      DBException::getMessage($e, __CLASS__);
       exit;
     }
   }

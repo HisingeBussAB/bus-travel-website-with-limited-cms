@@ -1,11 +1,6 @@
 <?php
 /**
  * Rekå Resor (www.rekoresor.se)
- * (c) Rekå Resor AB
- *
- * @link      https://github.com/HisingeBussAB/bus-travel-website-with-limited-cms
- * @copyright CC BY-SA 4.0 (http://creativecommons.org/licenses/by-sa/4.0/)
- * @license   GNU General Public License v3.0
  * @author    Håkan Arnoldson
  */
 
@@ -33,8 +28,6 @@ class Router
     $path = trim($path, '/');
 
     list($page, $id) = array_pad(explode('/', $path, 2), 2, '');
-    echo $page;
-    echo $id;
 
     if(!in_array($page, array_keys($this->map))){
       require __DIR__ . '/pages/error/404.php';

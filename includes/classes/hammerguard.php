@@ -1,11 +1,6 @@
 <?php
 /**
  * Rekå Resor (www.rekoresor.se)
- * (c) Rekå Resor AB
- *
- * @link      https://github.com/HisingeBussAB/bus-travel-website-with-limited-cms
- * @copyright CC BY-SA 4.0 (http://creativecommons.org/licenses/by-sa/4.0/)
- * @license   GNU General Public License v3.0
  * @author    Håkan Arnoldson
  */
 
@@ -28,8 +23,7 @@ class HammerGuard {
     $sth->bindParam(':timelimit', $timelimit);
     $sth->execute();
   } catch(\PDOException $e) {
-    echo "Databasfel från hammerguard():<br>";
-    echo $sql . "<br>" . $e->getMessage();
+    DBException::getMessage($e, __CLASS__, $sql);
     $pdo = NULL;
     exit;
   }
@@ -43,8 +37,7 @@ class HammerGuard {
     $count = $sth->fetch(\PDO::FETCH_NUM);
     $thecount = reset($count);
   } catch(\PDOException $e) {
-    echo "Databasfel från hammerguard():<br>";
-    echo $sql . "<br>" . $e->getMessage();
+    DBException::getMessage($e, __CLASS__, $sql);
     $pdo = NULL;
     exit;
   }
@@ -62,8 +55,7 @@ class HammerGuard {
       $sth->bindParam(':time', $time);
       $sth->execute();
     } catch(\PDOException $e) {
-      echo "Databasfel från hammerguard():<br>";
-      echo $sql . "<br>" . $e->getMessage();
+      DBException::getMessage($e, __CLASS__, $sql);
       $pdo = NULL;
       exit;
     }

@@ -1,18 +1,24 @@
 <?php
 /**
  * Rekå Resor (www.rekoresor.se)
- * (c) Rekå Resor AB
- *
- * @link      https://github.com/HisingeBussAB/bus-travel-website-with-limited-cms
- * @copyright CC BY-SA 4.0 (http://creativecommons.org/licenses/by-sa/4.0/)
- * @license   GNU General Public License v3.0
  * @author    Håkan Arnoldson
  */
- 
-require_once '../includes/db_connect.php';
+
+require '../config/config.php';
+require '../includes/classes/dbconnect.php';
+require '../includes/classes/dbexception.php';
+
+use HisingeBussAB\RekoResor\website\includes\classes\DBConnect as DBConnect;
+
+$pdo = new DBConnect();
+$pdo = $pdo->pdo;
+
+$options = [
+    'cost' => 10,
+];
 
 $default_login = DEFAULT_ADMIN_USER;
-$default_pwd = password_hash(DEFAULT_ADMIN_PWD . FIX_PWD_PEPPER, PASSWORD_DEFAULT);
+$default_pwd = password_hash(DEFAULT_ADMIN_PWD . FIX_PWD_PEPPER, PASSWORD_DEFAULT, $options);
 
 //FIXME REMOVE DROP TABLES DEBUG
 try {
@@ -21,7 +27,7 @@ try {
   $sth = $pdo->prepare($sql);
   $sth->execute();
   echo "Table: " . $table . " dropped succesfully.<br>";
-} catch(PDOException $e) {
+} catch(\PDOException $e) {
   echo $sql . "<br>" . $e->getMessage() . "<br>";
 }
 
@@ -31,7 +37,7 @@ try {
   $sth = $pdo->prepare($sql);
   $sth->execute();
   echo "Table: " . $table . " dropped succesfully.<br>";
-} catch(PDOException $e) {
+} catch(\PDOException $e) {
   echo $sql . "<br>" . $e->getMessage() . "<br>";
 }
 
@@ -41,7 +47,7 @@ try {
   $sth = $pdo->prepare($sql);
   $sth->execute();
   echo "Table: " . $table . " dropped succesfully.<br>";
-} catch(PDOException $e) {
+} catch(\PDOException $e) {
   echo $sql . "<br>" . $e->getMessage() . "<br>";
 }
 //FIXME END DROP TABLES DEBUG
@@ -51,7 +57,7 @@ try {
   $sql = "SELECT count(*) FROM " . TABLE_PREFIX . "logins;";
   $sth = $pdo->prepare($sql);
   $sth->execute();
-  $count = $sth->fetch(PDO::FETCH_NUM); // Return array indexed by column number
+  $count = $sth->fetch(\PDO::FETCH_NUM); // Return array indexed by column number
   $thecount = reset($count); // Resets array cursor and returns first value (the count)
 
   if ($thecount > 0) {
@@ -59,9 +65,9 @@ try {
     $pdo = NULL;
     exit;
   }
-} catch(PDOException $e) {
-  echo $sql . "<br>" . $e->getMessage() . "<br>";
-}
+  } catch(\PDOException $e) {
+    echo "Database don't exist. Initializing DB.<br>";
+  }
 
 try {
   $table = TABLE_PREFIX . 'logins';
@@ -72,7 +78,7 @@ try {
   $sth = $pdo->prepare($sql);
   $sth->execute();
   echo "Table: " . $table . " created succesfully.<br>";
-} catch(PDOException $e) {
+} catch(\PDOException $e) {
   echo $sql . "<br>" . $e->getMessage() . "<br>";
 }
 
@@ -89,8 +95,8 @@ $sql = "INSERT INTO " . TABLE_PREFIX . "logins (
 
   $sth = $pdo->prepare($sql);
   $sth->execute();
-  echo "Default username set: " . $default_login . "<br>Default password set: " . $default_pwd . "<br>";
-} catch(PDOException $e) {
+  echo "Default username set: " . $default_login . "<br>Default password set: " . DEFAULT_ADMIN_PWD . "<br>";
+} catch(\PDOException $e) {
   echo $sql . "<br>" . $e->getMessage() . "<br>";
 }
 
@@ -103,7 +109,7 @@ try {
   $sth = $pdo->prepare($sql);
   $sth->execute();
   echo "Table: " . $table . " created succesfully.<br>";
-} catch(PDOException $e) {
+} catch(\PDOException $e) {
   echo $sql . "<br>" . $e->getMessage() . "<br>";
 }
 
@@ -116,6 +122,6 @@ try {
   $sth = $pdo->prepare($sql);
   $sth->execute();
   echo "Table: " . $table . " created succesfully.<br>";
-} catch(PDOException $e) {
+} catch(\PDOException $e) {
   echo $sql . "<br>" . $e->getMessage() . "<br>";
 }
