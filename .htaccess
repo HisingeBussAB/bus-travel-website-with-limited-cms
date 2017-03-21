@@ -3,4 +3,4 @@ RewriteCond %{REQUEST_URI} !^/img
 RewriteCond %{REQUEST_URI} !^/favicon
 RewriteCond %{REQUEST_URI} !^/runonce
 RewriteCond %{REQUEST_URI} !\.(gif|jpe?g|png|js|css|swf|ico|txt|pdf|xml|woff2|woff|otf|svg|eot|ttf|map|json)$
-RewriteRule . index.php
+RewriteRule . index.php [L,QSA]

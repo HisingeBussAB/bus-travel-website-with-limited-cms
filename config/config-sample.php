@@ -16,12 +16,14 @@ define('DEFAULT_ADMIN_PWD',   '12345');
 define('RECAPTCHA_PUBLIC', 'public recaptha key from Google');
 define('RECAPTCHA_SECRET', 'private recaptcha key frpm Goole');
 
-define('HTTPS', false); //set false for http:// true for https://
+define('TABLE_PREFIX', 's17test_');
 
-define('TABLE_PREFIX', 'site17test_');
+define('DEBUG_MODE', false);
 
-if (HTTPS == true) {
-  define('APPEND_SSL', 's');
+if (empty($_SERVER['HTTPS'])) {
+  define('HTTPS',              true);
+  define('APPEND_SSL',         '');
 } else {
-  define('APPEND_SSL', '');
+  define('HTTPS',              false);
+  define('APPEND_SSL',         's');
 }

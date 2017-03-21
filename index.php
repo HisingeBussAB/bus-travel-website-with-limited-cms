@@ -1,12 +1,15 @@
 <?php
 /**
  * Rekå Resor (www.rekoresor.se)
+ * (c) Rekå Resor AB
  *
  * @link      https://github.com/HisingeBussAB/bus-travel-website-with-limited-cms
  * @copyright CC BY-SA 4.0 (http://creativecommons.org/licenses/by-sa/4.0/)
  * @license   GNU General Public License v3.0
  * @author    Håkan Arnoldson
  */
+
+namespace HisingeBussAB\RekoResor\website;
 
 //ERRORS FIXME
 ini_set('display_errors', 1);
@@ -15,35 +18,19 @@ error_reporting(E_ALL);
 //ERRORS
 
 
+date_default_timezone_set ('Europe/Stockholm');
+require __DIR__ . '/config/config.php';
 
-$uri = explode($_SERVER['SERVER_NAME'], $_SERVER['REQUEST_URI'], 2);
-$path = $uri[0];
-$path = filter_var ($path, FILTER_SANITIZE_URL);
-$path = trim($path, '/');
+spl_autoload_register(function($class){
+  $class = str_replace(__NAMESPACE__, '', $class);
+  $class = strtolower($class);
+  if(file_exists($file = __DIR__ . str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php')) require $file;
+  var_dump($file);
+});
 
-list($page, $id) = array_pad(explode('/', $path, 2), 2, '');
+includes\classes\Sessions::secSessionStart();
 
-$uris = array(
- 'admin' => __DIR__ . '/admin-cp/admin.php',
- 'resa' => __DIR__ . '/includes/pages/showtrip.php',
- 'galleri' => __DIR__ . '/includes/pages/showgallery.php',
- 'kategori' => __DIR__ . '/includes/pages/showcategory.php',
- '' => __DIR__ . '/includes/pages/mainpage.php',
- 'bestallkatalog' => __DIR__ . '/includes/pages/showorderinfo.php',
- 'inforresan' => __DIR__ . '/includes/pages/showbeforetrip.php',
- 'bussresorgoteborg' => __DIR__ . '/includes/pages/showabout.php',
- 'kontaktarekaresor' => __DIR__ . '/includes/pages/showcontact.php',
- 'api' => __DIR__ . '/api/api.php'
-);
+$router = new includes\Router();
+$router->route();
 
-if ($page == 'admin' || $page == 'api') {
-  require_once $uris[$page];
-} else {
-  if(!in_array($page, array_keys($uris))){
-    require_once __DIR__ . '/404.php';
- } else {
-    require_once __DIR__ . '/includes/header.php';
-    require_once $uris[$page];
-    require_once __DIR__ . '/includes/footer.php';
-  }
-}
+includes\classes\HammerGuard::hammerGuard('88.88.88.88');

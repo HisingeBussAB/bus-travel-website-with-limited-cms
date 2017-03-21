@@ -8,10 +8,13 @@
  * @license   GNU General Public License v3.0
  * @author    Håkan Arnoldson
  */
+header("HTTP/1.0 404 Not Found");
+require_once __DIR__ . '/../shared/header.php';
+?>
+Sidan finns inte. Kontrollera stavningen.
+<a href="http://<?php echo DOMAIN;?>">Tillbaka till huvudsidan.</a>
 
-$fh = fopen('../upload/testa.txt', 'a');
-fwrite($fh, '<h1>Hello world!</h1>');
-fclose($fh);
 
-unlink('../upload/testa.txt');
-unlink('../upload/test.txt');
+<?php
+require_once __DIR__ . '/../shared/footer.php';
+?>

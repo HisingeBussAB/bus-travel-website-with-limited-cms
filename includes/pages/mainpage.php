@@ -1,3 +1,18 @@
+<?php
+/**
+ * Rekå Resor (www.rekoresor.se)
+ * (c) Rekå Resor AB
+ *
+ * @link      https://github.com/HisingeBussAB/bus-travel-website-with-limited-cms
+ * @copyright CC BY-SA 4.0 (http://creativecommons.org/licenses/by-sa/4.0/)
+ * @license   GNU General Public License v3.0
+ * @author    Håkan Arnoldson
+ */
+
+header('Content-type: text/html; charset=utf-8');
+include __DIR__ . '/shared/header.php';
+?>
+
 <section class="main-section clearfix container">
   <article class="col-md-6 col-xs-12">
     <h1>Välkommen till Rekå Resor</h1>
@@ -118,3 +133,5 @@
     Quisque porttitor sed enim sit amet vulputate. Nunc hendrerit, dui vel molestie pharetra, risus odio mattis lacus, gravida porta nunc ligula non ligula.</p>
   </article>
 </section>
+<?php
+include __DIR__ . '/shared/footer.php';

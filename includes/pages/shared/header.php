@@ -1,4 +1,14 @@
-<?php require_once __DIR__ . "/../config/config.php"; ?>
+<?php
+/**
+ * Rekå Resor (www.rekoresor.se)
+ * (c) Rekå Resor AB
+ *
+ * @link      https://github.com/HisingeBussAB/bus-travel-website-with-limited-cms
+ * @copyright CC BY-SA 4.0 (http://creativecommons.org/licenses/by-sa/4.0/)
+ * @license   GNU General Public License v3.0
+ * @author    Håkan Arnoldson
+ */
+?>
 <!DOCTYPE html>
 <html lang="sv">
 <head>
@@ -92,4 +102,3 @@
       <li><a href="/kategori/gruppresor">Gruppresor</a></li>
     </ul>
   </header>
-  <div class="container">asdddddddddddddddddddddddddddddddddddddddddddddddddddddddd asdddddddddddddddd asdddddddddddddddddddddddddd asdddddddddddddddddddddddddddd</div>
