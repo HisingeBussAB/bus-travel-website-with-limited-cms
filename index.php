@@ -28,5 +28,3 @@ spl_autoload_register(function($class){
 
 $router = new includes\Router();
 $router->route();
-
-includes\classes\HammerGuard::hammerGuard('88.88.88.88');

@@ -9,14 +9,13 @@ namespace HisingeBussAB\RekoResor\website\includes\classes;
 class HammerGuard {
   public static function hammerGuard($ip) {
   /**
-   * Function checks for brute force attacks using hammerguard table with sha256 has of REMOTE_ADDR for more then 29 tries in the last 1800 sec
+   * Function checks for brute force attacks using hammerguard table with sha256 has of REMOTE_ADDR for more then 20 tries in the last 3600 sec
    */
-  $pdo = new DBConnect();
-  $pdo = $pdo->pdo;
+  $pdo = DB::get();
 
   $ip = hash('sha256',$ip);
   $time = $_SERVER['REQUEST_TIME'];
-  $timelimit = $time-1801;
+  $timelimit = $time-3600;
   try {
     $sql = "DELETE FROM " . TABLE_PREFIX . "hammerguard WHERE time < :timelimit;";
     $sth = $pdo->prepare($sql);
@@ -24,7 +23,6 @@ class HammerGuard {
     $sth->execute();
   } catch(\PDOException $e) {
     DBException::getMessage($e, __CLASS__, $sql);
-    $pdo = NULL;
     exit;
   }
 
@@ -38,11 +36,10 @@ class HammerGuard {
     $thecount = reset($count);
   } catch(\PDOException $e) {
     DBException::getMessage($e, __CLASS__, $sql);
-    $pdo = NULL;
     exit;
   }
 
-  if ($thecount < 30) {
+  if ($thecount < 21) {
     try {
       $sql = "INSERT INTO " . TABLE_PREFIX . "hammerguard (
         iphash,
@@ -56,12 +53,10 @@ class HammerGuard {
       $sth->execute();
     } catch(\PDOException $e) {
       DBException::getMessage($e, __CLASS__, $sql);
-      $pdo = NULL;
       exit;
     }
       return false;
   } else {
-    $pdo = NULL;
     return true;
   }
 }

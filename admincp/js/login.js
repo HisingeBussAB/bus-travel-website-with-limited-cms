@@ -33,8 +33,12 @@ function sendLogin() {
 
       //logged in. do reload
       setTimeout(function(){
-        location.reload();
-      }, 50000);
+      //  location.reload();
+      //TEMP DEBUG
+      grecaptcha.reset();
+      $('#login-submit').prop("disabled",false);
+      //TEMP DEBUG
+    }, 2000);
 
     })
     .fail(function(data) {
@@ -43,7 +47,7 @@ function sendLogin() {
       setTimeout(function(){
         grecaptcha.reset();
         $('#login-submit').prop("disabled",false);
-      }, 50000);
+      }, 2000);
 
 
     // Set the message text.

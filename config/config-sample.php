@@ -12,7 +12,8 @@ define('DEFAULT_ADMIN_PWD',   '12345');  //default admin username to use at setu
 
 
 
-define('FIX_PWD_PEPPER',           'pepper');
+define('FIX_PWD_PEPPER',         'pepper');
+define('JWT_KEY_PEPPER',         'pepper');
 
 define('DEFAULT_ADMIN_USER',  'admin');
 define('DEFAULT_ADMIN_PWD',   '12345');

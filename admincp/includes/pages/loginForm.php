@@ -4,7 +4,7 @@
  * @author    Håkan Arnoldson
  */
 
-$token = bin2hex(openssl_random_pseudo_bytes(48));
+$token = bin2hex(openssl_random_pseudo_bytes(64));
 $_SESSION['TOKEN'] = $token;
 
 ?>

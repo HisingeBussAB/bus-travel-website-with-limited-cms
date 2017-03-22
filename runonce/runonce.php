@@ -5,19 +5,19 @@
  */
 
 require '../config/config.php';
-require '../includes/classes/dbconnect.php';
+require '../includes/classes/db.php';
 require '../includes/classes/dbexception.php';
 
-use HisingeBussAB\RekoResor\website\includes\classes\DBConnect as DBConnect;
+use HisingeBussAB\RekoResor\website\includes\classes\DB as DB;
 
-$pdo = new DBConnect();
-$pdo = $pdo->pdo;
+$pdo = DB::get();
+
 
 $options = [
     'cost' => 10,
 ];
 
-$default_login = DEFAULT_ADMIN_USER;
+$default_login = filter_var(trim(DEFAULT_ADMIN_USER), FILTER_SANITIZE_STRING);
 $default_pwd = password_hash(DEFAULT_ADMIN_PWD . FIX_PWD_PEPPER, PASSWORD_DEFAULT, $options);
 
 //FIXME REMOVE DROP TABLES DEBUG
@@ -105,7 +105,7 @@ try {
   $table = TABLE_PREFIX . 'hammerguard';
   $sql = "CREATE TABLE " . $table . " (
     iphash CHAR(64),
-    time INT);";
+    time BIGINT);";
   $sth = $pdo->prepare($sql);
   $sth->execute();
   echo "Table: " . $table . " created succesfully.<br>";
@@ -116,9 +116,11 @@ try {
 try {
   $table = TABLE_PREFIX . 'loggedin';
   $sql = "CREATE TABLE " . $table . " (
-    time INT,
-    salt CHAR(64),
-    user  CHAR(64));";
+    user INT,
+    ip CHAR(64),
+    time BIGINT,
+    jwtkey VARCHAR(100),
+    jwttoken VARCHAR(100));";
   $sth = $pdo->prepare($sql);
   $sth->execute();
   echo "Table: " . $table . " created succesfully.<br>";
