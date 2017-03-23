@@ -21,7 +21,85 @@ use \Firebase\JWT\JWT;
 class Login
 {
   public static function isLoggedIn() {
-    return false;
+
+    if (!isset($_SESSION['isloggedin']) || !isset($_SESSION['useragent']) || !isset($_SESSION['id'])) {
+      if (DEBUG_MODE) echo "NO SESSION"; //DEBUG
+      return false;
+    }
+
+    $userAgent   = $_SESSION['useragent'];
+    $username    = $_SESSION['isloggedin'];
+    $sessionid   = $_SESSION['id'];
+    $userAgentIn = hash('sha256', $_SERVER['HTTP_USER_AGENT']);
+
+    if ($userAgent !== $userAgentIn) {
+      if (DEBUG_MODE) echo "USER AGENT CHANGED"; //DEBUG
+      return false;
+    }
+
+    $pdo = DB::get();
+
+    $result = false;
+    $timelimit = $_SERVER['REQUEST_TIME']-28800;
+    try {
+      $sql = "SELECT ip, jwtkey, jwttoken, sessionid time FROM " . TABLE_PREFIX . "loggedin WHERE sessionid = :sessionid AND user = :user AND time > :timelimit;";
+      $sth = $pdo->prepare($sql);
+      $sth->bindParam(':sessionid', $sessionid, \PDO::PARAM_STR);
+      $sth->bindParam(':user', $username, \PDO::PARAM_STR);
+      $sth->bindParam(':timelimit', $timelimit, \PDO::PARAM_INT);
+      $sth->execute();
+      $result = $sth->fetch(\PDO::FETCH_ASSOC);
+    } catch(\PDOException $e) {
+      DBException::getMessage($e, __CLASS__, $sql);
+      return false;
+    }
+
+    if ($result === false) {
+      if (DEBUG_MODE) echo "DB RESULT EMPTY"; //DEBUG
+      return false;
+    }
+
+    if (LOGIN_IP_LOCK && $result['ip'] != hash('sha256', $_SERVER['REMOTE_ADDR'])) {
+      if (DEBUG_MODE) echo "IP MATCH FAIL"; //DEBUG
+      return false;
+    }
+
+    $jwt = self::getJWT($result['jwtkey'], 1);
+    if ($jwt === false) {
+      if (DEBUG_MODE) echo "JWT NOT FOUND"; //DEBUG
+      return false;
+    }
+
+    if (($jwt->data->userId != $username) || ($result['jwttoken'] != $jwt->jti) || (JWT_STAMP != $jwt->data->stamp) || ($jwt->data->userAgent != $userAgentIn)) {
+      if (DEBUG_MODE) echo "JWT DECODED BUT CONTENT INVALID"; //DEBUG
+      return false;
+    }
+
+
+    //LOGGED IN STATUS HAS BEEN ACCEPTED - REGENERATE JWT
+
+    unset($_COOKIE['RRJWT']);
+    $tokenKey = base64_encode(openssl_random_pseudo_bytes(96));
+    $tokenId = self::setJWT($tokenKey, 5400, $username, $userAgent);
+
+    //set new jwt in db
+    try {
+      $sql = "UPDATE " . TABLE_PREFIX . "loggedin SET
+        jwtkey = :jwtkey,
+        jwttoken = :jwttoken
+        WHERE sessionid = :sessionid AND user = :user;";
+      $sth = $pdo->prepare($sql);
+      $sth->bindParam(':jwtkey', $tokenKey, \PDO::PARAM_STR);
+      $sth->bindParam(':jwttoken', $tokenId, \PDO::PARAM_STR);
+      $sth->bindParam(':sessionid', $sessionid, \PDO::PARAM_STR);
+      $sth->bindParam(':user', $username, \PDO::PARAM_STR);
+      $sth->execute();
+    } catch(\PDOException $e) {
+      DBException::getMessage($e, __CLASS__, $sql);
+      return false;
+    }
+
+    return true;
   }
 
   public static function renderLoginForm() {
@@ -50,14 +128,11 @@ class Login
         return false;
       }
 
-
-      /* FIXME DEBUG
       if (!reCaptcha::tryReCaptcha()) {
         echo "Tyvärr reCaptcha misslyckades. Försök igen. HTTP 401.";
         http_response_code(401);
         return false;
       }
-      */
 
       $pdo = DB::get();
 
@@ -81,30 +156,35 @@ class Login
 
       if (($result['username'] == $username) && (password_verify(trim($_POST['pwd']) . FIX_PWD_PEPPER, $result['pwd']))) {
         //LOGIN SUCCESS. SET LOGGED IN STATUS
-        $username = $result['id']; //sets username to internal id
+        $username  = $result['id']; //sets username to internal id
         $userAgent = hash('sha256', $_SERVER['HTTP_USER_AGENT']);
-        $userIP = hash('sha256', $_SERVER['REMOTE_ADDR']);
+        $userIP    = hash('sha256', $_SERVER['REMOTE_ADDR']);
+        $sessionid = hash('sha256', microtime());
 
         //Set session status logged in
         $_SESSION['useragent']  = $userAgent;
         $_SESSION['isloggedin'] = $username;
+        $_SESSION['id']         = $sessionid;
 
         //Set JWT status logged in
         $tokenKey = base64_encode(openssl_random_pseudo_bytes(96));
-        $tokenId = self::setJWT($tokenKey, 80, $username, $userAgent);
+        $tokenId  = self::setJWT($tokenKey, 80, $username, $userAgent);
 
+        //Set DB status logged in
         try {
           $sql = "INSERT INTO " . TABLE_PREFIX . "loggedin (
             user,
             ip,
             jwtkey,
             jwttoken,
+            sessionid,
             time)
             VALUES (
             :user,
             :ip,
             :jwtkey,
             :jwttoken,
+            :sessionid,
             :time);";
 
           $sth = $pdo->prepare($sql);
@@ -112,6 +192,7 @@ class Login
           $sth->bindParam(':ip', $userIP, \PDO::PARAM_STR);
           $sth->bindParam(':jwtkey', $tokenKey, \PDO::PARAM_STR);
           $sth->bindParam(':jwttoken', $tokenId, \PDO::PARAM_STR);
+          $sth->bindParam(':sessionid', $sessionid, \PDO::PARAM_STR);
           $sth->bindParam(':time', $_SERVER['REQUEST_TIME'], \PDO::PARAM_INT);
           $sth->execute();
 
@@ -121,29 +202,24 @@ class Login
         }
 
 
+        //Finally clean up garbage in the database
+        $finalExpiration = $_SERVER['REQUEST_TIME']-28800;
 
-
-
-
-
-
-        var_dump(self::getJWT($tokenKey));
-
+        try {
+          $sql = "DELETE FROM " . TABLE_PREFIX . "loggedin WHERE time < :expiration;";
+          $sth = $pdo->prepare($sql);
+          $sth->bindParam(':expiration', $finalExpiration, \PDO::PARAM_INT);
+          $sth->execute();
+        } catch(\PDOException $e) {
+          DBException::getMessage($e, __CLASS__, $sql);
+          return false;
+        }
 
       } else {
         http_response_code(401);
         echo "Fel lösenord eller användare. Prova igen. HTTP 401.";
         return false;
       }
-
-
-
-
-
-
-
-
-
 
     } else {
       echo "Felformaterad förfrågan HTTP 405.";
@@ -187,8 +263,8 @@ class Login
       try {
         $jwt = JWT::decode($_COOKIE['RRJWT'], $secretKey, array('HS512'));
         return $jwt;
-      } catch(Exception $e) {
-        echo $e;
+      } catch(\Exception $e) {
+        if (DEBUG_MODE) echo $e;
         return false;
       }
     } else {

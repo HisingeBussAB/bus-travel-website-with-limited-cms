@@ -119,8 +119,9 @@ try {
     user INT,
     ip CHAR(64),
     time BIGINT,
-    jwtkey VARCHAR(100),
-    jwttoken VARCHAR(100));";
+    sessionid CHAR(64),
+    jwtkey VARCHAR(200),
+    jwttoken VARCHAR(200));";
   $sth = $pdo->prepare($sql);
   $sth->execute();
   echo "Table: " . $table . " created succesfully.<br>";
