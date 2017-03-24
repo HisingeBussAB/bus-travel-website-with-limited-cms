@@ -15,6 +15,8 @@ root\includes\classes\Sessions::secSessionStart();
 
 if (includes\classes\Login::isLoggedIn() === true) {
   echo "YOU ARE LOGGED IN<br>\n";
+  $router = new includes\AdminRouter();
+  $router->route();
 } else {
   includes\classes\Login::renderLoginForm();
 }
