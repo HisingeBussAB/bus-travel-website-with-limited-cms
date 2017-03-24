@@ -11,12 +11,17 @@ namespace HisingeBussAB\RekoResor\website\admincp;
 
 use HisingeBussAB\RekoResor\website as root;
 
-root\includes\classes\Sessions::secSessionStart();
 
-if (includes\classes\Login::isLoggedIn() === true) {
-  echo "YOU ARE LOGGED IN<br>\n";
-  $router = new includes\AdminRouter();
-  $router->route();
-} else {
-  includes\classes\Login::renderLoginForm();
+class Admin {
+  public static function startAdmin() {
+  root\includes\classes\Sessions::secSessionStart();
+
+  if (includes\classes\Login::isLoggedIn() === true) {
+    echo "YOU ARE LOGGED IN<br>\n";
+    $router = new includes\AdminRouter();
+    $router->route();
+  } else {
+    includes\classes\Login::renderLoginForm();
+  }
+  }
 }

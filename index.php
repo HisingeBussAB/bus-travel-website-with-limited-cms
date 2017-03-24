@@ -10,20 +10,22 @@
  */
 
 namespace HisingeBussAB\RekoResor\website;
+use HisingeBussAB\RekoResor\website\router\Router;
 
 require __DIR__ . '/config/config.php';
-require __DIR__ . '/dependencies/vendor/altorouter/AltoRouter.php';
+
 //ERRORS
 if (DEBUG_MODE) {
   ini_set('display_errors', 1);
   ini_set('display_startup_errors', 1);
   error_reporting(E_ALL);
 }
-//ERRORS
 
+//START AUTOLOADER
 spl_autoload_register(function($class){
   $class = strtolower(str_replace(__NAMESPACE__, '', $class));
   if(file_exists($file = __DIR__ . str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php')) require $file;
 });
 
-$router = new \AltoRouter();
+//ROUTE REQUEST
+Router::route();
