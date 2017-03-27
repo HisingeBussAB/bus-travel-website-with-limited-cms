@@ -76,6 +76,7 @@ class Router
   private function getArgument($string) {
     $arg = substr($string, strpos($string, '('));
     $arg = trim($arg, '()');
+    $arg = trim($arg, '"');
     $arg = trim($arg, '\'');
     return $arg;
   }
