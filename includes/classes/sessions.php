@@ -8,11 +8,13 @@ namespace HisingeBussAB\RekoResor\website\includes\classes;
 
 class Sessions
 {
+
+  /**
+   * Overrides default settings for session_start() to be a little more secure.
+   * @uses HTTPS
+   */
   public static function secSessionStart() {
 
-    /**
-     * Function initalizes a more secure session handler
-     */
     $session_name = 'RRSESSID';   // Set a custom session name
     /*Sets the session name.
      *This must come before session_set_cookie_params due to an undocumented bug/feature in PHP.

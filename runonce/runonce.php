@@ -1,7 +1,11 @@
 <?php
 /**
  * Rekå Resor (www.rekoresor.se)
+ *
+ * This script will initalize the database.
+ *
  * @author    Håkan Arnoldson
+ * @link      https://github.com/HisingeBussAB/bus-travel-website-with-limited-cms
  */
 
 require '../config/config.php';

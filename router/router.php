@@ -1,10 +1,17 @@
 <?php
 /**
  * Rekå Resor (www.rekoresor.se)
+ *
  * @author    Håkan Arnoldson
+ * @link      https://github.com/HisingeBussAB/bus-travel-website-with-limited-cms
  */
 
 namespace HisingeBussAB\RekoResor\website\router;
+
+
+/**
+ * Router class
+ */
 class Router
 {
   public static function route() {
@@ -13,7 +20,7 @@ class Router
     $path = filter_var($path, FILTER_SANITIZE_URL);
     $path = trim($path, '/');
 
-    
+
 
     //$m = new Map();
     //$m->construct();

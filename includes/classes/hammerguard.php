@@ -6,11 +6,22 @@
 
 namespace HisingeBussAB\RekoResor\website\includes\classes;
 
+/**
+ * Check for hammering
+ */
 class HammerGuard {
-  public static function hammerGuard($ip) {
+
   /**
    * Function checks for brute force attacks using hammerguard table with sha256 has of REMOTE_ADDR for more then 20 tries in the last 3600 sec
+   *
+   * @uses TABLE_PREFIX
+   * @uses \HisingeBussAB\RekoResor\website\includes\classes\DB
+   * @uses \HisingeBussAB\RekoResor\website\includes\classes\DBException
+   * @param string $ip A sha256 hash of $_SERVER['REMOTE_ADDR']
+   * @return bool FALSE = OK, TRUE = REQUEST IS SPAMMY
    */
+  public static function hammerGuard($ip) {
+
   $pdo = DB::get();
 
   $ip = hash('sha256',$ip);

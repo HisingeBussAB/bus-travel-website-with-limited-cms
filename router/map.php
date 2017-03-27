@@ -12,9 +12,7 @@ final class Map
   public static function gMap() {
 
   $map = [
-   'admin'              => [
-     ''              => function() {\HisingeBussAB\RekoResor\website\admincp\admin::startAdmin();}],
-
+   'admin'              => \HisingeBussAB\RekoResor\website\admincp\admin::startAdmin(),
    'resa'               => function() {include __DIR__ . '/../includes/pages/showtrip.php';},
    'galleri'            => function() {include __DIR__ . '/../includes/pages/showgallery.php';},
    'kategori'           => [

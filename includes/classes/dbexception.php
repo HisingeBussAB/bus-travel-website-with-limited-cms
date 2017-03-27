@@ -8,6 +8,15 @@ namespace HisingeBussAB\RekoResor\website\includes\classes;
 
 class DBException
 {
+
+  /**
+   * Writes out database error at desired level from config.php DEBUF_MODE
+   *
+   * @uses DEBUG_MODE
+   * @param object $e standard thrown
+   * @param string $class __CLASS__ of origin
+   * @param string $sql SQL query that triggered the error if any
+   */
   public static function getMessage($e, $class, $sql='NO QUERY') {
     if (DEBUG_MODE) {
       echo "<p>Databasfel från " . $class . ": " . $e->getMessage();

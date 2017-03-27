@@ -8,8 +8,16 @@ namespace HisingeBussAB\RekoResor\website\includes\classes;
 
 final class DB
 {
+  /**
+   * @var object PDO connection object
+   */
   protected static $pdo;
 
+  /**
+   * @uses DB_HOST DB_NAME DB_USER DB_PASSWORD
+   * @uses HisingeBussAB\RekoResor\website\includes\classes\DBException
+   * @return object PDO connection
+   */
   public static function get() {
     if(!isset(self::$pdo)) {
       try{
@@ -25,5 +33,8 @@ final class DB
    return self::$pdo;
   }
 
-  private function __construct() {} //create error on wrongfull use
+  /**
+   * Private contructor - Creates error if trying to call this class with new
+   */
+  private function __construct() {}
 }

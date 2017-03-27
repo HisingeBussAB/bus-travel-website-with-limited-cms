@@ -2,6 +2,8 @@
 /**
  * Rekå Resor (www.rekoresor.se)
  * @author    Håkan Arnoldson
+ *
+ * 404 error main content page.
  */
 
 header("HTTP/1.0 404 Not Found");
