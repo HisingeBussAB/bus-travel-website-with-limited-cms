@@ -28,4 +28,5 @@ spl_autoload_register(function($class){
 });
 
 //ROUTE REQUEST
-Router::route();
+$router = new Router;
+$router->go();
