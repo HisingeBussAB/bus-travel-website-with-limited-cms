@@ -49,15 +49,15 @@ class Router
 
     //DEFAULT START MAP FOR GET REQUESTS
     $mapget = [
-      '/(^$)/'                    => "\HisingeBussAB\RekoResor\website\\router\Render::inc",
-      '/^(admin)\/?([\w-]+)?\/?$/'=> "\HisingeBussAB\RekoResor\website\admincp\Admin::startAdmin",
-      '/^resa\/([\w-]+)\/?$/'     => "\HisingeBussAB\RekoResor\website\\router\Render::inc",
-      '/^galleri\/([\w-]+)\/?$/'  => "\HisingeBussAB\RekoResor\website\\router\Render::inc",
-      '/^kategori\/([\w-]+)\/?$/' => "\HisingeBussAB\RekoResor\website\\router\Render::inc",
-      '/^(bestallkatalog)$/'      => "\HisingeBussAB\RekoResor\website\\router\Render::inc",
-      '/^(inforresan)$/'          => "\HisingeBussAB\RekoResor\website\\router\Render::inc",
-      '/^(bussresorgoteborg)$/'   => "\HisingeBussAB\RekoResor\website\\router\Render::inc",
-      '/^(kontaktarekaresor)$/'   => "\HisingeBussAB\RekoResor\website\\router\Render::inc",
+      '/(^$)/'                     => "\HisingeBussAB\RekoResor\website\\router\Render::inc",
+      '/^(adminp)\/?([\w-]+)?\/?$/'=> "\HisingeBussAB\RekoResor\website\admincp\Admin::startAdmin",
+      '/^resa\/([\w-]+)\/?$/'      => "\HisingeBussAB\RekoResor\website\\router\Render::inc",
+      '/^galleri\/([\w-]+)\/?$/'   => "\HisingeBussAB\RekoResor\website\\router\Render::inc",
+      '/^kategori\/([\w-]+)\/?$/'  => "\HisingeBussAB\RekoResor\website\\router\Render::inc",
+      '/^(bestallkatalog)$/'       => "\HisingeBussAB\RekoResor\website\\router\Render::inc",
+      '/^(inforresan)$/'           => "\HisingeBussAB\RekoResor\website\\router\Render::inc",
+      '/^(bussresorgoteborg)$/'    => "\HisingeBussAB\RekoResor\website\\router\Render::inc",
+      '/^(kontaktarekaresor)$/'    => "\HisingeBussAB\RekoResor\website\\router\Render::inc",
     ];
 
     //DEFAULT START MAP FOR POST REQUESTS

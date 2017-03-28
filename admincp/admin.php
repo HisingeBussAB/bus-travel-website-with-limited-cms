@@ -16,18 +16,21 @@ class Admin {
   public static function startAdmin($admin, $page=false) {
   root\includes\classes\Sessions::secSessionStart();
   //var_dump($subpath);
-  var_dump($admin);
   if (includes\classes\Login::isLoggedIn() === true) {
 
-    switch ($subpath) {
-    case '':
-
+    switch ($page) {
+    case false:
+        echo "LOGGED IN!";
         break;
     case 'label2':
 
         break;
-    case 'label3':
-
+    case 'logout':
+        if (includes\classes\Logout::doLogout()) {
+          http_response_code(501);
+          echo "Logout failed!";
+          exit;
+        }
         break;
 
     default:
