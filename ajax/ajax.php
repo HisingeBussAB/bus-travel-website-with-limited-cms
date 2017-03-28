@@ -10,15 +10,38 @@ namespace HisingeBussAB\RekoResor\website\ajax;
 
 use HisingeBussAB\RekoResor\website as root;
 
-root\includes\classes\Sessions::secSessionStart();
 
-if ($id === 'admindologin') {
-  //Login attempt requested
-  if (!root\admincp\includes\classes\Login::setLogin()) {
-    exit;
+
+class Ajax
+{
+  public static function startAjax($request) {
+    root\includes\classes\Sessions::secSessionStart();
+
+    switch ($request) {
+      case 'admindologin':
+        if (!root\admincp\includes\classes\Login::setLogin()) {
+          exit;
+        }
+      break;
+
+      case 'admindologout':
+        if (!root\admincp\includes\classes\Logout::doLogout()) {
+          echo "Failed logout";
+          http_response_code(418);
+          exit;
+        }
+
+      break;
+
+      case 'label3':
+
+      break;
+
+      default:
+        require __DIR__ . '/../includes/pages/error/404.php';
+
+
+    }
   }
+
 }
-
-
-if ($id == 'logout')
-require_once __DIR__ . '/../admin-cp/php/take-logout.php';

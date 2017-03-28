@@ -8,7 +8,6 @@
 
 namespace HisingeBussAB\RekoResor\website\router;
 
-
 /**
  * Router class
  */
@@ -19,9 +18,9 @@ class Router
    */
   private $routes;
 
-  public function addRoute($pattern, $target, $targetarg, $method='ANY') {
+  public function addRoute($pattern, $target, $method='ANY') {
     $obj = new Map;
-    $obj->mapRoute($pattern, $target, $targetarg, $method);
+    $obj->mapRoute($pattern, $target, $method);
     array_push($this->routes,$obj);
   }
 
@@ -33,13 +32,15 @@ class Router
     $path = filter_var($path, FILTER_SANITIZE_URL);
     $path = trim($path, '/');
 
-
-    //@todo TODO check this, catch errors, show 404.php
+    $flag = false;
     foreach($this->routes as $route) {
-      if ($route->matchRoute($path, $method)) {
-        call_user_func($route->getTarget(), $route->getTargetarg());
+      $result = $route->matchRoute($path, $method);
+      if ($result !== false) {
+        call_user_func_array($route->getTarget(), $result);
+        $flag = true;
       }
     }
+    if ($flag === false) require __DIR__ . '/../includes/pages/error/404.php';
 
   }
 
@@ -48,82 +49,27 @@ class Router
 
     //DEFAULT START MAP FOR GET REQUESTS
     $mapget = [
-      '/^$/'                  => "\HisingeBussAB\RekoResor\website\\router\Render::inc('/includes/pages/mainpage.php')",
-      '/^admin\S*/'           => "\HisingeBussAB\RekoResor\website\admincp\Admin::startAdmin()",
-      '/^resa\S*/'            => "render\Render::inc('NOTHING')",
-      '/^galleri\S*/'         => "render\Render::inc('NOTHING')",
-      '/^kategori\S*$/'        => "render\Render::inc('NOTHING')",
-      '/^bestallkatalog$/'    => "render\Render::inc('NOTHING')",
-      '/^inforresan$/'        => "render\Render::inc('NOTHING')",
-      '/^bussresorgoteborg$/' => "render\Render::inc('NOTHING')",
-      '/^kontaktarekaresor$/' => "render\Render::inc('NOTHING')",
+      '/(^$)/'                    => "\HisingeBussAB\RekoResor\website\\router\Render::inc",
+      '/^(admin)\/?([\w-]+)?\/?$/'=> "\HisingeBussAB\RekoResor\website\admincp\Admin::startAdmin",
+      '/^resa\/([\w-]+)\/?$/'     => "\HisingeBussAB\RekoResor\website\\router\Render::inc",
+      '/^galleri\/([\w-]+)\/?$/'  => "\HisingeBussAB\RekoResor\website\\router\Render::inc",
+      '/^kategori\/([\w-]+)\/?$/' => "\HisingeBussAB\RekoResor\website\\router\Render::inc",
+      '/^(bestallkatalog)$/'      => "\HisingeBussAB\RekoResor\website\\router\Render::inc",
+      '/^(inforresan)$/'          => "\HisingeBussAB\RekoResor\website\\router\Render::inc",
+      '/^(bussresorgoteborg)$/'   => "\HisingeBussAB\RekoResor\website\\router\Render::inc",
+      '/^(kontaktarekaresor)$/'   => "\HisingeBussAB\RekoResor\website\\router\Render::inc",
     ];
 
     //DEFAULT START MAP FOR POST REQUESTS
     $mappost = [
-      '/^ajax\/\S*/'          => "render\Render::inc('NOTHING')", //ajax requests need to have a subtarget
+      '/^ajax\/([\w-]+)\/?$/'          => "\HisingeBussAB\RekoResor\website\ajax\Ajax::startAjax", //ajax requests need to have a subtarget
     ];
 
     foreach($mapget as $pattern => $route) {
-      $this->addRoute($pattern, $this->getMethod($route), $this->getArgument($route), 'GET');
+      $this->addRoute($pattern, $route, 'GET');
     }
     foreach($mappost as $pattern => $route) {
-      $this->addRoute($pattern, $this->getMethod($route), $this->getArgument($route), 'POST');
+      $this->addRoute($pattern, $route, 'POST');
     }
   }
-
-
-  private function getArgument($string) {
-    $arg = substr($string, strpos($string, '('));
-    $arg = trim($arg, '()');
-    $arg = trim($arg, '"');
-    $arg = trim($arg, '\'');
-    return $arg;
-  }
-
-  private function getMethod($string) {
-    $method = explode("(", $string, 2);
-    $method = $method[0];
-    return $method;
-  }
-
-
-  /*
-  public function route() {
-
-
-
-    $uri = explode($_SERVER['SERVER_NAME'], $_SERVER['REQUEST_URI'], 2);
-    $path = $uri[0];
-    $path = filter_var($path, FILTER_SANITIZE_URL);
-    $path = trim($path, '/');
-
-    $map = Map::gMap();
-
-    preg_match($map, $path);
-
-
-    return $map;
-
-
-    //$m = new Map();
-    //$m->construct();
-
-
-/*
-    if (array_key_exists($section, $map)) {
-      echo '<br>array_key_exists($section, $map)<br><br>';
-      var_dump($map[$section]);
-
-      if (array_key_exists($page, $map[$section])) {
-        echo '<br><br>array_key_exists($section[$page], $map)<br>';
-      }
-
-
-      } else {
-        include __DIR__ . '/../includes/pages/error/404.php';
-      }
-
-  }
-  */
 }

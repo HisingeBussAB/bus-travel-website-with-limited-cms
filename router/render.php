@@ -14,8 +14,11 @@ class Render
    * @param string $target path and file to include
    */
   public static function inc($target) {
+
+    if (empty($target)) $target = "mainpage";
+
     try {
-      include __DIR__ . '/..' . $target;
+      include __DIR__ . '/../includes/pages/' . $target . '.php';
     } catch (Exception $e) {
       if (DEBUG_MODE) echo $e->getMessage(); else include '/../includes/pages/error/404.php';
     }

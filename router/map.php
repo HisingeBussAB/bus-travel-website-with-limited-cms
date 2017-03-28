@@ -15,14 +15,9 @@ class Map
   private $pattern;
 
   /**
-   * @var string $target
+   * @var string $target string or function
    */
   private $target;
-
-  /**
-   * @var string $targetarg
-   */
-  private $targetarg;
 
   /**
    * @var string $method
@@ -34,10 +29,9 @@ class Map
    * @param string $target method called on match
    * @param string $method POST GET or ANY
    */
-  public function mapRoute($pattern, $target, $targetarg, $method='ANY') {
+  public function mapRoute($pattern, $target, $method='ANY') {
     $this->pattern = $pattern;
     $this->target = $target;
-    $this->targetarg = $targetarg;
     $this->method = $method;
 
   }
@@ -45,14 +39,21 @@ class Map
   /**
    * @param string $path URI part to match against regexp
    * @param string string $method POST GET or ANY
-   * @return bool TRUE if match else FALSE
+   * @return array arguments from uri if match, or return false
    */
   public function matchRoute($path, $method='ANY') {
-    //If pattern match AND (allowed method is ANY OR method match allowed method)
-    if (preg_match($this->pattern, $path) && ($this->method == 'ANY' || $this->method == $method))
-      return TRUE;
-    else
-      return FALSE;
+    if (preg_match($this->pattern, $path, $args)) {
+      if ($this->method != 'ANY' && $this->method != $method) {
+        require __DIR__ . '/../includes/pages/error/403.php';
+        http_response_code(403);
+        exit;
+      }
+      unset($args[0]);
+      if (!isset($args)) $args = [];
+      return $args;
+    } else {
+      return false;
+    }
   }
 
   /**
@@ -60,13 +61,6 @@ class Map
    */
   public function getTarget() {
     return $this->target;
-  }
-
-  /**
-   * @return string to be invoked by call_user_func
-   */
-  public function getTargetarg() {
-    return $this->targetarg;
   }
 
 }
