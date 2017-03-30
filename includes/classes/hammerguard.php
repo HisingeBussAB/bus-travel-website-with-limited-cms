@@ -33,7 +33,7 @@ class HammerGuard {
     $sth->bindParam(':timelimit', $timelimit);
     $sth->execute();
   } catch(\PDOException $e) {
-    DBException::getMessage($e, __CLASS__, $sql);
+    DBError::showError($e, __CLASS__, $sql);
     exit;
   }
 
@@ -46,7 +46,7 @@ class HammerGuard {
     $count = $sth->fetch(\PDO::FETCH_NUM);
     $thecount = reset($count);
   } catch(\PDOException $e) {
-    DBException::getMessage($e, __CLASS__, $sql);
+    DBError::showError($e, __CLASS__, $sql);
     exit;
   }
 
@@ -63,7 +63,7 @@ class HammerGuard {
       $sth->bindParam(':time', $time);
       $sth->execute();
     } catch(\PDOException $e) {
-      DBException::getMessage($e, __CLASS__, $sql);
+      DBError::showError($e, __CLASS__, $sql);
       exit;
     }
       return false;

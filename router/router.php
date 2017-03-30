@@ -47,29 +47,17 @@ class Router
   public function __construct() {
     $this->routes = [];
 
-    //DEFAULT START MAP FOR GET REQUESTS
-    $mapget = [
-      '/(^$)/'                     => "\HisingeBussAB\RekoResor\website\\router\Render::inc",
-      '/^(adminp)\/?([\w-]+)?\/?$/'=> "\HisingeBussAB\RekoResor\website\admincp\Admin::startAdmin",
-      '/^resa\/([\w-]+)\/?$/'      => "\HisingeBussAB\RekoResor\website\\router\Render::inc",
-      '/^galleri\/([\w-]+)\/?$/'   => "\HisingeBussAB\RekoResor\website\\router\Render::inc",
-      '/^kategori\/([\w-]+)\/?$/'  => "\HisingeBussAB\RekoResor\website\\router\Render::inc",
-      '/^(bestallkatalog)$/'       => "\HisingeBussAB\RekoResor\website\\router\Render::inc",
-      '/^(inforresan)$/'           => "\HisingeBussAB\RekoResor\website\\router\Render::inc",
-      '/^(bussresorgoteborg)$/'    => "\HisingeBussAB\RekoResor\website\\router\Render::inc",
-      '/^(kontaktarekaresor)$/'    => "\HisingeBussAB\RekoResor\website\\router\Render::inc",
-    ];
+    //                Pattern with (arguments)            function to run on matchRoute                                                    METHOD
+    $this->addRoute(  '/(^$)/',                           '\HisingeBussAB\RekoResor\website\router\Render::inc',                          'GET');
+    $this->addRoute(  '/^adminp$/',                       '\HisingeBussAB\RekoResor\website\admin\includes\pages\Main::showAdminMain',    'GET');
+    $this->addRoute(  '/^resa\/([\w-]+)\/?$/',            '\HisingeBussAB\RekoResor\website\router\Render::inc',                          'GET');
+    $this->addRoute(  '/^galleri\/([\w-]+)\/?$/',         '\HisingeBussAB\RekoResor\website\router\Render::inc',                          'GET');
+    $this->addRoute(  '/^kategori\/([\w-]+)\/?$/',        '\HisingeBussAB\RekoResor\website\router\Render::inc',                          'GET');
+    $this->addRoute(  '/^(bestallkatalog)$/',             '\HisingeBussAB\RekoResor\website\router\Render::inc',                          'GET');
+    $this->addRoute(  '/^(inforresan)$/',                 '\HisingeBussAB\RekoResor\website\router\Render::inc',                          'GET');
+    $this->addRoute(  '/^(bussresorgoteborg)$/',          '\HisingeBussAB\RekoResor\website\router\Render::inc',                          'GET');
+    $this->addRoute(  '/^(kontaktarekaresor)$/',          '\HisingeBussAB\RekoResor\website\router\Render::inc',                          'GET');
+    $this->addRoute(  '/^ajax\/([\w-]+)$/',               '\HisingeBussAB\RekoResor\website\ajax\Ajax::startAjax',                        'POST');
 
-    //DEFAULT START MAP FOR POST REQUESTS
-    $mappost = [
-      '/^ajax\/([\w-]+)\/?$/'          => "\HisingeBussAB\RekoResor\website\ajax\Ajax::startAjax", //ajax requests need to have a subtarget
-    ];
-
-    foreach($mapget as $pattern => $route) {
-      $this->addRoute($pattern, $route, 'GET');
-    }
-    foreach($mappost as $pattern => $route) {
-      $this->addRoute($pattern, $route, 'POST');
-    }
   }
 }

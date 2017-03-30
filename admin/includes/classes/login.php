@@ -4,11 +4,11 @@
  * @author    Håkan Arnoldson
  */
 
-namespace HisingeBussAB\RekoResor\website\admincp\includes\classes;
+namespace HisingeBussAB\RekoResor\website\admin\includes\classes;
 
 use HisingeBussAB\RekoResor\website as root;
 use HisingeBussAB\RekoResor\website\includes\classes\DB;
-use HisingeBussAB\RekoResor\website\includes\classes\DBException;
+use HisingeBussAB\RekoResor\website\includes\classes\DBError;
 
 require __DIR__ . '/../../../dependencies/vendor/phpjwt/JWT.php';
 require __DIR__ . '/../../../dependencies/vendor/phpjwt/BeforeValidException.php';
@@ -50,7 +50,7 @@ class Login
       $sth->execute();
       $result = $sth->fetch(\PDO::FETCH_ASSOC);
     } catch(\PDOException $e) {
-      DBException::getMessage($e, __CLASS__, $sql);
+      DBError::showError($e, __CLASS__, $sql);
       return false;
     }
 
@@ -95,7 +95,7 @@ class Login
       $sth->bindParam(':user', $username, \PDO::PARAM_STR);
       $sth->execute();
     } catch(\PDOException $e) {
-      DBException::getMessage($e, __CLASS__, $sql);
+      DBError::showError($e, __CLASS__, $sql);
       return false;
     }
 
@@ -144,7 +144,8 @@ class Login
         $sth->execute();
         $result = $sth->fetch(\PDO::FETCH_ASSOC);
       } catch(\PDOException $e) {
-        DBException::getMessage($e, __CLASS__, $sql);
+        DBError::showError($e, __CLASS__, $sql);
+        http_response_code(500);
         return false;
       }
 
@@ -197,7 +198,8 @@ class Login
           $sth->execute();
 
         } catch(\PDOException $e) {
-          DBException::getMessage($e, __CLASS__, $sql);
+          DBError::showError($e, __CLASS__, $sql);
+          http_response_code(500);
           return false;
         }
 
@@ -211,7 +213,8 @@ class Login
           $sth->bindParam(':expiration', $finalExpiration, \PDO::PARAM_INT);
           $sth->execute();
         } catch(\PDOException $e) {
-          DBException::getMessage($e, __CLASS__, $sql);
+          DBError::showError($e, __CLASS__, $sql);
+          http_response_code(500);
           return false;
         }
 

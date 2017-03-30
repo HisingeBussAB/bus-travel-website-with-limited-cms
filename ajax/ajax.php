@@ -19,13 +19,16 @@ class Ajax
 
     switch ($request) {
       case 'admindologin':
-        if (!root\admincp\includes\classes\Login::setLogin()) {
+        if (!root\admin\includes\classes\Login::setLogin()) {
+          exit;
+        } else {
+          http_response_code(200);
           exit;
         }
       break;
 
       case 'admindologout':
-        if (!root\admincp\includes\classes\Logout::doLogout()) {
+        if (!root\admin\includes\classes\Logout::doLogout()) {
           echo "Failed logout";
           http_response_code(418);
           exit;

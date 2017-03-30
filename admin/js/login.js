@@ -32,13 +32,7 @@ function sendLogin() {
       $(formMessages).html(response);
 
       //logged in. do reload
-      setTimeout(function(){
-      //  location.reload();
-      //TEMP DEBUG
-      grecaptcha.reset();
-      $('#login-submit').prop("disabled",false);
-      //TEMP DEBUG
-    }, 2000);
+      location.reload();
 
     })
     .fail(function(data) {
@@ -54,7 +48,7 @@ function sendLogin() {
       if (data.responseText !== '') {
           $(formMessages).html(data.responseText);
         } else {
-            $(formMessages).text('Okänt fel vid inloggingen. Tomt svar från take-login.php.');
+            $(formMessages).text('Okänt fel vid inloggingen. Tomt svar från servern.');
         };
 
       });

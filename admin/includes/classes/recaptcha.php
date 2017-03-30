@@ -4,7 +4,7 @@
  * @author    Håkan Arnoldson
  */
 
-namespace HisingeBussAB\RekoResor\website\admincp\includes\classes;
+namespace HisingeBussAB\RekoResor\website\admin\includes\classes;
 
 class reCaptcha
 {

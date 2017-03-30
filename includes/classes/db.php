@@ -26,7 +26,7 @@ final class DB
         self::$pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION); //Error throw exceptions, catch with code.
         self::$pdo->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false); //Not compatible with all drives, defaults to false if not supported. Prepare each statement instead.
       } catch(\PDOException $e) {
-        DBException::getMessage($e, __CLASS__);
+        DBError::showError($e, __CLASS__);
         return false;
       }
     }
