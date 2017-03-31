@@ -10,7 +10,7 @@
 
 require '../config/config.php';
 require '../includes/classes/db.php';
-require '../includes/classes/dbexception.php';
+require '../includes/classes/dberror.php';
 
 use HisingeBussAB\RekoResor\website\includes\classes\DB as DB;
 
@@ -126,6 +126,61 @@ try {
     sessionid CHAR(64),
     jwtkey VARCHAR(200),
     jwttoken VARCHAR(200));";
+  $sth = $pdo->prepare($sql);
+  $sth->execute();
+  echo "Table: " . $table . " created succesfully.<br>";
+} catch(\PDOException $e) {
+  echo $sql . "<br>" . $e->getMessage() . "<br>";
+}
+
+try {
+  $table = TABLE_PREFIX . 'kategorier';
+  $sql = "CREATE TABLE " . $table . " (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    kategori VARCHAR(80));";
+  $sth = $pdo->prepare($sql);
+  $sth->execute();
+  echo "Table: " . $table . " created succesfully.<br>";
+} catch(\PDOException $e) {
+  echo $sql . "<br>" . $e->getMessage() . "<br>";
+}
+
+try {
+  $table = TABLE_PREFIX . 'hallplatser';
+  $sql = "CREATE TABLE " . $table . " (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    plats VARCHAR(80),
+    ort VARCHAR(80));";
+  $sth = $pdo->prepare($sql);
+  $sth->execute();
+  echo "Table: " . $table . " created succesfully.<br>";
+} catch(\PDOException $e) {
+  echo $sql . "<br>" . $e->getMessage() . "<br>";
+}
+
+try {
+  $table = TABLE_PREFIX . 'resor';
+  $sql = "CREATE TABLE " . $table . " (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    pris INT,
+    datum DATE,
+    program LONGTEXT,
+    extras TEXT,
+    bildkatalog VARCHAR(80),
+    kategori INT);";
+  $sth = $pdo->prepare($sql);
+  $sth->execute();
+  echo "Table: " . $table . " created succesfully.<br>";
+} catch(\PDOException $e) {
+  echo $sql . "<br>" . $e->getMessage() . "<br>";
+}
+
+try {
+  $table = TABLE_PREFIX . 'resor_hallplatser';
+  $sql = "CREATE TABLE " . $table . " (
+    hallplats INT,
+    resa INT,
+    tid TIME);";
   $sth = $pdo->prepare($sql);
   $sth->execute();
   echo "Table: " . $table . " created succesfully.<br>";

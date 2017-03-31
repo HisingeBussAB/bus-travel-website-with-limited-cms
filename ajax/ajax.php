@@ -30,7 +30,7 @@ class Ajax
       case 'admindologout':
         if (!root\admin\includes\classes\Logout::doLogout()) {
           echo "Failed logout";
-          http_response_code(418);
+          http_response_code(418); //!!!
           exit;
         }
 
@@ -41,7 +41,9 @@ class Ajax
       break;
 
       default:
-        require __DIR__ . '/../includes/pages/error/404.php';
+        echo "Not found!";
+        http_response_code(404);
+        exit;
 
 
     }
