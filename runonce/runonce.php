@@ -26,6 +26,46 @@ $default_pwd = password_hash(DEFAULT_ADMIN_PWD . FIX_PWD_PEPPER, PASSWORD_DEFAUL
 
 //FIXME REMOVE DROP TABLES DEBUG
 try {
+  $table = TABLE_PREFIX . 'resor_hallplatser';
+  $sql = "DROP TABLE " . $table . ";";
+  $sth = $pdo->prepare($sql);
+  $sth->execute();
+  echo "Table: " . $table . " dropped succesfully.<br>";
+} catch(\PDOException $e) {
+  echo $sql . "<br>" . $e->getMessage() . "<br>";
+}
+
+try {
+  $table = TABLE_PREFIX . 'resor';
+  $sql = "DROP TABLE " . $table . ";";
+  $sth = $pdo->prepare($sql);
+  $sth->execute();
+  echo "Table: " . $table . " dropped succesfully.<br>";
+} catch(\PDOException $e) {
+  echo $sql . "<br>" . $e->getMessage() . "<br>";
+}
+
+try {
+  $table = TABLE_PREFIX . 'kategorier';
+  $sql = "DROP TABLE " . $table . ";";
+  $sth = $pdo->prepare($sql);
+  $sth->execute();
+  echo "Table: " . $table . " dropped succesfully.<br>";
+} catch(\PDOException $e) {
+  echo $sql . "<br>" . $e->getMessage() . "<br>";
+}
+
+try {
+  $table = TABLE_PREFIX . 'hallplatser';
+  $sql = "DROP TABLE " . $table . ";";
+  $sth = $pdo->prepare($sql);
+  $sth->execute();
+  echo "Table: " . $table . " dropped succesfully.<br>";
+} catch(\PDOException $e) {
+  echo $sql . "<br>" . $e->getMessage() . "<br>";
+}
+
+try {
   $table = TABLE_PREFIX . 'logins';
   $sql = "DROP TABLE " . $table . ";";
   $sth = $pdo->prepare($sql);
