@@ -1,4 +1,4 @@
-# www.rekoresor.com
+# www.rekoresor.se
 
 This is the main website for Rekå Resor AB.
 Featuring presentations of the current trips on sale and administrator interface were information about current trips can be easily edited.
