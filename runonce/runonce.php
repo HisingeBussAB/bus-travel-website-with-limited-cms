@@ -26,6 +26,86 @@ $default_pwd = password_hash(DEFAULT_ADMIN_PWD . FIX_PWD_PEPPER, PASSWORD_DEFAUL
 
 //FIXME REMOVE DROP TABLES DEBUG
 try {
+  $table = TABLE_PREFIX . 'resor_hallplatser';
+  $sql = "DROP TABLE " . $table . ";";
+  $sth = $pdo->prepare($sql);
+  $sth->execute();
+  echo "Table: " . $table . " dropped succesfully.<br>";
+} catch(\PDOException $e) {
+  echo $sql . "<br>" . $e->getMessage() . "<br>";
+}
+
+try {
+  $table = TABLE_PREFIX . 'resor';
+  $sql = "DROP TABLE " . $table . ";";
+  $sth = $pdo->prepare($sql);
+  $sth->execute();
+  echo "Table: " . $table . " dropped succesfully.<br>";
+} catch(\PDOException $e) {
+  echo $sql . "<br>" . $e->getMessage() . "<br>";
+}
+
+try {
+  $table = TABLE_PREFIX . 'boenden';
+  $sql = "DROP TABLE " . $table . ";";
+  $sth = $pdo->prepare($sql);
+  $sth->execute();
+  echo "Table: " . $table . " dropped succesfully.<br>";
+} catch(\PDOException $e) {
+  echo $sql . "<br>" . $e->getMessage() . "<br>";
+}
+
+try {
+  $table = TABLE_PREFIX . 'boenden_resor';
+  $sql = "DROP TABLE " . $table . ";";
+  $sth = $pdo->prepare($sql);
+  $sth->execute();
+  echo "Table: " . $table . " dropped succesfully.<br>";
+} catch(\PDOException $e) {
+  echo $sql . "<br>" . $e->getMessage() . "<br>";
+}
+
+try {
+  $table = TABLE_PREFIX . 'kategorier_resor';
+  $sql = "DROP TABLE " . $table . ";";
+  $sth = $pdo->prepare($sql);
+  $sth->execute();
+  echo "Table: " . $table . " dropped succesfully.<br>";
+} catch(\PDOException $e) {
+  echo $sql . "<br>" . $e->getMessage() . "<br>";
+}
+
+try {
+  $table = TABLE_PREFIX . 'tillaggslistor';
+  $sql = "DROP TABLE " . $table . ";";
+  $sth = $pdo->prepare($sql);
+  $sth->execute();
+  echo "Table: " . $table . " dropped succesfully.<br>";
+} catch(\PDOException $e) {
+  echo $sql . "<br>" . $e->getMessage() . "<br>";
+}
+
+try {
+  $table = TABLE_PREFIX . 'kategorier';
+  $sql = "DROP TABLE " . $table . ";";
+  $sth = $pdo->prepare($sql);
+  $sth->execute();
+  echo "Table: " . $table . " dropped succesfully.<br>";
+} catch(\PDOException $e) {
+  echo $sql . "<br>" . $e->getMessage() . "<br>";
+}
+
+try {
+  $table = TABLE_PREFIX . 'hallplatser';
+  $sql = "DROP TABLE " . $table . ";";
+  $sth = $pdo->prepare($sql);
+  $sth->execute();
+  echo "Table: " . $table . " dropped succesfully.<br>";
+} catch(\PDOException $e) {
+  echo $sql . "<br>" . $e->getMessage() . "<br>";
+}
+
+try {
   $table = TABLE_PREFIX . 'logins';
   $sql = "DROP TABLE " . $table . ";";
   $sth = $pdo->prepare($sql);
@@ -136,8 +216,9 @@ try {
 try {
   $table = TABLE_PREFIX . 'kategorier';
   $sql = "CREATE TABLE " . $table . " (
-    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    kategori VARCHAR(80));";
+    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    kategori VARCHAR(80),
+    aktiv BOOLEAN);";
   $sth = $pdo->prepare($sql);
   $sth->execute();
   echo "Table: " . $table . " created succesfully.<br>";
@@ -148,9 +229,10 @@ try {
 try {
   $table = TABLE_PREFIX . 'hallplatser';
   $sql = "CREATE TABLE " . $table . " (
-    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     plats VARCHAR(80),
-    ort VARCHAR(80));";
+    ort VARCHAR(80),
+    aktiv BOOLEAN);";
   $sth = $pdo->prepare($sql);
   $sth->execute();
   echo "Table: " . $table . " created succesfully.<br>";
@@ -161,13 +243,16 @@ try {
 try {
   $table = TABLE_PREFIX . 'resor';
   $sql = "CREATE TABLE " . $table . " (
-    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     pris INT,
     datum DATE,
     program LONGTEXT,
     extras TEXT,
-    bildkatalog VARCHAR(80),
-    kategori INT);";
+    bildkatalog VARCHAR(100),
+    personnr BOOLEAN,
+    fysiskadress BOOLEAN,
+    tillaggslista INT UNSIGNED,
+    aktiv BOOLEAN);";
   $sth = $pdo->prepare($sql);
   $sth->execute();
   echo "Table: " . $table . " created succesfully.<br>";
@@ -178,9 +263,60 @@ try {
 try {
   $table = TABLE_PREFIX . 'resor_hallplatser';
   $sql = "CREATE TABLE " . $table . " (
-    hallplats INT,
-    resa INT,
+    hallplats INT UNSIGNED,
+    resa INT UNSIGNED,
     tid TIME);";
+  $sth = $pdo->prepare($sql);
+  $sth->execute();
+  echo "Table: " . $table . " created succesfully.<br>";
+} catch(\PDOException $e) {
+  echo $sql . "<br>" . $e->getMessage() . "<br>";
+}
+
+try {
+  $table = TABLE_PREFIX . 'kategorier_resor';
+  $sql = "CREATE TABLE " . $table . " (
+    resa INT UNSIGNED,
+    kategori INT UNSIGNED);";
+  $sth = $pdo->prepare($sql);
+  $sth->execute();
+  echo "Table: " . $table . " created succesfully.<br>";
+} catch(\PDOException $e) {
+  echo $sql . "<br>" . $e->getMessage() . "<br>";
+}
+
+try {
+  $table = TABLE_PREFIX . 'tillaggslistor';
+  $sql = "CREATE TABLE " . $table . " (
+    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    pris INT,
+    namn VARCHAR(255));";
+  $sth = $pdo->prepare($sql);
+  $sth->execute();
+  echo "Table: " . $table . " created succesfully.<br>";
+} catch(\PDOException $e) {
+  echo $sql . "<br>" . $e->getMessage() . "<br>";
+}
+
+try {
+  $table = TABLE_PREFIX . 'boenden';
+  $sql = "CREATE TABLE " . $table . " (
+    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    namn VARCHAR(255),
+    aktiv BOOLEAN);";
+  $sth = $pdo->prepare($sql);
+  $sth->execute();
+  echo "Table: " . $table . " created succesfully.<br>";
+} catch(\PDOException $e) {
+  echo $sql . "<br>" . $e->getMessage() . "<br>";
+}
+
+try {
+  $table = TABLE_PREFIX . 'boenden_resor';
+  $sql = "CREATE TABLE " . $table . " (
+    resa INT UNSIGNED,
+    boende INT UNSIGNED,
+    pris INT)";
   $sth = $pdo->prepare($sql);
   $sth->execute();
   echo "Table: " . $table . " created succesfully.<br>";
