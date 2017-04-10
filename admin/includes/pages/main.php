@@ -23,16 +23,18 @@ class Main {
    * @uses Login
    * @uses DB
    * @uses DBError
+   * @uses resetToken
    * @uses '/shared/header.php'
    * @uses '/shared/footer.php'
    */
   public static function showAdminMain() {
 
   root\includes\classes\Sessions::secSessionStart();
+  $token = bin2hex(openssl_random_pseudo_bytes(32));
+  $_SESSION["token"] = $token;
 
-  if (admin\includes\classes\Login::isLoggedIn() !== TRUE) {
-    admin\includes\classes\Login::renderLoginForm();
-  } else {
+  if (admin\includes\classes\Login::isLoggedIn() === TRUE) {
+    //Is logged in
 
     header('Content-type: text/html; charset=utf-8');
     include __DIR__ . '/shared/header.php';
@@ -50,6 +52,8 @@ class Main {
       DBError::showError($e, __CLASS__, $sql);
     }
 
+
+
     ?>
 
 
@@ -64,8 +68,14 @@ class Main {
       <div class="col-lg-2 col-md-5">
         <h2>Kategorier</h2>
         <ul>
-          <li><a href="/adminp/nykategori/" title="Lägg in en ny kategori">Ny kategori</a></li>
-          <li>Kategori | aktiv/inaktiv X</li>
+          <li>
+            <form action="/adminajax/newcategory" method="post" accept-charset="utf-8" id="form-new-category">
+              <input type="text" maxlength="80" name="name" placeholder="Ny kateogori" required id="form-new-category-name">
+              <input type="hidden" name="token" value="<?php echo $token ?>" id="form-token">
+              <input type="submit" value="Skapa" id="form-new-category-submit">
+            </form>
+          </li>
+          <li id="categories-list"><!--Kategori | aktiv/inaktiv X--></li>
         </ul>
       </div>
       <div class="col-lg-2 col-md-4">
@@ -96,6 +106,9 @@ class Main {
     <?php
     include __DIR__ . '/shared/footer.php';
 
-  }
+    } else {
+      //Not logged in
+      admin\includes\classes\Login::renderLoginForm();
+    }
   }
 }

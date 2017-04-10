@@ -115,7 +115,7 @@ class Login
         return false;
       }
 
-      if ($_SESSION['TOKEN'] !== $_POST['token']) {
+      if ($_SESSION['token'] !== $_POST['token']) {
         echo "Fel token skickad. HTTP 401.";
         http_response_code(401);
         return false;

@@ -26,11 +26,14 @@ include __DIR__ . '/shared/header.php';
     <h3 aria-label="Månadens resa">Följ med till glasriket på en spaupplevelse utöver det vanliga <i class="fa fa-chevron-right pull-right" aria-hidden="true"></i></h3>
   </article>
   <section class="col-md-12">
-  <article class="col-md-6 col-xs-12 text-right">
-    <button class="btn btn-default action-btn">Boka resa direkt</button>
+  <article class="col-md-4 col-xs-12 text-center">
+    <button class="btn btn-default action-btn">Boka resa här</button>
   </article>
-  <article class="col-md-6 col-xs-12 text-left">
-    <a href="tel:+4631222120"><button class="btn btn-default action-btn"><i class="fa fa-phone" aria-hidden="true"></i> 031 - 22 21 20</button></a>
+  <article class="col-md-4 col-xs-12 text-center">
+    <button class="btn btn-default action-btn">Beställ program</button>
+  </article>
+  <article class="col-md-4 col-xs-12 text-center">
+    <a rel="nofollow" href="tel:+4631222120"><button class="btn btn-default action-btn"><i class="fa fa-phone" aria-hidden="true"></i> 031 - 22 21 20</button></a>
   </article>
   </section>
   <article class="col-md-12 col-xs-12">
