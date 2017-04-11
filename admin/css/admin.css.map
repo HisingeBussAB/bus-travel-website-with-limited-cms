@@ -5,8 +5,8 @@
 		"sass/admin.scss"
 	],
 	"sourcesContent": [
-		""
+		"#category-list {\r\n  display: none;\r\n\r\n}\r\n"
 	],
 	"names": [],
-	"mappings": ""
+	"mappings": "AAAA,AAAA,cAAc,CAAC;EACb,OAAO,EAAE,IAAI;CAEd"
 }

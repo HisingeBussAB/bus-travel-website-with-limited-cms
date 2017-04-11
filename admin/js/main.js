@@ -2,87 +2,142 @@
 
 $(function() {
 
-  loadCategories();
 
-
-  /* Submit listener
-  $('#login-form').submit(function(event){
+  // Listeners
+  $('#form-new-category').submit(function(event){
     event.preventDefault();
-    $("#login-submit").prop("disabled",true);
-    $("#login-message").text("Authorizing...");
-    sendLogin();
+    $( "#category-list" ).hide();
+    $( "#category-list-loading" ).show();
+    $("#form-new-category-submit").prop("disabled",true);
+    newCategory();
+    $("#form-new-category-name").val('');
   });
-  */
+
+
+
+  //Load content
+
+  loadItems("category");
+
 });
 
 
-function loadCategories() {
-
-  $.ajax({
+function loadItems(item) {
+  $.getJSON({
     type: 'POST',
     cache: false,
-    url: '/adminajax/getcategories',
+    url: '/adminajax/get' + item,
+    dataType: "json",
     statusCode: {
       404:function(){
-        console.log('Något har gått fel. Error: 404.');
+        $( "#" + item + "-list" ).append( "<li>Något har gått fel. Error: 404.</li>" );
+        $( "#" + item + "-list-loading" ).hide();
+        $( "#" + item + "-list" ).show();
       }
     }
   })
     .done(function(response) {
-      console.log(response);
-      if (response.length <= 0) {
-        
+      if (response.length > 0) {
+        renderItems(item, response);
       }
     })
     .fail(function(data) {
-      console.log(data)
-      console.log("FEL"); //!!!TODO
+      $( "#" + item + "-list" ).append( "<li>Något har gått fel. Error: " + data.responseText + ".</li>" );
+      $( "#" + item + "-list-loading" ).hide();
+      $( "#" + item + "-list" ).show();
     });
 }
 
-/* AJAX construct
-function sendLogin() {
+function newCategory() {
+  $.ajax({
+    type: 'POST',
+    cache: false,
+    url: $("#form-new-category").attr('action'),
+    data: $("#form-new-category").serialize(),
+    dataType: "json",
+    statusCode: {
+      404:function(){
+        $( "#category-list" ).append( "<li>Något har gått fel. Error: 404.</li>" );
+        $("#form-new-category-submit").prop("disabled",false);
+        $( "#category-list-loading" ).hide();
+        $( "#category-list" ).show();
+      }
+    }
+  })
+    .done(function() {
+      loadItems("category");
+      $("#form-new-category-submit").prop("disabled",false);
+    })
+    .fail(function(data) {
+      $( "#categories-list" ).append( "<li>Något har gått fel. Error: " + data.responseText + ".</li>" );
+      $("#form-new-category-submit").prop("disabled",false);
+      $( "#category-list-loading" ).hide();
+      $( "#category-list" ).show();
+    });
+}
 
-  var formData = $("#login-form").serialize();
-  var formMessages = $("#login-message");
+function toggleItem(item) {
+
+  item = $( item ).attr("data").split(",");
+  var dataObj = {};
+  dataObj["id"] = item[0];
+  dataObj["table"] = item[1];
 
   $.ajax({
     type: 'POST',
     cache: false,
-    url: $("#login-form").attr('action'),
-    data: formData,
-    statusCode: {
-      404:function(){
-        grecaptcha.reset();
-        $(formMessages).text('Något har gått fel i inloggingen. Error: 404.');
-      }
-    }
+    url: '/adminajax/toggleitem',
+    data: dataObj,
+    dataType: "json",
   })
-    .done(function(response) {
-
-      // Set the message text.
-      $(formMessages).html(response);
-
-      //logged in. do reload
-      location.reload();
-
+    .done(function() {
+        loadItems(item[1]);
     })
     .fail(function(data) {
+      $( "#" + item[1] + "-list" ).append( "<li>Något har gått fel. Error: " + data.responseText + ".</li>" );
+      $( "#" + item[1] + "-list-loading" ).hide();
+      $( "#" + item[1] + "-list" ).show();
+    });
 
-      //exit prevent doubleclick
-      setTimeout(function(){
-        grecaptcha.reset();
-        $('#login-submit').prop("disabled",false);
-      }, 2000);
-
-
-    // Set the message text.
-      if (data.responseText !== '') {
-          $(formMessages).html(data.responseText);
-        } else {
-            $(formMessages).text('Okänt fel vid inloggingen. Tomt svar från servern.');
-        };
-
-      });
 }
-*/
+
+
+function renderItems(item, response) {
+  $('#' + item + '-list li:not(:first)').remove();
+  var line = "<li><table><tbody>";
+  jQuery.each(response, function() {
+    line += "<tr><th scope='row'>";
+    line +=  this.kategori;
+    line += "</th>";
+    if (this.aktiv == "1")
+      line += "<td class='aktiv'><a href='#' class='category-toggle' data='" + this.id + ",category'>AKTIV</a></td>";
+    else
+      line += "<td class='inaktiv'><a href='#' class='category-toggle' data='" + this.id + ",category'>INAKTIV</a></td>";
+    line += "<td><a href='#' class='category-delete' data='" + this.id + "'><i class='fa fa-trash-o' aria-hidden='true'></i></a></td></tr>";
+    });
+    line += "</tbody></table></li>";
+    $( "#" + item + "-list" ).append( line );
+
+    //BIND LISTENERS TO NEW LINKS
+    $( ".category-toggle").each(function(){
+      $( this ).one("click", function(event){
+        event.preventDefault();
+        $( "#" + item + "-list" ).hide();
+        $( "#" + item + "-list-loading" ).show();
+        toggleItem(this);
+      });
+
+
+    });
+
+    $( ".category-delete").each(function(){
+      //console.log(this);
+      //console.log($( this ).attr("data"))
+    })
+
+
+  //DISABLE LOAD SCREEN
+  $( "#" + item + "-list-loading" ).hide();
+  $( "#" + item + "-list" ).show();
+
+}

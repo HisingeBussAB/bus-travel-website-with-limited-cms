@@ -23,6 +23,8 @@ class AdminAjax
   public static function startAjax($request) {
     root\includes\classes\Sessions::secSessionStart();
 
+    header('Content-Type: application/json');
+
     // Verify login status before running
     if (root\admin\includes\classes\Login::isLoggedIn() === TRUE) {
       // Is logged in
@@ -34,21 +36,40 @@ class AdminAjax
       switch ($request) {
         case 'newcategory':
 
+          if (!empty($_POST["name"])) {
+            $category = filter_var($_POST["name"], FILTER_SANITIZE_STRING);
+            echo json_encode(array('success' => TRUE, 'created' => $category));
+            root\admin\includes\classes\Categories::createCategory($category);
+            http_response_code(200);
+          } else {
+            echo "Kategorinamn är tomt";
+            http_response_code(411);
+          }
+            exit;
+
         break;
 
-        case 'getcategories':
-          header('Content-Type: application/json');
+        case 'getcategory':
           echo root\admin\includes\classes\Categories::getCategoriesJSON();
           http_response_code(200);
           exit;
 
         break;
 
-        case 'resettoken':
-          $token = root\admin\includes\classes\ResetToken::getRandomToken();
-          header('Content-Type: application/json');
-          echo json_encode(array('token' => $token));
-          http_response_code(200);
+        case 'toggleitem':
+          if (!empty($_POST["table"]) || !empty($_POST["id"])) {
+            $id = filter_var($_POST["id"], FILTER_SANITIZE_STRING);
+            $table = filter_var($_POST["table"], FILTER_SANITIZE_STRING);
+            $table = self::translatetable($table);
+            if (root\admin\includes\classes\ToggleActive::toggle($id, $table)) {
+              echo json_encode(array('success' => TRUE));
+              http_response_code(200);
+            } else
+              echo "Misslyckades. Hittade ingen matchning i databasen att ändra!";
+          } else {
+            echo "För lite data skickad";
+            http_response_code(411);
+          }
           exit;
 
         break;
@@ -66,4 +87,18 @@ class AdminAjax
       exit;
     }
   }
+
+  /**
+   * translatetable
+   *
+   * Translate and whitelist filter! of table input
+   *
+   * @return string
+   */
+  private static function translatetable($table) {
+    if ($table == "category") {
+      return "kategorier";
+    }
+  }
+
 }

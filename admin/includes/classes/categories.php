@@ -17,7 +17,7 @@ class Categories {
    *
    * Returns kategorier from DB as JSON
    *
-   * @return
+   * @return array json
    */
   public static function getCategoriesJSON() {
 
@@ -35,4 +35,32 @@ class Categories {
       return json_encode($result);
 
   }
+
+  /**
+   * createCategory
+   *
+   * Creates new row in table kategorier
+   *
+   * @return
+   */
+  public static function createCategory($name) {
+
+    $pdo = DB::get();
+
+    try {
+      $sql = "INSERT INTO " . TABLE_PREFIX . "kategorier (
+        kategori,
+        aktiv
+      ) VALUES (
+        :name,
+        TRUE
+      );";
+      $sth = $pdo->prepare($sql);
+      $sth->bindParam(':name', $name, \PDO::PARAM_STR);
+      $sth->execute();
+    } catch(\PDOException $e) {
+      DBError::showError($e, __CLASS__, $sql);
+    }
+  }
+
 }

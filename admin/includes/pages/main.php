@@ -67,16 +67,19 @@ class Main {
       </div>
       <div class="col-lg-2 col-md-5">
         <h2>Kategorier</h2>
-        <ul>
+        <ul id="category-list">
           <li>
-            <form action="/adminajax/newcategory" method="post" accept-charset="utf-8" id="form-new-category">
+            <form action="/adminajax/newcategory" method="post" accept-charset="utf-8" id="form-new-category" enctype='application/json'>
               <input type="text" maxlength="80" name="name" placeholder="Ny kateogori" required id="form-new-category-name">
-              <input type="hidden" name="token" value="<?php echo $token ?>" id="form-token">
+              <input type="hidden" name="token" value="<?php echo $token ?>" class="form-token">
               <input type="submit" value="Skapa" id="form-new-category-submit">
             </form>
           </li>
-          <li id="categories-list"><!--Kategori | aktiv/inaktiv X--></li>
+          <!--<li>Kategori | aktiv/inaktiv X</li>-->
         </ul>
+        <div id="category-list-loading">
+          <i class="fa fa-spinner fa-4x fa-spin" aria-hidden="true"></i>
+        </div>
       </div>
       <div class="col-lg-2 col-md-4">
       <h2>Boenden</h2>
