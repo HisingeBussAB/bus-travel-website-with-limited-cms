@@ -291,6 +291,7 @@ try {
   $sql = "CREATE TABLE " . $table . " (
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     pris INT,
+    aktiv BOOLEAN,
     namn VARCHAR(255));";
   $sth = $pdo->prepare($sql);
   $sth->execute();

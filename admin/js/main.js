@@ -18,6 +18,8 @@ $(function() {
   //Load content
 
   loadItems("category");
+  loadItems("roomopt");
+  loadItems("stop");
 
 
 });
@@ -81,45 +83,21 @@ function newCategory() {
     });
 }
 
-function toggleItem(item) {
-
+function itemChange(item, method) {
   item = $( item ).attr("data").split(",");
   var dataObj = {};
   dataObj["id"] = item[0];
   dataObj["table"] = item[1];
+  if (item[2] !== undefined)
+    dataObj["direction"] = item[2];
+  else
+    dataObj["direction"] = "none";
+  dataObj["method"] = method;
 
   $.ajax({
     type: 'POST',
     cache: false,
-    url: '/adminajax/toggleitem',
-    data: dataObj,
-    dataType: "json",
-  })
-    .done(function() {
-        loadItems(item[1]);
-
-
-    })
-    .fail(function(data) {
-
-      $( "#" + item[1] + "-list" ).append( "<li>Något har gått fel. Error: " + data.responseText + ".</li>" );
-      $( "#" + item[1] + "-list-loading" ).hide();
-      $( "#" + item[1] + "-list" ).show();
-    });
-
-}
-
-function itemReorder(item) {
-  item = $( item ).attr("data").split(",");
-  var dataObj = {};
-  dataObj["id"] = item[0];
-  dataObj["table"] = item[1];
-  dataObj["direction"] = item[2];
-
-  $.ajax({
-    type: 'POST',
-    cache: false,
-    url: '/adminajax/reorderitem',
+    url: '/adminajax/' + method + 'item',
     data: dataObj,
     dataType: "json",
   })
@@ -142,7 +120,12 @@ function renderItems(item, response) {
   var line = "<li><table><tbody>";
   jQuery.each(response, function() {
     line += "<tr><th scope='row'>";
-    line +=  this.kategori;
+    if (item == "category")
+      line +=  this.kategori;
+    if (item == "roomopt")
+      line +=  this.namn;
+    if (item == "stops")
+      line +=  this.plats + ", " + this.ort;
     line += "</th>";
     if (this.aktiv == "1")
       line += "<td class='aktiv'><a href='#' class='item-toggle' data='" + this.id + "," + item + "'>AKTIV</a></td>";
@@ -155,7 +138,7 @@ function renderItems(item, response) {
       line += "<td><a href='#' class='item-reorder' data='" + this.id + "," + item + ",down'><i class='fa fa-long-arrow-down' aria-hidden='true'></i></a></td>";
     }
 
-    line += "<td><a href='#' class='item-delete' data='" + this.id + "'><i class='fa fa-trash-o' aria-hidden='true'></i></a></td></tr>";
+    line += "<td><a href='#' class='item-delete' data='" + this.id + "," + item + "'><i class='fa fa-trash-o' aria-hidden='true'></i></a></td></tr>";
   });
   line += "</tbody></table></li>";
   $( "#" + item + "-list" ).append( line );
@@ -166,7 +149,7 @@ function renderItems(item, response) {
       event.preventDefault();
       $( "#" + item + "-list" ).hide();
       $( "#" + item + "-list-loading" ).show();
-      toggleItem(this);
+      itemChange(this, "toggle");
     });
   });
 
@@ -175,13 +158,17 @@ function renderItems(item, response) {
       event.preventDefault();
       $( "#" + item + "-list" ).hide();
       $( "#" + item + "-list-loading" ).show();
-      itemReorder(this);
+      itemChange(this, "reorder");
     });
   });
 
   $( ".item-delete").each(function(){
-    //console.log(this);
-    //console.log($( this ).attr("data"))
+    $( this ).one("click", function(event){
+      event.preventDefault();
+      $( "#" + item + "-list" ).hide();
+      $( "#" + item + "-list-loading" ).show();
+      itemChange(this, "delete");
+    });
   })
 
 

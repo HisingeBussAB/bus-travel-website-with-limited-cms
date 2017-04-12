@@ -10,14 +10,59 @@ use HisingeBussAB\RekoResor\website as root;
 use HisingeBussAB\RekoResor\website\includes\classes\DB;
 use HisingeBussAB\RekoResor\website\includes\classes\DBError;
 
-class MiscFunctions {
+class ItemFunctions {
+
+  /**
+   * launch
+   *
+   * Launcher for all standard item operations
+   *
+   * @return boolean
+   */
+  public static function launch($id, $table, $direction, $method) {
+    $method = "self::" . $method;
+    return call_user_func($method, $id, $table, $direction);
+  }
 
   /**
    * toggle
    *
    * @return boolean
    */
-  public static function toggle($id, $table) {
+  private static function delete($id, $table) {
+    $pdo = DB::get();
+    try {
+      $pdo->beginTransaction();
+      $sql = "SELECT sort FROM " . TABLE_PREFIX . $table . " WHERE id = :id;";
+      $sth = $pdo->prepare($sql);
+      $sth->bindParam(':id', $id, \PDO::PARAM_INT);
+      $sth->execute();
+      $result = $sth->fetch(\PDO::FETCH_ASSOC);
+
+      $sql = "UPDATE " . TABLE_PREFIX . $table . " SET sort = sort - 1 WHERE sort > " . $result['sort'] . ";";
+      $sth = $pdo->prepare($sql);
+      $sth->execute();
+
+      $sql = "DELETE FROM " . TABLE_PREFIX . $table . " WHERE id = :id;";
+      $sth = $pdo->prepare($sql);
+      $sth->bindParam(':id', $id, \PDO::PARAM_INT);
+      $sth->execute();
+
+      $pdo->commit();
+      return TRUE;
+    } catch(\PDOException $e) {
+      $pdo->rollBack();
+      DBError::showError($e, __CLASS__, $sql);
+      return FALSE;
+    }
+  }
+
+  /**
+   * toggle
+   *
+   * @return boolean
+   */
+  private static function toggle($id, $table) {
 
     $pdo = DB::get();
     $state = FALSE;
@@ -58,7 +103,7 @@ class MiscFunctions {
    *
    * @return boolean
    */
-  public static function reorder($id, $table, $direction) {
+  private static function reorder($id, $table, $direction) {
 
     $pdo = DB::get();
     $state = FALSE;

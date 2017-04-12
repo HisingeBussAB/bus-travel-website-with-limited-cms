@@ -13,7 +13,7 @@ class Sessions
    * Overrides default settings for session_start() to be a little more secure.
    * @uses HTTPS
    */
-  public static function secSessionStart() {
+  public static function secSessionStart($regenerate = TRUE) {
 
     $session_name = 'RRSESSID';   // Set a custom session name
     /*Sets the session name.
@@ -32,6 +32,6 @@ class Sessions
     if (session_status() == PHP_SESSION_NONE) {
       session_start();
     }
-    session_regenerate_id(true);
+    if ($regenerate) session_regenerate_id(true); //Allows prevention of regenerating session on asyncronus requests
   }
 }

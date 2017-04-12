@@ -58,14 +58,14 @@ class Main {
 
 
     <main class="clearfix">
-      <div class="col-lg-3 col-md-7">
+      <div class="col-lg-9 col-md-7">
         <h2>Resor</h2>
         <ul>
           <li><a href="/adminp/nyresa/" title="Lägg in en ny resa">Ny resa</a></li>
           <li>Resa, datum | aktiv/inaktiv X</li>
         </ul>
       </div>
-      <div class="col-lg-2 col-md-5">
+      <div class="col-lg-3 col-md-5">
         <h2>Kategorier</h2>
         <ul id="category-list">
           <li>
@@ -75,27 +75,58 @@ class Main {
               <input type="submit" value="Skapa" id="form-new-category-submit">
             </form>
           </li>
-          <!--<li>Kategori | aktiv/inaktiv up down X</li>-->
         </ul>
         <div id="category-list-loading">
           <i class="fa fa-spinner fa-4x fa-spin" aria-hidden="true"></i>
         </div>
       </div>
-      <div class="col-lg-2 col-md-4">
+      <div class="col-lg-12 col-md-12"></div>
+      <div class="col-lg-3 col-md-6">
       <h2>Boenden</h2>
-      <ul>
-        <li><a href="/adminp/nyboende/" title="Lägg in en ny boendetyp">Nytt boende</a></li>
-        <li>Benämning | aktiv/inaktiv X</li>
-      </ul>
-      </div>
-      <div class="col-lg-2 col-md-4">
-        <h2>Hållplatser</h2>
-        <ul>
-          <li><a href="/adminp/nyhallplats/" title="Lägg in en nytt stopp">Ny hållplats</a></li>
-          <li>Plats, ort | aktiv/inaktiv X</li>
+        <ul id="roomopt-list">
+          <li>
+            <form action="/adminajax/newroopopt" method="post" accept-charset="utf-8" id="form-new-roopopt" enctype='application/json'>
+              <input type="text" maxlength="80" name="name" placeholder="Nytt boende alternativ" required id="form-new-roopopt-name">
+              <input type="hidden" name="token" value="<?php echo $token ?>" class="form-token">
+              <input type="submit" value="Skapa" id="form-new-roopopt-submit">
+            </form>
+          </li>
         </ul>
+        <div id="roomopt-list-loading">
+          <i class="fa fa-spinner fa-4x fa-spin" aria-hidden="true"></i>
+        </div>
       </div>
-      <div class="col-lg-3 col-md-4">
+      <div class="col-lg-3 col-md-6">
+        <h2>Hållplatser</h2>
+        <ul id="stop-list">
+          <li>
+            <form action="/adminajax/newstop" method="post" accept-charset="utf-8" id="form-new-stop" enctype='application/json'>
+              <input type="text" maxlength="80" name="name" placeholder="Ny hållplats" required id="form-new-stop-name">
+              <input type="hidden" name="token" value="<?php echo $token ?>" class="form-token">
+              <input type="submit" value="Skapa" id="form-new-stop-submit">
+            </form>
+          </li>
+        </ul>
+        <div id="stop-list-loading">
+          <i class="fa fa-spinner fa-4x fa-spin" aria-hidden="true"></i>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <h2>Tillägg</h2>
+        <ul id="extra-list">
+          <li>
+            <form action="/adminajax/newextra" method="post" accept-charset="utf-8" id="form-new-extra" enctype='application/json'>
+              <input type="text" maxlength="80" name="name" placeholder="Ny hållplats" required id="form-new-extra-name">
+              <input type="hidden" name="token" value="<?php echo $token ?>" class="form-token">
+              <input type="submit" value="Skapa" id="form-new-extra-submit">
+            </form>
+          </li>
+        </ul>
+        <div id="extra-list-loading">
+          <i class="fa fa-spinner fa-4x fa-spin" aria-hidden="true"></i>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6">
         <h2>Bildgallerier</h2>
         <ul>
           <li>Nytt galleri</li>

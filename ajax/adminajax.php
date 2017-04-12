@@ -21,12 +21,12 @@ use HisingeBussAB\RekoResor\website\includes\classes\DBError;
 class AdminAjax
 {
   public static function startAjax($request) {
-    root\includes\classes\Sessions::secSessionStart();
+    root\includes\classes\Sessions::secSessionStart(FALSE);
 
     header('Content-Type: application/json');
 
     // Verify login status before running
-    if (root\admin\includes\classes\Login::isLoggedIn() === TRUE) {
+    if (root\admin\includes\classes\Login::isLoggedIn(FALSE) === TRUE) {
       // Is logged in
       /**
        * List of possible admin ajax calls to make and handlers
@@ -53,44 +53,30 @@ class AdminAjax
           echo root\admin\includes\classes\Categories::getCategoriesJSON();
           http_response_code(200);
           exit;
+        break;
 
+        case 'getstop':
+          echo root\admin\includes\classes\Stops::getStopsJSON();
+          http_response_code(200);
+          exit;
+        break;
+
+        case 'getroomopt':
+          echo root\admin\includes\classes\Roomopts::getRoomoptsJSON();
+          http_response_code(200);
+          exit;
         break;
 
         case 'toggleitem':
-          if (!empty($_POST["table"]) || !empty($_POST["id"])) {
-            $id = filter_var($_POST["id"], FILTER_SANITIZE_STRING);
-            $table = filter_var($_POST["table"], FILTER_SANITIZE_STRING);
-            $table = self::translatetable($table);
-            if (root\admin\includes\classes\MiscFunctions::toggle($id, $table)) {
-              echo json_encode(array('success' => TRUE));
-              http_response_code(200);
-            } else
-              echo "Misslyckades. Hittade ingen matchning i databasen att ändra!";
-          } else {
-            echo "För lite data skickad";
-            http_response_code(411);
-          }
-          exit;
+          self::changeFilter();
+        break;
 
+        case 'deleteitem':
+          self::changeFilter();
         break;
 
         case 'reorderitem':
-          if (!empty($_POST["table"]) || !empty($_POST["id"]) || !empty($_POST["direction"])) {
-            $id = filter_var($_POST["id"], FILTER_SANITIZE_STRING);
-            $table = filter_var($_POST["table"], FILTER_SANITIZE_STRING);
-            $direction = filter_var($_POST["direction"], FILTER_SANITIZE_STRING);
-            $table = self::translatetable($table);
-            if (root\admin\includes\classes\MiscFunctions::reorder($id, $table, $direction)) {
-              echo json_encode(array('success' => TRUE));
-              http_response_code(200);
-            } else
-              echo "Misslyckades. Hittade ingen matchning i databasen att ändra!";
-          } else {
-            echo "För lite data skickad";
-            http_response_code(411);
-          }
-          exit;
-
+          self::changeFilter();
         break;
 
         default:
@@ -108,13 +94,38 @@ class AdminAjax
   }
 
   /**
-   * translatetable
+   * changeLauncher
+   *
+   * Starts an item change operation and handles response
+*
+   */
+  private static function changeFilter() {
+    if (!empty($_POST["table"]) || !empty($_POST["id"]) || !empty($_POST["direction"]) || !empty($_POST["method"])) {
+      $id = filter_var(trim($_POST["id"]), FILTER_SANITIZE_NUMBER_INT);
+      $table = self::translateTable(trim($_POST["table"])); //whitelist filter and translation
+      $direction = filter_var(trim($_POST["direction"]), FILTER_SANITIZE_STRING);
+      $method = filter_var(trim($_POST["method"]), FILTER_SANITIZE_STRING);
+      if (root\admin\includes\classes\ItemFunctions::launch($id, $table, $direction, $method)) {
+        echo json_encode(array('success' => TRUE));
+        http_response_code(200);
+      } else
+        echo "Misslyckades. Hittade ingen matchning i databasen att ändra!";
+    } else {
+      echo "För lite data skickad";
+      http_response_code(411);
+    }
+    exit;
+
+  }
+
+  /**
+   * translateTable
    *
    * Translate and whitelist filter! of table input
    *
    * @return string
    */
-  private static function translatetable($table) {
+  private static function translateTable($table) {
     if ($table == "category") {
       return "kategorier";
     }
