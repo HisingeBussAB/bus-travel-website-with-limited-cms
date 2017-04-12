@@ -61,7 +61,26 @@ class AdminAjax
             $id = filter_var($_POST["id"], FILTER_SANITIZE_STRING);
             $table = filter_var($_POST["table"], FILTER_SANITIZE_STRING);
             $table = self::translatetable($table);
-            if (root\admin\includes\classes\ToggleActive::toggle($id, $table)) {
+            if (root\admin\includes\classes\MiscFunctions::toggle($id, $table)) {
+              echo json_encode(array('success' => TRUE));
+              http_response_code(200);
+            } else
+              echo "Misslyckades. Hittade ingen matchning i databasen att ändra!";
+          } else {
+            echo "För lite data skickad";
+            http_response_code(411);
+          }
+          exit;
+
+        break;
+
+        case 'reorderitem':
+          if (!empty($_POST["table"]) || !empty($_POST["id"]) || !empty($_POST["direction"])) {
+            $id = filter_var($_POST["id"], FILTER_SANITIZE_STRING);
+            $table = filter_var($_POST["table"], FILTER_SANITIZE_STRING);
+            $direction = filter_var($_POST["direction"], FILTER_SANITIZE_STRING);
+            $table = self::translatetable($table);
+            if (root\admin\includes\classes\MiscFunctions::reorder($id, $table, $direction)) {
               echo json_encode(array('success' => TRUE));
               http_response_code(200);
             } else

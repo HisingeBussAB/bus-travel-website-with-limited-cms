@@ -218,6 +218,7 @@ try {
   $sql = "CREATE TABLE " . $table . " (
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     kategori VARCHAR(80),
+    sort INT UNSIGNED,
     aktiv BOOLEAN);";
   $sth = $pdo->prepare($sql);
   $sth->execute();

@@ -75,7 +75,7 @@ class Main {
               <input type="submit" value="Skapa" id="form-new-category-submit">
             </form>
           </li>
-          <!--<li>Kategori | aktiv/inaktiv X</li>-->
+          <!--<li>Kategori | aktiv/inaktiv up down X</li>-->
         </ul>
         <div id="category-list-loading">
           <i class="fa fa-spinner fa-4x fa-spin" aria-hidden="true"></i>

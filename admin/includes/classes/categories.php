@@ -24,7 +24,7 @@ class Categories {
     $pdo = DB::get();
 
     try {
-      $sql = "SELECT * FROM " . TABLE_PREFIX . "kategorier;";
+      $sql = "SELECT * FROM " . TABLE_PREFIX . "kategorier ORDER BY sort;";
       $sth = $pdo->prepare($sql);
       $sth->execute();
       $result = $sth->fetchAll(\PDO::FETCH_ASSOC);
@@ -50,9 +50,11 @@ class Categories {
     try {
       $sql = "INSERT INTO " . TABLE_PREFIX . "kategorier (
         kategori,
+        sort,
         aktiv
       ) VALUES (
         :name,
+        (SELECT IFNULL(MAX(sort), 0) FROM " . TABLE_PREFIX . "kategorier K) + 1,
         TRUE
       );";
       $sth = $pdo->prepare($sql);
