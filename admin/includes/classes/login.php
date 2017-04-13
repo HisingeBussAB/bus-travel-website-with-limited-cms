@@ -20,7 +20,7 @@ use \Firebase\JWT\JWT;
 
 class Login
 {
-  public static function isLoggedIn() {
+  public static function isLoggedIn($regenJWT = TRUE) {
 
     if (!isset($_SESSION['isloggedin']) || !isset($_SESSION['useragent']) || !isset($_SESSION['id'])) {
       if (DEBUG_MODE) echo "NO SESSION"; //DEBUG
@@ -76,29 +76,29 @@ class Login
     }
 
 
-    //LOGGED IN STATUS HAS BEEN ACCEPTED - REGENERATE JWT
+    //LOGGED IN STATUS HAS BEEN ACCEPTED - REGENERATE JWT (we need to be able to prevent this on async requests)
+    if ($regenJWT) {
+      unset($_COOKIE['RRJWT']);
+      $tokenKey = base64_encode(openssl_random_pseudo_bytes(96));
+      $tokenId = self::setJWT($tokenKey, 5400, $username, $userAgent);
 
-    unset($_COOKIE['RRJWT']);
-    $tokenKey = base64_encode(openssl_random_pseudo_bytes(96));
-    $tokenId = self::setJWT($tokenKey, 5400, $username, $userAgent);
-
-    //set new jwt in db
-    try {
-      $sql = "UPDATE " . TABLE_PREFIX . "loggedin SET
-        jwtkey = :jwtkey,
-        jwttoken = :jwttoken
-        WHERE sessionid = :sessionid AND user = :user;";
-      $sth = $pdo->prepare($sql);
-      $sth->bindParam(':jwtkey', $tokenKey, \PDO::PARAM_STR);
-      $sth->bindParam(':jwttoken', $tokenId, \PDO::PARAM_STR);
-      $sth->bindParam(':sessionid', $sessionid, \PDO::PARAM_STR);
-      $sth->bindParam(':user', $username, \PDO::PARAM_STR);
-      $sth->execute();
-    } catch(\PDOException $e) {
-      DBError::showError($e, __CLASS__, $sql);
-      return false;
+      //set new jwt in db
+      try {
+        $sql = "UPDATE " . TABLE_PREFIX . "loggedin SET
+          jwtkey = :jwtkey,
+          jwttoken = :jwttoken
+          WHERE sessionid = :sessionid AND user = :user;";
+        $sth = $pdo->prepare($sql);
+        $sth->bindParam(':jwtkey', $tokenKey, \PDO::PARAM_STR);
+        $sth->bindParam(':jwttoken', $tokenId, \PDO::PARAM_STR);
+        $sth->bindParam(':sessionid', $sessionid, \PDO::PARAM_STR);
+        $sth->bindParam(':user', $username, \PDO::PARAM_STR);
+        $sth->execute();
+      } catch(\PDOException $e) {
+        DBError::showError($e, __CLASS__, $sql);
+        return false;
+      }
     }
-
     return true;
   }
 
@@ -115,7 +115,7 @@ class Login
         return false;
       }
 
-      if ($_SESSION['TOKEN'] !== $_POST['token']) {
+      if ($_SESSION['token'] !== $_POST['token']) {
         echo "Fel token skickad. HTTP 401.";
         http_response_code(401);
         return false;

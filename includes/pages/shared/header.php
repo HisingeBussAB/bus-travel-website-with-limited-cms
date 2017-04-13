@@ -8,6 +8,12 @@
  * @link      https://github.com/HisingeBussAB/bus-travel-website-with-limited-cms
  * @author    Håkan Arnoldson
  */
+
+ use HisingeBussAB\RekoResor\website as root;
+
+ //Get dynamic content for this include
+ $categories = json_decode(root\admin\includes\classes\Categories::getActiveCategories());
+
 ?>
 <!DOCTYPE html>
 <html lang="sv">
@@ -91,14 +97,10 @@
       </nav>
     </div>
     <ul aria-label="Resekategorier" id="categories-wrap">
-      <li><a href="/kategori/dagsresor">Dagsresor</a></li>
-      <li><a href="/kategori/operaresor">Opera</a></li>
-      <li><a href="/kategori/teaterresor">Teater</a></li>
-      <li><a href="/kategori/marknader">Marknader</a></li>
-      <li><a href="/kategori/storhelg">Storhelg</a></li>
-      <li><a href="/kategori/noje">Nöje &amp; dans</a></li>
-      <li><a href="/kategori/sparesor">Spa &amp; må bra</a></li>
-      <li><a href="/kategori/weekendresor">Weekend</a></li>
-      <li><a href="/kategori/gruppresor">Gruppresor</a></li>
+      <?php
+      foreach($categories as $category){
+      echo "<li><a href=\"/kategori/" . urlencode($category->uri_kategori) . "\">" . htmlspecialchars($category->kategori) . "</a></li>";
+     }
+    ?>
     </ul>
   </header>

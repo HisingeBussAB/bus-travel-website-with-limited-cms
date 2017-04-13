@@ -14,7 +14,7 @@ include __DIR__ . '/shared/header.php';
 ?>
 
 <section class="main-section clearfix container">
-  <article class="col-md-6 col-xs-12">
+  <article class="col-md-6 col-xs-12 clearfix">
     <h1>Välkommen till Rekå Resor</h1>
     <p>För att genomföra en bra bussresa så krävs det planering och genomförande, oavsett om den ska gå inom Sverige eller ut i Europa.
     Det är där vi på Rekå Resor kommer in i bilden. Vi lyssnar på de önskemål du har och bidrar sedan med råd och idéer för bästa möjliga resultat.
@@ -25,6 +25,17 @@ include __DIR__ . '/shared/header.php';
     <h2 class="invisible">Månadens resa</h2>
     <h3 aria-label="Månadens resa">Följ med till glasriket på en spaupplevelse utöver det vanliga <i class="fa fa-chevron-right pull-right" aria-hidden="true"></i></h3>
   </article>
+  <section class="col-md-12">
+  <article class="col-md-4 col-xs-12 text-center">
+    <button class="btn btn-default action-btn">Boka resa här</button>
+  </article>
+  <article class="col-md-4 col-xs-12 text-center">
+    <button class="btn btn-default action-btn">Beställ program</button>
+  </article>
+  <article class="col-md-4 col-xs-12 text-center">
+    <a rel="nofollow" href="tel:+4631222120"><button class="btn btn-default action-btn"><i class="fa fa-phone" aria-hidden="true"></i> 031 - 22 21 20</button></a>
+  </article>
+  </section>
   <article class="col-md-12 col-xs-12">
     <h2>Några nyheter</h2>
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam a metus non enim elementum egestas at ac urna.
@@ -33,15 +44,6 @@ include __DIR__ . '/shared/header.php';
     Quisque rhoncus sit amet quam egestas commodo. Morbi semper vestibulum diam, ac bibendum odio tristique et.
     Pellentesque malesuada, ipsum a sodales laoreet, lacus sapien vestibulum urna, eu rutrum sapien justo vel ex.
     Quisque porttitor sed enim sit amet vulputate. Nunc hendrerit, dui vel molestie pharetra, risus odio mattis lacus, gravida porta nunc ligula non ligula.</p>
-  </article>
-  <article class="col-md-4 col-xs-12 text-center">
-    <button class="btn btn-default">Beställ katalog</button>
-  </article>
-  <article class="col-md-4 col-xs-12 text-center">
-    <button class="btn btn-default">Boka resa</button>
-  </article>
-  <article class="col-md-4 col-xs-12 text-center">
-    <button class="btn btn-default">Något annat</button>
   </article>
   <article class="col-md-6 col-xs-12">
     <h2>Lorem ipsum</h2>

@@ -4,6 +4,7 @@
  */
 
 namespace HisingeBussAB\RekoResor\website\router;
+use HisingeBussAB\RekoResor\website as root;
 
 class Render
 {

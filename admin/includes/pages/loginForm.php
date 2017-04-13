@@ -5,7 +5,7 @@
  */
 
 $token = bin2hex(openssl_random_pseudo_bytes(64));
-$_SESSION['TOKEN'] = $token;
+$_SESSION['token'] = $token;
 
 ?>
 <!DOCTYPE html>

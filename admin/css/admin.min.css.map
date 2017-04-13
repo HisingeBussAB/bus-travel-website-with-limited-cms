@@ -5,8 +5,8 @@
 		"sass/admin.scss"
 	],
 	"sourcesContent": [
-		""
+		"#category-list,\r\n#stop-list,\r\n#roomopt-list,\r\n#extra-list {\r\n  display: none;\r\n\r\n}\r\n"
 	],
 	"names": [],
-	"mappings": ""
+	"mappings": "AAAA,AAAA,cAAc,CACd,AAAA,UAAU,CACV,AAAA,aAAa,CACb,AAAA,WAAW,AAAC,CACV,OAAO,CAAE,IAAI,CAEd"
 }
