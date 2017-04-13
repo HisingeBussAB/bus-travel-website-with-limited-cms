@@ -20,7 +20,7 @@ use HisingeBussAB\RekoResor\website as root;
 class Ajax
 {
   public static function startAjax($request) {
-    root\includes\classes\Sessions::secSessionStart();
+    root\includes\classes\Sessions::secSessionStart(FALSE);
 
     /**
      * List of possible ajax calls to make and handlers
@@ -47,7 +47,7 @@ class Ajax
       break;
 
       case 'resettoken':
-        $token = root\admin\includes\classes\ResetToken::getRandomToken();
+        $token = root\includes\classes\ResetToken::getRandomToken();
         header('Content-Type: application/json');
         echo json_encode(array('token' => $token));
         http_response_code(200);

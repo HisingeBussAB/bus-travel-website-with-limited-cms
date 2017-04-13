@@ -30,8 +30,7 @@ class Main {
   public static function showAdminMain() {
 
   root\includes\classes\Sessions::secSessionStart();
-  $token = bin2hex(openssl_random_pseudo_bytes(32));
-  $_SESSION["token"] = $token;
+  $token = root\includes\classes\ResetToken::getRandomToken();
 
   if (admin\includes\classes\Login::isLoggedIn() === TRUE) {
     //Is logged in
@@ -58,39 +57,42 @@ class Main {
 
 
     <main class="clearfix">
-      <div class="col-lg-9 col-md-7">
+      <div class="col-lg-3 col-md-6">
         <h2>Resor</h2>
         <ul>
           <li><a href="/adminp/nyresa/" title="Lägg in en ny resa">Ny resa</a></li>
           <li>Resa, datum | aktiv/inaktiv X</li>
         </ul>
       </div>
-      <div class="col-lg-3 col-md-5">
+      <div class="col-lg-3 col-md-6">
         <h2>Kategorier</h2>
         <ul id="category-list">
           <li>
             <form action="/adminajax/newcategory" method="post" accept-charset="utf-8" id="form-new-category" enctype='application/json'>
-              <input type="text" maxlength="80" name="name" placeholder="Ny kateogori" required id="form-new-category-name">
+              <input type="text" maxlength="80" name="name" placeholder="Kategori" required id="form-new-category-name">
               <input type="hidden" name="token" value="<?php echo $token ?>" class="form-token">
               <input type="submit" value="Skapa" id="form-new-category-submit">
             </form>
           </li>
+          <li id="category-list-content"></li>
+          <li id="category-list-error"></li>
         </ul>
         <div id="category-list-loading">
           <i class="fa fa-spinner fa-4x fa-spin" aria-hidden="true"></i>
         </div>
       </div>
-      <div class="col-lg-12 col-md-12"></div>
       <div class="col-lg-3 col-md-6">
       <h2>Boenden</h2>
         <ul id="roomopt-list">
           <li>
-            <form action="/adminajax/newroopopt" method="post" accept-charset="utf-8" id="form-new-roopopt" enctype='application/json'>
-              <input type="text" maxlength="80" name="name" placeholder="Nytt boende alternativ" required id="form-new-roopopt-name">
+            <form action="/adminajax/newroomopt" method="post" accept-charset="utf-8" id="form-new-roomopt" enctype='application/json'>
+              <input type="text" maxlength="100" name="name" placeholder="Boendealternativ" required id="form-new-roomopt-name">
               <input type="hidden" name="token" value="<?php echo $token ?>" class="form-token">
-              <input type="submit" value="Skapa" id="form-new-roopopt-submit">
+              <input type="submit" value="Skapa" id="form-new-roomopt-submit">
             </form>
           </li>
+          <li id="roomopt-list-content"></li>
+          <li id="roomopt-list-error"></li>
         </ul>
         <div id="roomopt-list-loading">
           <i class="fa fa-spinner fa-4x fa-spin" aria-hidden="true"></i>
@@ -101,32 +103,19 @@ class Main {
         <ul id="stop-list">
           <li>
             <form action="/adminajax/newstop" method="post" accept-charset="utf-8" id="form-new-stop" enctype='application/json'>
-              <input type="text" maxlength="80" name="name" placeholder="Ny hållplats" required id="form-new-stop-name">
+              <input type="text" maxlength="80" name="name" placeholder="Plats, Ort" required id="form-new-stop-name">,
               <input type="hidden" name="token" value="<?php echo $token ?>" class="form-token">
               <input type="submit" value="Skapa" id="form-new-stop-submit">
             </form>
           </li>
+          <li id="stop-list-content"></li>
+          <li id="stop-list-error"></li>
         </ul>
         <div id="stop-list-loading">
           <i class="fa fa-spinner fa-4x fa-spin" aria-hidden="true"></i>
         </div>
       </div>
-      <div class="col-lg-3 col-md-6">
-        <h2>Tillägg</h2>
-        <ul id="extra-list">
-          <li>
-            <form action="/adminajax/newextra" method="post" accept-charset="utf-8" id="form-new-extra" enctype='application/json'>
-              <input type="text" maxlength="80" name="name" placeholder="Ny hållplats" required id="form-new-extra-name">
-              <input type="hidden" name="token" value="<?php echo $token ?>" class="form-token">
-              <input type="submit" value="Skapa" id="form-new-extra-submit">
-            </form>
-          </li>
-        </ul>
-        <div id="extra-list-loading">
-          <i class="fa fa-spinner fa-4x fa-spin" aria-hidden="true"></i>
-        </div>
-      </div>
-      <div class="col-lg-3 col-md-6">
+      <div class="col-lg-12 col-md-12">
         <h2>Bildgallerier</h2>
         <ul>
           <li>Nytt galleri</li>

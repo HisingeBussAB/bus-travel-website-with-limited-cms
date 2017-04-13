@@ -35,18 +35,15 @@ class AdminAjax
        */
       switch ($request) {
         case 'newcategory':
+          self::newItemLauncher("category");
+        break;
 
-          if (!empty($_POST["name"])) {
-            $category = filter_var($_POST["name"], FILTER_SANITIZE_STRING);
-            echo json_encode(array('success' => TRUE, 'created' => $category));
-            root\admin\includes\classes\Categories::createCategory($category);
-            http_response_code(200);
-          } else {
-            echo "Kategorinamn är tomt";
-            http_response_code(411);
-          }
-            exit;
+        case 'newroomopt':
+          self::newItemLauncher("roomopt");
+        break;
 
+        case 'newstop':
+          self::newItemLauncher("stop");
         break;
 
         case 'getcategory':
@@ -93,29 +90,70 @@ class AdminAjax
     }
   }
 
+
   /**
-   * changeLauncher
+   * newItemLauncher
    *
-   * Starts an item change operation and handles response
-*
+   * Function to create a new item
+   *
    */
-  private static function changeFilter() {
-    if (!empty($_POST["table"]) || !empty($_POST["id"]) || !empty($_POST["direction"]) || !empty($_POST["method"])) {
-      $id = filter_var(trim($_POST["id"]), FILTER_SANITIZE_NUMBER_INT);
-      $table = self::translateTable(trim($_POST["table"])); //whitelist filter and translation
-      $direction = filter_var(trim($_POST["direction"]), FILTER_SANITIZE_STRING);
-      $method = filter_var(trim($_POST["method"]), FILTER_SANITIZE_STRING);
-      if (root\admin\includes\classes\ItemFunctions::launch($id, $table, $direction, $method)) {
-        echo json_encode(array('success' => TRUE));
-        http_response_code(200);
-      } else
-        echo "Misslyckades. Hittade ingen matchning i databasen att ändra!";
+  private static function newItemLauncher($type) {
+    if ($_SESSION["token"] == trim($_POST['token'])) {
+
+      if (!empty($_POST["name"])) {
+        $name = filter_var(trim($_POST["name"]), FILTER_SANITIZE_STRING);
+        $flag = FALSE;
+        if ($type == "category")  $flag = root\admin\includes\classes\Categories::createCategory($name);
+        if ($type == "stop")      $flag = root\admin\includes\classes\Stops::createStop($name);
+        if ($type == "roomopt")   $flag = root\admin\includes\classes\Roomopts::createRoomopt($name);
+
+        if ($flag) {
+          echo json_encode(array('success' => TRUE, 'created' => $name));
+          http_response_code(200);
+        } else {
+          echo "Databasfel!";
+          http_response_code(500);
+        }
+      } else {
+        echo "Kategorinamn är tomt";
+        http_response_code(411);
+      }
     } else {
-      echo "För lite data skickad";
-      http_response_code(411);
+      echo "Token stämmer inte";
+      http_response_code(401);
     }
     exit;
+  }
 
+  /**
+   * changeFilter
+   *
+   * Starts an item change operation and handles response
+   *
+   */
+  private static function changeFilter() {
+    if ($_SESSION["token"] == trim($_POST['token'])) {
+      if (!empty($_POST["table"]) || !empty($_POST["id"]) || !empty($_POST["direction"]) || !empty($_POST["method"])) {
+        $id = filter_var(trim($_POST["id"]), FILTER_SANITIZE_NUMBER_INT);
+        $table = self::translateTable(trim($_POST["table"])); //whitelist filter and translation
+        $direction = filter_var(trim($_POST["direction"]), FILTER_SANITIZE_STRING);
+        $method = filter_var(trim($_POST["method"]), FILTER_SANITIZE_STRING);
+        if (root\admin\includes\classes\ItemFunctions::launch($id, $table, $direction, $method)) {
+          echo json_encode(array('success' => TRUE));
+          http_response_code(200);
+        } else {
+          echo "Misslyckades. Hittade ingen matchning i databasen att ändra!";
+          http_response_code(400);
+        }
+      } else {
+        echo "För lite data skickad";
+        http_response_code(411);
+      }
+    } else {
+      echo "Token stämmer inte";
+      http_response_code(401);
+    }
+    exit;
   }
 
   /**
@@ -126,9 +164,9 @@ class AdminAjax
    * @return string
    */
   private static function translateTable($table) {
-    if ($table == "category") {
-      return "kategorier";
-    }
+    if ($table == "category") return "kategorier";
+    if ($table == "roomopt") return "boenden";
+    if ($table == "stop") return "hallplatser";
   }
 
 }

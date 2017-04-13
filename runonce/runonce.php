@@ -218,6 +218,7 @@ try {
   $sql = "CREATE TABLE " . $table . " (
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     kategori VARCHAR(80),
+    uri_kategori VARCHAR(80),
     sort INT UNSIGNED,
     aktiv BOOLEAN);";
   $sth = $pdo->prepare($sql);
@@ -232,7 +233,7 @@ try {
   $sql = "CREATE TABLE " . $table . " (
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     plats VARCHAR(80),
-    ort VARCHAR(80),
+    sort INT UNSIGNED,
     aktiv BOOLEAN);";
   $sth = $pdo->prepare($sql);
   $sth->execute();
@@ -304,7 +305,7 @@ try {
   $table = TABLE_PREFIX . 'boenden';
   $sql = "CREATE TABLE " . $table . " (
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    namn VARCHAR(255),
+    boende VARCHAR(100),
     aktiv BOOLEAN);";
   $sth = $pdo->prepare($sql);
   $sth->execute();

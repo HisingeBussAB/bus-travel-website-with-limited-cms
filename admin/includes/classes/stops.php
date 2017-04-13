@@ -37,31 +37,33 @@ class Stops {
   }
 
   /**
-   * createRoomopt
+   * createStop
    *
-   * Creates new row in table boenden
+   * Creates new row in table hallplatser
    *
-   * @return
+   * @return bool success/fail
    */
-  public static function createRoomopt($name) {
+  public static function createStop($name) {
 
     $pdo = DB::get();
 
     try {
-      $sql = "INSERT INTO " . TABLE_PREFIX . "kategorier (
-        kategori,
+      $sql = "INSERT INTO " . TABLE_PREFIX . "hallplatser (
+        plats,
         sort,
         aktiv
       ) VALUES (
         :name,
-        (SELECT IFNULL(MAX(sort), 0) FROM " . TABLE_PREFIX . "kategorier K) + 1,
+        (SELECT IFNULL(MAX(sort), 0) FROM " . TABLE_PREFIX . "hallplatser K) + 1,
         TRUE
       );";
       $sth = $pdo->prepare($sql);
       $sth->bindParam(':name', $name, \PDO::PARAM_STR);
       $sth->execute();
+      return TRUE;
     } catch(\PDOException $e) {
       DBError::showError($e, __CLASS__, $sql);
+      return FALSE;
     }
 
   }

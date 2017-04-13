@@ -48,20 +48,20 @@ class Roomopts {
     $pdo = DB::get();
 
     try {
-      $sql = "INSERT INTO " . TABLE_PREFIX . "kategorier (
-        kategori,
-        sort,
+      $sql = "INSERT INTO " . TABLE_PREFIX . "boenden (
+        boende,
         aktiv
       ) VALUES (
         :name,
-        (SELECT IFNULL(MAX(sort), 0) FROM " . TABLE_PREFIX . "kategorier K) + 1,
         TRUE
       );";
       $sth = $pdo->prepare($sql);
       $sth->bindParam(':name', $name, \PDO::PARAM_STR);
       $sth->execute();
+      return TRUE;
     } catch(\PDOException $e) {
       DBError::showError($e, __CLASS__, $sql);
+      return FALSE;
     }
 
   }

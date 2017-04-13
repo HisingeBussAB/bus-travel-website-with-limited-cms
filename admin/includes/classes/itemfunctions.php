@@ -33,21 +33,23 @@ class ItemFunctions {
     $pdo = DB::get();
     try {
       $pdo->beginTransaction();
-      $sql = "SELECT sort FROM " . TABLE_PREFIX . $table . " WHERE id = :id;";
-      $sth = $pdo->prepare($sql);
-      $sth->bindParam(':id', $id, \PDO::PARAM_INT);
-      $sth->execute();
-      $result = $sth->fetch(\PDO::FETCH_ASSOC);
+      if ($table == "kategorier" || $table == "hallplatser") {
+        
+        $sql = "SELECT sort FROM " . TABLE_PREFIX . $table . " WHERE id = :id;";
+        $sth = $pdo->prepare($sql);
+        $sth->bindParam(':id', $id, \PDO::PARAM_INT);
+        $sth->execute();
+        $result = $sth->fetch(\PDO::FETCH_ASSOC);
 
-      $sql = "UPDATE " . TABLE_PREFIX . $table . " SET sort = sort - 1 WHERE sort > " . $result['sort'] . ";";
-      $sth = $pdo->prepare($sql);
-      $sth->execute();
+        $sql = "UPDATE " . TABLE_PREFIX . $table . " SET sort = sort - 1 WHERE sort > " . $result['sort'] . ";";
+        $sth = $pdo->prepare($sql);
+        $sth->execute();
+      }
 
       $sql = "DELETE FROM " . TABLE_PREFIX . $table . " WHERE id = :id;";
       $sth = $pdo->prepare($sql);
       $sth->bindParam(':id', $id, \PDO::PARAM_INT);
       $sth->execute();
-
       $pdo->commit();
       return TRUE;
     } catch(\PDOException $e) {
