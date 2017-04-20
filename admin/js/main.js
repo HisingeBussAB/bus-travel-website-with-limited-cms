@@ -55,6 +55,7 @@ function loadItem(item) {
       if (response.length > 0) {
         renderItem(item, response);
       } else {
+        $( "#" + item + "-list-content" ).html('');
         $( "#" + item + "-list-loading" ).hide();
         $( "#" + item + "-list" ).show();
       }

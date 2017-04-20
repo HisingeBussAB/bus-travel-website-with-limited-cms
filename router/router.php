@@ -50,6 +50,7 @@ class Router
     //                Pattern with (arguments)            function to run on matchRoute                                                    METHOD
     $this->addRoute(  '/(^$)/',                           '\HisingeBussAB\RekoResor\website\router\Render::inc',                          'GET');
     $this->addRoute(  '/^adminp$/',                       '\HisingeBussAB\RekoResor\website\admin\includes\pages\Main::showAdminMain',    'GET');
+    $this->addRoute(  '/^adminp\/nyresa$/',               '\HisingeBussAB\RekoResor\website\admin\includes\pages\Trip::showTrip',   'GET');  
     $this->addRoute(  '/^resa\/([\w-]+)\/?$/',            '\HisingeBussAB\RekoResor\website\router\Render::inc',                          'GET');
     $this->addRoute(  '/^galleri\/([\w-]+)\/?$/',         '\HisingeBussAB\RekoResor\website\router\Render::inc',                          'GET');
     $this->addRoute(  '/^kategori\/([\w-]+)\/?$/',        '\HisingeBussAB\RekoResor\website\router\Render::inc',                          'GET');

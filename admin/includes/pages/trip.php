@@ -14,9 +14,9 @@ use HisingeBussAB\RekoResor\website\includes\classes\DB;
 use HisingeBussAB\RekoResor\website\includes\classes\DBError;
 
 /**
- * The administration main menu page
+ * Creates new or edits a trip post.
  */
-class Main {
+class Trip {
 
   /**
    * @uses Sessions
@@ -27,7 +27,7 @@ class Main {
    * @uses '/shared/header.php'
    * @uses '/shared/footer.php'
    */
-  public static function showAdminMain() {
+  public static function showTrip($tripid = "new") {
 
   root\includes\classes\Sessions::secSessionStart();
   $token = root\includes\classes\ResetToken::getRandomToken();
@@ -38,7 +38,7 @@ class Main {
     header('Content-type: text/html; charset=utf-8');
     include __DIR__ . '/shared/header.php';
 
-    $pageTitle = "Rekå Admin - Huvudmeny";
+    $pageTitle = "Rekå Admin - Ny resa";
 
     $pdo = DB::get();
 
