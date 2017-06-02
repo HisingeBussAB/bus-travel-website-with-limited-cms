@@ -134,6 +134,16 @@ try {
 } catch(\PDOException $e) {
   echo $sql . "<br>" . $e->getMessage() . "<br>";
 }
+
+try {
+  $table = TABLE_PREFIX . 'extra_datum';
+  $sql = "DROP TABLE " . $table . ";";
+  $sth = $pdo->prepare($sql);
+  $sth->execute();
+  echo "Table: " . $table . " dropped succesfully.<br>";
+} catch(\PDOException $e) {
+  echo $sql . "<br>" . $e->getMessage() . "<br>";
+}
 //FIXME END DROP TABLES DEBUG
 
 
@@ -254,7 +264,9 @@ try {
     personnr BOOLEAN,
     fysiskadress BOOLEAN,
     tillaggslista INT UNSIGNED,
-    aktiv BOOLEAN);";
+    aktiv BOOLEAN,
+    hotel TEXT,
+    facebook VARCHAR(255));";
   $sth = $pdo->prepare($sql);
   $sth->execute();
   echo "Table: " . $table . " created succesfully.<br>";
@@ -267,7 +279,8 @@ try {
   $sql = "CREATE TABLE " . $table . " (
     hallplats INT UNSIGNED,
     resa INT UNSIGNED,
-    tid TIME);";
+    tid_in TIME,
+    tid_ut TIME);";
   $sth = $pdo->prepare($sql);
   $sth->execute();
   echo "Table: " . $table . " created succesfully.<br>";
@@ -320,6 +333,18 @@ try {
     resa INT UNSIGNED,
     boende INT UNSIGNED,
     pris INT)";
+  $sth = $pdo->prepare($sql);
+  $sth->execute();
+  echo "Table: " . $table . " created succesfully.<br>";
+} catch(\PDOException $e) {
+  echo $sql . "<br>" . $e->getMessage() . "<br>";
+}
+
+try {
+  $table = TABLE_PREFIX . 'extra_datum';
+  $sql = "CREATE TABLE " . $table . " (
+    resa_id INT UNSIGNED,
+    datum DATE)";
   $sth = $pdo->prepare($sql);
   $sth->execute();
   echo "Table: " . $table . " created succesfully.<br>";

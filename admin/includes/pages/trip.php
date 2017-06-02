@@ -51,12 +51,109 @@ class Trip {
       DBError::showError($e, __CLASS__, $sql);
     }
 
+    try {
+      $sql = "SELECT * FROM " . TABLE_PREFIX . "hallplatser;";
+      $sth = $pdo->prepare($sql);
+      $sth->execute();
+      $stops = $sth->fetchAll(\PDO::FETCH_ASSOC);
+    } catch(\PDOException $e) {
+      DBError::showError($e, __CLASS__, $sql);
+    }
+
+
 
 
     ?>
 
 
     <main class="clearfix">
+      <form action="/adminajax/newtrip" method="post" accept-charset="utf-8" id="trip" enctype='application/json'>
+        <div class="col-md-12">
+          <fieldset>
+            <label for="trip-heading">Rubrik</label>
+            <input type="text" maxlength="80" name="trip-heading" id="trip-heading">
+          </fieldset>
+          <fieldset>
+            <label for="trip-summary">Summary</label>
+            <textarea type="text" name="trip-summary" id="trip-summary"></textarea>
+          </fieldset>
+          <fieldset>
+            <label for="trip-text-1-heading">Dag 1</label>
+            <input type="text" maxlength="80" name="trip-text-1-heading" id="trip-text-1-heading" placeholder="Dag 1">
+            <textarea type="text" name="trip-text-1-text" id="trip-text-1-text"></textarea>
+          </fieldset>
+
+          <fieldset>
+            <button type="button" name="trip-add-paragraph" id="trip-add-paragraph">Lägg till en dag/paragraf</button>
+            <button type="button" name="trip-remove-paragraph" id="trip-remove-paragraph">Ta bort en dag/paragraf</button>
+          </fieldset>
+
+          <fieldset>
+            <label for="trip-text-hotel-heading">Hotel</label>
+            <input type="text" maxlength="80" name="trip-text-hotel-heading" id="trip-text-1-heading" placeholder="Vårt hotel">
+            <textarea type="text" name="trip-text-hotel-text" id="trip-text-1-text"></textarea>
+            <input type="text" maxlength="80" name="trip-text-hotel-link" id="trip-text-1-heading" placeholder="http://www.hotel.se">
+          </fieldset>
+
+          <fieldset>
+            <h3>Ingår i resan</h3>
+            <p>
+              <input type="text" maxlength="80" name="trip-ingar-1" id="trip-tillagg-1" value="Resa med modern helturistbuss t/r">
+            </p>
+            <p>
+              <button type="button" name="trip-add-paragraph" id="trip-add-paragraph">Fler tillägg</button>
+              <button type="button" name="trip-remove-paragraph" id="trip-remove-paragraph">Färre tillägg</button>
+            <p>
+          </fieldset>
+
+          <fieldset>
+            <h3>Frivilliga tillägg</h3>
+            <p>
+              <input type="text" maxlength="80" name="trip-tillagg-1" id="trip-tillagg-1" placeholder="Tillägg">
+              <input type="text" maxlength="80" name="trip-tillagg-1-pris" id="trip-tillagg-1-pris" placeholder="100">:-
+            </p>
+            <p>
+              <button type="button" name="trip-add-paragraph" id="trip-add-paragraph">Fler tillägg</button>
+              <button type="button" name="trip-remove-paragraph" id="trip-remove-paragraph">Färre tillägg</button>
+            <p>
+          </fieldset>
+
+          <fieldset>
+            <h3>Turlista</h3>
+            <p>
+              <table><tr>
+                <td>Stannar</td>
+                <td>Plats</td>
+                <td>Ut</td>
+                <td>Hem</td>
+              </tr>
+              <?php
+                foreach($stops as $stop) {
+                  var_dump($stop);
+                  //echo "<td>" . <input type="checkbox" name="trip-address-required" id="trip-address-required" value="address-required">
+                }
+               ?>
+              </tr></table>
+
+              <input type="text" maxlength="80" name="trip-tillagg-1" id="trip-tillagg-1" placeholder="Tillägg">
+              <input type="text" maxlength="80" name="trip-tillagg-1-pris" id="trip-tillagg-1-pris" placeholder="100">:-
+            </p>
+            <p>
+              <button type="button" name="trip-add-paragraph" id="trip-add-paragraph">Fler tillägg</button>
+              <button type="button" name="trip-remove-paragraph" id="trip-remove-paragraph">Färre tillägg</button>
+            <p>
+          </fieldset>
+
+          <fieldset>
+            <h3>Inställningar för bokning</h3>
+            <p><input type="checkbox" name="trip-address-required" id="trip-address-required" value="address-required">Fysisk address behöver anges vid bokning.</p>
+            <p><input type="checkbox" name="trip-personalid-required" id="trip-personalid-required" value="personalid-required">Personnummer behöver anges vid bokning.</p>
+          </fieldset>
+
+        </div>
+      </form>
+
+      <!--
       <div class="col-lg-3 col-md-6">
         <h2>Resor</h2>
         <ul>
@@ -122,6 +219,7 @@ class Trip {
           <li>Galleri | aktiv/inaktiv X</li>
         </ul>
       </div>
+    -->
     </main>
 
 
