@@ -127,6 +127,8 @@ class Main {
 
 
     <?php
+    include __DIR__ . '/shared/scripts.php';
+    echo "<script src='/admin/js/main.js'></script>";
     include __DIR__ . '/shared/footer.php';
 
     } else {
