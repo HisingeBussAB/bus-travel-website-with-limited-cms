@@ -26,7 +26,7 @@ $_SESSION['token'] = $token;
   <script src='https://www.google.com/recaptcha/api.js'></script>
 </head>
 <body>
-  <script src="dependencies/jquery-3.1.1/jquery-3.1.1.min.js"></script>
+  <script src="/dependencies/jquery-3.1.1/jquery-3.1.1.min.js"></script>
   <script src="/admin/js/login.js"></script>
 
   <img class="login-screen" src="/img/logo.gif" alt="Rekå Resor AB">

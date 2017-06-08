@@ -76,8 +76,22 @@ class AdminAjax
           self::changeFilter();
         break;
 
+        case 'newtrip':
+        if ($_SESSION["token"] == trim($_POST['token'])) {
+          if (!empty($_POST)) {
+            root\admin\includes\classes\NewTrip::newTrip($_POST);
+          } else {
+            echo "Ingen data skickad.";
+            http_response_code(401);
+          }
+        } else {
+          echo "Token stämmer inte.";
+          http_response_code(401);
+        }
+        break;
+
         default:
-          echo "Not found!";
+          echo "Sidan finns inte!";
           http_response_code(404);
           exit;
       }

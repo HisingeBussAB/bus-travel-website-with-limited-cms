@@ -50,7 +50,7 @@ class Router
     //                Pattern with (arguments)            function to run on matchRoute                                                    METHOD
     $this->addRoute(  '/(^$)/',                           '\HisingeBussAB\RekoResor\website\router\Render::inc',                          'GET');
     $this->addRoute(  '/^adminp$/',                       '\HisingeBussAB\RekoResor\website\admin\includes\pages\Main::showAdminMain',    'GET');
-    $this->addRoute(  '/^adminp\/nyresa$/',               '\HisingeBussAB\RekoResor\website\admin\includes\pages\Trip::showTrip',   'GET');  
+    $this->addRoute(  '/^adminp\/nyresa$/',               '\HisingeBussAB\RekoResor\website\admin\includes\pages\Trip::showTrip',         'GET');
     $this->addRoute(  '/^resa\/([\w-]+)\/?$/',            '\HisingeBussAB\RekoResor\website\router\Render::inc',                          'GET');
     $this->addRoute(  '/^galleri\/([\w-]+)\/?$/',         '\HisingeBussAB\RekoResor\website\router\Render::inc',                          'GET');
     $this->addRoute(  '/^kategori\/([\w-]+)\/?$/',        '\HisingeBussAB\RekoResor\website\router\Render::inc',                          'GET');
@@ -60,6 +60,5 @@ class Router
     $this->addRoute(  '/^(kontaktarekaresor)$/',          '\HisingeBussAB\RekoResor\website\router\Render::inc',                          'GET');
     $this->addRoute(  '/^ajax\/([\w-]+)$/',               '\HisingeBussAB\RekoResor\website\ajax\Ajax::startAjax',                        'POST');
     $this->addRoute(  '/^adminajax\/([\w-]+)$/',          '\HisingeBussAB\RekoResor\website\ajax\AdminAjax::startAjax',                   'POST');
-
   }
 }

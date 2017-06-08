@@ -6,6 +6,8 @@ $(function() {
   var days = 1;
   var includes = 1;
   var addons = 1;
+  var pictures = 1;
+  var dates = 1;
 
   // Listeners
   $('#trip-add-paragraph').click(function(event){
@@ -41,6 +43,20 @@ $(function() {
     includes--;
     });
 
+    $('#trip-add-picture').click(function(event){
+      event.preventDefault();
+      pictures++;
+      $('#pictures-list').append(
+        "<p id='picture-" + pictures + "'>"
+        + "<input type='file' name='trip-bild[" + pictures + "]'' id='trip-picture-" + pictures + "'>"
+        + "</p>");
+      });
+
+    $('#trip-remove-picture').click(function(event){
+      event.preventDefault();
+      $('#picture-' + pictures).remove();
+      pictures--;
+      });
 
   $('#trip-add-addon').click(function(event){
     event.preventDefault();
@@ -57,6 +73,21 @@ $(function() {
     $('#addon-' + addons).remove();
     addons--;
     });
+
+    $('#trip-add-date').click(function(event){
+      event.preventDefault();
+      dates++;
+      $('#dates-list').append(
+        "<p id='date-" + dates + "'>"
+        + "<input type='date' name='trip-date[" + dates + "]' id='trip-date-" + dates + "' pattern='[0-9]{4}-[0-9]{2}-[0-9]{2}' title='YYYY-MM-DD' placeholder='YYYY-MM-DD'>"
+        + "</p>");
+      });
+
+    $('#trip-remove-date').click(function(event){
+      event.preventDefault();
+      $('#date-' + dates).remove();
+      dates--;
+      });
 
 
   $(".stop-input").on('input', function(event){

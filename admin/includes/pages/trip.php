@@ -60,7 +60,23 @@ class Trip {
       DBError::showError($e, __CLASS__, $sql);
     }
 
+    try {
+      $sql = "SELECT * FROM " . TABLE_PREFIX . "boenden;";
+      $sth = $pdo->prepare($sql);
+      $sth->execute();
+      $rooms = $sth->fetchAll(\PDO::FETCH_ASSOC);
+    } catch(\PDOException $e) {
+      DBError::showError($e, __CLASS__, $sql);
+    }
 
+    try {
+      $sql = "SELECT * FROM " . TABLE_PREFIX . "kategorier;";
+      $sth = $pdo->prepare($sql);
+      $sth->execute();
+      $categories = $sth->fetchAll(\PDO::FETCH_ASSOC);
+    } catch(\PDOException $e) {
+      DBError::showError($e, __CLASS__, $sql);
+    }
 
 
     ?>
@@ -78,23 +94,30 @@ class Trip {
             <textarea type="text" name="trip-summary" id="trip-summary"></textarea>
           </fieldset>
           <div id="trip-text">
-            <fieldset id="trip-text-1">
-              <label for="trip-text-heading[1]">Dag 1</label>
-              <input type="text" maxlength="80" name="trip-text-heading[1]" id="trip-text-1-heading" placeholder="Dag 1">
-              <textarea type="text" name="trip-text-text[1]" id="trip-text-1-text"></textarea>
+            <fieldset id="trip-text">
+              <textarea type="text" name="trip-text" id="trip-text" placeholder="#Dag 1&#10;Så skall vi...&#10;&#10;#Dag 2&#10;Kommer vi att..."></textarea>
+              Använd # först för att indikera att raden är en rubrik.
             </fieldset>
           </div>
-
-          <fieldset>
-            <button type="button" name="trip-add-paragraph" id="trip-add-paragraph">Lägg till en dag/paragraf</button>
-            <button type="button" name="trip-remove-paragraph" id="trip-remove-paragraph">Ta bort en dag/paragraf</button>
-          </fieldset>
 
           <fieldset>
             <label for="trip-text-hotel-heading">Hotel</label>
             <input type="text" maxlength="80" name="trip-text-hotel-heading" id="trip-text-1-heading" placeholder="Vårt hotel">
             <textarea type="text" name="trip-text-hotel-text" id="trip-text-1-text"></textarea>
             <input type="text" maxlength="80" name="trip-text-hotel-link" id="trip-text-1-heading" placeholder="http://www.hotel.se">
+          </fieldset>
+
+          <fieldset>
+            <h3>Avresedatum</h3>
+            <div id="dates-list">
+              <p id="date-1">
+                <input type="date" name="trip-date[1]" id="trip-date-1" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" title="Format: YYYY-MM-DD" placeholder="YYYY-MM-DD">
+              </p>
+            </div>
+            <p>
+              <button type="button" name="trip-add-date" id="trip-add-date">Fler avgångar</button>
+              <button type="button" name="trip-remove-date" id="trip-remove-date">Färre avgångar</button>
+            <p>
           </fieldset>
 
           <fieldset>
@@ -120,13 +143,38 @@ class Trip {
             <div id="addons-list">
             <p id="addon-1">
               <input type="text" maxlength="80" name="trip-tillagg[1]" id="trip-tillagg-1" placeholder="Tillägg">
-              <input type="text" maxlength="80" name="trip-tillagg-pris[1]" id="trip-tillagg-1-pris" placeholder="100">:-
+              <input type="number" name="trip-tillagg-pris[1]" id="trip-tillagg-1-pris" placeholder="0"> :-
             </p>
           </div>
             <p>
               <button type="button" name="trip-add-addon" id="trip-add-addon">Fler tillägg</button>
               <button type="button" name="trip-remove-addon" id="trip-remove-addon">Färre tillägg</button>
             <p>
+          </fieldset>
+
+          <fieldset>
+            <h3>Grundpris</h3>
+            <p>
+              <input type="number" name="trip-price" id="trip-price" value="0"> :-
+            </p>
+          </fieldset>
+
+          <fieldset>
+            <h3>Boenden</h3>
+            <p>
+              <table><tr>
+                <td>Använd</td>
+                <td>Boendetyp</td>
+                <td>Pris</td>
+              </tr>
+              <?php
+                foreach($rooms as $room) {
+                  echo "<tr><td><input type='checkbox' name='useroom[]' value='" . $room['id'] . "' class='room-checkbox'></td><td>" . $room['boende'];
+                  echo "</td>";
+                  echo "<td><input type='number' name='roomprice[" . $room['id'] . "]' placeholder='0' class='room-price'> :-</td></tr>";
+                }
+               ?>
+              </tr></table>
           </fieldset>
 
           <fieldset>
@@ -140,9 +188,25 @@ class Trip {
               </tr>
               <?php
                 foreach($stops as $stop) {
-                  echo "<tr><td><input type='checkbox' name='usestop-" . $stop['id'] . "' class='stop-checkbox'></td><td>" . $stop['plats'];
-                  echo "</td><td><input type='text' name='stopfrom-" . $stop['id'] . "' placeholder='00:00' class='stop-input'></td>";
-                  echo "<td><input type='text' name='stopto-" . $stop['id'] . "' placeholder='00:00' class='stop-input'></td></tr>";
+                  echo "<tr><td><input type='checkbox' name='usestop[]' value='" . $stop['id'] . "' class='stop-checkbox'></td><td>" . $stop['plats'];
+                  echo "</td><td><input type='time' name='stopfrom[" . $stop['id'] . "]' placeholder='HH:MM' title='Format: HH:MM' pattern='[0-9]{2}:[0-9]{2}' class='stop-input'></td>";
+                  echo "<td><input type='time' name='stopto[" . $stop['id'] . "]' placeholder='HH:MM' title='Format: HH:MM'  pattern='[0-9]{2}:[0-9]{2}' class='stop-input'></td></tr>";
+                }
+               ?>
+              </tr></table>
+          </fieldset>
+
+          <fieldset>
+            <h3>Kategorier</h3>
+            <p>
+              <table><tr>
+                <td>Använd</td>
+                <td>Boendetyp</td>
+              </tr>
+              <?php
+                foreach($categories as $category) {
+                  echo "<tr><td><input type='checkbox' name='usecategory[]' value='" . $category['id'] . "' class='category-checkbox'></td><td>" . $category['kategori'];
+                  echo "</td></tr>";
                 }
                ?>
               </tr></table>
@@ -154,8 +218,28 @@ class Trip {
             <p><input type="checkbox" name="trip-personalid-required" id="trip-personalid-required" value="personalid-required">Personnummer behöver anges vid bokning.</p>
           </fieldset>
 
+          <fieldset>
+            <input type="hidden" name="token" value="<?php echo $token ?>">
+          </fieldset>
+
+          <fieldset>
+            <p><button type="submit">Spara resa</button></p>
+          </fieldset>
         </div>
       </form>
+
+        <h3>Lägg till bilder</h3>
+        <div id="pictures-list">
+          <p id="picture-1">
+            <input type="file" name="trip-bild[1]" id="trip-picture-1" value="">
+          </p>
+        </div>
+        <p>
+          <button type="button" name="trip-add-picture" id="trip-add-picture">Fler bilder</button>
+          <button type="button" name="trip-remove-picture" id="trip-remove-picture">Färre bilder</button>
+        <p>
+
+
     </main>
 
 

@@ -259,11 +259,11 @@ try {
     pris INT,
     datum DATE,
     program LONGTEXT,
+    antaldagar INT UNSIGNED;
     extras TEXT,
     bildkatalog VARCHAR(100),
     personnr BOOLEAN,
     fysiskadress BOOLEAN,
-    tillaggslista INT UNSIGNED,
     aktiv BOOLEAN,
     hotel TEXT,
     facebook VARCHAR(255));";
@@ -303,9 +303,8 @@ try {
 try {
   $table = TABLE_PREFIX . 'tillaggslistor';
   $sql = "CREATE TABLE " . $table . " (
-    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    resa_id INT UNSIGNED,
     pris INT,
-    aktiv BOOLEAN,
     namn VARCHAR(255));";
   $sth = $pdo->prepare($sql);
   $sth->execute();
