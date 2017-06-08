@@ -79,7 +79,7 @@ $(function() {
       dates++;
       $('#dates-list').append(
         "<p id='date-" + dates + "'>"
-        + "<input type='date' name='trip-date[" + dates + "]' id='trip-date-" + dates + "' pattern='[0-9]{4}-[0-9]{2}-[0-9]{2}' title='YYYY-MM-DD' placeholder='YYYY-MM-DD'>"
+        + "<input type='date' name='trip-date[" + dates + "]' id='trip-date-" + dates + "' placeholder='YYYY-MM-DD'>"
         + "</p>");
       });
 

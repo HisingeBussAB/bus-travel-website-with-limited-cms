@@ -259,13 +259,14 @@ try {
     pris INT,
     datum DATE,
     program LONGTEXT,
-    antaldagar INT UNSIGNED;
-    extras TEXT,
+    antaldagar INT UNSIGNED,
+    ingar TEXT,
     bildkatalog VARCHAR(100),
     personnr BOOLEAN,
     fysiskadress BOOLEAN,
     aktiv BOOLEAN,
     hotel TEXT,
+    hotellink VARCHAR(255),
     facebook VARCHAR(255));";
   $sth = $pdo->prepare($sql);
   $sth->execute();

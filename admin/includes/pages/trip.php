@@ -86,6 +86,7 @@ class Trip {
       <form action="/adminajax/newtrip" method="post" accept-charset="utf-8" id="trip" enctype='application/json'>
         <div class="col-md-12">
           <fieldset>
+            <input type="hidden" name="tripid" value="<?php echo $tripid ?>">
             <label for="trip-heading">Rubrik</label>
             <input type="text" maxlength="80" name="trip-heading" id="trip-heading">
           </fieldset>
@@ -111,7 +112,7 @@ class Trip {
             <h3>Avresedatum</h3>
             <div id="dates-list">
               <p id="date-1">
-                <input type="date" name="trip-date[1]" id="trip-date-1" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" title="Format: YYYY-MM-DD" placeholder="YYYY-MM-DD">
+                <input type="date" name="trip-date[1]" id="trip-date-1" placeholder="YYYY-MM-DD">
               </p>
             </div>
             <p>
@@ -155,7 +156,7 @@ class Trip {
           <fieldset>
             <h3>Grundpris</h3>
             <p>
-              <input type="number" name="trip-price" id="trip-price" value="0"> :-
+              <input type="number" name="trip-price" id="trip-price" placeholder="0"> :-
             </p>
           </fieldset>
 
@@ -189,8 +190,8 @@ class Trip {
               <?php
                 foreach($stops as $stop) {
                   echo "<tr><td><input type='checkbox' name='usestop[]' value='" . $stop['id'] . "' class='stop-checkbox'></td><td>" . $stop['plats'];
-                  echo "</td><td><input type='time' name='stopfrom[" . $stop['id'] . "]' placeholder='HH:MM' title='Format: HH:MM' pattern='[0-9]{2}:[0-9]{2}' class='stop-input'></td>";
-                  echo "<td><input type='time' name='stopto[" . $stop['id'] . "]' placeholder='HH:MM' title='Format: HH:MM'  pattern='[0-9]{2}:[0-9]{2}' class='stop-input'></td></tr>";
+                  echo "</td><td><input type='time' name='stopfrom[" . $stop['id'] . "]' placeholder='HH:MM' class='stop-input'></td>";
+                  echo "<td><input type='time' name='stopto[" . $stop['id'] . "]' placeholder='HH:MM' class='stop-input'></td></tr>";
                 }
                ?>
               </tr></table>

@@ -23,6 +23,13 @@ class NewTrip
     $allowed_tags = ALLOWED_HTML_TAGS;
 
     var_dump($input);
+
+    if (trim($input["tripid"]) == "new") {
+      $tripid = "new";
+    } else {
+      $tripid = filter_var(trim($input["tripid"]), FILTER_SANITIZE_NUMBER_INT);
+    }
+
     $heading = strip_tags(trim($input["trip-heading"]), $allowed_tags);
     $summary = nl2br(strip_tags(trim($input["trip-summary"]), $allowed_tags));
     $text = nl2br(strip_tags(trim($input["trip-text"]), $allowed_tags));
@@ -54,6 +61,12 @@ class NewTrip
     }
 
     $price = filter_var(trim($input["trip-price"]), FILTER_SANITIZE_NUMBER_INT);
+
+    $i = 0;
+    foreach ($input["trip-date"] as $date) {
+      $dates[$i] = filter_var(trim($date), FILTER_SANITIZE_STRING);
+      $i++;
+    }
 
     $roomids = [];
     $roomprices = [];
@@ -107,13 +120,42 @@ class NewTrip
 
     $pdo = DB::get();
 
+    $pdo = DB::get();
+
     try {
-      $sql = "SELECT * FROM " . TABLE_PREFIX . "boenden;";
+      $sql = "INSERT INTO " . TABLE_PREFIX . "resor (
+        pris,
+        datum,
+        program,
+        ingar,
+        bildkatalog,
+        personnr,
+        aktiv,
+        fysiskadress,
+        hotel,
+        hotellink,
+        facebook,
+        antaldagar
+      ) VALUES (
+        :price,
+        :date,
+        :program,
+        :includes,
+        :photofolder,
+        :personalid,
+        TRUE,
+        :hotel,
+        :hotellink,
+        :facebook,
+        :duration
+      );";
       $sth = $pdo->prepare($sql);
+      $sth->bindParam(':name', $name, \PDO::PARAM_STR);
       $sth->execute();
-      $result = $sth->fetchAll(\PDO::FETCH_ASSOC);
+      return TRUE;
     } catch(\PDOException $e) {
       DBError::showError($e, __CLASS__, $sql);
+      return FALSE;
     }
 
 
