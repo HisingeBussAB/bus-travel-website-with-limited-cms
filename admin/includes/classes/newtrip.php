@@ -37,26 +37,38 @@ class NewTrip
 
     //$text = nl2br(strip_tags(trim($input["trip-text"]), $allowed_tags));
 
-    $i = 0;
+    $text = "";
     foreach ($input["trip-text-heading"] as $id => $texthead) {
-      //trip-text-text[1]
-      var_dump($id);
-      var_dump($texthead);
-      var_dump($input["trip-text"][$id]);
+      $texthead = strip_tags(trim($texthead), $allowed_tags);
+      $textbody = nl2br(strip_tags(trim($input["trip-text"][$id]), $allowed_tags));
+      $textbody = trim($textbody, "<br />");
+      if (!empty($texthead))
+      {
+        $text += "<h3>" . $texthead . "</h3><p>" . $textbody . "</p>";
+      }
     }
 
 
     $hotelname = strip_tags(trim($input["trip-text-hotel-heading"]), $allowed_tags);
     $hoteltext = nl2br(strip_tags(trim($input["trip-text-hotel-text"]), $allowed_tags));
+    $hoteltext = trim($hoteltext, "<br />");
+    $hotel = "<h3>" . $hotelname . "</h3><p>" . $hoteltext . "</p>";
+
     $hotellink = filter_var(trim($input["trip-text-hotel-link"]), FILTER_SANITIZE_URL);
+    if ((substr( $hotellink, 0, 7 ) !== "http://") || (substr( $hotellink, 0, 8 ) !== "https://")) {
+      $hotellink = "http://" . $hotellink;
+    }
 
     $facebooklink = filter_var(trim($input["trip-facebook"]), FILTER_SANITIZE_URL);
+    if ((substr( $facebooklink, 0, 7 ) !== "http://") || (substr( $facebooklink, 0, 8 ) !== "https://")) {
+      $facebooklink = "http://" . $facebooklink;
+    }
 
-    $includes = [];
-    $i = 0;
+    $includes = "";
     foreach ($input["trip-ingar"] as $include) {
-      $includes[$i] = strip_tags(trim($include), $allowed_tags);
-      $i++;
+      if (!empty($include)) {
+        $includes += "<p>" . strip_tags(trim($include), $allowed_tags) . "</p>";
+      }
     }
 
     $addons = [];
@@ -117,15 +129,15 @@ class NewTrip
     }
 
     if (isset($input["trip-address-required"])) {
-      $addressrequired = TRUE;
+      $addressrequired = 1;
     } else {
-      $addressrequired = FALSE;
+      $addressrequired = 0;
     }
 
     if (isset($input["trip-personalid-required"])) {
-      $personalidrequired = TRUE;
+      $personalidrequired = 1;
     } else {
-      $personalidrequired = FALSE;
+      $personalidrequired = 0;
     }
 
     //VALIDATION
@@ -141,7 +153,11 @@ class NewTrip
       }
     }
 
-/*
+    $photofolder = $heading . "_" . $formateddates[0];
+    $photofolder = filter_var(trim($photofolder), FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW);
+    $photofolder = filter_var($photofolder, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+    $photofolder = filter_var($photofolder, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_BACKTICK);
+    $photofolder = filter_var($photofolder, FILTER_SANITIZE_EMAIL);
 
     //DB OPERATIONS
     $pdo = DB::get();
@@ -156,8 +172,8 @@ class NewTrip
         ingar,
         bildkatalog,
         personnr,
-        aktiv,
         fysiskadress,
+        aktiv,
         hotel,
         hotellink,
         facebook,
@@ -171,7 +187,8 @@ class NewTrip
         :includes,
         :photofolder,
         :personalid,
-        TRUE,
+        :address,
+        1,
         :hotel,
         :hotellink,
         :facebook,
@@ -181,23 +198,38 @@ class NewTrip
       $sth->bindParam(':price', $price, \PDO::PARAM_INT);
       $sth->bindParam(':date', $formateddates[0], \PDO::PARAM_STR);
       $sth->bindParam(':name', $heading, \PDO::PARAM_STR);
-      $sth->bindParam(':summary', $summary, \PDO::PARAM_STR);
-      $sth->bindParam(':program', $text, \PDO::PARAM_STR);
-      $sth->bindParam(':includes', , \PDO::PARAM_STR);
-      $sth->bindParam(':photofolder', , \PDO::PARAM_STR);
-      $sth->bindParam(':personalid', , \PDO::PARAM_STR);
-      $sth->bindParam(':hotel', , \PDO::PARAM_STR);
-      $sth->bindParam(':hotellink', , \PDO::PARAM_STR);
-      $sth->bindParam(':facebook', , \PDO::PARAM_STR);
-      $sth->bindParam(':duration', , \PDO::PARAM_STR);
+      $sth->bindParam(':summary', $summary, \PDO::PARAM_LOB);
+      $sth->bindParam(':program', $text, \PDO::PARAM_LOB);
+      $sth->bindParam(':includes', $includes, \PDO::PARAM_LOB);
+      $sth->bindParam(':photofolder', $photfolder, \PDO::PARAM_STR);
+      $sth->bindParam(':personalid', $personalidrequired, \PDO::PARAM_INT);
+      $sth->bindParam(':address', $addressrequired, \PDO::PARAM_INT);
+      $sth->bindParam(':hotel', $hotel, \PDO::PARAM_LOB);
+      $sth->bindParam(':hotellink', $hotellink, \PDO::PARAM_STR);
+      $sth->bindParam(':facebook', $facebooklink, \PDO::PARAM_STR);
+      $sth->bindParam(':duration', $duration, \PDO::PARAM_INT);
+
+      if (!$sth) {
+        echo "\nPDO::errorInfo():\n";
+        print_r($pdo->errorInfo());
+      }
+      var_dump($pdo);
+      var_dump($sth);
+      var_dump($sql);
       $sth->execute();
-      return TRUE;
+      var_dump($pdo);
+      var_dump($sth);
+      var_dump($sql);
+
+      print_r($pdo->errorInfo());
+      echo "SUCCESS";
     } catch(\PDOException $e) {
       DBError::showError($e, __CLASS__, $sql);
-      return FALSE;
+      http_response_code(500);
+      break;
     }
 
-*/
+
 
   }
 
