@@ -30,9 +30,21 @@ class NewTrip
       $tripid = filter_var(trim($input["tripid"]), FILTER_SANITIZE_NUMBER_INT);
     }
 
+    $duration = filter_var(trim($input["trip-duration"]), FILTER_SANITIZE_NUMBER_INT);
+
     $heading = strip_tags(trim($input["trip-heading"]), $allowed_tags);
     $summary = nl2br(strip_tags(trim($input["trip-summary"]), $allowed_tags));
-    $text = nl2br(strip_tags(trim($input["trip-text"]), $allowed_tags));
+
+    //$text = nl2br(strip_tags(trim($input["trip-text"]), $allowed_tags));
+
+    $i = 0;
+    foreach ($input["trip-text-heading"] as $id => $texthead) {
+      //trip-text-text[1]
+      var_dump($id);
+      var_dump($texthead);
+      var_dump($input["trip-text"][$id]);
+    }
+
 
     $hotelname = strip_tags(trim($input["trip-text-hotel-heading"]), $allowed_tags);
     $hoteltext = nl2br(strip_tags(trim($input["trip-text-hotel-text"]), $allowed_tags));
@@ -116,16 +128,30 @@ class NewTrip
       $personalidrequired = FALSE;
     }
 
+    //VALIDATION
+    $i = 0;
+    foreach ($dates as $date) {
+      $date = date('Y-m-d', strtotime($date));
+      if ($date > date('Y-m-d', strtotime("2000-01-01")) && $date < date('Y-m-d', strtotime("2917-01-01"))) {
+        $formateddates[$i] = $date;
+      } else {
+        echo $date . " datumet är i felaktikgt format eller i fel millenium. Försök igen. Använd Chrome för bäst datumstöd eller skriv in i format YYYY-MM-DD.";
+        http_response_code(416);
+        break;
+      }
+    }
 
+/*
 
-    $pdo = DB::get();
-
+    //DB OPERATIONS
     $pdo = DB::get();
 
     try {
       $sql = "INSERT INTO " . TABLE_PREFIX . "resor (
         pris,
         datum,
+        namn,
+        ingress,
         program,
         ingar,
         bildkatalog,
@@ -139,6 +165,8 @@ class NewTrip
       ) VALUES (
         :price,
         :date,
+        :name,
+        :summary,
         :program,
         :includes,
         :photofolder,
@@ -150,7 +178,18 @@ class NewTrip
         :duration
       );";
       $sth = $pdo->prepare($sql);
-      $sth->bindParam(':name', $name, \PDO::PARAM_STR);
+      $sth->bindParam(':price', $price, \PDO::PARAM_INT);
+      $sth->bindParam(':date', $formateddates[0], \PDO::PARAM_STR);
+      $sth->bindParam(':name', $heading, \PDO::PARAM_STR);
+      $sth->bindParam(':summary', $summary, \PDO::PARAM_STR);
+      $sth->bindParam(':program', $text, \PDO::PARAM_STR);
+      $sth->bindParam(':includes', , \PDO::PARAM_STR);
+      $sth->bindParam(':photofolder', , \PDO::PARAM_STR);
+      $sth->bindParam(':personalid', , \PDO::PARAM_STR);
+      $sth->bindParam(':hotel', , \PDO::PARAM_STR);
+      $sth->bindParam(':hotellink', , \PDO::PARAM_STR);
+      $sth->bindParam(':facebook', , \PDO::PARAM_STR);
+      $sth->bindParam(':duration', , \PDO::PARAM_STR);
       $sth->execute();
       return TRUE;
     } catch(\PDOException $e) {
@@ -158,7 +197,7 @@ class NewTrip
       return FALSE;
     }
 
-
+*/
 
   }
 

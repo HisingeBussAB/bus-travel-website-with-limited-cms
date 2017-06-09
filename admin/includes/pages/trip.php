@@ -88,24 +88,31 @@ class Trip {
           <fieldset>
             <input type="hidden" name="tripid" value="<?php echo $tripid ?>">
             <label for="trip-heading">Rubrik</label>
-            <input type="text" maxlength="80" name="trip-heading" id="trip-heading">
+            <input type="text" maxlength="200" name="trip-heading" id="trip-heading">
           </fieldset>
           <fieldset>
             <label for="trip-summary">Summary</label>
             <textarea type="text" name="trip-summary" id="trip-summary"></textarea>
           </fieldset>
+
           <div id="trip-text">
-            <fieldset id="trip-text">
-              <textarea type="text" name="trip-text" id="trip-text" placeholder="#Dag 1&#10;Så skall vi...&#10;&#10;#Dag 2&#10;Kommer vi att..."></textarea>
-              Använd # först för att indikera att raden är en rubrik.
+            <fieldset id="trip-text-1">
+              <label for="trip-text-heading[1]">Dag 1</label>
+              <input type="text" maxlength="80" name="trip-text-heading[1]" id="trip-text-1-heading" placeholder="Dag 1">
+              <textarea type="text" name="trip-text[1]" id="trip-text-1-text"></textarea>
             </fieldset>
           </div>
 
           <fieldset>
+            <button type="button" name="trip-add-paragraph" id="trip-add-paragraph">Lägg till en dag/paragraf</button>
+            <button type="button" name="trip-remove-paragraph" id="trip-remove-paragraph">Ta bort en dag/paragraf</button>
+          </fieldset>
+
+          <fieldset>
             <label for="trip-text-hotel-heading">Hotel</label>
-            <input type="text" maxlength="80" name="trip-text-hotel-heading" id="trip-text-1-heading" placeholder="Vårt hotel">
-            <textarea type="text" name="trip-text-hotel-text" id="trip-text-1-text"></textarea>
-            <input type="text" maxlength="80" name="trip-text-hotel-link" id="trip-text-1-heading" placeholder="http://www.hotel.se">
+            <input type="text" maxlength="100" name="trip-text-hotel-heading" id="trip-text-1-heading" placeholder="Hotellets namn">
+            <textarea type="text" name="trip-text-hotel-text" id="trip-text-1-text" placeholder="Hotellvägen 5&#10;888 88 Hotellstaden&#10;+46888888"></textarea>
+            <input type="text" maxlength="250" name="trip-text-hotel-link" id="trip-text-1-heading" placeholder="http://www.hotel.se">
           </fieldset>
 
           <fieldset>
@@ -122,15 +129,22 @@ class Trip {
           </fieldset>
 
           <fieldset>
+            <h3>Antal dagar</h3>
+            <p>
+              <input type="number" name="trip-duration" id="trip-duration" placeholder="0">
+            </p>
+          </fieldset>
+
+          <fieldset>
             <label for="trip-facebook">Facebook event url</label>
-            <input type="text" maxlength="80" name="trip-facebook" id="trip-text-1-heading" placeholder="Vårt hotel">
+            <input type="text" maxlength="250" name="trip-facebook" id="trip-text-1-heading" placeholder="Vårt hotel">
           </fieldset>
 
           <fieldset>
             <h3>Ingår i resan</h3>
             <div id="includes-list">
               <p id="include-1">
-                <input type="text" maxlength="80" name="trip-ingar[1]" id="trip-tillagg-1" value="Resa med modern helturistbuss t/r">
+                <input type="text" maxlength="150" name="trip-ingar[1]" id="trip-tillagg-1" value="Resa med modern helturistbuss t/r">
               </p>
             </div>
             <p>
@@ -143,7 +157,7 @@ class Trip {
             <h3>Frivilliga tillägg</h3>
             <div id="addons-list">
             <p id="addon-1">
-              <input type="text" maxlength="80" name="trip-tillagg[1]" id="trip-tillagg-1" placeholder="Tillägg">
+              <input type="text" maxlength="79" name="trip-tillagg[1]" id="trip-tillagg-1" placeholder="Tillägg">
               <input type="number" name="trip-tillagg-pris[1]" id="trip-tillagg-1-pris" placeholder="0"> :-
             </p>
           </div>

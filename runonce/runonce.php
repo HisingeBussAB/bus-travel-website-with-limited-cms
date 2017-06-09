@@ -256,16 +256,18 @@ try {
   $table = TABLE_PREFIX . 'resor';
   $sql = "CREATE TABLE " . $table . " (
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    namn VARCHAR(200),
     pris INT,
     datum DATE,
-    program LONGTEXT,
+    program TEXT,
+    ingress TINYTEXT,
     antaldagar INT UNSIGNED,
     ingar TEXT,
     bildkatalog VARCHAR(100),
     personnr BOOLEAN,
     fysiskadress BOOLEAN,
     aktiv BOOLEAN,
-    hotel TEXT,
+    hotel TINYTEXT,
     hotellink VARCHAR(255),
     facebook VARCHAR(255));";
   $sth = $pdo->prepare($sql);
