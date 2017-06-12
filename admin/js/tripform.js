@@ -64,7 +64,7 @@ $(function() {
     $('#addons-list').append(
       "<p id='addon-" + addons + "'>"
       + "<input type='text' maxlength='80' name='trip-tillagg[" + addons + "]' id='trip-tillagg-" + addons + "' placeholder='Tillägg'>"
-      + "<input type='text' maxlength='80' name='trip-tillagg-pris[" + addons + "]' id='trip-tillagg-" + addons + "-pris' placeholder='100'>:-"
+      + "<input type='number' ame='trip-tillagg-pris[" + addons + "]' id='trip-tillagg-" + addons + "-pris' placeholder='100'>:-"
       + "</p>");
     });
 

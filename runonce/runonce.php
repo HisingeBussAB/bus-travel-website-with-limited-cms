@@ -136,7 +136,7 @@ try {
 }
 
 try {
-  $table = TABLE_PREFIX . 'extra_datum';
+  $table = TABLE_PREFIX . 'datum';
   $sql = "DROP TABLE " . $table . ";";
   $sth = $pdo->prepare($sql);
   $sth->execute();
@@ -258,7 +258,6 @@ try {
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     namn VARCHAR(200),
     pris INT,
-    datum DATE,
     program TEXT,
     ingress TINYTEXT,
     antaldagar INT UNSIGNED,
@@ -280,8 +279,8 @@ try {
 try {
   $table = TABLE_PREFIX . 'resor_hallplatser';
   $sql = "CREATE TABLE " . $table . " (
-    hallplats INT UNSIGNED,
-    resa INT UNSIGNED,
+    hallplats_id INT UNSIGNED,
+    resa_id INT UNSIGNED,
     tid_in TIME,
     tid_ut TIME);";
   $sth = $pdo->prepare($sql);
@@ -294,8 +293,8 @@ try {
 try {
   $table = TABLE_PREFIX . 'kategorier_resor';
   $sql = "CREATE TABLE " . $table . " (
-    resa INT UNSIGNED,
-    kategori INT UNSIGNED);";
+    resa_id INT UNSIGNED,
+    kategori_id INT UNSIGNED);";
   $sth = $pdo->prepare($sql);
   $sth->execute();
   echo "Table: " . $table . " created succesfully.<br>";
@@ -332,8 +331,8 @@ try {
 try {
   $table = TABLE_PREFIX . 'boenden_resor';
   $sql = "CREATE TABLE " . $table . " (
-    resa INT UNSIGNED,
-    boende INT UNSIGNED,
+    resa_id INT UNSIGNED,
+    boende_id INT UNSIGNED,
     pris INT)";
   $sth = $pdo->prepare($sql);
   $sth->execute();
@@ -343,7 +342,7 @@ try {
 }
 
 try {
-  $table = TABLE_PREFIX . 'extra_datum';
+  $table = TABLE_PREFIX . 'datum';
   $sql = "CREATE TABLE " . $table . " (
     resa_id INT UNSIGNED,
     datum DATE)";
