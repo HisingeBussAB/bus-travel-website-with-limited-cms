@@ -81,11 +81,11 @@ class AdminAjax
           if (!empty($_POST)) {
             root\admin\includes\classes\NewTrip::newTrip($_POST);
           } else {
-            echo "Ingen data skickad.";
+            echo "<p>Ingen data skickad.</p>";
             http_response_code(401);
           }
         } else {
-          echo "Token stämmer inte.";
+          echo "<p>Token stämmer inte. Prova ladda om sidan.</p>";
           http_response_code(401);
         }
         break;

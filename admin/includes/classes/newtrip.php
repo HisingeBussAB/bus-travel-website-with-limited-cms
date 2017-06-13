@@ -81,7 +81,19 @@ class NewTrip
 
     //initialize instance of me
     $form = new NewTrip($formData);
-    $form->writeToDB();
+    if ($form->tripid == "new") {
+      $write = "new";
+    } else {
+      $write = "update";
+    }
+    if ($form->writeToDB($write)) {
+      echo "<p>Resan sparad</p>";
+      http_response_code(200);
+    } else {
+      echo "<p>Kritiskt databasfel. Kontrollera informationen i formuläret eller kontakta systemadministratör.</p>";
+      http_response_code(500);
+      exit;
+    }
   }
 
 
@@ -216,47 +228,79 @@ class NewTrip
   }
 
 
-  private function writeToDB() {
+  private function writeToDB($mode) {
     $pdo = DB::get();
+
+    if ($mode == "new") {
+      $mode = TRUE;
+    } elseif ($mode == "update") {
+      $mode = FALSE;
+    } else {
+      echo "Den här funktioner behöver ett argument som är antingen new eller update";
+      http_response_code(500);
+      exit;
+    }
 
     try {
       $pdo->beginTransaction();
-      $sql = "INSERT INTO " . TABLE_PREFIX . "resor (
-        pris,
-        namn,
-        ingress,
-        program,
-        ingar,
-        bildkatalog,
-        personnr,
-        fysiskadress,
-        aktiv,
-        hotel,
-        hotellink,
-        facebook,
-        antaldagar
-      ) VALUES (
-        :price,
-        :name,
-        :summary,
-        :program,
-        :includes,
-        :photofolder,
-        :personalid,
-        :address,
-        1,
-        :hotel,
-        :hotellink,
-        :facebook,
-        :duration
-      );";
+      if ($mode) {
+        $sql = "INSERT INTO " . TABLE_PREFIX . "resor (
+          pris,
+          namn,
+          ingress,
+          program,
+          ingar,
+          bildkatalog,
+          personnr,
+          fysiskadress,
+          aktiv,
+          hotel,
+          hotellink,
+          facebook,
+          antaldagar
+        ) VALUES (
+          :price,
+          :name,
+          :summary,
+          :program,
+          :includes,
+          :photofolder,
+          :personalid,
+          :address,
+          1,
+          :hotel,
+          :hotellink,
+          :facebook,
+          :duration
+        );";
+      } else {
+        $sql = "UPDATE " . TABLE_PREFIX . "resor SET
+          pris = :price,
+          namn = :name,
+          ingress = :summary,
+          program = :program,
+          ingar = :includes,
+          personnr = :personalid,
+          fysiskadress = :address,
+          aktiv = 1,
+          hotel = :hotel,
+          hotellink = :hotellink,
+          facebook = :facebook,
+          antaldagar = :duration
+        WHERE id = :tripid
+        ;";
+      }
       $sth = $pdo->prepare($sql);
+      if (!$mode) {
+        $sth->bindParam(':tripid', $this->tripid, \PDO::PARAM_INT);
+      } else {
+        $sth->bindParam(':photofolder', $this->photofolder, \PDO::PARAM_INT);
+      }
       $sth->bindParam(':price', $this->price, \PDO::PARAM_INT);
       $sth->bindParam(':name', $this->heading, \PDO::PARAM_STR);
       $sth->bindParam(':summary', $this->summary, \PDO::PARAM_LOB);
       $sth->bindParam(':program', $this->text, \PDO::PARAM_LOB);
       $sth->bindParam(':includes', $this->includes, \PDO::PARAM_LOB);
-      $sth->bindParam(':photofolder', $this->photofolder, \PDO::PARAM_STR);
       $sth->bindParam(':personalid', $this->personalidrequired, \PDO::PARAM_INT);
       $sth->bindParam(':address', $this->addressrequired, \PDO::PARAM_INT);
       $sth->bindParam(':hotel', $this->hotel, \PDO::PARAM_LOB);
@@ -265,9 +309,17 @@ class NewTrip
       $sth->bindParam(':duration', $this->duration, \PDO::PARAM_INT);
 
       $sth->execute();
-      var_dump($pdo->lastInsertId());
-      $this->tripid = intval($pdo->lastInsertId());
 
+      if ($mode) {$this->tripid = intval($pdo->lastInsertId());}
+
+      if (!$mode) {
+        $sql = "DELETE FROM " . TABLE_PREFIX . "tillaggslistor WHERE
+          resa_id = :tripid
+          ;";
+        $sth = $pdo->prepare($sql);
+        $sth->bindParam(':tripid', $this->tripid, \PDO::PARAM_INT);
+        $sth->execute();
+      }
 
       $i = 0;
       foreach ($this->addons['name'] as $addon) {
@@ -289,6 +341,16 @@ class NewTrip
         $i++;
       }
 
+
+      if (!$mode) {
+        $sql = "DELETE FROM " . TABLE_PREFIX . "kategorier_resor WHERE
+          resa_id = :tripid
+          ;";
+        $sth = $pdo->prepare($sql);
+        $sth->bindParam(':tripid', $this->tripid, \PDO::PARAM_INT);
+        $sth->execute();
+      }
+
       foreach ($this->categoryids as $categoryid) {
 
         $sql = "INSERT INTO " . TABLE_PREFIX . "kategorier_resor (
@@ -302,6 +364,16 @@ class NewTrip
         $sth->bindParam(':tripid', $this->tripid, \PDO::PARAM_INT);
         $sth->bindParam(':categoriyid', $categoryid, \PDO::PARAM_INT);
 
+        $sth->execute();
+      }
+
+
+      if (!$mode) {
+        $sql = "DELETE FROM " . TABLE_PREFIX . "resor_hallplatser WHERE
+          resa_id = :tripid
+          ;";
+        $sth = $pdo->prepare($sql);
+        $sth->bindParam(':tripid', $this->tripid, \PDO::PARAM_INT);
         $sth->execute();
       }
 
@@ -327,6 +399,17 @@ class NewTrip
         $sth->execute();
       }
 
+
+
+      if (!$mode) {
+        $sql = "DELETE FROM " . TABLE_PREFIX . "boenden_resor WHERE
+          resa_id = :tripid
+          ;";
+        $sth = $pdo->prepare($sql);
+        $sth->bindParam(':tripid', $this->tripid, \PDO::PARAM_INT);
+        $sth->execute();
+      }
+
       $i = 0;
       foreach ($this->rooms['id'] as $roomid) {
 
@@ -348,6 +431,14 @@ class NewTrip
 
       }
 
+      if (!$mode) {
+        $sql = "DELETE FROM " . TABLE_PREFIX . "datum WHERE
+          resa_id = :tripid
+          ;";
+        $sth = $pdo->prepare($sql);
+        $sth->bindParam(':tripid', $this->tripid, \PDO::PARAM_INT);
+        $sth->execute();
+      }
 
       foreach($this->formateddates as $date) {
         $sql = "INSERT INTO " . TABLE_PREFIX . "datum (
@@ -369,7 +460,8 @@ class NewTrip
       $pdo->rollBack();
       DBError::showError($e, __CLASS__, $sql);
       http_response_code(500);
-      exit;
+      return false;
     }
+    return true;
   }
 }
