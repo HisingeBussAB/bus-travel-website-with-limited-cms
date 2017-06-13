@@ -113,7 +113,7 @@ class NewTrip
       $textbody = trim($textbody, "<br />");
       if (!empty($texthead))
       {
-        $this->text += "<h3>" . $texthead . "</h3><p>" . $textbody . "</p>";
+        $this->text .= "<h3>" . $texthead . "</h3><p>" . $textbody . "</p>";
       }
     }
 

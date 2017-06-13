@@ -12,6 +12,7 @@ use HisingeBussAB\RekoResor\website as root;
 use HisingeBussAB\RekoResor\website\admin as admin;
 use HisingeBussAB\RekoResor\website\includes\classes\DB;
 use HisingeBussAB\RekoResor\website\includes\classes\DBError;
+use HisingeBussAB\RekoResor\website\includes\classes\Functions as functions;
 
 /**
  * Creates new or edits a trip post.
@@ -42,15 +43,7 @@ class Trip {
 
     $pdo = DB::get();
 
-    try {
-      $sql = "SELECT * FROM " . TABLE_PREFIX . "resor;";
-      $sth = $pdo->prepare($sql);
-      $sth->execute();
-      $result = $sth->fetchAll(\PDO::FETCH_ASSOC);
-    } catch(\PDOException $e) {
-      DBError::showError($e, __CLASS__, $sql);
-    }
-
+    //Form structure DB catches
     try {
       $sql = "SELECT * FROM " . TABLE_PREFIX . "hallplatser;";
       $sth = $pdo->prepare($sql);
@@ -78,7 +71,83 @@ class Trip {
       DBError::showError($e, __CLASS__, $sql);
     }
 
+    //ID specific DB catch
+    if ($tripid != "new") {
+      $tripid = filter_var(trim($tripid), FILTER_SANITIZE_NUMBER_INT);
+      try {
+        $sql = "SELECT * FROM " . TABLE_PREFIX . "resor WHERE id = :id;";
+        $sth = $pdo->prepare($sql);
+        $sth->bindParam(':id', $tripid, \PDO::PARAM_INT);
+        $sth->execute();
+        $trip = $sth->fetch(\PDO::FETCH_ASSOC);
+      } catch(\PDOException $e) {
+        DBError::showError($e, __CLASS__, $sql);
+      }
 
+      try {
+        $sql = "SELECT * FROM " . TABLE_PREFIX . "datum WHERE resa_id = :id ORDER BY datum;";
+        $sth = $pdo->prepare($sql);
+        $sth->bindParam(':id', $tripid, \PDO::PARAM_INT);
+        $sth->execute();
+        $departures = $sth->fetchAll(\PDO::FETCH_ASSOC);
+      } catch(\PDOException $e) {
+        DBError::showError($e, __CLASS__, $sql);
+      }
+
+      try {
+        $sql = "SELECT * FROM " . TABLE_PREFIX . "tillaggslistor WHERE resa_id = :id;";
+        $sth = $pdo->prepare($sql);
+        $sth->bindParam(':id', $tripid, \PDO::PARAM_INT);
+        $sth->execute();
+        $addons = $sth->fetchAll(\PDO::FETCH_ASSOC);
+      } catch(\PDOException $e) {
+        DBError::showError($e, __CLASS__, $sql);
+      }
+
+      try {
+        $sql = "SELECT * FROM " . TABLE_PREFIX . "resor_hallplatser WHERE resa_id = :id;";
+        $sth = $pdo->prepare($sql);
+        $sth->bindParam(':id', $tripid, \PDO::PARAM_INT);
+        $sth->execute();
+        $stops_trip = $sth->fetchAll(\PDO::FETCH_ASSOC);
+      } catch(\PDOException $e) {
+        DBError::showError($e, __CLASS__, $sql);
+      }
+
+      try {
+        $sql = "SELECT * FROM " . TABLE_PREFIX . "kategorier_resor WHERE resa_id = :id;";
+        $sth = $pdo->prepare($sql);
+        $sth->bindParam(':id', $tripid, \PDO::PARAM_INT);
+        $sth->execute();
+        $categories_trip = $sth->fetchAll(\PDO::FETCH_ASSOC);
+      } catch(\PDOException $e) {
+        DBError::showError($e, __CLASS__, $sql);
+      }
+
+      try {
+        $sql = "SELECT * FROM " . TABLE_PREFIX . "boenden_resor WHERE resa_id = :id;";
+        $sth = $pdo->prepare($sql);
+        $sth->bindParam(':id', $tripid, \PDO::PARAM_INT);
+        $sth->execute();
+        $rooms_trip = $sth->fetchAll(\PDO::FETCH_ASSOC);
+
+      } catch(\PDOException $e) {
+        DBError::showError($e, __CLASS__, $sql);
+      }
+    }
+    echo "<hr>";
+    var_dump($trip);
+    echo "<hr>";
+    var_dump($departures);
+    echo "<hr>";
+    var_dump($addons);
+    echo "<hr>";
+    var_dump($stops_trip);
+    echo "<hr>";
+    var_dump($categories_trip);
+    echo "<hr>";
+    var_dump($rooms_trip);
+    echo "<hr>";
     ?>
 
 
@@ -88,11 +157,35 @@ class Trip {
           <fieldset>
             <input type="hidden" name="tripid" value="<?php echo $tripid ?>">
             <label for="trip-heading">Rubrik</label>
-            <input type="text" maxlength="200" name="trip-heading" id="trip-heading">
+            <input type="text" maxlength="200" name="trip-heading" id="trip-heading" placeholder="Resansnamn" <?php if (isset($trip)) {echo "value='" . $trip['namn'] . "'";} ?>>
           </fieldset>
           <fieldset>
+            <?php
+            /*
+            $this->text = "";
+            foreach ($input["trip-text-heading"] as $id => $texthead) {
+              $texthead = strip_tags(trim($texthead), $allowed_tags);
+              $textbody = nl2br(strip_tags(trim($input["trip-text"][$id]), $allowed_tags));
+              $textbody = trim($textbody, "<br />");
+              if (!empty($texthead))
+              {
+                $this->text += "<h3>" . $texthead . "</h3><p>" . $textbody . "</p>";
+              }
+            }
+            $texthead = [];
+            $textbody = [];
+            return preg_replace('#<br\s*?/?>#i', "\n", $string);
+            */
+            echo "<hr>";
+            var_dump($trip['program']);
+            echo "<hr>";
+            var_dump(functions::get_string_between($trip['program'], "<h3>", "</h3>"));
+            echo "<hr>";
+            var_dump(functions::get_string_between($trip['program'], "<p>", "</p>"));
+            echo "<hr>";
+            ?>
             <label for="trip-summary">Summary</label>
-            <textarea type="text" name="trip-summary" id="trip-summary"></textarea>
+            <textarea type="text" name="trip-summary" id="trip-summary" placeholder="Ingress"> <?php if (isset($trip)) {echo functions::br2nl($trip['ingress']);} ?></textarea>
           </fieldset>
 
           <div id="trip-text">

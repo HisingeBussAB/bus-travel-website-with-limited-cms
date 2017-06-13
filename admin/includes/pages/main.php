@@ -43,10 +43,12 @@ class Main {
     $pdo = DB::get();
 
     try {
-      $sql = "SELECT * FROM " . TABLE_PREFIX . "resor;";
+      $sql = "SELECT resor.id, resor.namn, resor.aktiv, MIN(datum.datum) AS datum FROM " . TABLE_PREFIX . "resor AS resor INNER JOIN " . TABLE_PREFIX . "datum AS datum ON resor.id = datum.resa_id GROUP BY resor.id ORDER BY datum ;";
       $sth = $pdo->prepare($sql);
       $sth->execute();
       $result = $sth->fetchAll(\PDO::FETCH_ASSOC);
+      var_dump($result);
+
     } catch(\PDOException $e) {
       DBError::showError($e, __CLASS__, $sql);
     }
@@ -61,7 +63,15 @@ class Main {
         <h2>Resor</h2>
         <ul>
           <li><a href="/adminp/nyresa/" title="Lägg in en ny resa">Ny resa</a></li>
-          <li>Resa, datum | aktiv/inaktiv X</li>
+          <li>
+            <table>
+              <tbody>
+                <?php foreach ($result as $line) {
+                  echo "<tr><td><a href='http://rekoresor.busspoolen.se/adminp/nyresa/" . $line['id'] . "'>" . $line['namn'] . "</a></td><td>" . $line['datum'] . "</td><td>" . $line['aktiv'] . "</td><td><tr>";
+                } ?>
+              </tbody>
+            </table>
+          </li>
         </ul>
       </div>
       <div class="col-lg-3 col-md-6">
