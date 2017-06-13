@@ -37,6 +37,7 @@ class NewTrip
   private $addressrequired; //bool adress mandatory when booking
   private $personalidrequired; //bool personal id number mandatory when booking
   private $formateddates; //array(dates) departure dates.
+  private $photofolder; //string
 
 
   public function __construct($formData) {
@@ -79,8 +80,8 @@ class NewTrip
     }
 
     //initialize instance of me
-    $hej = new NewTrip($formData);
-    var_dump($hej);
+    $form = new NewTrip($formData);
+    $form->writeToDB();
   }
 
 
@@ -130,66 +131,60 @@ class NewTrip
     $this->addons = [];
 
     $i = 0;
-    foreach ($input["trip-tillagg"] as $addon) {
-      $this->addons['name'][$i] = strip_tags(trim($addon), $allowed_tags);
-
-      $i++;
+    foreach ($input["trip-tillagg"] as $key=>$addon) {
+      if (!empty($addon)) {
+        $this->addons['name'][$i] = strip_tags(trim($addon), $allowed_tags);
+        $this->addons['price'][$i] = filter_var(trim($input["trip-tillagg-pris"][$key]), FILTER_SANITIZE_NUMBER_INT);
+        $i++;
+      }
     }
-    $i = 0;
-    foreach ($input["trip-tillagg-pris"] as $addonprice) {
-      $this->addons['price'][$i] = filter_var(trim($addonprice), FILTER_SANITIZE_NUMBER_INT);
 
-      $i++;
-    }
 
     $this->price = filter_var(trim($input["trip-price"]), FILTER_SANITIZE_NUMBER_INT);
 
-    $roomids = [];
-    $roomprices = [];
+    $this->rooms = [];
     if (isset($input["useroom"])) {
       $i = 0;
       foreach ($input["useroom"] as $id) {
         $id = filter_var(trim($id), FILTER_SANITIZE_NUMBER_INT);
-        $roomids[$i] = $id;
-        $roomprices[$i] = filter_var(trim($input["roomprice"][$id]), FILTER_SANITIZE_NUMBER_INT);
+        $this->rooms['id'][$i] = $id;
+        $this->rooms['price'][$i] = filter_var(trim($input["roomprice"][$id]), FILTER_SANITIZE_NUMBER_INT);
         $i++;
       }
     }
 
-    $stopids = [];
-    $stopfroms = [];
-    $stoptos = [];
+    $this->stops = [];
     if (isset($input["usestop"])) {
       $i = 0;
       foreach ($input["usestop"] as $id) {
         $id = filter_var(trim($id), FILTER_SANITIZE_NUMBER_INT);
-        $stopids[$i] = $id;
-        $stopfroms[$i] = date('H:i:s', strtotime(filter_var(trim($input["stopfrom"][$id]), FILTER_SANITIZE_STRING)));
-        $stoptos[$i] = date('H:i:s', strtotime(filter_var(trim($input["stopto"][$id]), FILTER_SANITIZE_STRING)));
+        $this->stops['id'][$i] = $id;
+        $this->stops['from'][$i] = date('H:i:s', strtotime(filter_var(trim($input["stopfrom"][$id]), FILTER_SANITIZE_STRING)));
+        $this->stops['to'][$i] = date('H:i:s', strtotime(filter_var(trim($input["stopto"][$id]), FILTER_SANITIZE_STRING)));
         $i++;
       }
     }
 
-    $categoryids = [];
+    $this->categoryids = [];
     if (isset($input["usecategory"])) {
       $i = 0;
       foreach ($input["usecategory"] as $id) {
         $id = filter_var(trim($id), FILTER_SANITIZE_NUMBER_INT);
-        $categoryids[$i] = $id;
+        $this->categoryids[$i] = $id;
         $i++;
       }
     }
 
     if (isset($input["trip-address-required"])) {
-      $addressrequired = 1;
+      $this->addressrequired = 1;
     } else {
-      $addressrequired = 0;
+      $this->addressrequired = 0;
     }
 
     if (isset($input["trip-personalid-required"])) {
-      $personalidrequired = 1;
+      $this->personalidrequired = 1;
     } else {
-      $personalidrequired = 0;
+      $this->personalidrequired = 0;
     }
 
 
@@ -199,27 +194,25 @@ class NewTrip
       $dates[$i] = filter_var(trim($date), FILTER_SANITIZE_STRING);
       $i++;
     }
-
-    //VALIDATION
     $i = 0;
-    $formateddates = [];
+    $this->formateddates = [];
     foreach ($dates as $date) {
       $date = date('Y-m-d', strtotime($date));
       if ($date > date('Y-m-d', strtotime("2000-01-01")) && $date < date('Y-m-d', strtotime("2917-01-01"))) {
-        $formateddates[$i] = $date;
+        $this->formateddates[$i] = $date;
         $i++;
       } else {
-        echo $date . " datumet är i felaktikgt format eller i fel millenium. Försök igen. Använd Chrome för bäst datumstöd eller skriv in i format YYYY-MM-DD.";
+        echo "\"" . $date . "\" datumet är i felaktikgt format eller i fel millenium. Försök igen. Använd Chrome för bäst datumstöd eller skriv in i format YYYY-MM-DD.";
         http_response_code(416);
         exit;
       }
     }
 
-    $photofolder = $heading . "_" . $formateddates[0];
+    $photofolder = $this->heading . "_" . $this->formateddates[0];
     $photofolder = filter_var(trim($photofolder), FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW);
     $photofolder = filter_var($photofolder, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
     $photofolder = filter_var($photofolder, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_BACKTICK);
-    $photofolder = filter_var($photofolder, FILTER_SANITIZE_EMAIL);
+    $this->photofolder = filter_var($photofolder, FILTER_SANITIZE_EMAIL);
   }
 
 
@@ -228,57 +221,56 @@ class NewTrip
 
     try {
       $pdo->beginTransaction();
-        $sql = "INSERT INTO " . TABLE_PREFIX . "resor (
-          pris,
-          datum,
-          namn,
-          ingress,
-          program,
-          ingar,
-          bildkatalog,
-          personnr,
-          fysiskadress,
-          aktiv,
-          hotel,
-          hotellink,
-          facebook,
-          antaldagar
-        ) VALUES (
-          :price,
-          :date,
-          :name,
-          :summary,
-          :program,
-          :includes,
-          :photofolder,
-          :personalid,
-          :address,
-          1,
-          :hotel,
-          :hotellink,
-          :facebook,
-          :duration
-        );";
-        $sth = $pdo->prepare($sql);
-        $sth->bindParam(':price', $price, \PDO::PARAM_INT);
-        $sth->bindParam(':date', $formateddates[0], \PDO::PARAM_STR);
-        $sth->bindParam(':name', $heading, \PDO::PARAM_STR);
-        $sth->bindParam(':summary', $summary, \PDO::PARAM_LOB);
-        $sth->bindParam(':program', $text, \PDO::PARAM_LOB);
-        $sth->bindParam(':includes', $includes, \PDO::PARAM_LOB);
-        $sth->bindParam(':photofolder', $photfolder, \PDO::PARAM_STR);
-        $sth->bindParam(':personalid', $personalidrequired, \PDO::PARAM_INT);
-        $sth->bindParam(':address', $addressrequired, \PDO::PARAM_INT);
-        $sth->bindParam(':hotel', $hotel, \PDO::PARAM_LOB);
-        $sth->bindParam(':hotellink', $hotellink, \PDO::PARAM_STR);
-        $sth->bindParam(':facebook', $facebooklink, \PDO::PARAM_STR);
-        $sth->bindParam(':duration', $duration, \PDO::PARAM_INT);
+      $sql = "INSERT INTO " . TABLE_PREFIX . "resor (
+        pris,
+        namn,
+        ingress,
+        program,
+        ingar,
+        bildkatalog,
+        personnr,
+        fysiskadress,
+        aktiv,
+        hotel,
+        hotellink,
+        facebook,
+        antaldagar
+      ) VALUES (
+        :price,
+        :name,
+        :summary,
+        :program,
+        :includes,
+        :photofolder,
+        :personalid,
+        :address,
+        1,
+        :hotel,
+        :hotellink,
+        :facebook,
+        :duration
+      );";
+      $sth = $pdo->prepare($sql);
+      $sth->bindParam(':price', $this->price, \PDO::PARAM_INT);
+      $sth->bindParam(':name', $this->heading, \PDO::PARAM_STR);
+      $sth->bindParam(':summary', $this->summary, \PDO::PARAM_LOB);
+      $sth->bindParam(':program', $this->text, \PDO::PARAM_LOB);
+      $sth->bindParam(':includes', $this->includes, \PDO::PARAM_LOB);
+      $sth->bindParam(':photofolder', $this->photofolder, \PDO::PARAM_STR);
+      $sth->bindParam(':personalid', $this->personalidrequired, \PDO::PARAM_INT);
+      $sth->bindParam(':address', $this->addressrequired, \PDO::PARAM_INT);
+      $sth->bindParam(':hotel', $this->hotel, \PDO::PARAM_LOB);
+      $sth->bindParam(':hotellink', $this->hotellink, \PDO::PARAM_STR);
+      $sth->bindParam(':facebook', $this->facebooklink, \PDO::PARAM_STR);
+      $sth->bindParam(':duration', $this->duration, \PDO::PARAM_INT);
 
-        $sth->execute();
-        $tripid = intval($pdo->lastInsertId());
+      $sth->execute();
+      var_dump($pdo->lastInsertId());
+      $this->tripid = intval($pdo->lastInsertId());
+
 
       $i = 0;
-      foreach ($addons as $addon) {
+      foreach ($this->addons['name'] as $addon) {
         $sql = "INSERT INTO " . TABLE_PREFIX . "tillaggslistor (
           resa_id,
           pris,
@@ -289,15 +281,15 @@ class NewTrip
           :name
         );";
         $sth = $pdo->prepare($sql);
-        $sth->bindParam(':tripid', $tripid, \PDO::PARAM_INT);
-        $sth->bindParam(':price', $addonsprices[$i], \PDO::PARAM_INT);
+        $sth->bindParam(':tripid', $this->tripid, \PDO::PARAM_INT);
+        $sth->bindParam(':price', $this->addons['price'][$i], \PDO::PARAM_INT);
         $sth->bindParam(':name', $addon, \PDO::PARAM_STR);
 
         $sth->execute();
         $i++;
       }
 
-      foreach ($categoryids as $categoryid) {
+      foreach ($this->categoryids as $categoryid) {
 
         $sql = "INSERT INTO " . TABLE_PREFIX . "kategorier_resor (
           resa_id,
@@ -307,14 +299,14 @@ class NewTrip
           :categoriyid
         );";
         $sth = $pdo->prepare($sql);
-        $sth->bindParam(':tripid', $tripid, \PDO::PARAM_INT);
+        $sth->bindParam(':tripid', $this->tripid, \PDO::PARAM_INT);
         $sth->bindParam(':categoriyid', $categoryid, \PDO::PARAM_INT);
 
         $sth->execute();
       }
 
       $i = 0;
-      foreach ($stopids as $stopid) {
+      foreach ($this->stops['id'] as $stopid) {
         $sql = "INSERT INTO " . TABLE_PREFIX . "resor_hallplatser (
           resa_id,
           hallplats_id,
@@ -327,16 +319,16 @@ class NewTrip
           :out
         );";
         $sth = $pdo->prepare($sql);
-        $sth->bindParam(':tripid', $tripid, \PDO::PARAM_INT);
+        $sth->bindParam(':tripid', $this->tripid, \PDO::PARAM_INT);
         $sth->bindParam(':stopid', $stopid, \PDO::PARAM_INT);
-        $sth->bindParam(':in', $stoptos[$i], \PDO::PARAM_STR);
-        $sth->bindParam(':out', $stopfroms[$i], \PDO::PARAM_STR);
+        $sth->bindParam(':in', $this->stops['to'][$i], \PDO::PARAM_STR);
+        $sth->bindParam(':out', $this->stops['from'][$i], \PDO::PARAM_STR);
 
         $sth->execute();
       }
 
       $i = 0;
-      foreach ($roomids as $roomid) {
+      foreach ($this->rooms['id'] as $roomid) {
 
         $sql = "INSERT INTO " . TABLE_PREFIX . "boenden_resor (
           resa_id,
@@ -348,43 +340,31 @@ class NewTrip
           :price
         );";
         $sth = $pdo->prepare($sql);
-        $sth->bindParam(':tripid', $tripid, \PDO::PARAM_INT);
+        $sth->bindParam(':tripid', $this->tripid, \PDO::PARAM_INT);
         $sth->bindParam(':roomid', $roomid, \PDO::PARAM_INT);
-        $sth->bindParam(':price', $roomprices[$i], \PDO::PARAM_INT);
+        $sth->bindParam(':price', $this->rooms['price'][$i], \PDO::PARAM_INT);
 
         $sth->execute();
 
       }
 
-        if (count($formateddates) > 1) {
-          for($i = 1; $i < count($formateddates); $i++) {
-            if (isset($formateddates[$i])) {
-            var_dump($i);
-            var_dump($formateddates[$i]);
-            $sql = "INSERT INTO " . TABLE_PREFIX . "extra_datum (
-              resa_id,
-              datum
-            ) VALUES (
-              :tripid,
-              :date
-            );";
-            $sth = $pdo->prepare($sql);
-            $sth->bindParam(':tripid', $tripid, \PDO::PARAM_INT);
-            $sth->bindParam(':date', $formateddates[$i], \PDO::PARAM_STR);
-            $sth->execute();
-          } else {
-            throw new \Exception("ERROR: Date out of bounds!<br />");
-            break;
-          }
-        }
-      }
 
+      foreach($this->formateddates as $date) {
+        $sql = "INSERT INTO " . TABLE_PREFIX . "datum (
+          resa_id,
+          datum
+        ) VALUES (
+          :tripid,
+          :date
+        );";
+        $sth = $pdo->prepare($sql);
+        $sth->bindParam(':tripid', $this->tripid, \PDO::PARAM_INT);
+        $sth->bindParam(':date', $date, \PDO::PARAM_STR);
+        $sth->execute();
+    }
       $pdo->commit();
-    } catch(\Exception $e) {
-      $pdo->rollBack();
-      var_dump($e->getMessage());
-      http_response_code(500);
-      exit;
+
+
     } catch(\PDOException $e) {
       $pdo->rollBack();
       DBError::showError($e, __CLASS__, $sql);
