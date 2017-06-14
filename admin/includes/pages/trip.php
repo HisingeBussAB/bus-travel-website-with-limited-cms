@@ -135,19 +135,24 @@ class Trip {
         DBError::showError($e, __CLASS__, $sql);
       }
     }
-    echo "<hr>";
-    var_dump($trip);
-    echo "<hr>";
-    var_dump($departures);
-    echo "<hr>";
-    var_dump($addons);
-    echo "<hr>";
-    var_dump($stops_trip);
-    echo "<hr>";
-    var_dump($categories_trip);
-    echo "<hr>";
-    var_dump($rooms_trip);
-    echo "<hr>";
+
+    if (isset($trip)) {
+
+      $textheads = functions::get_string_between($trip['program'], "<h3>", "</h3>");
+      $textbodies = functions::get_string_between($trip['program'], "<p>", "</p>");
+      if (count($textheads) !== count($textbodies))
+      {
+        echo "<p class='php-warning'>Varning: Troligen felformaterrad programdata. Det går bra att fortsätta men kontrollera att inget saknas i programtexten.</p>";
+      }
+
+      $hotelhead = functions::get_string_between($trip['hotel'], "<h3>", "</h3>");
+      $hoteltext = functions::get_string_between($trip['hotel'], "<p>", "</p>");
+      if (count($hotelhead) !== count($hoteltext))
+      {
+        echo "<p class='php-warning'>Varning: Hotellinformation troligen korruperad. Det går att fortsätta men kontrollera att hotellfälten stämmer.</p>";
+      }
+      $includes = functions::get_string_between($trip['ingar'], "<p>", "</p>");
+    }
     ?>
 
 
@@ -160,40 +165,29 @@ class Trip {
             <input type="text" maxlength="200" name="trip-heading" id="trip-heading" placeholder="Resansnamn" <?php if (isset($trip)) {echo "value='" . $trip['namn'] . "'";} ?>>
           </fieldset>
           <fieldset>
-            <?php
-            /*
-            $this->text = "";
-            foreach ($input["trip-text-heading"] as $id => $texthead) {
-              $texthead = strip_tags(trim($texthead), $allowed_tags);
-              $textbody = nl2br(strip_tags(trim($input["trip-text"][$id]), $allowed_tags));
-              $textbody = trim($textbody, "<br />");
-              if (!empty($texthead))
-              {
-                $this->text += "<h3>" . $texthead . "</h3><p>" . $textbody . "</p>";
-              }
-            }
-            $texthead = [];
-            $textbody = [];
-            return preg_replace('#<br\s*?/?>#i', "\n", $string);
-            */
-            echo "<hr>";
-            var_dump($trip['program']);
-            echo "<hr>";
-            var_dump(functions::get_string_between($trip['program'], "<h3>", "</h3>"));
-            echo "<hr>";
-            var_dump(functions::get_string_between($trip['program'], "<p>", "</p>"));
-            echo "<hr>";
-            ?>
             <label for="trip-summary">Summary</label>
-            <textarea type="text" name="trip-summary" id="trip-summary" placeholder="Ingress"> <?php if (isset($trip)) {echo functions::br2nl($trip['ingress']);} ?></textarea>
+            <textarea type="text" name="trip-summary" id="trip-summary" placeholder="Ingress"><?php if (isset($trip)) {echo functions::br2nl($trip['ingress']);} ?></textarea>
           </fieldset>
 
+
           <div id="trip-text">
-            <fieldset id="trip-text-1">
-              <label for="trip-text-heading[1]">Dag 1</label>
-              <input type="text" maxlength="80" name="trip-text-heading[1]" id="trip-text-1-heading" placeholder="Dag 1">
-              <textarea type="text" name="trip-text[1]" id="trip-text-1-text"></textarea>
-            </fieldset>
+            <?php
+            if (!isset($trip)) {
+              echo "<fieldset id='trip-text-1' class='trip-text'>";
+              echo  "<label for='trip-text-heading[1]'>Dag 1</label>";
+              echo  "<input type='text' maxlength='80' name='trip-text-heading[1]' id='trip-text-heading-1' placeholder='Dag 1'>";
+              echo  "<textarea type='text' name='trip-text[1]' id='trip-text-1-text' placeholder='Programtext dag 1'></textarea>";
+              echo "</fieldset>";
+            } else {
+              foreach ($textheads as $id=>$texthead) {
+                echo "<fieldset id='trip-text-" . ($id+1) . "' class='trip-text'>";
+                echo "<label for='trip-text-heading[" . ($id+1) . "]'>Dag " . ($id+1) . "</label>";
+                echo "<input type='text' maxlength='80' name='trip-text-heading[" . ($id+1) . "]' class='trip-text-heading' value='" . $texthead . "'>";
+                echo "<textarea type='text' name='trip-text[" . ($id+1) . "]' class='trip-text-text'>" . functions::br2nl($textbodies[$id]) . "</textarea>";
+                echo "</fieldset>";
+              }
+            }
+            ?>
           </div>
 
           <fieldset>
@@ -203,17 +197,29 @@ class Trip {
 
           <fieldset>
             <label for="trip-text-hotel-heading">Hotel</label>
-            <input type="text" maxlength="100" name="trip-text-hotel-heading" id="trip-text-1-heading" placeholder="Hotellets namn">
-            <textarea type="text" name="trip-text-hotel-text" id="trip-text-1-text" placeholder="Hotellvägen 5&#10;888 88 Hotellstaden&#10;+46888888"></textarea>
-            <input type="text" maxlength="250" name="trip-text-hotel-link" id="trip-text-1-heading" placeholder="http://www.hotel.se">
+            <input type="text" maxlength="100" name="trip-text-hotel-heading" id="trip-hotel-heading" placeholder="Hotellets namn" value="<?php if (isset($trip)) {echo $hotelhead[0];} ?>">
+            <textarea type="text" name="trip-text-hotel-text" id="trip-hotel-text" placeholder="Hotellvägen 5&#10;888 88 Hotellstaden&#10;+46888888"><?php if (isset($trip)) {echo functions::br2nl($hoteltext[0]);} ?></textarea>
+            <input type="text" maxlength="250" name="trip-text-hotel-link" id="trip-hotel-link" placeholder="http://www.hotel.se" value="<?php if (isset($trip)) {echo $trip['hotellink'];} ?>">
           </fieldset>
 
           <fieldset>
             <h3>Avresedatum</h3>
             <div id="dates-list">
-              <p id="date-1">
+              <?php
+              if (!isset($trip)) {
+               ?>
+              <p id="date-1" class="date-item">
                 <input type="date" name="trip-date[1]" id="trip-date-1" placeholder="YYYY-MM-DD">
               </p>
+              <?php
+              } else {
+                foreach ($departures as $id=>$departure) {
+                  echo "<p id='date-" . ($id+1) . "' class='date-item'>";
+                  echo  "<input type='date' name='trip-date[" . ($id+1) . "]' id='trip-date-" . ($id+1) . "' placeholder='YYYY-MM-DD' value='" . $departure['datum'] . "'>";
+                  echo "</p>";
+                }
+              }
+               ?>
             </div>
             <p>
               <button type="button" name="trip-add-date" id="trip-add-date">Fler avgångar</button>
@@ -224,21 +230,33 @@ class Trip {
           <fieldset>
             <h3>Antal dagar</h3>
             <p>
-              <input type="number" name="trip-duration" id="trip-duration" placeholder="0">
+              <input type="number" name="trip-duration" id="trip-duration" placeholder="0" value="<?php if (isset($trip)) {echo $trip['antaldagar'];} ?>">
             </p>
           </fieldset>
 
           <fieldset>
             <label for="trip-facebook">Facebook event url</label>
-            <input type="text" maxlength="250" name="trip-facebook" id="trip-text-1-heading" placeholder="Vårt hotel">
+            <input type="text" maxlength="250" name="trip-facebook" id="trip-text-1-heading" placeholder="Vårt hotel" value="<?php if (isset($trip)) {echo $trip['hotellink'];} ?>">
           </fieldset>
 
           <fieldset>
             <h3>Ingår i resan</h3>
             <div id="includes-list">
-              <p id="include-1">
+              <?php
+              if (!isset($trip)) {
+               ?>
+              <p id="include-1" class="include-item">
                 <input type="text" maxlength="150" name="trip-ingar[1]" id="trip-tillagg-1" value="Resa med modern helturistbuss t/r">
               </p>
+              <?php
+              } else {
+                foreach ($includes as $id=>$include) {
+                  echo "<p id='include-" . ($id+1) . "' class='include-item'>";
+                  echo  "<input type='text' maxlength='150' name='trip-ingar[" . ($id+1) . "]' id='trip-tillagg-" . ($id+1) . "' value='" . $include . "'>";
+                  echo "</p>";
+                }
+              }
+               ?>
             </div>
             <p>
               <button type="button" name="trip-add-includes" id="trip-add-includes">Fler ingår</button>
@@ -249,10 +267,23 @@ class Trip {
           <fieldset>
             <h3>Frivilliga tillägg</h3>
             <div id="addons-list">
-            <p id="addon-1">
+            <?php
+            if (!isset($trip)) {
+             ?>
+            <p id="addon-1" class="addon-item">
               <input type="text" maxlength="79" name="trip-tillagg[1]" id="trip-tillagg-1" placeholder="Tillägg">
               <input type="number" name="trip-tillagg-pris[1]" id="trip-tillagg-1-pris" placeholder="0"> :-
             </p>
+            <?php
+            } else {
+              foreach ($addons as $id=>$addon) {
+                echo "<p id='addon-" . ($id+1) . "' class='addon-item'>";
+                echo  "<input type='text' maxlength='79' name='trip-tillagg[" . ($id+1) . "]' id='trip-tillagg-" . ($id+1) . "' placeholder='Tillägg' value='" . $addon['namn'] . "'>";
+                echo  "<input type='number' name='trip-tillagg-pris[" . ($id+1) . "]' id='trip-tillagg-" . ($id+1) . "-pris' placeholder='0' value='" . $addon['pris'] . "'> :-";
+                echo "</p>";
+              }
+            }
+             ?>
           </div>
             <p>
               <button type="button" name="trip-add-addon" id="trip-add-addon">Fler tillägg</button>
@@ -263,7 +294,7 @@ class Trip {
           <fieldset>
             <h3>Grundpris</h3>
             <p>
-              <input type="number" name="trip-price" id="trip-price" placeholder="0"> :-
+              <input type="number" name="trip-price" id="trip-price" placeholder="0" value="<?php if (isset($trip)) {echo $trip['pris'];} ?>"> :-
             </p>
           </fieldset>
 
@@ -277,6 +308,8 @@ class Trip {
               </tr>
               <?php
                 foreach($rooms as $room) {
+
+                  var_dump($rooms_trip);
                   echo "<tr><td><input type='checkbox' name='useroom[]' value='" . $room['id'] . "' class='room-checkbox'></td><td>" . $room['boende'];
                   echo "</td>";
                   echo "<td><input type='number' name='roomprice[" . $room['id'] . "]' placeholder='0' class='room-price'> :-</td></tr>";
@@ -296,6 +329,8 @@ class Trip {
               </tr>
               <?php
                 foreach($stops as $stop) {
+                  var_dump($stops_trip);
+
                   echo "<tr><td><input type='checkbox' name='usestop[]' value='" . $stop['id'] . "' class='stop-checkbox'></td><td>" . $stop['plats'];
                   echo "</td><td><input type='time' name='stopfrom[" . $stop['id'] . "]' placeholder='HH:MM' class='stop-input'></td>";
                   echo "<td><input type='time' name='stopto[" . $stop['id'] . "]' placeholder='HH:MM' class='stop-input'></td></tr>";
@@ -313,6 +348,8 @@ class Trip {
               </tr>
               <?php
                 foreach($categories as $category) {
+
+                  var_dump($categories_trip);
                   echo "<tr><td><input type='checkbox' name='usecategory[]' value='" . $category['id'] . "' class='category-checkbox'></td><td>" . $category['kategori'];
                   echo "</td></tr>";
                 }
@@ -322,8 +359,8 @@ class Trip {
 
           <fieldset>
             <h3>Inställningar för bokning</h3>
-            <p><input type="checkbox" name="trip-address-required" id="trip-address-required" value="address-required" checked>Fysisk address behöver anges vid bokning.</p>
-            <p><input type="checkbox" name="trip-personalid-required" id="trip-personalid-required" value="personalid-required">Personnummer behöver anges vid bokning.</p>
+            <p><input type="checkbox" name="trip-address-required" id="trip-address-required" value="address-required"<?php if (isset($trip)) {if ($trip['fysiskadress'] == 1) { echo " checked "; }} else { echo " checked "; } ?>>Fysisk address behöver anges vid bokning.</p>
+            <p><input type="checkbox" name="trip-personalid-required" id="trip-personalid-required" value="personalid-required"<?php if (isset($trip)) {if ($trip['personnr'] == 1) { echo " checked "; }} ?>>Personnummer behöver anges vid bokning.</p>
           </fieldset>
 
           <fieldset>

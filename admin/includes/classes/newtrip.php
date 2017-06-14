@@ -111,32 +111,45 @@ class NewTrip
       $texthead = strip_tags(trim($texthead), $allowed_tags);
       $textbody = nl2br(strip_tags(trim($input["trip-text"][$id]), $allowed_tags));
       $textbody = trim($textbody, "<br />");
-      if (!empty($texthead))
-      {
-        $this->text .= "<h3>" . $texthead . "</h3><p>" . $textbody . "</p>";
+
+      if ((strpos($texthead, '<h3>') !== false) || (strpos($texthead, '<p>') !== false)) {
+        echo "Inte accpterad. Det går inte att använda taggarna h3 eller p i programtext och underrubrik. Underrubriken visas automatiskt som h3 och knappen lägg till dag/paragraf skall användas för att få rätt formaterade paragrafer.";
+        http_response_code(400);
+        exit;
       }
+      $this->text .= "<h3>" . $texthead . "</h3><p>" . $textbody . "</p>";
     }
 
 
     $hotelname = strip_tags(trim($input["trip-text-hotel-heading"]), $allowed_tags);
     $hoteltext = nl2br(strip_tags(trim($input["trip-text-hotel-text"]), $allowed_tags));
     $hoteltext = trim($hoteltext, "<br />");
+    if ((strpos($hotelname, '<h3>') !== false) || (strpos($hoteltext, '<p>') !== false)) {
+      echo "Inte accpterad. Det går inte att använda taggarna h3 eller p i hotellnamn eller hotellbeskrivning/adress.";
+      http_response_code(400);
+      exit;
+    }
     $this->hotel = "<h3>" . $hotelname . "</h3><p>" . $hoteltext . "</p>";
 
     $this->hotellink = filter_var(trim($input["trip-text-hotel-link"]), FILTER_SANITIZE_URL);
-    if ((substr( $this->hotellink, 0, 7 ) !== "http://") || (substr( $this->hotellink, 0, 8 ) !== "https://")) {
+    if ((substr( $this->hotellink, 0, 6 ) !== "http://") || (substr( $this->hotellink, 0, 7 ) !== "https://")) {
       $this->hotellink = "http://" . $this->hotellink;
     }
 
     $this->facebooklink = filter_var(trim($input["trip-facebook"]), FILTER_SANITIZE_URL);
-    if ((substr( $this->facebooklink, 0, 7 ) !== "http://") || (substr( $this->facebooklink, 0, 8 ) !== "https://")) {
+    if ((substr( $this->facebooklink, 0, 6 ) !== "http://") || (substr( $this->facebooklink, 0, 7 ) !== "https://")) {
       $this->facebooklink = "http://" . $this->facebooklink;
     }
 
     $this->includes = "";
     foreach ($input["trip-ingar"] as $include) {
       if (!empty($include)) {
-        $this->includes += "<p>" . strip_tags(trim($include), $allowed_tags) . "</p>";
+        if (strpos($include, '<p>') !== false) {
+          echo "Inte accpterad. Det går inte att använda p taggen i ett listan med som ingår. Varje fält är en egen rad.";
+          http_response_code(400);
+          exit;
+        }
+        $this->includes .= "<p>" . strip_tags(trim($include), $allowed_tags) . "</p>";
       }
     }
 

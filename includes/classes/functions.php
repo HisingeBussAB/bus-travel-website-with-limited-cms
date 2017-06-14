@@ -22,18 +22,20 @@ class Functions
   }
 
   public static function get_string_between($string, $start, $end){
-    $split_string       = explode($end,$string);
-    echo "<br><br>";
-    echo "split_string:<br>";
-    var_dump($split_string);
-    foreach($split_string as $data) {
-      echo "<br><br>";
-      echo "data:<br>";
-         $str_pos       = strpos($data,$start);
-         $last_pos      = strlen($data);
-         $capture_len   = $last_pos - $str_pos;
-         $return[]      = substr($data,$str_pos+1,$capture_len);
+    $split_string       = array_filter(explode($start,$string));
+    if (empty($split_string)) {
+      return  false;
+    }
+    foreach($split_string as $string) {
+      if (!empty($string))
+      {
+        $capture = substr($string,0,strpos($string,$end));
+        if (!empty($capture)) {
+          $return[] = $capture;
+        }
+      }
     }
     return $return;
   }
+
 }

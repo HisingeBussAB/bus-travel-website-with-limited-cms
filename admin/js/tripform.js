@@ -2,12 +2,11 @@
 
 $(function() {
 
-
-  var days = 1;
-  var includes = 1;
-  var addons = 1;
+  var days = $('.trip-text').length
+  var includes = $('.include-item').length
+  var addons =  $('.addon-item').length
   var pictures = 1;
-  var dates = 1;
+  var dates = $('.date-item').length
 
   // Listeners
   $('#trip-add-paragraph').click(function(event){
