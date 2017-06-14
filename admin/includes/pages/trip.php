@@ -109,7 +109,7 @@ class Trip {
         $sth = $pdo->prepare($sql);
         $sth->bindParam(':id', $tripid, \PDO::PARAM_INT);
         $sth->execute();
-        $stops_trip = $sth->fetchAll(\PDO::FETCH_ASSOC);
+        $stops_trip = $sth->fetchAll(\PDO::FETCH_NAMED);
       } catch(\PDOException $e) {
         DBError::showError($e, __CLASS__, $sql);
       }
@@ -119,7 +119,7 @@ class Trip {
         $sth = $pdo->prepare($sql);
         $sth->bindParam(':id', $tripid, \PDO::PARAM_INT);
         $sth->execute();
-        $categories_trip = $sth->fetchAll(\PDO::FETCH_ASSOC);
+        $categories_trip = $sth->fetchAll(\PDO::FETCH_NAMED);
       } catch(\PDOException $e) {
         DBError::showError($e, __CLASS__, $sql);
       }
@@ -129,7 +129,7 @@ class Trip {
         $sth = $pdo->prepare($sql);
         $sth->bindParam(':id', $tripid, \PDO::PARAM_INT);
         $sth->execute();
-        $rooms_trip = $sth->fetchAll(\PDO::FETCH_ASSOC);
+        $rooms_trip = $sth->fetchAll(\PDO::FETCH_COLUMN);
 
       } catch(\PDOException $e) {
         DBError::showError($e, __CLASS__, $sql);
@@ -310,9 +310,18 @@ class Trip {
                 foreach($rooms as $room) {
 
                   var_dump($rooms_trip);
-                  echo "<tr><td><input type='checkbox' name='useroom[]' value='" . $room['id'] . "' class='room-checkbox'></td><td>" . $room['boende'];
-                  echo "</td>";
-                  echo "<td><input type='number' name='roomprice[" . $room['id'] . "]' placeholder='0' class='room-price'> :-</td></tr>";
+                  echo "<br>";
+                  var_dump($room);
+/*
+                  if ((isset($trip)) && ($rooms_trip["boende_id"] == $room["id"])) {
+                    echo "<tr><td><input type='checkbox' name='useroom[]' value='" . $room['id'] . "' class='room-checkbox'></td><td>" . $room['boende'];
+                    echo "</td>";
+                    echo "<td><input type='number' name='roomprice[" . $room['id'] . "]' placeholder='0' class='room-price'> :-</td></tr>";
+                  } else {
+                    echo "<tr><td><input type='checkbox' name='useroom[]' value='" . $room['id'] . "' class='room-checkbox'></td><td>" . $room['boende'];
+                    echo "</td>";
+                    echo "<td><input type='number' name='roomprice[" . $room['id'] . "]' placeholder='0' class='room-price'> :-</td></tr>";
+                  }*/
                 }
                ?>
               </tr></table>
