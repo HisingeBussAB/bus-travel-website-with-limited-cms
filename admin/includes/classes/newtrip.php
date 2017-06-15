@@ -176,7 +176,6 @@ class NewTrip
         $this->rooms['price'][$i] = filter_var(trim($input["roomprice"][$id]), FILTER_SANITIZE_NUMBER_INT);
         $i++;
       }
-      var_dump($this->rooms);
     }
 
     $this->stops = [];

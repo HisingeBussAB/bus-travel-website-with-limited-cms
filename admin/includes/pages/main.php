@@ -66,7 +66,14 @@ class Main {
             <table>
               <tbody>
                 <?php foreach ($result as $line) {
-                  echo "<tr><td><a href='http://rekoresor.busspoolen.se/adminp/nyresa/" . $line['id'] . "'>" . $line['namn'] . "</a></td><td>" . $line['datum'] . "</td><td>" . $line['aktiv'] . "</td><td><tr>";
+                  echo "<tr><td><a href='http://rekoresor.busspoolen.se/adminp/nyresa/" . $line['id'] . "'>" . $line['namn'] . "</a></td><td>" . $line['datum'] . "</td><td>";
+                  if ($line['aktiv'] == 1) {
+                    echo "AKTIV";
+                  } else {
+                    echo "INAKITV";
+                  }
+                  echo"</td><td><i class='fa fa-trash-o' aria-hidden='true'></i></td><tr>";
+
                 } ?>
               </tbody>
             </table>

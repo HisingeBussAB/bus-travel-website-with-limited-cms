@@ -385,11 +385,42 @@ class Trip {
         </div>
       </form>
 
-        <h3>Lägg till bilder</h3>
-        <div id="pictures-list">
-          <p id="picture-1">
-            <input type="file" name="trip-bild[1]" id="trip-picture-1" value="">
+        <h3>Bilder</h3>
+        <div id="pictures">
+          <p id="pictures-list">
+
+            <?php
+            $server_path = __DIR__ . '/../../../upload/resor/' . $trip['bildkatalog'] . '/';
+            $web_path = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/" . $trip['bildkatalog'] . "/";
+            $files = functions::get_img_files($server_path);
+            $i = 0;
+            foreach ($files as $file) {
+              echo "<form>";
+              echo "<ul><li>";
+              if ($i === 0) { echo "Huvudbild"; } else { echo "Bild " . $i; }
+              echo "</li><li><a href='" . $web_path . $file['file'] . "' target='_blank'><img src='" . $web_path . $file['thumb'] . "' class='picture-list-thumb'></a></li>";
+              echo "<li><input type='file' name='new-file' name= value=''><input type='hidden' name='old-file' value='" . $server_path . $file . "'></li>";
+              echo "<li><button type='submit' name='' >Byt ut</button></li></ul>";
+              echo "</form>";
+              $i++;
+            }
+
+
+
+             ?>
           </p>
+          <p id="picture-new">
+            <input type="file" name="trip-bild" id="trip-picture" value="">
+          </p>
+          <p id="picture-new">
+            <input type="file" name="trip-bild" id="trip-picture" value="">
+          </p>
+        </div>
+
+        <h3>PDF program</h3>
+        <p id="pdf-new">
+          <input type="file" name="trip-pdf" id="trip-pdf" value="">
+        </p>
         </div>
         <p>
           <button type="button" name="trip-add-picture" id="trip-add-picture">Fler bilder</button>

@@ -38,4 +38,42 @@ class Functions
     return $return;
   }
 
+
+  public static function get_img_files($dir) {
+
+    $results = [];
+    $files = scandir($dir);
+    sort($files);
+    $i = 0;
+    foreach($files as $file) {
+      if (substr($file, 0, 1) != ".") {
+        $mime = mime_content_type($dir . $file);
+        if ((strpos($mime, "image") !== FALSE) && (substr($file, 0, 6) !== "small_")) {
+          $results[$i]['file'] = $file;
+          $results[$i]['type'] = str_replace("image/", "", $mime);
+          if (in_array("small_" . $file, $files)) {
+            $results[$i]['thumb'] = "small_" . $file;
+          } else {
+            $results[$i]['thumb'] = $file;
+          }
+        }
+      }
+      $i++;
+    }
+    return $results;
+  }
+
+  public static function get_pdf_files($dir) {
+
+    $files = scandir($dir);
+    foreach($files as $file) {
+      if (substr($file, 0, 1) != ".") {
+        if (strpos(mime_content_type($dir . $file), "pdf") !== FALSE) {
+          $results[] = $file;
+        }
+      }
+    }
+    return $results;
+  }
+
 }

@@ -60,5 +60,8 @@ class Router
     $this->addRoute(  '/^(kontaktarekaresor)$/',          '\HisingeBussAB\RekoResor\website\router\Render::inc',                          'GET');
     $this->addRoute(  '/^ajax\/([\w-]+)$/',               '\HisingeBussAB\RekoResor\website\ajax\Ajax::startAjax',                        'POST');
     $this->addRoute(  '/^adminajax\/([\w-]+)$/',          '\HisingeBussAB\RekoResor\website\ajax\AdminAjax::startAjax',                   'POST');
+
+    //TEST ROUTES
+    $this->addRoute(  '/^adminp\/testfiles$/',  '\HisingeBussAB\RekoResor\website\admin\includes\pages\TestFiles::start',       'GET');
   }
 }
