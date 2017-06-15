@@ -105,31 +105,31 @@ class Trip {
       }
 
       try {
-        $sql = "SELECT * FROM " . TABLE_PREFIX . "resor_hallplatser WHERE resa_id = :id;";
+        $sql = "SELECT hallplats_id, tid_in, tid_ut FROM " . TABLE_PREFIX . "resor_hallplatser WHERE resa_id = :id;";
         $sth = $pdo->prepare($sql);
         $sth->bindParam(':id', $tripid, \PDO::PARAM_INT);
         $sth->execute();
-        $stops_trip = $sth->fetchAll(\PDO::FETCH_NAMED);
+        $stops_trip = $sth->fetchAll(\PDO::FETCH_ASSOC|\PDO::FETCH_UNIQUE);
       } catch(\PDOException $e) {
         DBError::showError($e, __CLASS__, $sql);
       }
 
       try {
-        $sql = "SELECT * FROM " . TABLE_PREFIX . "kategorier_resor WHERE resa_id = :id;";
+        $sql = "SELECT kategori_id FROM " . TABLE_PREFIX . "kategorier_resor WHERE resa_id = :id;";
         $sth = $pdo->prepare($sql);
         $sth->bindParam(':id', $tripid, \PDO::PARAM_INT);
         $sth->execute();
-        $categories_trip = $sth->fetchAll(\PDO::FETCH_NAMED);
+        $categories_trip = $sth->fetchAll(\PDO::FETCH_ASSOC|\PDO::FETCH_UNIQUE);
       } catch(\PDOException $e) {
         DBError::showError($e, __CLASS__, $sql);
       }
 
       try {
-        $sql = "SELECT * FROM " . TABLE_PREFIX . "boenden_resor WHERE resa_id = :id;";
+        $sql = "SELECT boende_id, pris FROM " . TABLE_PREFIX . "boenden_resor WHERE resa_id = :id;";
         $sth = $pdo->prepare($sql);
         $sth->bindParam(':id', $tripid, \PDO::PARAM_INT);
         $sth->execute();
-        $rooms_trip = $sth->fetchAll(\PDO::FETCH_COLUMN);
+        $rooms_trip = $sth->fetchAll(\PDO::FETCH_ASSOC|\PDO::FETCH_UNIQUE);
 
       } catch(\PDOException $e) {
         DBError::showError($e, __CLASS__, $sql);
@@ -152,6 +152,7 @@ class Trip {
         echo "<p class='php-warning'>Varning: Hotellinformation troligen korruperad. Det går att fortsätta men kontrollera att hotellfälten stämmer.</p>";
       }
       $includes = functions::get_string_between($trip['ingar'], "<p>", "</p>");
+
     }
     ?>
 
@@ -160,7 +161,6 @@ class Trip {
       <form action="/adminajax/newtrip" method="post" accept-charset="utf-8" id="trip" enctype='application/json'>
         <div class="col-md-12">
           <fieldset>
-            <input type="hidden" name="tripid" value="<?php echo $tripid ?>">
             <label for="trip-heading">Rubrik</label>
             <input type="text" maxlength="200" name="trip-heading" id="trip-heading" placeholder="Resansnamn" <?php if (isset($trip)) {echo "value='" . $trip['namn'] . "'";} ?>>
           </fieldset>
@@ -308,20 +308,15 @@ class Trip {
               </tr>
               <?php
                 foreach($rooms as $room) {
-
-                  var_dump($rooms_trip);
-                  echo "<br>";
-                  var_dump($room);
-/*
-                  if ((isset($trip)) && ($rooms_trip["boende_id"] == $room["id"])) {
-                    echo "<tr><td><input type='checkbox' name='useroom[]' value='" . $room['id'] . "' class='room-checkbox'></td><td>" . $room['boende'];
+                  if ((isset($trip)) && (array_key_exists($room['id'], $rooms_trip))) {
+                    echo "<tr><td><input type='checkbox' name='useroom[]' value='" . $room['id'] . "' class='room-checkbox' checked></td><td>" . $room['boende'];
                     echo "</td>";
-                    echo "<td><input type='number' name='roomprice[" . $room['id'] . "]' placeholder='0' class='room-price'> :-</td></tr>";
+                    echo "<td><input type='number' name='roomprice[" . $room['id'] . "]' placeholder='0' class='room-price' value='" . $rooms_trip[$room['id']]['pris'] . "'> :-</td></tr>";
                   } else {
                     echo "<tr><td><input type='checkbox' name='useroom[]' value='" . $room['id'] . "' class='room-checkbox'></td><td>" . $room['boende'];
                     echo "</td>";
                     echo "<td><input type='number' name='roomprice[" . $room['id'] . "]' placeholder='0' class='room-price'> :-</td></tr>";
-                  }*/
+                  }
                 }
                ?>
               </tr></table>
@@ -338,12 +333,16 @@ class Trip {
               </tr>
               <?php
                 foreach($stops as $stop) {
-                  var_dump($stops_trip);
-
-                  echo "<tr><td><input type='checkbox' name='usestop[]' value='" . $stop['id'] . "' class='stop-checkbox'></td><td>" . $stop['plats'];
-                  echo "</td><td><input type='time' name='stopfrom[" . $stop['id'] . "]' placeholder='HH:MM' class='stop-input'></td>";
-                  echo "<td><input type='time' name='stopto[" . $stop['id'] . "]' placeholder='HH:MM' class='stop-input'></td></tr>";
+                  if ((isset($trip)) && (array_key_exists($stop['id'], $stops_trip))) {
+                    echo "<tr><td><input type='checkbox' name='usestop[]' value='" . $stop['id'] . "' class='stop-checkbox' checked></td><td>" . $stop['plats'];
+                    echo "</td><td><input type='time' name='stopfrom[" . $stop['id'] . "]' placeholder='HH:MM' class='stop-input' value='" . $stops_trip[$stop['id']]['tid_in'] . "'></td>";
+                    echo "<td><input type='time' name='stopto[" . $stop['id'] . "]' placeholder='HH:MM' class='stop-input' value='" . $stops_trip[$stop['id']]['tid_ut'] . "'></td></tr>";
+                  } else {
+                    echo "<tr><td><input type='checkbox' name='usestop[]' value='" . $stop['id'] . "' class='stop-checkbox'></td><td>" . $stop['plats'];
+                    echo "</td><td><input type='time' name='stopfrom[" . $stop['id'] . "]' placeholder='HH:MM' class='stop-input'></td>";
+                    echo "<td><input type='time' name='stopto[" . $stop['id'] . "]' placeholder='HH:MM' class='stop-input'></td></tr>";
                 }
+              }
                ?>
               </tr></table>
           </fieldset>
@@ -357,10 +356,13 @@ class Trip {
               </tr>
               <?php
                 foreach($categories as $category) {
-
-                  var_dump($categories_trip);
-                  echo "<tr><td><input type='checkbox' name='usecategory[]' value='" . $category['id'] . "' class='category-checkbox'></td><td>" . $category['kategori'];
-                  echo "</td></tr>";
+                  if ((isset($trip)) && (array_key_exists($category['id'], $categories_trip))) {
+                    echo "<tr><td><input type='checkbox' name='usecategory[]' value='" . $category['id'] . "' class='category-checkbox' checked></td><td>" . $category['kategori'];
+                    echo "</td></tr>";
+                  } else {
+                    echo "<tr><td><input type='checkbox' name='usecategory[]' value='" . $category['id'] . "' class='category-checkbox'></td><td>" . $category['kategori'];
+                    echo "</td></tr>";
+                  }
                 }
                ?>
               </tr></table>
@@ -373,6 +375,7 @@ class Trip {
           </fieldset>
 
           <fieldset>
+            <input type="hidden" name="tripid" value="<?php echo $tripid ?>">
             <input type="hidden" name="token" value="<?php echo $token ?>">
           </fieldset>
 

@@ -132,12 +132,12 @@ class NewTrip
     $this->hotel = "<h3>" . $hotelname . "</h3><p>" . $hoteltext . "</p>";
 
     $this->hotellink = filter_var(trim($input["trip-text-hotel-link"]), FILTER_SANITIZE_URL);
-    if ((substr( $this->hotellink, 0, 6 ) !== "http://") || (substr( $this->hotellink, 0, 7 ) !== "https://")) {
+    if ((substr($this->hotellink, 0, 7 ) !== "http://") && (substr($this->hotellink, 0, 8 ) !== "https://")) {
       $this->hotellink = "http://" . $this->hotellink;
     }
 
     $this->facebooklink = filter_var(trim($input["trip-facebook"]), FILTER_SANITIZE_URL);
-    if ((substr( $this->facebooklink, 0, 6 ) !== "http://") || (substr( $this->facebooklink, 0, 7 ) !== "https://")) {
+    if ((substr($this->facebooklink, 0, 7 ) !== "http://") && (substr($this->facebooklink, 0, 8 ) !== "https://")) {
       $this->facebooklink = "http://" . $this->facebooklink;
     }
 
@@ -176,6 +176,7 @@ class NewTrip
         $this->rooms['price'][$i] = filter_var(trim($input["roomprice"][$id]), FILTER_SANITIZE_NUMBER_INT);
         $i++;
       }
+      var_dump($this->rooms);
     }
 
     $this->stops = [];
@@ -410,6 +411,7 @@ class NewTrip
         $sth->bindParam(':out', $this->stops['from'][$i], \PDO::PARAM_STR);
 
         $sth->execute();
+        $i++;
       }
 
 
@@ -441,6 +443,7 @@ class NewTrip
         $sth->bindParam(':price', $this->rooms['price'][$i], \PDO::PARAM_INT);
 
         $sth->execute();
+        $i++;
 
       }
 

@@ -47,7 +47,6 @@ class Main {
       $sth = $pdo->prepare($sql);
       $sth->execute();
       $result = $sth->fetchAll(\PDO::FETCH_ASSOC);
-      var_dump($result);
 
     } catch(\PDOException $e) {
       DBError::showError($e, __CLASS__, $sql);
