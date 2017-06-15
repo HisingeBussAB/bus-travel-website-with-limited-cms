@@ -1,5 +1,13 @@
 .remote-sync.json
 Thumbs.db
 config/config.php
-
+upload/resor/**
 upload/galleri/**
+upload/*.jpeg
+upload/*.jpg
+upload/*.pdf
+upload/*.png
+upload/**/*.png
+upload/**/*.pdf
+upload/**/*.jpg
+upload/**/*.jpeg
