@@ -32,7 +32,7 @@ $(function() {
   });
 
   //Load content
-
+  loadItem("trip");
   loadItem("category");
   loadItem("roomopt");
   loadItem("stop");
@@ -49,6 +49,7 @@ function loadItem(item) {
     dataType: "json",
   })
     .done(function(response) {
+      console.log(response);
       if (response.length > 0) {
         renderItem(item, response);
       } else {
@@ -147,14 +148,22 @@ function resettoken(item) {
 function renderItem(item, response) {
   var line = "<table><tbody>";
   jQuery.each(response, function() {
-    line += "<tr><th scope='row'>";
+    line += "<tr><td>";
     if (item == "category")
-      line +=  this.kategori;
+      line += this.kategori;
     if (item == "roomopt")
-      line +=  this.boende;
+      line += this.boende;
     if (item == "stop")
-      line +=  this.plats;
-    line += "</th>";
+      line += this.plats;
+    if (item == "trip") {
+      line += "<a href='http://rekoresor.busspoolen.se/adminp/nyresa/"
+      line += this.id
+      line += "'>"
+      line += this.namn;
+      line += "</a></td><td>"
+      line += this.datum;
+    }
+    line += "</td>";
     if (this.aktiv == "1")
       line += "<td class='aktiv'><a href='#' class='" + item + "item-toggle' data='" + this.id + "," + item + "'>AKTIV</a></td>";
     else

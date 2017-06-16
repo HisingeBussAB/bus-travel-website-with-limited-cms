@@ -64,6 +64,12 @@ class AdminAjax
           exit;
         break;
 
+        case 'gettrip':
+          echo root\admin\includes\classes\NewTrip::getTripsJSON();
+          http_response_code(200);
+          exit;
+        break;
+
         case 'toggleitem':
           self::changeFilter();
         break;
@@ -181,6 +187,7 @@ class AdminAjax
     if ($table == "category") return "kategorier";
     if ($table == "roomopt") return "boenden";
     if ($table == "stop") return "hallplatser";
+    if ($table == "trip") return "resor";
   }
 
 }

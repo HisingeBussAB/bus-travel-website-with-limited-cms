@@ -34,7 +34,7 @@ class ItemFunctions {
 
     try {
       $pdo->beginTransaction();
-      if ($table != "resor") {
+      if ($table !== "resor") {
         $sql = "SELECT resa_id FROM " . TABLE_PREFIX . $table . "_resor WHERE " . $table . "_id = :id;";
         $sth = $pdo->prepare($sql);
         $sth->bindParam(':id', $id, \PDO::PARAM_INT);
@@ -42,7 +42,6 @@ class ItemFunctions {
         $result = $sth->fetchAll(\PDO::FETCH_ASSOC);
         if(count($result)>0) {
           //in use. dont allow delete
-
           if ($table == "hallplatser") { $table = "hållplatsen"; }
           if ($table == "kategorier") { $table = "kategorin"; }
           if ($table == "boenden") { $table = "boendetypen"; }
@@ -61,6 +60,42 @@ class ItemFunctions {
           $pdo->rollBack();
           return FALSE;
         }
+      } else {
+        //Deleting trip! Scrub all cross-index tables also
+        $sql = "DELETE FROM " . TABLE_PREFIX . "tillaggslistor WHERE
+          resa_id = :tripid
+          ;";
+        $sth = $pdo->prepare($sql);
+        $sth->bindParam(':tripid', $id, \PDO::PARAM_INT);
+        $sth->execute();
+
+        $sql = "DELETE FROM " . TABLE_PREFIX . "kategorier_resor WHERE
+          resa_id = :tripid
+          ;";
+        $sth = $pdo->prepare($sql);
+        $sth->bindParam(':tripid', $id, \PDO::PARAM_INT);
+        $sth->execute();
+
+        $sql = "DELETE FROM " . TABLE_PREFIX . "hallplatser_resor WHERE
+          resa_id = :tripid
+          ;";
+        $sth = $pdo->prepare($sql);
+        $sth->bindParam(':tripid', $id, \PDO::PARAM_INT);
+        $sth->execute();
+
+        $sql = "DELETE FROM " . TABLE_PREFIX . "boenden_resor WHERE
+          resa_id = :tripid
+          ;";
+        $sth = $pdo->prepare($sql);
+        $sth->bindParam(':tripid', $id, \PDO::PARAM_INT);
+        $sth->execute();
+
+        $sql = "DELETE FROM " . TABLE_PREFIX . "datum WHERE
+          resa_id = :tripid
+          ;";
+        $sth = $pdo->prepare($sql);
+        $sth->bindParam(':tripid', $id, \PDO::PARAM_INT);
+        $sth->execute();
       }
 
 

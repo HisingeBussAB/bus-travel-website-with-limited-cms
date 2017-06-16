@@ -60,11 +60,13 @@ class Main {
     <main class="clearfix">
       <div class="col-lg-3 col-md-6">
         <h2>Resor</h2>
-        <ul>
+        <ul id="trip-list">
           <li><a href="/adminp/nyresa/" title="Lägg in en ny resa">Ny resa</a></li>
           <li>
             <table>
               <tbody>
+
+
                 <?php foreach ($result as $line) {
                   echo "<tr><td><a href='http://rekoresor.busspoolen.se/adminp/nyresa/" . $line['id'] . "'>" . $line['namn'] . "</a></td><td>" . $line['datum'] . "</td><td>";
                   if ($line['aktiv'] == 1) {
@@ -78,6 +80,8 @@ class Main {
               </tbody>
             </table>
           </li>
+          <li id="trip-list-content"></li>
+          <li id="trip-list-error"></li>
         </ul>
       </div>
       <div class="col-lg-3 col-md-6">

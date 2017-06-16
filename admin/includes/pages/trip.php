@@ -318,9 +318,11 @@ class Trip {
                     echo "</td>";
                     echo "<td><input type='number' name='roomprice[" . $room['id'] . "]' placeholder='0' class='room-price' value='" . $rooms_trip[$room['id']]['pris'] . "'> :-</td></tr>";
                   } else {
-                    echo "<tr><td><input type='checkbox' name='useroom[]' value='" . $room['id'] . "' class='room-checkbox'></td><td>" . $room['boende'];
-                    echo "</td>";
-                    echo "<td><input type='number' name='roomprice[" . $room['id'] . "]' placeholder='0' class='room-price'> :-</td></tr>";
+                    if ($room['aktiv'] == 1) {
+                      echo "<tr><td><input type='checkbox' name='useroom[]' value='" . $room['id'] . "' class='room-checkbox'></td><td>" . $room['boende'];
+                      echo "</td>";
+                      echo "<td><input type='number' name='roomprice[" . $room['id'] . "]' placeholder='0' class='room-price'> :-</td></tr>";
+                    }
                   }
                 }
                ?>
@@ -343,9 +345,11 @@ class Trip {
                     echo "</td><td><input type='time' name='stopfrom[" . $stop['id'] . "]' placeholder='HH:MM' class='stop-input' value='" . $stops_trip[$stop['id']]['tid_ut'] . "'></td>";
                     echo "<td><input type='time' name='stopto[" . $stop['id'] . "]' placeholder='HH:MM' class='stop-input' value='" . $stops_trip[$stop['id']]['tid_in'] . "'></td></tr>";
                   } else {
-                    echo "<tr><td><input type='checkbox' name='usestop[]' value='" . $stop['id'] . "' class='stop-checkbox'></td><td>" . $stop['plats'];
-                    echo "</td><td><input type='time' name='stopfrom[" . $stop['id'] . "]' placeholder='HH:MM' class='stop-input'></td>";
-                    echo "<td><input type='time' name='stopto[" . $stop['id'] . "]' placeholder='HH:MM' class='stop-input'></td></tr>";
+                    if ($stop['aktiv'] == 1) {
+                      echo "<tr><td><input type='checkbox' name='usestop[]' value='" . $stop['id'] . "' class='stop-checkbox'></td><td>" . $stop['plats'];
+                      echo "</td><td><input type='time' name='stopfrom[" . $stop['id'] . "]' placeholder='HH:MM' class='stop-input'></td>";
+                      echo "<td><input type='time' name='stopto[" . $stop['id'] . "]' placeholder='HH:MM' class='stop-input'></td></tr>";
+                    }
                 }
               }
                ?>
@@ -365,8 +369,10 @@ class Trip {
                     echo "<tr><td><input type='checkbox' name='usecategory[]' value='" . $category['id'] . "' class='category-checkbox' checked></td><td>" . $category['kategori'];
                     echo "</td></tr>";
                   } else {
-                    echo "<tr><td><input type='checkbox' name='usecategory[]' value='" . $category['id'] . "' class='category-checkbox'></td><td>" . $category['kategori'];
-                    echo "</td></tr>";
+                    if ($category['aktiv'] == 1) {
+                      echo "<tr><td><input type='checkbox' name='usecategory[]' value='" . $category['id'] . "' class='category-checkbox'></td><td>" . $category['kategori'];
+                      echo "</td></tr>";
+                    }
                   }
                 }
                ?>

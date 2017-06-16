@@ -50,9 +50,6 @@ class NewTrip
     $this->processForm($formData);
   }
 
-
-
-
   public static function newTrip($formData) {
     //VALIDATE SOME FORM DATA
     $passedValidation = TRUE;
@@ -94,6 +91,20 @@ class NewTrip
       http_response_code(500);
       exit;
     }
+  }
+
+  public static function getTripsJSON() {
+
+    $pdo = DB::get();
+    try {
+      $sql = "SELECT resor.id, resor.namn, resor.aktiv, MIN(datum.datum) AS datum FROM " . TABLE_PREFIX . "resor AS resor INNER JOIN " . TABLE_PREFIX . "datum AS datum ON resor.id = datum.resa_id GROUP BY resor.id ORDER BY datum ;";
+      $sth = $pdo->prepare($sql);
+      $sth->execute();
+      $result = $sth->fetchAll(\PDO::FETCH_ASSOC);
+    } catch(\PDOException $e) {
+      DBError::showError($e, __CLASS__, $sql);
+    }
+      return json_encode($result);
   }
 
 

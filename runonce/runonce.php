@@ -277,7 +277,7 @@ try {
 }
 
 try {
-  $table = TABLE_PREFIX . 'resor_hallplatser';
+  $table = TABLE_PREFIX . 'hallplatser_resor';
   $sql = "CREATE TABLE " . $table . " (
     hallplatser_id INT UNSIGNED,
     resa_id INT UNSIGNED,
