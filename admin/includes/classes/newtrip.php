@@ -369,7 +369,7 @@ class NewTrip
 
         $sql = "INSERT INTO " . TABLE_PREFIX . "kategorier_resor (
           resa_id,
-          kategori_id
+          kategorier_id
         ) VALUES (
           :tripid,
           :categoriyid
@@ -383,7 +383,7 @@ class NewTrip
 
 
       if (!$mode) {
-        $sql = "DELETE FROM " . TABLE_PREFIX . "resor_hallplatser WHERE
+        $sql = "DELETE FROM " . TABLE_PREFIX . "hallplatser_resor WHERE
           resa_id = :tripid
           ;";
         $sth = $pdo->prepare($sql);
@@ -393,9 +393,9 @@ class NewTrip
 
       $i = 0;
       foreach ($this->stops['id'] as $stopid) {
-        $sql = "INSERT INTO " . TABLE_PREFIX . "resor_hallplatser (
+        $sql = "INSERT INTO " . TABLE_PREFIX . "hallplatser_resor (
           resa_id,
-          hallplats_id,
+          hallplatser_id,
           tid_in,
           tid_ut
         ) VALUES (
@@ -430,7 +430,7 @@ class NewTrip
 
         $sql = "INSERT INTO " . TABLE_PREFIX . "boenden_resor (
           resa_id,
-          boende_id,
+          boenden_id,
           pris
         ) VALUES (
           :tripid,

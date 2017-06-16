@@ -26,7 +26,7 @@ $default_pwd = password_hash(DEFAULT_ADMIN_PWD . FIX_PWD_PEPPER, PASSWORD_DEFAUL
 
 //FIXME REMOVE DROP TABLES DEBUG
 try {
-  $table = TABLE_PREFIX . 'resor_hallplatser';
+  $table = TABLE_PREFIX . 'hallplatser_resor';
   $sql = "DROP TABLE " . $table . ";";
   $sth = $pdo->prepare($sql);
   $sth->execute();
@@ -279,7 +279,7 @@ try {
 try {
   $table = TABLE_PREFIX . 'resor_hallplatser';
   $sql = "CREATE TABLE " . $table . " (
-    hallplats_id INT UNSIGNED,
+    hallplatser_id INT UNSIGNED,
     resa_id INT UNSIGNED,
     tid_in TIME,
     tid_ut TIME);";
@@ -294,7 +294,7 @@ try {
   $table = TABLE_PREFIX . 'kategorier_resor';
   $sql = "CREATE TABLE " . $table . " (
     resa_id INT UNSIGNED,
-    kategori_id INT UNSIGNED);";
+    kategorier_id INT UNSIGNED);";
   $sth = $pdo->prepare($sql);
   $sth->execute();
   echo "Table: " . $table . " created succesfully.<br>";
@@ -332,7 +332,7 @@ try {
   $table = TABLE_PREFIX . 'boenden_resor';
   $sql = "CREATE TABLE " . $table . " (
     resa_id INT UNSIGNED,
-    boende_id INT UNSIGNED,
+    boenden_id INT UNSIGNED,
     pris INT)";
   $sth = $pdo->prepare($sql);
   $sth->execute();

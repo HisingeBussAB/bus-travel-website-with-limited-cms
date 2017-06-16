@@ -31,9 +31,6 @@ $(function() {
     $("#form-new-stop-name").val('');
   });
 
-
-
-
   //Load content
 
   loadItem("category");
@@ -87,7 +84,7 @@ function newItem(item) {
       if (data.status == 404)
         $( "#" + item + "-list-error" ).html( "Något har gått fel. Error: 404." )
       else
-        $( "#" + item + "-list-error" ).html( "Något har gått fel. Error: " + data.responseText + "." );
+        $( "#" + item + "-list-error" ).html( "Något har gått fel. Fel: " + data.responseText + "." );
       $("#form-new-" + item + "-submit").prop("disabled",false);
       resettoken(item);
     });
@@ -118,7 +115,7 @@ function itemChange(item, method) {
     })
     .fail(function(data) {
       resettoken(item[1]);
-      $( "#" + item[1] + "-list-error" ).html( "Något har gått fel. Error: " + data.responseText + "." );
+      $( "#" + item[1] + "-list-error" ).html( "Något har gått fel. Fel: " + data.responseText + "." );
 
     });
 

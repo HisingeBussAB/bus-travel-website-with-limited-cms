@@ -156,7 +156,7 @@ class AdminAjax
           echo json_encode(array('success' => TRUE));
           http_response_code(200);
         } else {
-          echo "Misslyckades. Hittade ingen matchning i databasen att ändra!";
+          echo "Misslyckades.";
           http_response_code(400);
         }
       } else {

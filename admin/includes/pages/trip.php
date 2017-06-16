@@ -105,7 +105,7 @@ class Trip {
       }
 
       try {
-        $sql = "SELECT hallplats_id, tid_in, tid_ut FROM " . TABLE_PREFIX . "resor_hallplatser WHERE resa_id = :id;";
+        $sql = "SELECT hallplatser_id, tid_in, tid_ut FROM " . TABLE_PREFIX . "hallplatser_resor WHERE resa_id = :id;";
         $sth = $pdo->prepare($sql);
         $sth->bindParam(':id', $tripid, \PDO::PARAM_INT);
         $sth->execute();
@@ -115,7 +115,7 @@ class Trip {
       }
 
       try {
-        $sql = "SELECT kategori_id FROM " . TABLE_PREFIX . "kategorier_resor WHERE resa_id = :id;";
+        $sql = "SELECT kategorier_id FROM " . TABLE_PREFIX . "kategorier_resor WHERE resa_id = :id;";
         $sth = $pdo->prepare($sql);
         $sth->bindParam(':id', $tripid, \PDO::PARAM_INT);
         $sth->execute();
@@ -125,7 +125,7 @@ class Trip {
       }
 
       try {
-        $sql = "SELECT boende_id, pris FROM " . TABLE_PREFIX . "boenden_resor WHERE resa_id = :id;";
+        $sql = "SELECT boenden_id, pris FROM " . TABLE_PREFIX . "boenden_resor WHERE resa_id = :id;";
         $sth = $pdo->prepare($sql);
         $sth->bindParam(':id', $tripid, \PDO::PARAM_INT);
         $sth->execute();

@@ -31,10 +31,41 @@ class ItemFunctions {
    */
   private static function delete($id, $table) {
     $pdo = DB::get();
+
     try {
       $pdo->beginTransaction();
+      if ($table != "resor") {
+        $sql = "SELECT resa_id FROM " . TABLE_PREFIX . $table . "_resor WHERE " . $table . "_id = :id;";
+        $sth = $pdo->prepare($sql);
+        $sth->bindParam(':id', $id, \PDO::PARAM_INT);
+        $sth->execute();
+        $result = $sth->fetchAll(\PDO::FETCH_ASSOC);
+        if(count($result)>0) {
+          //in use. dont allow delete
+
+          if ($table == "hallplatser") { $table = "hållplatsen"; }
+          if ($table == "kategorier") { $table = "kategorin"; }
+          if ($table == "boenden") { $table = "boendetypen"; }
+          echo "<p id='delete-error-item-in-use'>Den här $table används i följande resor:<ul class='dot-list'>";
+
+          foreach ($result as $row) {
+            $sql = "SELECT namn FROM " . TABLE_PREFIX . "resor WHERE id = :id;";
+            $sth = $pdo->prepare($sql);
+            $sth->bindParam(':id', $row['resa_id'], \PDO::PARAM_INT);
+            $sth->execute();
+            $result = $sth->fetch(\PDO::FETCH_ASSOC);
+            echo "<li>" . $result['namn'] . " (id: " . $row['resa_id'] . ")</li>";
+          }
+
+          echo "</ul>Resorna måste tas bort innan $table kan tas bort permanent.<br>Du kan inaktivera alternativet istället.</p>";
+          $pdo->rollBack();
+          return FALSE;
+        }
+      }
+
+
       if ($table == "kategorier" || $table == "hallplatser") {
-        
+
         $sql = "SELECT sort FROM " . TABLE_PREFIX . $table . " WHERE id = :id;";
         $sth = $pdo->prepare($sql);
         $sth->bindParam(':id', $id, \PDO::PARAM_INT);
