@@ -6,6 +6,37 @@
 
 namespace HisingeBussAB\RekoResor\website\includes\classes;
 
+/*
+uri-encode(string)
+replaces å, ä, ö, space, & with a, a, o, -, och
+Used as extra sanitation of texts that are supposed to become folders
+return: $string
+
+br2nl(string)
+replaces <br> and <br /> with \n
+return: string
+
+br2htmlnl(string)
+replaces <br> and <br /> with &#10
+return: string
+
+get_string_between(haystack string, start string, end string)
+Gets all substrings between an instance of start and end in haystack.
+return: array of strings
+
+get_img_files(string directory)
+scandir for images, returned sorted numbered array with file info under each number as follows.
+return: array(
+  ['file'] filename string
+  ['type'] = image type string
+  ['thumb'] = tumbnail location (if a file named small_[file] in same folder else same as file)
+)
+
+get_pdf_files(string directory)
+return: array of pdf file names in directory
+
+*/
+
 class Functions
 {
 
@@ -21,19 +52,23 @@ class Functions
     return preg_replace('#<br\s*?/?>#i', "\n", $string);
   }
 
-  public static function get_string_between($string, $start, $end){
+  public static function br2htmlnl($string) {
+    return preg_replace('#<br\s*?/?>#i', "&#10;", $string);
+  }
+
+  public static function get_string_between($string, $start, $end) {
     $split_string       = array_filter(explode($start,$string));
     if (empty($split_string)) {
-      return  false;
+      return false;
     }
     foreach($split_string as $string) {
-      if (!empty($string))
-      {
-        $capture = substr($string,0,strpos($string,$end));
-        if (!empty($capture)) {
-          $return[] = $capture;
-        }
+      $capture = substr($string,0,strpos($string,$end));
+      if (!empty($capture)) {
+        $return[] = $capture;
       }
+    }
+    if (!isset($return)) {
+      $return[] = "";
     }
     return $return;
   }
@@ -74,6 +109,18 @@ class Functions
       }
     }
     return $results;
+  }
+
+
+  //DEBUGGING FUNCTIONS
+  public static function render_var_dump($var, $desc = "VARIABLE") {
+    echo "<pre>";
+    echo "$desc: ";
+    var_dump($var);
+    echo "
+    ";
+    echo "<pre>";
+
   }
 
 }

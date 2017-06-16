@@ -105,12 +105,13 @@ class NewTrip
 
     $this->heading = strip_tags(trim($input["trip-heading"]), $allowed_tags);
     $this->summary = nl2br(strip_tags(trim($input["trip-summary"]), $allowed_tags));
+    $this->summary = str_replace(array("\r\n", "\n","\r", PHP_EOL), '', $this->summary);
 
     $this->text = "";
-    foreach ($input["trip-text-heading"] as $id => $texthead) {
+    foreach ($input["trip-text-heading"] as $id=>$texthead) {
       $texthead = strip_tags(trim($texthead), $allowed_tags);
       $textbody = nl2br(strip_tags(trim($input["trip-text"][$id]), $allowed_tags));
-      $textbody = trim($textbody, "<br />");
+      $textbody = str_replace(array("\r\n", "\n","\r", PHP_EOL), '', $textbody);
 
       if ((strpos($texthead, '<h3>') !== false) || (strpos($texthead, '<p>') !== false)) {
         echo "Inte accpterad. Det går inte att använda taggarna h3 eller p i programtext och underrubrik. Underrubriken visas automatiskt som h3 och knappen lägg till dag/paragraf skall användas för att få rätt formaterade paragrafer.";
@@ -123,7 +124,7 @@ class NewTrip
 
     $hotelname = strip_tags(trim($input["trip-text-hotel-heading"]), $allowed_tags);
     $hoteltext = nl2br(strip_tags(trim($input["trip-text-hotel-text"]), $allowed_tags));
-    $hoteltext = trim($hoteltext, "<br />");
+    $hoteltext = str_replace(array("\r\n", "\n","\r", PHP_EOL), '', $hoteltext);
     if ((strpos($hotelname, '<h3>') !== false) || (strpos($hoteltext, '<p>') !== false)) {
       echo "Inte accpterad. Det går inte att använda taggarna h3 eller p i hotellnamn eller hotellbeskrivning/adress.";
       http_response_code(400);

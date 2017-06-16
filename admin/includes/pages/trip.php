@@ -137,22 +137,27 @@ class Trip {
     }
 
     if (isset($trip)) {
-
-      $textheads = functions::get_string_between($trip['program'], "<h3>", "</h3>");
-      $textbodies = functions::get_string_between($trip['program'], "<p>", "</p>");
-      if (count($textheads) !== count($textbodies))
-      {
-        echo "<p class='php-warning'>Varning: Troligen felformaterrad programdata. Det går bra att fortsätta men kontrollera att inget saknas i programtexten.</p>";
+      if (!empty($trip['program'])) {
+        $textheads = functions::get_string_between($trip['program'], "<h3>", "</h3>");
+        $textbodies = functions::get_string_between($trip['program'], "<p>", "</p>");
+        if (count($textheads) !== count($textbodies))
+        {
+          echo "<p class='php-warning'>Varning: Troligen felformaterrad programdata. Det går bra att fortsätta men kontrollera att inget saknas i programtexten.</p>";
+        }
       }
 
-      $hotelhead = functions::get_string_between($trip['hotel'], "<h3>", "</h3>");
-      $hoteltext = functions::get_string_between($trip['hotel'], "<p>", "</p>");
-      if (count($hotelhead) !== count($hoteltext))
-      {
-        echo "<p class='php-warning'>Varning: Hotellinformation troligen korruperad. Det går att fortsätta men kontrollera att hotellfälten stämmer.</p>";
+      if (!empty($trip['hotel'])) {
+        $hotelhead = functions::get_string_between($trip['hotel'], "<h3>", "</h3>");
+        $hoteltext = functions::get_string_between($trip['hotel'], "<p>", "</p>");
+        if (count($hotelhead) !== count($hoteltext))
+        {
+          echo "<p class='php-warning'>Varning: Hotellinformation troligen korruperad. Det går att fortsätta men kontrollera att hotellfälten stämmer.</p>";
+        }
       }
-      $includes = functions::get_string_between($trip['ingar'], "<p>", "</p>");
 
+      if (!empty($trip['ingar'])) {
+        $includes = functions::get_string_between($trip['ingar'], "<p>", "</p>");
+      }
     }
     ?>
 
@@ -166,7 +171,7 @@ class Trip {
           </fieldset>
           <fieldset>
             <label for="trip-summary">Summary</label>
-            <textarea type="text" name="trip-summary" id="trip-summary" placeholder="Ingress"><?php if (isset($trip)) {echo functions::br2nl($trip['ingress']);} ?></textarea>
+            <textarea type="text" name="trip-summary" id="trip-summary" placeholder="Ingress"><?php if (isset($trip)) {echo functions::br2htmlnl($trip['ingress']);} ?></textarea>
           </fieldset>
 
 
@@ -183,7 +188,7 @@ class Trip {
                 echo "<fieldset id='trip-text-" . ($id+1) . "' class='trip-text'>";
                 echo "<label for='trip-text-heading[" . ($id+1) . "]'>Dag " . ($id+1) . "</label>";
                 echo "<input type='text' maxlength='80' name='trip-text-heading[" . ($id+1) . "]' class='trip-text-heading' value='" . $texthead . "'>";
-                echo "<textarea type='text' name='trip-text[" . ($id+1) . "]' class='trip-text-text'>" . functions::br2nl($textbodies[$id]) . "</textarea>";
+                echo "<textarea type='text' name='trip-text[" . ($id+1) . "]' class='trip-text-text'>" . functions::br2htmlnl($textbodies[$id]) . "</textarea>";
                 echo "</fieldset>";
               }
             }
@@ -198,7 +203,7 @@ class Trip {
           <fieldset>
             <label for="trip-text-hotel-heading">Hotel</label>
             <input type="text" maxlength="100" name="trip-text-hotel-heading" id="trip-hotel-heading" placeholder="Hotellets namn" value="<?php if (isset($trip)) {echo $hotelhead[0];} ?>">
-            <textarea type="text" name="trip-text-hotel-text" id="trip-hotel-text" placeholder="Hotellvägen 5&#10;888 88 Hotellstaden&#10;+46888888"><?php if (isset($trip)) {echo functions::br2nl($hoteltext[0]);} ?></textarea>
+            <textarea type="text" name="trip-text-hotel-text" id="trip-hotel-text" placeholder="Hotellvägen 5&#10;888 88 Hotellstaden&#10;+46888888"><?php if (isset($trip)) {echo functions::br2htmlnl($hoteltext[0]);} ?></textarea>
             <input type="text" maxlength="250" name="trip-text-hotel-link" id="trip-hotel-link" placeholder="http://www.hotel.se" value="<?php if (isset($trip)) {echo $trip['hotellink'];} ?>">
           </fieldset>
 
@@ -335,8 +340,8 @@ class Trip {
                 foreach($stops as $stop) {
                   if ((isset($trip)) && (array_key_exists($stop['id'], $stops_trip))) {
                     echo "<tr><td><input type='checkbox' name='usestop[]' value='" . $stop['id'] . "' class='stop-checkbox' checked></td><td>" . $stop['plats'];
-                    echo "</td><td><input type='time' name='stopfrom[" . $stop['id'] . "]' placeholder='HH:MM' class='stop-input' value='" . $stops_trip[$stop['id']]['tid_in'] . "'></td>";
-                    echo "<td><input type='time' name='stopto[" . $stop['id'] . "]' placeholder='HH:MM' class='stop-input' value='" . $stops_trip[$stop['id']]['tid_ut'] . "'></td></tr>";
+                    echo "</td><td><input type='time' name='stopfrom[" . $stop['id'] . "]' placeholder='HH:MM' class='stop-input' value='" . $stops_trip[$stop['id']]['tid_ut'] . "'></td>";
+                    echo "<td><input type='time' name='stopto[" . $stop['id'] . "]' placeholder='HH:MM' class='stop-input' value='" . $stops_trip[$stop['id']]['tid_in'] . "'></td></tr>";
                   } else {
                     echo "<tr><td><input type='checkbox' name='usestop[]' value='" . $stop['id'] . "' class='stop-checkbox'></td><td>" . $stop['plats'];
                     echo "</td><td><input type='time' name='stopfrom[" . $stop['id'] . "]' placeholder='HH:MM' class='stop-input'></td>";
@@ -399,7 +404,7 @@ class Trip {
               echo "<ul><li>";
               if ($i === 0) { echo "Huvudbild"; } else { echo "Bild " . $i; }
               echo "</li><li><a href='" . $web_path . $file['file'] . "' target='_blank'><img src='" . $web_path . $file['thumb'] . "' class='picture-list-thumb'></a></li>";
-              echo "<li><input type='file' name='new-file' name= value=''><input type='hidden' name='old-file' value='" . $server_path . $file . "'></li>";
+              echo "<li><input type='file' name='new-file' name= value=''><input type='hidden' name='old-file' value='" . $server_path . $file['file'] . "'></li>";
               echo "<li><button type='submit' name='' >Byt ut</button></li></ul>";
               echo "</form>";
               $i++;
