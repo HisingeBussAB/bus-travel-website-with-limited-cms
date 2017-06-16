@@ -61,28 +61,13 @@ class Main {
       <div class="col-lg-3 col-md-6">
         <h2>Resor</h2>
         <ul id="trip-list">
-          <li><a href="/adminp/nyresa/" title="Lägg in en ny resa">Ny resa</a></li>
-          <li>
-            <table>
-              <tbody>
-
-
-                <?php foreach ($result as $line) {
-                  echo "<tr><td><a href='http://rekoresor.busspoolen.se/adminp/nyresa/" . $line['id'] . "'>" . $line['namn'] . "</a></td><td>" . $line['datum'] . "</td><td>";
-                  if ($line['aktiv'] == 1) {
-                    echo "AKTIV";
-                  } else {
-                    echo "INAKITV";
-                  }
-                  echo"</td><td><i class='fa fa-trash-o' aria-hidden='true'></i></td><tr>";
-
-                } ?>
-              </tbody>
-            </table>
-          </li>
+          <li><a href="/adminp/nyresa/" title="Lägg in en ny resa">Skapa ny resa</a></li>
           <li id="trip-list-content"></li>
           <li id="trip-list-error"></li>
         </ul>
+        <div id="trip-list-loading">
+          <i class="fa fa-spinner fa-4x fa-spin" aria-hidden="true"></i>
+        </div>
       </div>
       <div class="col-lg-3 col-md-6">
         <h2>Kategorier</h2>

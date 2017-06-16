@@ -9,7 +9,7 @@ namespace HisingeBussAB\RekoResor\website\includes\classes;
 /*
 uri-encode(string)
 replaces å, ä, ö, space, & with a, a, o, -, och
-Used as extra sanitation of texts that are supposed to become folders
+Used before sanitize url when creating a link text, for cleaner and more SEO friendly uris
 return: $string
 
 br2nl(string)
