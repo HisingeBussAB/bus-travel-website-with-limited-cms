@@ -72,8 +72,10 @@ class Trip {
     }
 
     //ID specific DB catch
+
     if ($tripid != "new") {
       $tripid = filter_var(trim($tripid), FILTER_SANITIZE_NUMBER_INT);
+
       try {
         $sql = "SELECT * FROM " . TABLE_PREFIX . "resor WHERE id = :id;";
         $sth = $pdo->prepare($sql);
@@ -82,6 +84,12 @@ class Trip {
         $trip = $sth->fetch(\PDO::FETCH_ASSOC);
       } catch(\PDOException $e) {
         DBError::showError($e, __CLASS__, $sql);
+      }
+
+      if (!$trip) {
+        echo "<p>Någon resa med id:$tripid kan inte hittas i databasen. <a href='http://rekoresor.busspoolen.se/adminp/'>Tillbaka till adminaströspanelen.</a>";
+        http_response_code(404);
+        exit;
       }
 
       try {
@@ -401,19 +409,23 @@ class Trip {
           <p id="pictures-list">
 
             <?php
-            $server_path = __DIR__ . '/../../../upload/resor/' . $trip['bildkatalog'] . '/';
-            $web_path = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/" . $trip['bildkatalog'] . "/";
-            $files = functions::get_img_files($server_path);
-            $i = 0;
-            foreach ($files as $file) {
-              echo "<form>";
-              echo "<ul><li>";
-              if ($i === 0) { echo "Huvudbild"; } else { echo "Bild " . $i; }
-              echo "</li><li><a href='" . $web_path . $file['file'] . "' target='_blank'><img src='" . $web_path . $file['thumb'] . "' class='picture-list-thumb'></a></li>";
-              echo "<li><input type='file' name='new-file' name= value=''><input type='hidden' name='old-file' value='" . $server_path . $file['file'] . "'></li>";
-              echo "<li><button type='submit' name='' >Byt ut</button></li></ul>";
-              echo "</form>";
-              $i++;
+            if (isset($trip)) {
+              $server_path = __DIR__ . '/../../../upload/resor/' . $trip['bildkatalog'] . '/';
+              $web_path = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/" . $trip['bildkatalog'] . "/";
+              $files = functions::get_img_files($server_path);
+              $i = 0;
+              foreach ($files as $file) {
+                echo "<form>";
+                echo "<ul><li>";
+                if ($i === 0) { echo "Huvudbild"; } else { echo "Bild " . $i; }
+                echo "</li><li><a href='" . $web_path . $file['file'] . "' target='_blank'><img src='" . $web_path . $file['thumb'] . "' class='picture-list-thumb'></a></li>";
+                echo "<li><input type='file' name='new-file' name= value=''><input type='hidden' name='old-file' value='" . $server_path . $file['file'] . "'></li>";
+                echo "<li><button type='submit' name='' >Byt ut</button></li></ul>";
+                echo "</form>";
+                $i++;
+              }
+            } else {
+              echo "Spara reseinformationen först, sedan kan du ladda upp bilder.";
             }
 
 
@@ -421,7 +433,12 @@ class Trip {
              ?>
           </p>
           <p id="picture-new">
-            <input type="file" name="trip-bild" id="trip-picture" value="">
+            <form action="/adminp/filemanager/upload" method="POST" enctype="multipart/form-data">
+            <input type="file" name="upfile" id="trip-picture" value="">
+            <input type="hidden" value="1" name="id">;
+            <input type="hidden" name="token" value="<?php echo $token ?>">
+            <button type="submit">OK</button>
+            </form>
           </p>
           <p id="picture-new">
             <input type="file" name="trip-bild" id="trip-picture" value="">
