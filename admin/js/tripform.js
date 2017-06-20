@@ -42,21 +42,6 @@ $(function() {
     includes--;
     });
 
-    $('#trip-add-picture').click(function(event){
-      event.preventDefault();
-      pictures++;
-      $('#pictures-list').append(
-        "<p id='picture-" + pictures + "'>"
-        + "<input type='file' name='trip-bild[" + pictures + "]'' id='trip-picture-" + pictures + "'>"
-        + "</p>");
-      });
-
-    $('#trip-remove-picture').click(function(event){
-      event.preventDefault();
-      $('#picture-' + pictures).remove();
-      pictures--;
-      });
-
   $('#trip-add-addon').click(function(event){
     event.preventDefault();
     addons++;

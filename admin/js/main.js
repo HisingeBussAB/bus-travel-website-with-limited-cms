@@ -49,7 +49,6 @@ function loadItem(item) {
     dataType: "json",
   })
     .done(function(response) {
-      console.log(response);
       if (response.length > 0) {
         renderItem(item, response);
       } else {
@@ -148,7 +147,7 @@ function resettoken(item) {
 function renderItem(item, response) {
   var line = "<table><tbody>";
   jQuery.each(response, function() {
-    line += "<tr><td>";
+    line += "<tr><td class='table-name'>";
     if (item == "category")
       line += this.kategori;
     if (item == "roomopt")
@@ -164,25 +163,25 @@ function renderItem(item, response) {
       line += this.datum;
     }
     line += "</td>";
-    if (this.aktiv == "1")
-      line += "<td class='aktiv'><a href='#' class='" + item + "item-toggle' data='" + this.id + "," + item + "'>AKTIV</a></td>";
-    else
-      line += "<td class='inaktiv'><a href='#' class='" + item + "item-toggle' data='" + this.id + "," + item + "'>INAKTIV</a></td>";
-
     //If we are rendering categories we want order buttons
     if (item == "category" || item == "stop") {
-      line += "<td><a href='#' class='" + item + "item-reorder' data='" + this.id + "," + item + ",up'><i class='fa fa-long-arrow-up' aria-hidden='true'></i></a></td>";
-      line += "<td><a href='#' class='" + item + "item-reorder' data='" + this.id + "," + item + ",down'><i class='fa fa-long-arrow-down' aria-hidden='true'></i></a></td>";
+      line += "<td class='table-reorder-up'><a href='#' class='" + item + "item-reorder' data='" + this.id + "," + item + ",up' title='Flytta uppåt'><i class='fa fa-long-arrow-up' aria-hidden='true'></i></a></td>";
+      line += "<td class='table-reorder-up'><a href='#' class='" + item + "item-reorder' data='" + this.id + "," + item + ",down' title='Flytta nedåt'><i class='fa fa-long-arrow-down' aria-hidden='true'></i></a></td>";
     }
 
-    line += "<td><a href='#' class='" + item + "item-delete' data='" + this.id + "," + item + "'><i class='fa fa-trash-o' aria-hidden='true'></i></a></td></tr>";
+    if (this.aktiv == "1")
+      line += "<td class='table-state-active'><a href='#' class='" + item + "item-toggle' data='" + this.id + "," + item + "' title='Inaktivera alternativet'><i class='fa fa-check-square-o' aria-hidden='true'></i></a></td>";
+    else
+      line += "<td class='table-state-inactive'><a href='#' class='" + item + "item-toggle' data='" + this.id + "," + item + "' title='Aktivera alternativet'><i class='fa fa-square-o' aria-hidden='true'></i></a></td>";
+
+    line += "<td class='table-delete'><a href='#' class='" + item + "item-delete' data='" + this.id + "," + item + "' title='Ta bort permanent'><i class='fa fa-trash-o' aria-hidden='true'></i></a></td></tr>";
   });
   line += "</tbody></table>";
   $( "#" + item + "-list-content" ).html( line );
 
   //BIND LISTENERS TO NEW LINKS
   $( "." + item + "item-toggle").each(function(){
-    $( this ).one("click", function(event){
+    $( this ).on("click", function(event){
       event.preventDefault();
       $( "#" + item + "-list" ).hide();
       $( "#" + item + "-list-loading" ).show();
@@ -191,7 +190,7 @@ function renderItem(item, response) {
   });
 
   $( "." + item + "item-reorder").each(function(){
-    $( this ).one("click", function(event){
+    $( this ).on("click", function(event){
       event.preventDefault();
       $( "#" + item + "-list" ).hide();
       $( "#" + item + "-list-loading" ).show();
@@ -200,16 +199,38 @@ function renderItem(item, response) {
   });
 
   $( "." + item + "item-delete").each(function(){
-    $( this ).one("click", function(event){
+    $( this ).on("click", function(event){
       event.preventDefault();
-      $( "#" + item + "-list" ).hide();
-      $( "#" + item + "-list-loading" ).show();
-      itemChange(this, "delete");
+      event.target.offsetParent.parentNode.style.backgroundColor = "red";
+      //.style.backgroundColor = "red";
+      var me = this;
+      $.confirm({
+        title: 'Radera',
+        content: 'Är du säker på att du vill radera posten permanent?',
+        buttons: {
+          ja: function() {
+            console.log(item);
+            //console.log(this);
+            $( "#" + item + "-list" ).hide();
+            $( "#" + item + "-list-loading" ).show();
+            itemChange(me, "delete");
+          },
+          nej: function() {
+            event.target.offsetParent.parentNode.style.backgroundColor = "transparent";
+          }
+
+        }
+      })
+      //if (confirm("Är du säker på att du vill radera?")) {
+
+
+
+
     });
   })
 
 
-  //DISABLE LOAD SCREEN AFTER RENDER
+  //DISABLE LOAD SCREENS AFTER RENDER
   $( "#" + item + "-list-loading" ).hide();
   $( "#" + item + "-list" ).show();
 

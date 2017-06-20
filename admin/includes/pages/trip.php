@@ -36,10 +36,10 @@ class Trip {
   if (admin\includes\classes\Login::isLoggedIn() === TRUE) {
     //Is logged in
 
+    $pageTitle = "Rekå Admin - Ny/Ändra resa";
+
     header('Content-type: text/html; charset=utf-8');
     include __DIR__ . '/shared/header.php';
-
-    $pageTitle = "Rekå Admin - Ny resa";
 
     $pdo = DB::get();
 
@@ -432,28 +432,83 @@ class Trip {
 
              ?>
           </p>
-          <p id="picture-new">
+          <p class="picture-new">
             <form action="/adminp/filemanager/upload" method="POST" enctype="multipart/form-data">
-            <input type="file" name="upfile" id="trip-picture" value="">
-            <input type="hidden" value="1" name="id">;
+            <input type="file" name="upfile" class="trip-picture" value="">
+            <input type="hidden" value="<?php echo $tripid ?>" name="id">;
+            <input type="hidden" value="1" name="position">;
             <input type="hidden" name="token" value="<?php echo $token ?>">
-            <button type="submit">OK</button>
+            <button type="submit">Ladda upp</button>
             </form>
           </p>
-          <p id="picture-new">
-            <input type="file" name="trip-bild" id="trip-picture" value="">
+          <p class="picture-new">
+            <form action="/adminp/filemanager/upload" method="POST" enctype="multipart/form-data">
+            <input type="file" name="upfile" class="trip-picture" value="">
+            <input type="hidden" value="<?php echo $tripid ?>" name="id">;
+            <input type="hidden" value="2" name="position">;
+            <input type="hidden" name="token" value="<?php echo $token ?>">
+            <button type="submit">Ladda upp</button>
+            </form>
+          </p>
+          <p class="picture-new">
+            <form action="/adminp/filemanager/upload" method="POST" enctype="multipart/form-data">
+            <input type="file" name="upfile" class="trip-picture" value="">
+            <input type="hidden" value="<?php echo $tripid ?>" name="id">;
+            <input type="hidden" value="3" name="position">;
+            <input type="hidden" name="token" value="<?php echo $token ?>">
+            <button type="submit">Ladda upp</button>
+            </form>
+          </p>
+          <p class="picture-new">
+            <form action="/adminp/filemanager/upload" method="POST" enctype="multipart/form-data">
+            <input type="file" name="upfile" class="trip-picture" value="">
+            <input type="hidden" value="<?php echo $tripid ?>" name="id">;
+            <input type="hidden" value="4" name="position">;
+            <input type="hidden" name="token" value="<?php echo $token ?>">
+            <button type="submit">Ladda upp</button>
+            </form>
+          </p>
+          <p class="picture-new">
+            <form action="/adminp/filemanager/upload" method="POST" enctype="multipart/form-data">
+            <input type="file" name="upfile" class="trip-picture" value="">
+            <input type="hidden" value="<?php echo $tripid ?>" name="id">;
+            <input type="hidden" value="5" name="position">;
+            <input type="hidden" name="token" value="<?php echo $token ?>">
+            <button type="submit">Ladda upp</button>
+            </form>
+          </p>
+          <p class="picture-new">
+            <form action="/adminp/filemanager/upload" method="POST" enctype="multipart/form-data">
+            <input type="file" name="upfile" class="trip-picture" value="">
+            <input type="hidden" value="<?php echo $tripid ?>" name="id">;
+            <input type="hidden" value="6" name="position">;
+            <input type="hidden" name="token" value="<?php echo $token ?>">
+            <button type="submit">Ladda upp</button>
+            </form>
           </p>
         </div>
 
         <h3>PDF program</h3>
-        <p id="pdf-new">
-          <input type="file" name="trip-pdf" id="trip-pdf" value="">
+        <p class="pdf-new">
+          <form action="/adminp/filemanager/upload" method="POST" enctype="multipart/form-data">
+          <input type="file" name="upfile" class="trip-pdf" value="">
+          <input type="hidden" value="<?php echo $tripid ?>" name="id">;
+          <input type="hidden" value="1" name="position">;
+          <input type="hidden" name="token" value="<?php echo $token ?>">
+          <button type="submit">Ladda upp pdf</button>
+          </form>
+        </p>
+        <p class="pdf-new">
+          <form action="/adminp/filemanager/upload" method="POST" enctype="multipart/form-data">
+          <input type="file" name="upfile" class="trip-pdf" value="">
+          <input type="hidden" value="<?php echo $tripid ?>" name="id">;
+          <input type="hidden" value="2" name="position">;
+          <input type="hidden" name="token" value="<?php echo $token ?>">
+          <button type="submit">Ladda upp pdf</button>
+          </form>
         </p>
         </div>
-        <p>
-          <button type="button" name="trip-add-picture" id="trip-add-picture">Fler bilder</button>
-          <button type="button" name="trip-remove-picture" id="trip-remove-picture">Färre bilder</button>
-        <p>
+
 
 
     </main>

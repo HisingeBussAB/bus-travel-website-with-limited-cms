@@ -1,7 +1,109 @@
+$font-stack: 'Open Sans', sans-serif;
+$interactive-color: #0d61de;
+$interactive-hover-color: #0000ff;
+
+
+body {
+  font-family: $font-stack;
+}
+
+h1 {
+  padding: 10px;
+  padding-bottom: 15px;
+  font-weight: bold;
+  font-size: 2.1em;
+  text-align: center;
+}
+
+h2 {
+  font-size: 1.6em;
+  padding: 0;
+}
+
+input {
+  border: 1px solid #999;
+  border-radius: 3px;
+  float: left;
+  width: calc(100% - 58px);
+  margin-bottom: 8px;
+  padding: 1px;
+}
+
+button {
+  border: 1px solid $interactive-hover-color;
+  background-color: $interactive-color;
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 1em;
+  border-radius: 3px;
+  float: right;
+  margin-bottom: 8px;
+
+  &:hover {
+    background-color: $interactive-hover-color;
+  }
+}
+
+a {
+  color: $interactive-color;
+  &:hover {
+    color: $interactive-hover-color;
+  }
+}
+
+#trip-list,
 #category-list,
 #stop-list,
 #roomopt-list,
 #extra-list {
-  display: none;
+  display: none; //Hide on start, loaders are shown instead.
+  list-style-type: none;
+  padding: 0;
 
+  li {
+    padding-top: 10px;
+    width: 100%;
+
+    table {
+      width: 100%;
+
+      tr {
+        border-bottom: 1px solid #ccc;
+
+        &:hover {
+          background-color: rgba(225, 225, 225, 0.5);
+        }
+      }
+
+      td,
+      th {
+        padding: 4px 0;
+        text-align: left;
+      }
+
+      .table-name {
+        padding: 4px;
+      }
+
+      [class^="table-state-"] {
+        width: 23px;
+        text-align: center;
+        padding: 4px 5px 4px 7px;
+      }
+
+      [class^="table-reorder-"] {
+        width: 12px;
+        text-align: center;
+        padding: 4px 3px;
+      }
+
+      .table-delete {
+        width: 23px;
+        text-align: center;
+        padding: 4px 0 4px 5px;
+      }
+
+
+    }
+  }
 }

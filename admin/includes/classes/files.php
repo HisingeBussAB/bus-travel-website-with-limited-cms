@@ -14,8 +14,7 @@ use HisingeBussAB\RekoResor\website\includes\classes\DBError;
 class Files {
 
   public static function uploadfile() {
-    var_dump($_FILES);
-    var_dump($_POST);
+
     root\includes\classes\Sessions::secSessionStart(FALSE);
     //code mostly copied from http://php.net/manual/en/features.file-upload.php
     header('Content-Type: text/plain; charset=utf-8');
@@ -28,6 +27,7 @@ class Files {
       }
 
       $id = filter_var(trim($_POST['id']), FILTER_SANITIZE_NUMBER_INT);
+      $pos = filter_var(trim($_POST['position']), FILTER_SANITIZE_NUMBER_INT);
       //Get the upload folder from DB
       try {
         $pdo = DB::get();
@@ -39,7 +39,7 @@ class Files {
       } catch(\PDOException $e) {
         DBError::showError($e, __CLASS__, $sql);
       }
-      var_dump($result);
+
       try {
 
         if (!empty($result)) {
@@ -49,80 +49,89 @@ class Files {
         }
 
 
-        var_dump($_FILES);
-        var_dump($dir);
-          // Undefined | Multiple Files | $_FILES Corruption Attack
-          // If this request falls under any of them, treat it invalid.
-          if (
-              !isset($_FILES['upfile']['error']) ||
-              is_array($_FILES['upfile']['error'])
-          ) {
-              throw new \RuntimeException('Invalid parameters.');
+        // Undefined | Multiple Files | $_FILES Corruption Attack
+        // If this request falls under any of them, treat it invalid.
+        if (
+            !isset($_FILES['upfile']['error']) ||
+            is_array($_FILES['upfile']['error'])
+        ) {
+            throw new \RuntimeException('Ogiltig eller ingen fil skickad.');
+        }
+
+        // Check $_FILES['upfile']['error'] value.
+        switch ($_FILES['upfile']['error']) {
+            case UPLOAD_ERR_OK:
+                break;
+            case UPLOAD_ERR_NO_FILE:
+                throw new \RuntimeException('Ingen fil skickad.');
+            case UPLOAD_ERR_INI_SIZE:
+            case UPLOAD_ERR_FORM_SIZE:
+                throw new \RuntimeException('Filen är för stor.');
+            default:
+                throw new \RuntimeException('Okänt serverfel.');
+        }
+
+        // You should also check filesize here.
+        if ($_FILES['upfile']['size'] > 4000000) {
+          throw new \RuntimeException('Filen kan inte vara större än 4MB.');
+        }
+
+        // DO NOT TRUST $_FILES['upfile']['mime'] VALUE !!
+        // Check MIME Type by yourself.
+        $finfo = new \finfo(FILEINFO_MIME_TYPE);
+        if (false === $ext = array_search(
+            $finfo->file($_FILES['upfile']['tmp_name']),
+            array(
+                'jpg' => 'image/jpeg',
+                'png' => 'image/png',
+                'gif' => 'image/gif',
+                'pdf' => 'application/pdf'
+            ),
+            true
+        )) {
+            throw new \RuntimeException('Det går bara att ladda upp .jpg .png eller .gif bilder, samt .pdf filer.');
+        }
+
+        //Make directory if not alredy exists
+        if (!file_exists("./upload/resor/" . $dir)) {
+          if (!mkdir("./upload/resor/" . $dir, 0755, true)) {
+            throw new \RuntimeException('Misslyckades med att skapa bildkatalog.');
           }
+        }
 
-          // Check $_FILES['upfile']['error'] value.
-          switch ($_FILES['upfile']['error']) {
-              case UPLOAD_ERR_OK:
-                  break;
-              case UPLOAD_ERR_NO_FILE:
-                  throw new \RuntimeException('No file sent.');
-              case UPLOAD_ERR_INI_SIZE:
-              case UPLOAD_ERR_FORM_SIZE:
-                  throw new \RuntimeException('Exceeded filesize limit.');
-              default:
-                  throw new \RuntimeException('Unknown errors.');
-          }
+        // You should name it uniquely.
+        // DO NOT USE $_FILES['upfile']['name'] WITHOUT ANY VALIDATION !!
+        // On this example, obtain safe unique name from its binary data.
+        if (!move_uploaded_file(
+            $_FILES['upfile']['tmp_name'],
+            sprintf("./upload/resor/" . $dir . "/%s.%s",
+                $pos . "_" . $dir,
+                $ext
+            )
+        )) {
+            throw new \RuntimeException('Lyckades inte spara uppladdad fil.');
+        }
 
-          // You should also check filesize here.
-          if ($_FILES['upfile']['size'] > 4000000) {
-              throw new \RuntimeException('Exceeded filesize limit.');
-          }
-
-          // DO NOT TRUST $_FILES['upfile']['mime'] VALUE !!
-          // Check MIME Type by yourself.
-          $finfo = new \finfo(FILEINFO_MIME_TYPE);
-          if (false === $ext = array_search(
-              $finfo->file($_FILES['upfile']['tmp_name']),
-              array(
-                  'jpg' => 'image/jpeg',
-                  'png' => 'image/png',
-                  'gif' => 'image/gif',
-                  'pdf' => 'application/pdf'
-              ),
-              true
-          )) {
-              throw new \RuntimeException('Invalid file format.');
-          }
-
-
-          //Make directory if not alredy exists
-          if (!file_exists("./upload/resor/" . $dir)) {
-            if (!mkdir("./upload/resor/" . $dir, 0777, true)) {
-              throw new \RuntimeException('Failed to create directory.');
+        if ($ext != "pdf") {
+          //Create thumbnail if file is large$source_img = 'source.jpg';
+          $imagesize = getimagesize($file = "./upload/resor/" . $dir . "/" .$pos . "_" . $dir . "." . $ext);
+          if ($imagesize[1] > 600) {
+            if (!self::smart_resize_image($file = "./upload/resor/" . $dir . "/" .$pos . "_" . $dir . "." . $ext, $output = "./upload/resor/" . $dir . "/small_" .$pos . "_" . $dir . ".jpg", $height = 600)) {
+              throw new \RuntimeException('Lyckades inte skapa thumbnail till bilden. Förminskning misslyckades.');
+            }
+          } else {
+            if (!copy($file = "./upload/resor/" . $dir . "/" .$pos . "_" . $dir . "." . $ext, $output = "./upload/resor/" . $dir . "/small_" .$pos . "_" . $dir . "." . $ext)) {
+              throw new \RuntimeException('Lyckades inte skapa thumbnail till bilden. Kopiering misslyckades.');
             }
           }
 
-          // You should name it uniquely.
-          // DO NOT USE $_FILES['upfile']['name'] WITHOUT ANY VALIDATION !!
-          // On this example, obtain safe unique name from its binary data.
-          if (!move_uploaded_file(
-              $_FILES['upfile']['tmp_name'],
-              sprintf("./upload/resor/" . $dir . "/%s.%s",
-                  "1_" . $dir,
-                  $ext
-              )
-          )) {
-              throw new \RuntimeException('Failed to move uploaded file.');
-          }
-
-          //Create thumbnail if file is large$source_img = 'source.jpg';
-          self::smart_resize_image($file = "./upload/resor/" . $dir . "/1_" . $dir . "." . $ext, $output = "./upload/resor/" . $dir . "/small_1_" . $dir . ".jpg", $height = 600);
-
-          echo 'File is uploaded successfully.';
+        echo 'Bilden sparades.';
+        } else {
+        echo "PDF sparades.";
+        }
 
       } catch (\RuntimeException $e) {
-
-          echo $e->getMessage();
+        echo $e->getMessage();
 
       }
 

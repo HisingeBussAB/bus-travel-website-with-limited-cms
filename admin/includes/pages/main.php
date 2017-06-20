@@ -35,10 +35,11 @@ class Main {
   if (admin\includes\classes\Login::isLoggedIn() === TRUE) {
     //Is logged in
 
+    $pageTitle = "Rekå Admin - Huvudmeny";
+    $more_stylesheets = "<link href='/dependencies/jquery-confirm/dist/jquery-confirm.min.css' rel='stylesheet'>";
+
     header('Content-type: text/html; charset=utf-8');
     include __DIR__ . '/shared/header.php';
-
-    $pageTitle = "Rekå Admin - Huvudmeny";
 
     $pdo = DB::get();
 
@@ -69,14 +70,14 @@ class Main {
           <i class="fa fa-spinner fa-4x fa-spin" aria-hidden="true"></i>
         </div>
       </div>
-      <div class="col-lg-3 col-md-6">
+      <div class="col-lg-2 col-md-6">
         <h2>Kategorier</h2>
         <ul id="category-list">
           <li>
             <form action="/adminajax/newcategory" method="post" accept-charset="utf-8" id="form-new-category" enctype='application/json'>
               <input type="text" maxlength="80" name="name" placeholder="Kategori" required id="form-new-category-name">
               <input type="hidden" name="token" value="<?php echo $token ?>" class="form-token">
-              <input type="submit" value="Skapa" id="form-new-category-submit">
+              <button type="submit"id="form-new-category-submit">Skapa</button>
             </form>
           </li>
           <li id="category-list-content"></li>
@@ -93,7 +94,7 @@ class Main {
             <form action="/adminajax/newroomopt" method="post" accept-charset="utf-8" id="form-new-roomopt" enctype='application/json'>
               <input type="text" maxlength="100" name="name" placeholder="Boendealternativ" required id="form-new-roomopt-name">
               <input type="hidden" name="token" value="<?php echo $token ?>" class="form-token">
-              <input type="submit" value="Skapa" id="form-new-roomopt-submit">
+              <button type="submit"id="form-new-roomopt-submit">Skapa</button>
             </form>
           </li>
           <li id="roomopt-list-content"></li>
@@ -103,14 +104,14 @@ class Main {
           <i class="fa fa-spinner fa-4x fa-spin" aria-hidden="true"></i>
         </div>
       </div>
-      <div class="col-lg-3 col-md-6">
+      <div class="col-lg-4 col-md-6">
         <h2>Hållplatser</h2>
         <ul id="stop-list">
           <li>
             <form action="/adminajax/newstop" method="post" accept-charset="utf-8" id="form-new-stop" enctype='application/json'>
-              <input type="text" maxlength="80" name="name" placeholder="Plats, Ort" required id="form-new-stop-name">,
+              <input type="text" maxlength="80" name="name" placeholder="Plats, Ort" required id="form-new-stop-name">
               <input type="hidden" name="token" value="<?php echo $token ?>" class="form-token">
-              <input type="submit" value="Skapa" id="form-new-stop-submit">
+              <button type="submit"id="form-new-stop-submit">Skapa</button>
             </form>
           </li>
           <li id="stop-list-content"></li>
@@ -133,6 +134,7 @@ class Main {
 
     <?php
     include __DIR__ . '/shared/scripts.php';
+    echo "<script src='/dependencies/jquery-confirm/dist/jquery-confirm.min.js'></script>";
     echo "<script src='/admin/js/main.js'></script>";
     include __DIR__ . '/shared/footer.php';
 

@@ -24,7 +24,7 @@ class Stops {
     $pdo = DB::get();
 
     try {
-      $sql = "SELECT * FROM " . TABLE_PREFIX . "hallplatser;";
+      $sql = "SELECT * FROM " . TABLE_PREFIX . "hallplatser ORDER BY sort;";
       $sth = $pdo->prepare($sql);
       $sth->execute();
       $result = $sth->fetchAll(\PDO::FETCH_ASSOC);
