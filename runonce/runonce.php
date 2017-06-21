@@ -14,6 +14,9 @@ require '../includes/classes/dberror.php';
 
 use HisingeBussAB\RekoResor\website\includes\classes\DB as DB;
 
+/*
+BREAK! FILE COMMENTED TO NOT BE RUN BY MISTAKE. REMOVE COMMENT AND RUN INITALIZE DB
+
 $pdo = DB::get();
 
 
@@ -352,3 +355,5 @@ try {
 } catch(\PDOException $e) {
   echo $sql . "<br>" . $e->getMessage() . "<br>";
 }
+
+*/
