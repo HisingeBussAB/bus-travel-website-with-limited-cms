@@ -62,7 +62,7 @@ class Main {
       <div class="col-lg-3 col-md-6">
         <h2>Resor</h2>
         <ul id="trip-list">
-          <li><a href="/adminp/nyresa/" title="Lägg in en ny resa">Skapa ny resa</a></li>
+          <li><a href="/adminp/nyresa/" title="Lägg in en ny resa"><button>Skapa ny resa</button></a></li>
           <li id="trip-list-content"></li>
           <li id="trip-list-error"></li>
         </ul>
@@ -77,7 +77,7 @@ class Main {
             <form action="/adminajax/newcategory" method="post" accept-charset="utf-8" id="form-new-category" enctype='application/json'>
               <input type="text" maxlength="80" name="name" placeholder="Kategori" required id="form-new-category-name">
               <input type="hidden" name="token" value="<?php echo $token ?>" class="form-token">
-              <button type="submit"id="form-new-category-submit">Skapa</button>
+              <button type="submit"id="form-new-category-submit" class="button-right">Skapa</button>
             </form>
           </li>
           <li id="category-list-content"></li>
@@ -94,7 +94,7 @@ class Main {
             <form action="/adminajax/newroomopt" method="post" accept-charset="utf-8" id="form-new-roomopt" enctype='application/json'>
               <input type="text" maxlength="100" name="name" placeholder="Boendealternativ" required id="form-new-roomopt-name">
               <input type="hidden" name="token" value="<?php echo $token ?>" class="form-token">
-              <button type="submit"id="form-new-roomopt-submit">Skapa</button>
+              <button type="submit"id="form-new-roomopt-submit" class="button-right">Skapa</button>
             </form>
           </li>
           <li id="roomopt-list-content"></li>
@@ -111,7 +111,7 @@ class Main {
             <form action="/adminajax/newstop" method="post" accept-charset="utf-8" id="form-new-stop" enctype='application/json'>
               <input type="text" maxlength="80" name="name" placeholder="Plats, Ort" required id="form-new-stop-name">
               <input type="hidden" name="token" value="<?php echo $token ?>" class="form-token">
-              <button type="submit"id="form-new-stop-submit">Skapa</button>
+              <button type="submit"id="form-new-stop-submit" class="button-right">Skapa</button>
             </form>
           </li>
           <li id="stop-list-content"></li>

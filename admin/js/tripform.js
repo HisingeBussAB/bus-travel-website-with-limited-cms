@@ -15,7 +15,7 @@ $(function() {
     $('#trip-text').append(
       "<fieldset id='trip-text-" + days + "'>"
       + "<label for='trip-text-heading[" + days + "]'>Dag " + days + "</label>"
-      + "<input type='text' maxlength='80' name='trip-text-heading[" + days + "]' id='trip-text-" + days + "-heading' placeholder='Dag " + days + "'>"
+      + "<input type='text' maxlength='200' name='trip-text-heading[" + days + "]' id='trip-text-" + days + "-heading' placeholder='Dag " + days + "'>"
       + "<textarea type='text' name='trip-text[" + days + "]' id='trip-text-" + days + "-text'></textarea>"
       + "</fieldset>");
     });
@@ -31,9 +31,9 @@ $(function() {
     event.preventDefault();
     includes++;
     $('#includes-list').append(
-      "<p id='include-" + includes + "'>"
-      + "<input type='text' maxlength='80' name='trip-ingar[" + includes + "]'' id='trip-tillagg-" + includes + "'>"
-      + "</p>");
+      "<div id='include-" + includes + "'>"
+      + "<input type='text' maxlength='400' name='trip-ingar[" + includes + "]'' id='trip-tillagg-" + includes + "'>"
+      + "</div>");
     });
 
   $('#trip-remove-includes').click(function(event){
@@ -46,10 +46,10 @@ $(function() {
     event.preventDefault();
     addons++;
     $('#addons-list').append(
-      "<p id='addon-" + addons + "'>"
-      + "<input type='text' maxlength='80' name='trip-tillagg[" + addons + "]' id='trip-tillagg-" + addons + "' placeholder='Tillägg'>"
-      + "<input type='number' name='trip-tillagg-pris[" + addons + "]' id='trip-tillagg-pris-" + addons + "-pris' placeholder='100'>:-"
-      + "</p>");
+      "<div id='addon-" + addons + "'>"
+      + "<input type='text' maxlength='255' name='trip-tillagg[" + addons + "]' id='trip-tillagg-" + addons + "' placeholder='Tillägg'>"
+      + "<input type='number' name='trip-tillagg-pris[" + addons + "]' id='trip-tillagg-pris-" + addons + "-pris' placeholder='100'> :-"
+      + "</div>");
     });
 
   $('#trip-remove-addon').click(function(event){
@@ -62,9 +62,9 @@ $(function() {
       event.preventDefault();
       dates++;
       $('#dates-list').append(
-        "<p id='date-" + dates + "'>"
+        "<div id='date-" + dates + "'>"
         + "<input type='date' name='trip-date[" + dates + "]' id='trip-date-" + dates + "' placeholder='YYYY-MM-DD'>"
-        + "</p>");
+        + "</div>");
       });
 
     $('#trip-remove-date').click(function(event){

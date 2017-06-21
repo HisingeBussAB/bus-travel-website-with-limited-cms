@@ -77,7 +77,13 @@ class Functions
   public static function get_img_files($dir) {
 
     $results = [];
-    $files = scandir($dir);
+    if (!is_dir($dir)) {
+      return false;
+    }
+
+    if (!($files = scandir($dir))) {
+      return false;
+    }
     sort($files);
     $i = 0;
     foreach($files as $file) {

@@ -37,6 +37,7 @@ class Trip {
     //Is logged in
 
     $pageTitle = "Rekå Admin - Ny/Ändra resa";
+    $more_stylesheets = "<link href='/admin/css/trip.min.css' rel='stylesheet'>";
 
     header('Content-type: text/html; charset=utf-8');
     include __DIR__ . '/shared/header.php';
@@ -178,7 +179,7 @@ class Trip {
             <input type="text" maxlength="200" name="trip-heading" id="trip-heading" placeholder="Resansnamn" <?php if (isset($trip)) {echo "value='" . $trip['namn'] . "'";} ?>>
           </fieldset>
           <fieldset>
-            <label for="trip-summary">Summary</label>
+            <label for="trip-summary">Ingress</label>
             <textarea type="text" name="trip-summary" id="trip-summary" placeholder="Ingress"><?php if (isset($trip)) {echo functions::br2htmlnl($trip['ingress']);} ?></textarea>
           </fieldset>
 
@@ -188,14 +189,14 @@ class Trip {
             if (!isset($trip)) {
               echo "<fieldset id='trip-text-1' class='trip-text'>";
               echo  "<label for='trip-text-heading[1]'>Dag 1</label>";
-              echo  "<input type='text' maxlength='80' name='trip-text-heading[1]' id='trip-text-heading-1' placeholder='Dag 1'>";
+              echo  "<input type='text' maxlength='200' name='trip-text-heading[1]' id='trip-text-heading-1' placeholder='Dag 1'>";
               echo  "<textarea type='text' name='trip-text[1]' id='trip-text-1-text' placeholder='Programtext dag 1'></textarea>";
               echo "</fieldset>";
             } else {
               foreach ($textheads as $id=>$texthead) {
                 echo "<fieldset id='trip-text-" . ($id+1) . "' class='trip-text'>";
                 echo "<label for='trip-text-heading[" . ($id+1) . "]'>Dag " . ($id+1) . "</label>";
-                echo "<input type='text' maxlength='80' name='trip-text-heading[" . ($id+1) . "]' class='trip-text-heading' value='" . $texthead . "'>";
+                echo "<input type='text' maxlength='200' name='trip-text-heading[" . ($id+1) . "]' class='trip-text-heading' value='" . $texthead . "'>";
                 echo "<textarea type='text' name='trip-text[" . ($id+1) . "]' class='trip-text-text'>" . functions::br2htmlnl($textbodies[$id]) . "</textarea>";
                 echo "</fieldset>";
               }
@@ -209,8 +210,8 @@ class Trip {
           </fieldset>
 
           <fieldset>
-            <label for="trip-text-hotel-heading">Hotel</label>
-            <input type="text" maxlength="100" name="trip-text-hotel-heading" id="trip-hotel-heading" placeholder="Hotellets namn" value="<?php if (isset($trip)) {echo $hotelhead[0];} ?>">
+            <label for="trip-text-hotel-heading">Hotell</label>
+            <input type="text" maxlength="120" name="trip-text-hotel-heading" id="trip-hotel-heading" placeholder="Hotellets namn" value="<?php if (isset($trip)) {echo $hotelhead[0];} ?>">
             <textarea type="text" name="trip-text-hotel-text" id="trip-hotel-text" placeholder="Hotellvägen 5&#10;888 88 Hotellstaden&#10;+46888888"><?php if (isset($trip)) {echo functions::br2htmlnl($hoteltext[0]);} ?></textarea>
             <input type="text" maxlength="250" name="trip-text-hotel-link" id="trip-hotel-link" placeholder="http://www.hotel.se" value="<?php if (isset($trip)) {echo $trip['hotellink'];} ?>">
           </fieldset>
@@ -227,29 +228,29 @@ class Trip {
               <?php
               } else {
                 foreach ($departures as $id=>$departure) {
-                  echo "<p id='date-" . ($id+1) . "' class='date-item'>";
+                  echo "<div id='date-" . ($id+1) . "' class='date-item'>";
                   echo  "<input type='date' name='trip-date[" . ($id+1) . "]' id='trip-date-" . ($id+1) . "' placeholder='YYYY-MM-DD' value='" . $departure['datum'] . "'>";
-                  echo "</p>";
+                  echo "</div>";
                 }
               }
                ?>
             </div>
-            <p>
+            <div>
               <button type="button" name="trip-add-date" id="trip-add-date">Fler avgångar</button>
               <button type="button" name="trip-remove-date" id="trip-remove-date">Färre avgångar</button>
-            <p>
+            <div>
           </fieldset>
 
           <fieldset>
             <h3>Antal dagar</h3>
-            <p>
+            <div>
               <input type="number" name="trip-duration" id="trip-duration" placeholder="0" value="<?php if (isset($trip)) {echo $trip['antaldagar'];} ?>">
-            </p>
+            </div>
           </fieldset>
 
           <fieldset>
             <label for="trip-facebook">Facebook event url</label>
-            <input type="text" maxlength="250" name="trip-facebook" id="trip-text-1-heading" placeholder="Vårt hotel" value="<?php if (isset($trip)) {echo $trip['hotellink'];} ?>">
+            <input type="text" maxlength="255" name="trip-facebook" id="trip-text-1-heading" placeholder="https://www.facebook.com/..." value="<?php if (isset($trip)) {echo $trip['hotellink'];} ?>">
           </fieldset>
 
           <fieldset>
@@ -258,23 +259,23 @@ class Trip {
               <?php
               if (!isset($trip)) {
                ?>
-              <p id="include-1" class="include-item">
-                <input type="text" maxlength="150" name="trip-ingar[1]" id="trip-tillagg-1" value="Resa med modern helturistbuss t/r">
-              </p>
+              <div id="include-1" class="include-item">
+                <input type="text" maxlength="400" name="trip-ingar[1]" id="trip-tillagg-1" value="Resa med modern helturistbuss t/r">
+              </div>
               <?php
               } else {
                 foreach ($includes as $id=>$include) {
-                  echo "<p id='include-" . ($id+1) . "' class='include-item'>";
-                  echo  "<input type='text' maxlength='150' name='trip-ingar[" . ($id+1) . "]' id='trip-tillagg-" . ($id+1) . "' value='" . $include . "'>";
-                  echo "</p>";
+                  echo "<div id='include-" . ($id+1) . "' class='include-item'>";
+                  echo  "<input type='text' maxlength='400' name='trip-ingar[" . ($id+1) . "]' id='trip-tillagg-" . ($id+1) . "' value='" . $include . "'>";
+                  echo "</div>";
                 }
               }
                ?>
             </div>
-            <p>
+            <div>
               <button type="button" name="trip-add-includes" id="trip-add-includes">Fler ingår</button>
               <button type="button" name="trip-remove-includes" id="trip-remove-includes">Färre ingår</button>
-            <p>
+            <div>
           </fieldset>
 
           <fieldset>
@@ -283,42 +284,46 @@ class Trip {
             <?php
             if (!isset($trip)) {
              ?>
-            <p id="addon-1" class="addon-item">
-              <input type="text" maxlength="79" name="trip-tillagg[1]" id="trip-tillagg-1" placeholder="Tillägg">
-              <input type="number" name="trip-tillagg-pris[1]" id="trip-tillagg-1-pris" placeholder="0"> :-
-            </p>
+            <div id="addon-1" class="addon-item">
+              <input type="text" maxlength="255" name="trip-tillagg[1]" id="trip-tillagg-1" placeholder="Tillägg"><!--
+           --><input type="number" name="trip-tillagg-pris[1]" id="trip-tillagg-1-pris" placeholder="0">&nbsp:-
+            </div>
             <?php
             } else {
               foreach ($addons as $id=>$addon) {
-                echo "<p id='addon-" . ($id+1) . "' class='addon-item'>";
-                echo  "<input type='text' maxlength='79' name='trip-tillagg[" . ($id+1) . "]' id='trip-tillagg-" . ($id+1) . "' placeholder='Tillägg' value='" . $addon['namn'] . "'>";
+                echo "<div id='addon-" . ($id+1) . "' class='addon-item'>";
+                echo  "<input type='text' maxlength='255' name='trip-tillagg[" . ($id+1) . "]' id='trip-tillagg-" . ($id+1) . "' placeholder='Tillägg' value='" . $addon['namn'] . "'>";
                 echo  "<input type='number' name='trip-tillagg-pris[" . ($id+1) . "]' id='trip-tillagg-" . ($id+1) . "-pris' placeholder='0' value='" . $addon['pris'] . "'> :-";
-                echo "</p>";
+                echo "</div>";
               }
             }
              ?>
           </div>
-            <p>
+            <div>
               <button type="button" name="trip-add-addon" id="trip-add-addon">Fler tillägg</button>
               <button type="button" name="trip-remove-addon" id="trip-remove-addon">Färre tillägg</button>
-            <p>
+            <div>
           </fieldset>
 
           <fieldset>
             <h3>Grundpris</h3>
-            <p>
+            <div>
               <input type="number" name="trip-price" id="trip-price" placeholder="0" value="<?php if (isset($trip)) {echo $trip['pris'];} ?>"> :-
-            </p>
+            </div>
           </fieldset>
 
           <fieldset>
             <h3>Boenden</h3>
             <p>
-              <table><tr>
-                <td>Använd</td>
-                <td>Boendetyp</td>
-                <td>Pris</td>
-              </tr>
+              <table>
+                <thead>
+                  <tr>
+                    <th scope="col">Använd</th>
+                    <th scope="col">Boendetyp</th>
+                    <th scope="col">Pris/person</th>
+                  </tr>
+                </thead>
+                <tbody>
               <?php
                 foreach($rooms as $room) {
                   if ((isset($trip)) && (array_key_exists($room['id'], $rooms_trip))) {
@@ -334,18 +339,22 @@ class Trip {
                   }
                 }
                ?>
-              </tr></table>
+             </tr></tbody></table>
           </fieldset>
 
           <fieldset>
             <h3>Turlista</h3>
             <p>
-              <table><tr>
-                <td>Stannar</td>
-                <td>Plats</td>
-                <td>Ut</td>
-                <td>Hem</td>
-              </tr>
+              <table>
+                <thead>
+                  <tr>
+                    <th scope="col">Stannar</th>
+                    <th scope="col">Plats</th>
+                    <th scope="col">Ut</th>
+                    <th scope="col">Hem</th>
+                  </tr>
+                </thead>
+                <tbody>
               <?php
                 foreach($stops as $stop) {
                   if ((isset($trip)) && (array_key_exists($stop['id'], $stops_trip))) {
@@ -361,16 +370,20 @@ class Trip {
                 }
               }
                ?>
-              </tr></table>
+             </tr></tbody></table>
           </fieldset>
 
           <fieldset>
             <h3>Kategorier</h3>
             <p>
-              <table><tr>
-                <td>Använd</td>
-                <td>Boendetyp</td>
-              </tr>
+              <table>
+                <thead>
+                  <tr>
+                    <th scope="col">Använd</th>
+                    <th scope="col">Boendetyp</th>
+                  </tr>
+                </thead>
+                <tbody>
               <?php
                 foreach($categories as $category) {
                   if ((isset($trip)) && (array_key_exists($category['id'], $categories_trip))) {
@@ -384,13 +397,13 @@ class Trip {
                   }
                 }
                ?>
-              </tr></table>
+             </tr></tbody></table>
           </fieldset>
 
           <fieldset>
             <h3>Inställningar för bokning</h3>
-            <p><input type="checkbox" name="trip-address-required" id="trip-address-required" value="address-required"<?php if (isset($trip)) {if ($trip['fysiskadress'] == 1) { echo " checked "; }} else { echo " checked "; } ?>>Fysisk address behöver anges vid bokning.</p>
-            <p><input type="checkbox" name="trip-personalid-required" id="trip-personalid-required" value="personalid-required"<?php if (isset($trip)) {if ($trip['personnr'] == 1) { echo " checked "; }} ?>>Personnummer behöver anges vid bokning.</p>
+            <div class="extra-settings"><input type="checkbox" name="trip-address-required" id="trip-address-required" value="address-required"<?php if (isset($trip)) {if ($trip['fysiskadress'] == 1) { echo " checked "; }} else { echo " checked "; } ?>>Fysisk address behöver anges vid bokning.</div>
+            <div class="extra-settings"><input type="checkbox" name="trip-personalid-required" id="trip-personalid-required" value="personalid-required"<?php if (isset($trip)) {if ($trip['personnr'] == 1) { echo " checked "; }} ?>>Personnummer behöver anges vid bokning.</div>
           </fieldset>
 
           <fieldset>
@@ -399,114 +412,88 @@ class Trip {
           </fieldset>
 
           <fieldset>
-            <p><button type="submit">Spara resa</button></p>
+            <div><button type="submit" id="save-trip-button">Spara resa</button></div>
           </fieldset>
         </div>
       </form>
 
         <h3>Bilder</h3>
         <div id="pictures">
-          <p id="pictures-list">
+          <div id="pictures-list">
 
             <?php
+            $i = 0;
             if (isset($trip)) {
               $server_path = __DIR__ . '/../../../upload/resor/' . $trip['bildkatalog'] . '/';
               $web_path = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/" . $trip['bildkatalog'] . "/";
-              $files = functions::get_img_files($server_path);
-              $i = 0;
-              foreach ($files as $file) {
-                echo "<form>";
-                echo "<ul><li>";
-                if ($i === 0) { echo "Huvudbild"; } else { echo "Bild " . $i; }
-                echo "</li><li><a href='" . $web_path . $file['file'] . "' target='_blank'><img src='" . $web_path . $file['thumb'] . "' class='picture-list-thumb'></a></li>";
-                echo "<li><input type='file' name='new-file' name= value=''><input type='hidden' name='old-file' value='" . $server_path . $file['file'] . "'></li>";
-                echo "<li><button type='submit' name='' >Byt ut</button></li></ul>";
-                echo "</form>";
-                $i++;
+                if ($files = functions::get_img_files($server_path)) {
+                  foreach ($files as $file) {
+                  echo "<div class='picture-new'>";
+                  echo "<form action='/adminp/filemanager/upload' method='POST' enctype='multipart/form-data'>";
+                  echo "<label for='upfile' class='file-label'>";
+                  if ($i === 0) { echo "Huvudbild"; } else { echo "Bild " . ($i+1); }
+                  echo "</label>";
+                  echo "<input type='hidden' value='" . $tripid . "' name='id'>";
+                  echo "<input type='hidden' value='" . ($i+1) . "' name='position'>";
+                  echo "<input type='hidden' name='token' value='" . $token . "'>";
+                  echo "<input type='file' name='upfile' class='trip-picture' name= value=''><input type='hidden' name='old-file' value='" . $server_path . $file['file'] . "'>";
+                  echo "<button type='submit' name='' >Byt ut bild</button>";
+                  echo "</form>";
+                  echo "<div><a href='" . $web_path . $file['file'] . "' target='_blank'><img src='" . $web_path . $file['thumb'] . "' class='picture-list-thumb'></a>";
+                  echo "<p class='picture-info'>URL: <a href='" . $web_path . $file['file'] . "' target='_blank'>" . $web_path . $file['file'] . "</a><br>";
+                  echo "URL thumbnail: <a href='" . $web_path . $file['thumb'] . "' target='_blank'>" . $web_path . $file['thumb'] . "</a><br>";
+                  echo "Orginalstorlek: " . (getimagesize($server_path . $file['file'])[3]) . "<br>";
+                  echo "Filtyp: " . (mime_content_type($server_path . $file['file'])) . "<br>";
+                  echo "<p></div>";
+                  echo "</div>";
+                  $i++;
+                }
+              } else {
+                echo "<p class='importaint'>Inga bilder hittades. Prova ladda upp nya.</p>";
               }
             } else {
-              echo "Spara reseinformationen först, sedan kan du ladda upp bilder.";
+              echo "<p class='importaint'>Spara reseinformationen först, sedan kan du ladda upp bilder.</p>";
             }
 
-
-
-             ?>
-          </p>
-          <p class="picture-new">
-            <form action="/adminp/filemanager/upload" method="POST" enctype="multipart/form-data">
-            <input type="file" name="upfile" class="trip-picture" value="">
-            <input type="hidden" value="<?php echo $tripid ?>" name="id">;
-            <input type="hidden" value="1" name="position">;
-            <input type="hidden" name="token" value="<?php echo $token ?>">
-            <button type="submit">Ladda upp</button>
-            </form>
-          </p>
-          <p class="picture-new">
-            <form action="/adminp/filemanager/upload" method="POST" enctype="multipart/form-data">
-            <input type="file" name="upfile" class="trip-picture" value="">
-            <input type="hidden" value="<?php echo $tripid ?>" name="id">;
-            <input type="hidden" value="2" name="position">;
-            <input type="hidden" name="token" value="<?php echo $token ?>">
-            <button type="submit">Ladda upp</button>
-            </form>
-          </p>
-          <p class="picture-new">
-            <form action="/adminp/filemanager/upload" method="POST" enctype="multipart/form-data">
-            <input type="file" name="upfile" class="trip-picture" value="">
-            <input type="hidden" value="<?php echo $tripid ?>" name="id">;
-            <input type="hidden" value="3" name="position">;
-            <input type="hidden" name="token" value="<?php echo $token ?>">
-            <button type="submit">Ladda upp</button>
-            </form>
-          </p>
-          <p class="picture-new">
-            <form action="/adminp/filemanager/upload" method="POST" enctype="multipart/form-data">
-            <input type="file" name="upfile" class="trip-picture" value="">
-            <input type="hidden" value="<?php echo $tripid ?>" name="id">;
-            <input type="hidden" value="4" name="position">;
-            <input type="hidden" name="token" value="<?php echo $token ?>">
-            <button type="submit">Ladda upp</button>
-            </form>
-          </p>
-          <p class="picture-new">
-            <form action="/adminp/filemanager/upload" method="POST" enctype="multipart/form-data">
-            <input type="file" name="upfile" class="trip-picture" value="">
-            <input type="hidden" value="<?php echo $tripid ?>" name="id">;
-            <input type="hidden" value="5" name="position">;
-            <input type="hidden" name="token" value="<?php echo $token ?>">
-            <button type="submit">Ladda upp</button>
-            </form>
-          </p>
-          <p class="picture-new">
-            <form action="/adminp/filemanager/upload" method="POST" enctype="multipart/form-data">
-            <input type="file" name="upfile" class="trip-picture" value="">
-            <input type="hidden" value="<?php echo $tripid ?>" name="id">;
-            <input type="hidden" value="6" name="position">;
-            <input type="hidden" name="token" value="<?php echo $token ?>">
-            <button type="submit">Ladda upp</button>
-            </form>
-          </p>
+            while ($i < 6) {
+            echo "<div class='picture-new'>";
+            echo "<form action='/adminp/filemanager/upload' method='POST' enctype='multipart/form-data'>";
+            echo "<label for='upfile' class='file-label'>";
+            if ($i === 0) { echo "Huvudbild"; } else { echo "Bild " . ($i+1); }
+            echo "</label>";
+            echo "<input type='hidden' value='" . $tripid . "' name='id'>";
+            echo "<input type='hidden' value='" . ($i+1) . "' name='position'>";
+            echo "<input type='hidden' name='token' value='" . $token . "'>";
+            echo "<input type='file' name='upfile' class='trip-picture' name= value=''>";
+            echo "<button type='submit' name='' >Ladda upp bild</button>";
+            echo "</form>";
+            echo "</div>";
+            $i++;
+          }
+           ?>
         </div>
 
-        <h3>PDF program</h3>
-        <p class="pdf-new">
+        <h3>PDF-program</h3>
+        <div class="pdf-new">
           <form action="/adminp/filemanager/upload" method="POST" enctype="multipart/form-data">
+            <label for="upfile" class="file-label">Huvudprogram</label>
           <input type="file" name="upfile" class="trip-pdf" value="">
-          <input type="hidden" value="<?php echo $tripid ?>" name="id">;
-          <input type="hidden" value="1" name="position">;
+          <input type="hidden" value="<?php echo $tripid ?>" name="id">
+          <input type="hidden" value="1" name="position">
           <input type="hidden" name="token" value="<?php echo $token ?>">
-          <button type="submit">Ladda upp pdf</button>
+          <button type="submit">Ladda upp / Byt ut pdf</button>
           </form>
-        </p>
-        <p class="pdf-new">
+        </div>
+        <div class="pdf-new">
           <form action="/adminp/filemanager/upload" method="POST" enctype="multipart/form-data">
-          <input type="file" name="upfile" class="trip-pdf" value="">
-          <input type="hidden" value="<?php echo $tripid ?>" name="id">;
-          <input type="hidden" value="2" name="position">;
+            <label for="upfile" class="file-label">Extra pdf</label>
+          <input type="hidden" value="<?php echo $tripid ?>" name="id">
+          <input type="hidden" value="2" name="position">
           <input type="hidden" name="token" value="<?php echo $token ?>">
-          <button type="submit">Ladda upp pdf</button>
+          <input type="file" name="upfile" class="trip-pdf" value="">
+          <button type="submit">Ladda upp / Byt ut pdf</button>
           </form>
-        </p>
+        </div>
         </div>
 
 
