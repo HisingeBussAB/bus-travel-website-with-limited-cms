@@ -11,7 +11,12 @@ $(function() {
   // Listener submit
   $('#save-trip-button').click(function(event){
     event.preventDefault();
-  }
+    $("#save-trip-button").prop("disabled",true);
+    var formData = $("#trip").serialize()
+    $("#trip :input").prop("disabled", true);
+    saveForm(formData);
+
+  });
 
   // Listeners for add/remove input fields
   $('#trip-add-paragraph').click(function(event){
@@ -84,3 +89,28 @@ $(function() {
   });
 
 });
+
+
+function saveForm(formData) {
+  $.ajax({
+    type: 'POST',
+    cache: false,
+    url: $("#trip").attr('action'),
+    data: formData,
+    dataType: "json",
+  })
+    .done(function(data) {
+      window.location.href = window.location.href.replace(/\/$/, "") + '/' + data.tripid;
+    })
+    .fail(function(data) {
+      console.log(data);
+      console.log(data.status);
+      if (data.status == 404)
+        $( "#sumbit-error" ).html( "Något har gått fel. Error: 404." )
+      else
+        $( "#sumbit-error" ).html( "Något har gått fel. Fel: " + data.responseText + "." );
+
+      $("#save-trip-button").prop("disabled",false);
+      $("#trip :input").prop("disabled", false);
+    });
+}

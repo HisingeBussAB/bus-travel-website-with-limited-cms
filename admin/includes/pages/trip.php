@@ -415,6 +415,7 @@ class Trip {
           <fieldset>
             <div><button type="submit" id="save-trip-button">Spara resa</button></div>
           </fieldset>
+          <div id="sumbit-error"></div>
         </div>
       </form>
 

@@ -51,6 +51,7 @@ class NewTrip
   }
 
   public static function newTrip($formData) {
+
     //VALIDATE SOME FORM DATA
     $passedValidation = TRUE;
     $errorMessage = "";
@@ -84,7 +85,9 @@ class NewTrip
       $write = "update";
     }
     if ($form->writeToDB($write)) {
-      echo "<p>Resan sparad</p>";
+      $result['responseText'] = "<p>Resan sparad</p>";
+      $result['tripid'] = $form->tripid;
+      echo json_encode($result);
       http_response_code(200);
     } else {
       echo "<p>Kritiskt databasfel. Kontrollera informationen i formuläret eller kontakta systemadministratör.</p>";
