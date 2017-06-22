@@ -501,7 +501,6 @@ class Trip {
 
     </main>
 
-
     <?php
     include __DIR__ . '/shared/scripts.php';
     echo "<script src='/admin/js/tripform.js'></script>";

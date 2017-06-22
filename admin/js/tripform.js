@@ -5,10 +5,15 @@ $(function() {
   var days = $('.trip-text').length
   var includes = $('.include-item').length
   var addons =  $('.addon-item').length
-  var pictures = 1;
   var dates = $('.date-item').length
 
-  // Listeners
+
+  // Listener submit
+  $('#save-trip-button').click(function(event){
+    event.preventDefault();
+  }
+
+  // Listeners for add/remove input fields
   $('#trip-add-paragraph').click(function(event){
     event.preventDefault();
     days++;

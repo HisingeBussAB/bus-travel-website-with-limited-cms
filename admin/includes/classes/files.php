@@ -15,6 +15,12 @@ class Files {
 
   public static function uploadfile() {
 
+    $img_exts = [
+      'jpg',
+      'png',
+      'gif'
+    ];
+
     root\includes\classes\Sessions::secSessionStart(FALSE);
     //code mostly copied from http://php.net/manual/en/features.file-upload.php
     header('Content-Type: text/plain; charset=utf-8');
@@ -98,6 +104,18 @@ class Files {
             throw new \RuntimeException('Misslyckades med att skapa bildkatalog.');
           }
         }
+
+        //Check if the image file exists already with another extension and delete
+        foreach ($img_exts as $img_ext) {
+          if (file_exists("./upload/resor/" . $dir . "/" .$pos . "_" . $dir . "." . $img_ext)) {
+            if (!unlink("./upload/resor/" . $dir . "/" .$pos . "_" . $dir . "." . $img_ext)) {
+              throw new \RuntimeException('Misslyckades med att radera tidigare bild.');
+            }
+          }
+        }
+
+
+
 
         // You should name it uniquely.
         // DO NOT USE $_FILES['upfile']['name'] WITHOUT ANY VALIDATION !!
