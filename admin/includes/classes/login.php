@@ -55,23 +55,23 @@ class Login
     }
 
     if ($result === false) {
-      if (DEBUG_MODE) echo "DB RESULT EMPTY"; //DEBUG
+      if (DEBUG_MODE) echo "<div class='php-error'>DB RESULT EMPTY</div>"; //DEBUG
       return false;
     }
 
     if (LOGIN_IP_LOCK && $result['ip'] != hash('sha256', $_SERVER['REMOTE_ADDR'])) {
-      if (DEBUG_MODE) echo "IP MATCH FAIL"; //DEBUG
+      if (DEBUG_MODE) echo "<div class='php-error'>IP MATCH FAIL</div>"; //DEBUG
       return false;
     }
 
     $jwt = self::getJWT($result['jwtkey'], 1);
     if ($jwt === false) {
-      if (DEBUG_MODE) echo "JWT NOT FOUND"; //DEBUG
+      if (DEBUG_MODE) echo "<div class='php-error'>JWT NOT FOUND</div>"; //DEBUG
       return false;
     }
 
     if (($jwt->data->userId != $username) || ($result['jwttoken'] != $jwt->jti) || (JWT_STAMP != $jwt->data->stamp) || ($jwt->data->userAgent != $userAgentIn)) {
-      if (DEBUG_MODE) echo "JWT DECODED BUT CONTENT INVALID"; //DEBUG
+      if (DEBUG_MODE) echo "<div class='php-error'>JWT DECODED BUT CONTENT INVALID</div>"; //DEBUG
       return false;
     }
 

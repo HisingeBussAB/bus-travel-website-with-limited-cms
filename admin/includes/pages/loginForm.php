@@ -21,6 +21,8 @@ $_SESSION['token'] = $token;
 
   <link rel="icon" href="/favicon/favicon.ico">
 
+  <link rel="stylesheet" href="/dependencies/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
   <link rel="stylesheet" href="/admin/css/admin.min.css" />
 
   <script src='https://www.google.com/recaptcha/api.js'></script>
@@ -42,10 +44,10 @@ $_SESSION['token'] = $token;
       <input type="password" name="pwd" id="loginpwd">
     </fieldset>
     <fieldset>
-      <input type="submit" value="Logga in" id="login-submit">
+      <div class="g-recaptcha" data-sitekey="<?php echo RECAPTCHA_PUBLIC ?>"></div>
     </fieldset>
     <fieldset>
-      <div class="g-recaptcha" data-sitekey="<?php echo RECAPTCHA_PUBLIC ?>"></div>
+      <button type="submit" id="login-submit">Logga in</button>
     </fieldset>
     <fieldset>
       <p id="login-message"></p>
