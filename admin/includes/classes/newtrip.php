@@ -166,6 +166,8 @@ class NewTrip
     }
 
     $this->addons = [];
+    $this->addons['name'] = [];
+    $this->addons['price'] = [];
 
     $i = 0;
     foreach ($input["trip-tillagg"] as $key=>$addon) {
@@ -180,6 +182,8 @@ class NewTrip
     $this->price = filter_var(trim($input["trip-price"]), FILTER_SANITIZE_NUMBER_INT);
 
     $this->rooms = [];
+    $this->rooms['id'] = [];
+    $this->rooms['price'] = [];
     if (isset($input["useroom"])) {
       $i = 0;
       foreach ($input["useroom"] as $id) {
@@ -191,6 +195,9 @@ class NewTrip
     }
 
     $this->stops = [];
+    $this->stops['id'] = [];
+    $this->stops['from'] = [];
+    $this->stops['to'] = [];
     if (isset($input["usestop"])) {
       $i = 0;
       foreach ($input["usestop"] as $id) {

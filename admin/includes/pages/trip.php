@@ -38,6 +38,7 @@ class Trip {
 
     $pageTitle = "Rekå Admin - Ny/Ändra resa";
     $more_stylesheets = "<link href='/admin/css/trip.min.css' rel='stylesheet'>";
+    $show_navigation = true;
 
     header('Content-type: text/html; charset=utf-8');
     include __DIR__ . '/shared/header.php';

@@ -19,11 +19,18 @@
   if(!empty($more_stylesheets)) {
     echo $more_stylesheets;
   }
+
+  if ((isset($show_navigation)) && ($show_navigation)) {
+    $nav = "<nav class='main-nav-admin'><a href='/adminp'><button>Till huvudmenyn</button></a></nav>";
+  }
+
    ?>
+
 
 
 </head>
 <body>
   <header>
     <h1>Rekå Resor - Administration</h1>
+    <?php if (!empty($nav)) { echo $nav; } ?>
   </header>

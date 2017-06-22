@@ -60,6 +60,18 @@ a {
     float: right;
   }
 
+nav.main-nav-admin {
+  margin: 0 auto;
+  text-align: center;
+  width: 95%;
+
+  >a>button {
+    padding: 5px 20px;
+    font-weight: bold;
+    font-size: 1.12em;
+  }
+}
+
 #trip-list,
 #category-list,
 #stop-list,

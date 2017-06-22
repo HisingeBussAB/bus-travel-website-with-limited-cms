@@ -55,6 +55,18 @@ a:hover {
   float: right;
 }
 
+nav.main-nav-admin {
+  margin: 0 auto;
+  text-align: center;
+  width: 95%;
+}
+
+nav.main-nav-admin > a > button {
+  padding: 5px 20px;
+  font-weight: bold;
+  font-size: 1.12em;
+}
+
 #trip-list,
 #category-list,
 #stop-list,
