@@ -160,7 +160,7 @@ class PWReset
           //Random password generated in 4 parts, first part openssl_random_pseudo_bytes, last 3 parts from keyspaces ensuring some special chars
           $i = 0;
           do {
-          $password = openssl_random_pseudo_bytes(2+$i, $strong);
+          $password = openssl_random_pseudo_bytes(3+$i, $strong);
             $i++;
           } while ($strong !== TRUE);
 
@@ -171,7 +171,7 @@ class PWReset
 
           $length = mt_rand(1, 3);
           $password .= substr(str_shuffle($specialchars),0,$length);
-          $length = mt_rand(1, 4);
+          $length = mt_rand(2, 5);
           $password .= substr(str_shuffle($keyspace),0,$length);
           $length = mt_rand(1, 2);
           $password .= substr(str_shuffle($specialchars),0,$length);
