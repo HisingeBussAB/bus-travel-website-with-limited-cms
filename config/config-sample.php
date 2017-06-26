@@ -16,6 +16,8 @@ User: admin
 Pwd:  12345
 
 SMTP settings will be queries and saved in db on running /installme
+PHPMailer assumes plain if port is 25, and TLS if port is anything else. To change this you will have to rewrite the code where PHPMailer is used.
+
 Delete install folder from live setup after initializing site for extra security.
 */
 

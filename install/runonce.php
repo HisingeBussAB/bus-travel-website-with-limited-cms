@@ -367,7 +367,6 @@ try {
 try {
   $table = TABLE_PREFIX . 'pwreset';
   $sql = "CREATE TABLE " . $table . " (
-    id INT NOT NULL PRIMARY KEY,
     token CHAR(128),
     time TIMESTAMP DEFAULT CURRENT_TIMESTAMP);";
   $sth = $pdo->prepare($sql);
