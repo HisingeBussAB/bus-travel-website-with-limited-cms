@@ -23,7 +23,7 @@ class Login
   public static function isLoggedIn($regenJWT = TRUE) {
 
     if (!isset($_SESSION['isloggedin']) || !isset($_SESSION['useragent']) || !isset($_SESSION['id'])) {
-      if (DEBUG_MODE) echo "NO SESSION"; //DEBUG
+      if (DEBUG_MODE) echo "<div class='php-error'>NO SESSION</div>"; //DEBUG
       return false;
     }
 
@@ -33,7 +33,7 @@ class Login
     $userAgentIn = hash('sha256', $_SERVER['HTTP_USER_AGENT']);
 
     if ($userAgent !== $userAgentIn) {
-      if (DEBUG_MODE) echo "USER AGENT CHANGED"; //DEBUG
+      if (DEBUG_MODE) echo "<div class='php-error'>USER AGENT CHANGED</div>"; //DEBUG
       return false;
     }
 

@@ -31,6 +31,7 @@
 </head>
 <body>
   <header>
+    <nav class='nav-small-float'><a href='/adminp/changepw'><button>Byt lösenord</button></a><a href='/adminp/logout'><button>Logga ut</button></a></nav>
     <h1>Rekå Resor - Administration</h1>
     <?php if (!empty($nav)) { echo $nav; } ?>
   </header>

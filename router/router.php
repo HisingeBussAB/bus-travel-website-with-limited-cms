@@ -47,20 +47,22 @@ class Router
   public function __construct() {
     $this->routes = [];
 
-    //                Pattern with (arguments)            function to run on matchRoute                                                    METHOD
-    $this->addRoute(  '/(^$)/',                           '\HisingeBussAB\RekoResor\website\router\Render::inc',                          'GET');
-    $this->addRoute(  '/^adminp$/',                       '\HisingeBussAB\RekoResor\website\admin\includes\pages\Main::showAdminMain',    'GET');
-    $this->addRoute(  '/^adminp\/nyresa\/?([\w-]+)?\/?$/','\HisingeBussAB\RekoResor\website\admin\includes\pages\Trip::showTrip',         'GET');
-    $this->addRoute(  '/^adminp\/filemanager\/upload$/',  '\HisingeBussAB\RekoResor\website\admin\includes\classes\Files::uploadFile',    'POST');
-    $this->addRoute(  '/^resa\/([\w-]+)\/?$/',            '\HisingeBussAB\RekoResor\website\router\Render::inc',                          'GET');
-    $this->addRoute(  '/^galleri\/([\w-]+)\/?$/',         '\HisingeBussAB\RekoResor\website\router\Render::inc',                          'GET');
-    $this->addRoute(  '/^kategori\/([\w-]+)\/?$/',        '\HisingeBussAB\RekoResor\website\router\Render::inc',                          'GET');
-    $this->addRoute(  '/^(bestallkatalog)$/',             '\HisingeBussAB\RekoResor\website\router\Render::inc',                          'GET');
-    $this->addRoute(  '/^(inforresan)$/',                 '\HisingeBussAB\RekoResor\website\router\Render::inc',                          'GET');
-    $this->addRoute(  '/^(bussresorgoteborg)$/',          '\HisingeBussAB\RekoResor\website\router\Render::inc',                          'GET');
-    $this->addRoute(  '/^(kontaktarekaresor)$/',          '\HisingeBussAB\RekoResor\website\router\Render::inc',                          'GET');
-    $this->addRoute(  '/^ajax\/([\w-]+)$/',               '\HisingeBussAB\RekoResor\website\ajax\Ajax::startAjax',                        'POST');
-    $this->addRoute(  '/^adminajax\/([\w-]+)$/',          '\HisingeBussAB\RekoResor\website\ajax\AdminAjax::startAjax',                   'POST');
+    //                Pattern with (arguments)              function to run on matchRoute                                                    METHOD
+    $this->addRoute(  '/(^$)/',                             '\HisingeBussAB\RekoResor\website\router\Render::inc',                          'GET');
+    $this->addRoute(  '/^adminp$/',                         '\HisingeBussAB\RekoResor\website\admin\includes\pages\Main::showAdminMain',    'GET');
+    $this->addRoute(  '/^adminp\/nyresa\/?([\w-]+)?\/?$/',  '\HisingeBussAB\RekoResor\website\admin\includes\pages\Trip::showTrip',         'GET');
+    $this->addRoute(  '/^adminp\/resetpw\/?([\w-]+)?\/?$/', '\HisingeBussAB\RekoResor\website\admin\includes\pages\PWReset::doReset',       'GET');
+    $this->addRoute(  '/^adminp\/logout$/',                 '\HisingeBussAB\RekoResor\website\admin\includes\classes\Logout::doLogout',     'GET');
+    $this->addRoute(  '/^adminp\/filemanager\/upload$/',    '\HisingeBussAB\RekoResor\website\admin\includes\classes\Files::uploadFile',    'POST');
+    $this->addRoute(  '/^resa\/([\w-]+)\/?$/',              '\HisingeBussAB\RekoResor\website\router\Render::inc',                          'GET');
+    $this->addRoute(  '/^galleri\/([\w-]+)\/?$/',           '\HisingeBussAB\RekoResor\website\router\Render::inc',                          'GET');
+    $this->addRoute(  '/^kategori\/([\w-]+)\/?$/',          '\HisingeBussAB\RekoResor\website\router\Render::inc',                          'GET');
+    $this->addRoute(  '/^(bestallkatalog)$/',               '\HisingeBussAB\RekoResor\website\router\Render::inc',                          'GET');
+    $this->addRoute(  '/^(inforresan)$/',                   '\HisingeBussAB\RekoResor\website\router\Render::inc',                          'GET');
+    $this->addRoute(  '/^(bussresorgoteborg)$/',            '\HisingeBussAB\RekoResor\website\router\Render::inc',                          'GET');
+    $this->addRoute(  '/^(kontaktarekaresor)$/',            '\HisingeBussAB\RekoResor\website\router\Render::inc',                          'GET');
+    $this->addRoute(  '/^ajax\/([\w-]+)$/',                 '\HisingeBussAB\RekoResor\website\ajax\Ajax::startAjax',                        'POST');
+    $this->addRoute(  '/^adminajax\/([\w-]+)$/',            '\HisingeBussAB\RekoResor\website\ajax\AdminAjax::startAjax',                   'POST');
 
     //TEST ROUTES
     $this->addRoute(  '/^adminp\/testfiles$/',  '\HisingeBussAB\RekoResor\website\admin\includes\pages\TestFiles::start',       'GET');

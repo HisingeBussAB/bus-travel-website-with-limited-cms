@@ -186,9 +186,9 @@ $sql = "INSERT INTO " . TABLE_PREFIX . "logins (
   username,
   pwd)
   VALUES (
-  0,'" .
-  $default_login . "','" .
-  $default_pwd . "');";
+  0,
+  'admin',
+  '12345');";
 
   $sth = $pdo->prepare($sql);
   $sth->execute();

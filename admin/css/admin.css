@@ -67,6 +67,27 @@ nav.main-nav-admin > a > button {
   font-size: 1.12em;
 }
 
+nav.nav-small-float {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+}
+
+nav.nav-small-float > a > button {
+  padding: 1px 2px;
+  font-size: 0.78em;
+  margin-left: 4px;
+  background-color: transparent;
+  color: #555;
+  border-color: #555;
+}
+
+nav.nav-small-float > a > button:hover {
+  background-color: #0000ff;
+  color: #fff;
+  border-color: #0000ff;
+}
+
 #trip-list,
 #category-list,
 #stop-list,

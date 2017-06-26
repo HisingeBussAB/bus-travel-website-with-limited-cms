@@ -37,15 +37,6 @@ class Ajax
         }
       break;
 
-      case 'admindologout':
-        if (!root\admin\includes\classes\Logout::doLogout()) {
-          echo "Failed logout"; //TODO
-          http_response_code(418); //!!!
-          exit;
-        }
-
-      break;
-
       case 'resettoken':
         $token = root\includes\classes\ResetToken::getRandomToken();
         header('Content-Type: application/json');

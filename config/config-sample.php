@@ -2,33 +2,37 @@
 
 date_default_timezone_set ('Europe/Stockholm');
 
-define('DB_NAME',     'db name');
-define('DB_USER',     'db user');
-define('DB_PASSWORD', 'db password');
-define('DB_HOST',      'localhost');
+define('DB_NAME', 'database name');
+define('DB_USER', 'database username');
+define('DB_PASSWORD', 'database password');
+define('DB_HOST', 'localhost');
 
-define('DEFAULT_ADMIN_USER',  'admin');  //default admin username to use at setup, can be commented out after setup
-define('DEFAULT_ADMIN_PWD',   '12345');  //default admin username to use at setup, can be commented out after setup
 
-define('ALLOWED_HTML_TAGS', '<b><i><u><p><s><blockquote><q><br><h1><h2><h3><h4><h5><h6><del><sub><sup><style><small><big><pre><hr>');
+define('ALLOWED_HTML_TAGS', '<b><i><u><p><s><blockquote><q><br><h1><h2><h3><h4><h5><h6><del><sub><sup><style><small><big><pre><hr>'); //Tags allowed in content posts
 
-define('FIX_PWD_PEPPER',         'pepper');
-define('JWT_KEY_PEPPER',         'pepper');
+/*
+Default pwds etc
 
-define('DEFAULT_ADMIN_USER',  'admin');
-define('DEFAULT_ADMIN_PWD',   '12345');
+*/
 
-define('RECAPTCHA_PUBLIC', 'public recaptha key from Google');
-define('RECAPTCHA_SECRET', 'private recaptcha key frpm Goole');
+define('FIX_PWD_PEPPER',         'pwdpepper'); //pepper for passwords
+define('JWT_KEY_PEPPER',         'jwtpepper'); //pepper for jwt keys
+define('JWT_STAMP',              'jwtstamp'); //watermark for jwts
 
-define('TABLE_PREFIX', 's17test_');
 
-define('DEBUG_MODE', false);
+define('RECAPTCHA_PUBLIC', 'google recapta public key');
+define('RECAPTCHA_SECRET', 'google recapta private key');
+
+define('TABLE_PREFIX', 'prefix_');
+
+define('LOGIN_IP_LOCK', true);
+
+define('DEBUG_MODE', true);
 
 if (empty($_SERVER['HTTPS'])) {
-  define('HTTPS',              true);
+  define('HTTPS',              false);
   define('APPEND_SSL',         '');
 } else {
-  define('HTTPS',              false);
+  define('HTTPS',              true);
   define('APPEND_SSL',         's');
 }

@@ -38,6 +38,7 @@ class Main {
     $pageTitle = "Rekå Admin - Huvudmeny";
     $more_stylesheets = "<link href='/dependencies/jquery-confirm/dist/jquery-confirm.min.css' rel='stylesheet'>";
 
+
     header('Content-type: text/html; charset=utf-8');
     include __DIR__ . '/shared/header.php';
 

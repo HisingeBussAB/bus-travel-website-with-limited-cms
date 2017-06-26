@@ -69,6 +69,30 @@ nav.main-nav-admin {
     padding: 5px 20px;
     font-weight: bold;
     font-size: 1.12em;
+
+  }
+}
+
+nav.nav-small-float {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+
+
+
+  >a>button {
+    padding: 1px 2px;
+    font-size: 0.78em;
+    margin-left: 4px;
+    background-color: transparent;
+    color: #555;
+    border-color: #555;
+    &:hover {
+      background-color: $interactive-hover-color;
+      color: #fff;
+      border-color: $interactive-hover-color;
+
+    }
   }
 }
 

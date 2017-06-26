@@ -53,5 +53,8 @@ $_SESSION['token'] = $token;
       <p id="login-message"></p>
     </fieldset>
   </form>
+  <h6 class="text-center">
+    <a href="/adminp/resetpw/new<?php echo $token ?>">Återställ lösenord</a>
+  </h6>
 </body>
 </html>
