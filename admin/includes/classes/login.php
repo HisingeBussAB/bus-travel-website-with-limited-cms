@@ -169,7 +169,7 @@ class Login
 
         //Set JWT status logged in
         $tokenKey = base64_encode(openssl_random_pseudo_bytes(96));
-        $tokenId  = self::setJWT($tokenKey, 80, $username, $userAgent);
+        $tokenId  = self::setJWT($tokenKey, 5400, $username, $userAgent);
 
         //Set DB status logged in
         try {
@@ -229,7 +229,7 @@ class Login
       http_response_code(405);
       return false;
     }
-
+    return true;
   }
 
   private static function setJWT($secretKey, $duration, $username, $userAgent=false) {

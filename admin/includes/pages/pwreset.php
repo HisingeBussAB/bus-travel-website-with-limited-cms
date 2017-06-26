@@ -32,7 +32,7 @@ class PWReset
         require __DIR__ . '/../../../dependencies/vendor/phpmailer/PHPMailerAutoload.php';
         $mail = new \PHPMailer;
 
-        $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+        $mail->SMTPDebug = \SMTP::DEBUG_SERVER;
         $mail->SMTPDebug = 2;                    //Alternative to above constant
         $mail->isSMTP();                         // tell the class to use SMTP
         $mail->SMTPAuth   = true;                // enable SMTP authentication

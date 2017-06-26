@@ -45,6 +45,7 @@ class Router
   }
 
   public function __construct() {
+
     $this->routes = [];
 
     //                Pattern with (arguments)              function to run on matchRoute                                                    METHOD
@@ -64,7 +65,11 @@ class Router
     $this->addRoute(  '/^ajax\/([\w-]+)$/',                 '\HisingeBussAB\RekoResor\website\ajax\Ajax::startAjax',                        'POST');
     $this->addRoute(  '/^adminajax\/([\w-]+)$/',            '\HisingeBussAB\RekoResor\website\ajax\AdminAjax::startAjax',                   'POST');
 
+
+    //INSTALL ROUTE
+    $this->addRoute(  '/^installme$/',$func = function() {if (!include __DIR__ . '/../install/install.php'){require __DIR__ . '/../includes/pages/error/404.php';} },'ANY');
+
     //TEST ROUTES
-    $this->addRoute(  '/^adminp\/testfiles$/',  '\HisingeBussAB\RekoResor\website\admin\includes\pages\TestFiles::start',       'GET');
+    $this->addRoute(  '/^adminp\/testfiles$/',  '\HisingeBussAB\RekoResor\website\admin\includes\pages\TestFiles::start',                   'GET');
   }
 }
