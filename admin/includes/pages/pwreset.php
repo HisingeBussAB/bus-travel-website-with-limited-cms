@@ -145,8 +145,11 @@ class PWReset
 
         $mail->Port       = $smtpresult['port'];
 
-        if ($smtpresult['port'] !== 25) {
+        if ($smtpresult['tls'] === "tls") {
           $mail->SMTPSecure = 'tls';
+        }
+        elseif ($smtpresult['tls'] === "ssl") {
+          $mail->SMTPSecure = 'ssl';
         }
 
         $mail->Host       = $smtpresult['server'];
@@ -239,8 +242,11 @@ class PWReset
 
           $mail->Port       = $smtpresult['port'];
 
-          if ($smtpresult['port'] !== 25) {
+          if ($smtpresult['tls'] === "tls") {
             $mail->SMTPSecure = 'tls';
+          }
+          elseif ($smtpresult['tls'] === "ssl") {
+            $mail->SMTPSecure = 'ssl';
           }
 
           $mail->Host       = $smtpresult['server'];

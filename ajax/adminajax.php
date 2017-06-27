@@ -23,7 +23,8 @@ class AdminAjax
   public static function startAjax($request) {
     root\includes\classes\Sessions::secSessionStart(FALSE);
 
-    header('Content-Type: application/json');
+    header('Content-Type: application/json; charset=utf-8');
+
 
     // Verify login status before running
     if (root\admin\includes\classes\Login::isLoggedIn(FALSE) === TRUE) {

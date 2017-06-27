@@ -56,11 +56,10 @@ function sendForm(formData, reply, button, form) {
     })
     .fail(function(data) {
       console.log(data);
-      console.log(data.status);
       if (data.status == 404)
         $( reply ).html( "Något har gått fel. Error: 404." )
       else
-        $( reply ).html( "Något har gått fel. Fel: " + data.responseText + "." );
+        $( reply ).html( "Något har gått fel. Fel: " + data.responseText );
 
       $( button ).prop("disabled",false);
       $( form + " :input").prop("disabled", false);

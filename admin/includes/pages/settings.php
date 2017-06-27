@@ -100,7 +100,7 @@ class Settings {
                 </fieldset>
                 <fieldset>
                   <label for='stmpauth' id='smtp-auth-label'> Använd SMTP autentisering:</label>
-                  <input type='checkbox' name='stmpauth'  id='smtp-auth-box' ";
+                  <input type='checkbox' name='stmpauth'  id='smtp-auth-box' value='on' ";
         if ($stmpresult['auth'] === "1") { echo "checked"; }
         echo      " />
                 </fieldset>
@@ -119,12 +119,12 @@ class Settings {
                   </select>
                 </fieldset>
                 <fieldset>
-                  <label for='stmppwd'>SMTP användarnamn:</label>
-                  <input type='input' maxlength='200' name='stmppwd' value='" . $stmpresult['smtpuser'] . "' />
+                  <label for='smtpuser'>SMTP användarnamn:</label>
+                  <input type='input' maxlength='200' name='smtpuser' value='" . $stmpresult['smtpuser'] . "' />
                 </fieldset>
                 <fieldset>
-                  <label for='stmpuser'>SMTP lösenord:</label>
-                  <input type='input' maxlength='200' name='stmpuser' value='" . $stmpresult['smtppwd'] . "' />
+                  <label for='smtppwd'>SMTP lösenord:</label>
+                  <input type='input' maxlength='200' name='smtppwd' value='" . htmlspecialchars($stmpresult['smtppwd']) . "' />
                 </fieldset>
                 <fieldset>
                   <label for='mainpwd'>Lösenord för inloggning på den här sidan:</label>
@@ -179,8 +179,7 @@ class Settings {
       $userid = filter_var(trim($_POST['userid']), FILTER_SANITIZE_NUMBER_INT);
       $password = filter_var(trim($_POST['mainpwd']), FILTER_UNSAFE_RAW);
 
-
-      //Verify user password first
+      //Verify user password
       try {
         $sql = "SELECT * FROM " . TABLE_PREFIX . "logins WHERE id = :userid;";
         $sth = $pdo->prepare($sql);
@@ -199,10 +198,9 @@ class Settings {
       }
 
       if ($update === "password") {
-        try {
 
           //Read and sanitize data from this form
-          $newusername = filter_var(trim($_POST['newuser']), FILTER_SANITIZE_NUMBER_STRING);
+          $newusername = filter_var(trim($_POST['newuser']), FILTER_SANITIZE_STRING);
 
           if (!empty($_POST['newpwd'])) {
             $newpassword1 = filter_var(trim($_POST['newpwd']), FILTER_UNSAFE_RAW);
@@ -219,11 +217,11 @@ class Settings {
           } else {
             $username = $newusername;
           }
-
+        try {
           $sql = "UPDATE " . TABLE_PREFIX . "logins SET
           username = :username";
           if (!empty($newpassword1)) {
-          $sql .= ", pwd = :pwd";
+            $sql .= ", pwd = :pwd";
           }
           $sql .= " WHERE id = :userid;";
           $sth = $pdo->prepare($sql);
@@ -243,20 +241,71 @@ class Settings {
           $httpcode = 500;
           throw new \RuntimeException("<p>Databasfel! Kontakta systemadministratören om problemet består.</p>");
         }
-
+        $result['responseText'] .= "Lösenord/Användarnamn uppdaterat.";
+        $httpcode = 200;
 
       } elseif ($update === "settings") {
 
+        //Read and sanitie form
+        $email = filter_var(trim($_POST['adminemail']), FILTER_SANITIZE_EMAIL);
+        $smtpserver = filter_var(trim($_POST['smtpserver']), FILTER_SANITIZE_URL);
+        $smtpport = filter_var(trim($_POST['smtpport']), FILTER_SANITIZE_NUMBER_INT);
+        if (!empty($_POST['stmpauth']) && trim($_POST['stmpauth']) === "on") {
+          $stmpauth = 1;
+        } else {
+          $stmpauth = 0;
+        }
+        if (!empty($_POST['tls']) && trim($_POST['tls']) === "tls") {
+          $smtptls = "tls";
+        }
+        elseif (!empty($_POST['tls']) && trim($_POST['tls']) === "ssl") {
+          $smtptls = "ssl";
+        }
+        else {
+          $smtptls = "no";
+        }
+
+        $smtpuser = filter_var(trim($_POST['smtpuser']), FILTER_SANITIZE_STRING);
+        $smtppwd = filter_var(trim($_POST['smtppwd']), FILTER_UNSAFE_RAW);
+
+        try {
+          $sql = "UPDATE " . TABLE_PREFIX . "settings SET
+          email = :email,
+          server = :server,
+          port = :port,
+          auth = :auth,
+          tls = :tls,
+          smtpuser = :user,
+          smtppwd = :pwd
+            WHERE id = 0;";
+          $sth = $pdo->prepare($sql);
+          $sth->bindParam(':email', $email, \PDO::PARAM_STR);
+          $sth->bindParam(':server', $smtpserver, \PDO::PARAM_STR);
+          $sth->bindParam(':port', $smtpport, \PDO::PARAM_INT);
+          $sth->bindParam(':auth', $stmpauth, \PDO::PARAM_INT);
+          $sth->bindParam(':tls', $smtptls, \PDO::PARAM_STR);
+          $sth->bindParam(':user', $smtpuser, \PDO::PARAM_STR);
+          $sth->bindParam(':pwd', $smtppwd, \PDO::PARAM_STR);
+          $sth->execute();
+        } catch(\PDOException $e) {
+          $result['responseText'] .= DBError::showError($e, __CLASS__, $sql);
+          $httpcode = 500;
+          throw new \RuntimeException("<p>Databasfel! Kontakta systemadministratören om problemet består.</p>");
+        }
+
+        $result['responseText'] .= "Inställningarna har uppdaterats.";
+        $httpcode = 200;
       } else {
         $httpcode = 401;
         throw new \RuntimeException("<p>Felaktigt utförd begäran.</p>");
       }
 
-
+      echo json_encode($result);
+      http_response_code($httpcode);
 
     } catch(\RuntimeException $e) {
       $result['responseText'] .= $e->getMessage();
-      echo json_encode($result);
+      echo $result['responseText'];
       http_response_code($httpcode);
       exit;
     }
