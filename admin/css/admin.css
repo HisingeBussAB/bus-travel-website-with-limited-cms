@@ -228,4 +228,36 @@ img.login-screen {
   margin: 10px auto;
 }
 
+.settings-form {
+  width: 350px;
+  margin: 2px auto;
+}
+
+.settings-form input {
+  width: 100%;
+}
+
+.settings-form select {
+  margin-bottom: 6px;
+}
+
+.settings-form #smtp-auth-label {
+  display: inline;
+  margin-bottom: 7px;
+  margin-left: 5px;
+}
+
+.settings-form #smtp-auth-box {
+  display: inline;
+  height: 15px;
+  width: 15px;
+  margin-bottom: 7px;
+}
+
+.new-password-div {
+  display: none;
+  margin-left: 6px;
+  margin-bottom: 7px;
+}
+
 /*# sourceMappingURL=admin.css.map */

@@ -63,6 +63,7 @@ $port = "";
 $auth = FALSE;
 $smtpuser = "";
 $smtppwd = "";
+$smtptls = "no";
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
@@ -74,6 +75,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
     }
   $smtpuser = filter_var(trim($_POST['smtpuser']), FILTER_SANITIZE_STRING);
   $smtppwd = filter_var(trim($_POST['smtppwd']), FILTER_UNSAFE_RAW);
+  if (trim($_POST['tls']) === "tls") { $smtptls = "tls"; }
+  if (trim($_POST['tls']) === "ssl") { $smtptls = "ssl"; }
 
   if ($_SESSION['token'] !== trim($_POST['token'])) {
     echo "Fel säkerhetstoken! <br>
@@ -96,6 +99,17 @@ echo "
       <tr><td>SMTP använd authentisering:</td><td><input type='checkbox' value='on' name='smtpuseauth' ";
 if ($auth) { echo "checked "; }
 echo " /></td></tr>
+      <tr><td>SMTP encryption:</td><td><select name='tls'>
+        <option value='tls'";
+if ($smtptls === "tls") { echo " selected"; }
+echo "  >TLS</option>
+        <option value='ssl'";
+if ($smtptls === "ssl") { echo " selected"; }
+echo "  >SSL</option>
+        <option value='no'";
+if ($smtptls === "no") { echo " selected"; }
+echo "  >None</option>
+        </select></td></tr>
       <tr><td>SMTP användarnamn:</td><td><input type='text' name='smtpuser' maxlength='200' placeholder='smtp@domain.com' value='$smtpuser' /></td></tr>
       <tr><td>SMTP lösenord:</td><td><input type='text' name='smtppwd' maxlength='200' placeholder='' value='$smtppwd' /></td></tr>";
 
@@ -124,14 +138,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST) && $firstinstall) {
       port,
       auth,
       smtpuser,
-      smtppwd
+      smtppwd,
+      tls
     ) VALUES (
       :email,
       :server,
       :port,
       :auth,
       :smtpuser,
-      :smtppwd
+      :smtppwd,
+      :tls
     );";
     $sth = $pdo->prepare($sql);
     $sth->bindParam(':email', $email, \PDO::PARAM_STR);
@@ -140,7 +156,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST) && $firstinstall) {
     $sth->bindParam(':auth',  $auth, \PDO::PARAM_INT);
     $sth->bindParam(':smtpuser', $smtpuser, \PDO::PARAM_STR);
     $sth->bindParam(':smtppwd', $smtppwd, \PDO::PARAM_STR);
-
+    $sth->bindParam(':tls', $smtptls, \PDO::PARAM_STR);
     $sth->execute();
   } catch(\PDOException $e) {
     DBError::showError($e, __CLASS__, $sql);
@@ -163,7 +179,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST) && !$firstinstall &&
       port = :port,
       auth = :auth,
       smtpuser = :smtpuser,
-      smtppwd = :smtppwd
+      smtppwd = :smtppwd,
+      tls = :tls
     WHERE id = 0;";
     $sth = $pdo->prepare($sql);
     $sth->bindParam(':email', $email, \PDO::PARAM_STR);
@@ -172,6 +189,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST) && !$firstinstall &&
     $sth->bindParam(':auth',  $auth, \PDO::PARAM_INT);
     $sth->bindParam(':smtpuser', $smtpuser, \PDO::PARAM_STR);
     $sth->bindParam(':smtppwd', $smtppwd, \PDO::PARAM_STR);
+    $sth->bindParam(':tls', $smtptls, \PDO::PARAM_STR);
 
     $sth->execute();
   } catch(\PDOException $e) {

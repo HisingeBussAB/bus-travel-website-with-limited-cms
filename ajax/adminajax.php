@@ -96,6 +96,14 @@ class AdminAjax
         }
         break;
 
+        case 'updatesettings':
+          root\admin\includes\pages\Settings::update("settings");
+        break;
+
+        case 'updatepassword':
+          root\admin\includes\pages\Settings::update("password");
+        break;
+
         default:
           echo "Sidan finns inte!";
           http_response_code(404);

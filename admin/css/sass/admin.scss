@@ -200,3 +200,34 @@ img.login-screen {
   }
 
 }
+
+.settings-form {
+  width: 350px;
+  margin: 2px auto;
+
+  input {
+    width: 100%;
+  }
+
+  select {
+    margin-bottom: 6px;
+  }
+
+  #smtp-auth-label {
+    display: inline;
+    margin-bottom: 7px;
+    margin-left: 5px;
+  }
+  #smtp-auth-box {
+    display: inline;
+    height: 15px;
+    width: 15px;
+    margin-bottom: 7px;
+  }
+}
+
+.new-password-div {
+  display: none;
+  margin-left: 6px;
+  margin-bottom: 7px;
+}
