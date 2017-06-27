@@ -19,7 +19,7 @@ class Settings {
     try {
       root\includes\classes\Sessions::secSessionStart();
       if (admin\includes\classes\Login::isLoggedIn() === TRUE) {
-
+        $show_navigation = TRUE;
         $pageTitle = "Rekå Admin - Inställningar";
         header('Content-type: text/html; charset=utf-8');
         include __DIR__ . '/shared/header.php';
