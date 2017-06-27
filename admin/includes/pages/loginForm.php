@@ -54,7 +54,7 @@ $_SESSION['token'] = $token;
     </fieldset>
   </form>
   <h6 class="text-center">
-    <a href="/adminp/resetpw/new<?php echo $token ?>">Återställ lösenord</a>
+    <a href="/adminp/resetpw/requestnew">Återställ lösenord</a>
   </h6>
 </body>
 </html>

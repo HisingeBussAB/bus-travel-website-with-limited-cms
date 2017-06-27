@@ -52,7 +52,7 @@ class Router
     $this->addRoute(  '/(^$)/',                             '\HisingeBussAB\RekoResor\website\router\Render::inc',                          'GET');
     $this->addRoute(  '/^adminp$/',                         '\HisingeBussAB\RekoResor\website\admin\includes\pages\Main::showAdminMain',    'GET');
     $this->addRoute(  '/^adminp\/nyresa\/?([\w-]+)?\/?$/',  '\HisingeBussAB\RekoResor\website\admin\includes\pages\Trip::showTrip',         'GET');
-    $this->addRoute(  '/^adminp\/resetpw\/?([\w-]+)?\/?$/', '\HisingeBussAB\RekoResor\website\admin\includes\pages\PWReset::doReset',       'GET');
+    $this->addRoute(  '/^adminp\/resetpw\/?([\w-]+)?\/?$/', '\HisingeBussAB\RekoResor\website\admin\includes\pages\PWReset::doReset',       'ANY');
     $this->addRoute(  '/^adminp\/logout$/',                 '\HisingeBussAB\RekoResor\website\admin\includes\classes\Logout::doLogout',     'GET');
     $this->addRoute(  '/^adminp\/filemanager\/upload$/',    '\HisingeBussAB\RekoResor\website\admin\includes\classes\Files::uploadFile',    'POST');
     $this->addRoute(  '/^resa\/([\w-]+)\/?$/',              '\HisingeBussAB\RekoResor\website\router\Render::inc',                          'GET');

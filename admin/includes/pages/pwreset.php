@@ -12,17 +12,52 @@ use HisingeBussAB\RekoResor\website\includes\classes\DBError;
 
 class PWReset
 {
+
   public static function doReset($request) {
-
-
-
-    root\includes\classes\Sessions::secSessionStart(TRUE);
     try {
-      if (!isset($_SESSION['token'])) {
-        throw new \RuntimeException("Ingen säkerhetstoken hittad.");
+      root\includes\classes\Sessions::secSessionStart(TRUE);
+      if (trim($request) === "requestnew" && $_SERVER['REQUEST_METHOD'] === 'GET') {
+        $token = bin2hex(openssl_random_pseudo_bytes(16));
+        $_SESSION['token'] = $token;
+        echo "<html><head><title>Password Reset</title></head><body>";
+        echo "<script src='https://www.google.com/recaptcha/api.js'></script>";
+        echo "<form action='/adminp/resetpw/new' method='POST' accept-charset='utf-8'>
+              <div class='g-recaptcha' data-sitekey='" . RECAPTCHA_PUBLIC . "'></div>
+              <input type='hidden' value='$token' name='token'>
+              <p><button type='submit' id='login-submit'>Begär återställningslänk</button></p>
+              </form></body></html>";
+      } elseif (trim($request) === "new" && $_SERVER['REQUEST_METHOD'] === 'POST') {
+        if ($_SESSION['token'] !== trim($_POST['token'])) {
+          throw new \RuntimeException("Fel säkerhetstoken skickad med begäran.");
+        }
+
+        if (!root\admin\includes\classes\reCaptcha::tryReCaptcha()) {
+          throw new \RuntimeException("Tyvärr reCaptcha misslyckades. Gå tillbaka och försök igen.");
+        }
+        self::runReset("new");
+
+
+      } elseif ($_SERVER['REQUEST_METHOD'] === 'GET' && trim($request) !== "new") {
+        self::runReset(trim($request));
+      } else {
+        echo "<html><head><title>Password Reset</title></head><body><p>Okänt fel i begäran</p><p><a href='/adminp'>Åter till inloggningssidan.</a></p></body></html>";
       }
-      $token = $_SESSION['token'];
-      $_SESSION['token'] = "destroyed";
+
+    } catch(\RuntimeException $e) {
+      echo $e->getMessage();
+      echo "<br>Prova ladda om tidigare sida och gå hit på nytt.<br><br><a href='/adminp'>Tillbaka till admin sidan</a>.</body></html>";
+    }
+  }
+
+
+
+
+  private static function runReset($request) {
+
+
+
+    try {
+
 
       $pdo = DB::get();
 
@@ -36,12 +71,7 @@ class PWReset
       }
       $auth = ($smtpresult['auth'] === '1');
 
-      if (substr($request , 0 , 3) == "new") {
-        if ($request != "new" . $token) {
-          throw new \RuntimeException("Fel säkerhetstoken.");
-        }
-
-
+      if ($request === "new") {
 
         try {
           $sql = "SELECT username FROM " . TABLE_PREFIX . "logins WHERE id = 0;";
@@ -132,7 +162,7 @@ class PWReset
           echo '<br>Mailer error: ' . $mail->ErrorInfo;
           throw new \Exception("Fel vid kommunikation med mailservern");
         } else {
-          echo "<html><head><title>Password Reset</title></head><body><p>Ett e-postmeddelande med återställningslänk har skickats. Länken är giltig i 10 minuter.</p>
+          echo "<p>Ett e-postmeddelande med återställningslänk har skickats. Länken är giltig i 10 minuter.</p>
           <p>Har du inte tillgång till e-post kontot måste du kontakta systemadministratören.</p>
           <p><a href='/adminp'>Åter till inloggningssidan.</a></p></body></html>";
         }
@@ -141,7 +171,7 @@ class PWReset
 
 
       } else {
-
+        echo "<html><head><title>Password Reset</title></head><body>";
         $authtoken = $request;
 
         try {
@@ -157,24 +187,24 @@ class PWReset
         if (!empty($result['token'])) {
 
 
-          //Random password generated in 4 parts, first part openssl_random_pseudo_bytes, last 3 parts from keyspaces ensuring some special chars
           $i = 0;
           do {
           $password = openssl_random_pseudo_bytes(3+$i, $strong);
             $i++;
           } while ($strong !== TRUE);
 
-          $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-          $specialchars = '!%&?+#$';
+          $keyspace = '0123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ'; //no capital i or small l to improve readability
+          $specialchars = '!%&?+#$_*.=';
 
           $password = bin2hex($password);
 
+          $length = mt_rand(2, 4);
+          $password .= substr(str_shuffle($specialchars),0,$length);
           $length = mt_rand(1, 3);
-          $password .= substr(str_shuffle($specialchars),0,$length);
-          $length = mt_rand(2, 5);
           $password .= substr(str_shuffle($keyspace),0,$length);
-          $length = mt_rand(1, 2);
-          $password .= substr(str_shuffle($specialchars),0,$length);
+          $password = str_shuffle($password);
+          $password .= substr(str_shuffle($keyspace),0,1); //Just make sure it doesn't end or start with a specialchar for readability
+          $password = substr(str_shuffle($keyspace),0,1) . $password;
 
 
 
@@ -226,7 +256,7 @@ class PWReset
             echo '<br>Mailer error: ' . $mail->ErrorInfo;
             throw new \Exception("Fel vid kommunikation med mailservern");
           } else {
-            echo "<html><head><title>Password Reset</title></head><body><p>Ett e-postmeddelande med nytt lösenord har skickats till administratörs e-posten.</p>
+            echo "<p>Ett e-postmeddelande med nytt lösenord har skickats till administratörs e-posten.</p>
             <p>Har du inte tillgång till e-post kontot måste du kontakta systemadministratören.</p>
             <p><a href='/adminp'>Åter till inloggningssidan.</a></p></body></html>";
           }
@@ -255,8 +285,7 @@ class PWReset
 
     } catch(\RuntimeException $e) {
       echo $e->getMessage();
-      echo "<br>Prova ladda om tidigare sida och gå hit på nytt.<br><br>Du skickas snart till <a href='/adminp'>admin sidan</a>.</body></html>";
-      header("Refresh:3; url=/adminp");
+      echo "<br>Prova ladda om tidigare sida och gå hit på nytt.<br><br><a href='/adminp'>Tillbaka till admin sidan</a>.</body></html>";
     } catch(\Exception $e) {
       echo $e->getMessage();
       echo "<br>Ett fel har inträffat. Tillbaka till <a href='/adminp'>admin sidan</a>.</body></html>";
