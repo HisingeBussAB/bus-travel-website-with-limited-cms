@@ -110,10 +110,16 @@ class Main {
         <ul id="stop-list">
           <li>
             <form action="/adminajax/newstop" method="post" accept-charset="utf-8" id="form-new-stop" enctype='application/json'>
-              <input type="text" maxlength="80" name="name" placeholder="Plats, Ort" required id="form-new-stop-name">
+              <input type="text" maxlength="80" name="name" placeholder="Plats" required id="form-new-stop-name">
+              <input type="text" maxlength="80" name="ort" placeholder="Ort" required id="form-new-stop-ort">
               <input type="hidden" name="token" value="<?php echo $token ?>" class="form-token">
               <button type="submit"id="form-new-stop-submit" class="button-right">Skapa</button>
+              <div class="clearfix">
+                <div class="anchor" id="sort-stop-name">Sortera på plats</div>
+                <div class="anchor" id="sort-stop-ort">Sortera på ort</div>
+              </div>
             </form>
+
           </li>
           <li id="stop-list-content"></li>
           <li id="stop-list-error"></li>

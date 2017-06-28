@@ -3,7 +3,15 @@
 $(function() {
 
 
-  // Listeners
+  // Listeners sort
+  $('#sort-stop-name').click(function(event){
+    loadItem("stop","plats");
+    });
+  $('#sort-stop-ort').click(function(event){
+    loadItem("stop","ort");
+    });
+
+  // Listeners post buttons
   $('#form-new-category').submit(function(event){
     event.preventDefault();
     $( "#category-list" ).hide();
@@ -29,6 +37,7 @@ $(function() {
     $("#form-new-stop-submit").prop("disabled",true);
     newItem("stop");
     $("#form-new-stop-name").val('');
+    $("#form-new-stop-ort").val('');
   });
 
   //Load content
@@ -41,10 +50,11 @@ $(function() {
 });
 
 
-function loadItem(item) {
+function loadItem(item, sort = "sort") {
   $.getJSON({
     type: 'POST',
     cache: false,
+    data: { 'sort' : sort },
     url: '/adminajax/get' + item,
     dataType: "json",
   })
@@ -145,6 +155,7 @@ function resettoken(item) {
 
 
 function renderItem(item, response) {
+  console.log(response);
   var line = "<table><tbody>";
   jQuery.each(response, function() {
     line += "<tr><td class='table-name'>";
@@ -152,8 +163,11 @@ function renderItem(item, response) {
       line += this.kategori;
     if (item == "roomopt")
       line += this.boende;
-    if (item == "stop")
+    if (item == "stop") {
       line += this.plats;
+      line += ", ";
+      line += this.ort;
+    }
     if (item == "trip") {
       line += "<a href='http://rekoresor.busspoolen.se/adminp/nyresa/"
       line += this.id

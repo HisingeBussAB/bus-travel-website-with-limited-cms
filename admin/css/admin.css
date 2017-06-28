@@ -43,12 +43,15 @@ button:hover {
   background-color: #0000ff;
 }
 
-a {
+a,
+.anchor {
   color: #0d61de;
 }
 
-a:hover {
+a:hover,
+.anchor:hover {
   color: #0000ff;
+  text-decoration: underline;
 }
 
 .button-right {
@@ -258,6 +261,30 @@ img.login-screen {
   display: none;
   margin-left: 6px;
   margin-bottom: 7px;
+}
+
+#form-new-stop-name,
+#form-new-stop-ort {
+  width: 40%;
+}
+
+#form-new-stop-name:not(:first-child),
+#form-new-stop-ort:not(:first-child) {
+  margin-left: 4px;
+}
+
+#sort-stop-name,
+#sort-stop-ort {
+  float: left;
+  display: inline-block;
+  width: 40%;
+  font-size: 0.75em;
+  padding-left: 2px;
+}
+
+#sort-stop-name:not(:first-child),
+#sort-stop-ort:not(:first-child) {
+  margin-left: 4px;
 }
 
 /*# sourceMappingURL=admin.css.map */

@@ -49,10 +49,12 @@ button {
   }
 }
 
-a {
+a,
+.anchor {
   color: $interactive-color;
   &:hover {
     color: $interactive-hover-color;
+    text-decoration: underline;
   }
 }
 
@@ -230,4 +232,27 @@ img.login-screen {
   display: none;
   margin-left: 6px;
   margin-bottom: 7px;
+}
+
+#form-new-stop-name,
+#form-new-stop-ort {
+  width: 40%;
+  &:not(:first-child) {
+    margin-left: 4px;
+  }
+
+}
+
+
+#sort-stop-name,
+#sort-stop-ort {
+  float: left;
+  display: inline-block;
+  width: 40%;
+  font-size: 0.75em;
+  padding-left: 2px;
+
+  &:not(:first-child) {
+    margin-left: 4px;
+  }
 }

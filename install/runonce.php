@@ -222,7 +222,13 @@ try {
   $sql = "CREATE TABLE " . $table . " (
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     kategori VARCHAR(80),
-    uri_kategori VARCHAR(80),
+    uri_kategori VARCHAR(85) UNIQUE,
+    ingress TEXT,
+    seo_description VARCHAR(160),
+    og_description VARCHAR(255),
+    og_title VARCHAR(40),
+    seo_keywords VARCHAR(255),
+    meta_data_extra TINYTEXT,
     sort INT UNSIGNED,
     aktiv BOOLEAN);";
   $sth = $pdo->prepare($sql);
@@ -237,6 +243,7 @@ try {
   $sql = "CREATE TABLE " . $table . " (
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     plats VARCHAR(80),
+    ort VARCHAR(80),
     sort INT UNSIGNED,
     aktiv BOOLEAN);";
   $sth = $pdo->prepare($sql);
@@ -250,16 +257,23 @@ try {
   $table = TABLE_PREFIX . 'resor';
   $sql = "CREATE TABLE " . $table . " (
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    namn VARCHAR(200),
+    namn VARCHAR(188),
     pris INT,
     program TEXT,
     ingress TINYTEXT,
     antaldagar INT UNSIGNED,
     ingar TEXT,
-    bildkatalog VARCHAR(100),
+    bildkatalog VARCHAR(191) UNIQUE,
+    url VARCHAR(191) UNIQUE,
+    seo_description VARCHAR(160),
+    og_description VARCHAR(255),
+    og_title VARCHAR(40),
+    seo_keywords VARCHAR(255),
+    meta_data_extra TINYTEXT,
     personnr BOOLEAN,
     fysiskadress BOOLEAN,
     aktiv BOOLEAN,
+    utvald BOOLEAN DEFAULT 0,
     hotel TINYTEXT,
     hotellink VARCHAR(255),
     facebook VARCHAR(255));";
@@ -355,6 +369,7 @@ try {
     server VARCHAR(200),
     port INT UNSIGNED,
     auth BOOLEAN,
+    tls VARCHAR(3),
     smtpuser VARCHAR(200),
     smtppwd VARCHAR(200));";
   $sth = $pdo->prepare($sql);

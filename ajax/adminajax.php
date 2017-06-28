@@ -54,7 +54,8 @@ class AdminAjax
         break;
 
         case 'getstop':
-          echo root\admin\includes\classes\Stops::getStopsJSON();
+          $sort = filter_var(trim($_POST['sort']), FILTER_SANITIZE_STRING);
+          echo root\admin\includes\classes\Stops::getStopsJSON($sort);
           http_response_code(200);
           exit;
         break;
@@ -131,9 +132,10 @@ class AdminAjax
 
       if (!empty($_POST["name"])) {
         $name = filter_var(trim($_POST["name"]), FILTER_SANITIZE_STRING);
+        if ($type == "stop") $city = filter_var(trim($_POST["ort"]), FILTER_SANITIZE_STRING);
         $flag = FALSE;
         if ($type == "category")  $flag = root\admin\includes\classes\Categories::createCategory($name);
-        if ($type == "stop")      $flag = root\admin\includes\classes\Stops::createStop($name);
+        if ($type == "stop")      $flag = root\admin\includes\classes\Stops::createStop($name, $city);
         if ($type == "roomopt")   $flag = root\admin\includes\classes\Roomopts::createRoomopt($name);
 
         if ($flag) {
