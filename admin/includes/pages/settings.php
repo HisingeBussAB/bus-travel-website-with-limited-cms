@@ -31,7 +31,7 @@ class Settings {
         $pdo = DB::get();
 
         try {
-          $sql = "SELECT * FROM " . TABLE_PREFIX . "settings WHERE id = 0;";
+          $sql = "SELECT * FROM " . TABLE_PREFIX . "settings WHERE id = 1;";
           $sth = $pdo->prepare($sql);
           $sth->execute();
           $stmpresult = $sth->fetch(\PDO::FETCH_ASSOC);

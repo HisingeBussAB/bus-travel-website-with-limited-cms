@@ -155,12 +155,16 @@ function resettoken(item) {
 
 
 function renderItem(item, response) {
-  console.log(response);
   var line = "<table><tbody>";
   jQuery.each(response, function() {
     line += "<tr><td class='table-name'>";
-    if (item == "category")
+    if (item == "category") {
+      line += "<a href='http://rekoresor.busspoolen.se/adminp/kategori/";
+      line += this.id;
+      line += "'>";
       line += this.kategori;
+      line += "</a>";
+    }
     if (item == "roomopt")
       line += this.boende;
     if (item == "stop") {
@@ -169,9 +173,9 @@ function renderItem(item, response) {
       line += this.ort;
     }
     if (item == "trip") {
-      line += "<a href='http://rekoresor.busspoolen.se/adminp/nyresa/"
-      line += this.id
-      line += "'>"
+      line += "<a href='http://rekoresor.busspoolen.se/adminp/nyresa/";
+      line += this.id;
+      line += "'>";
       line += this.namn;
       line += "</a></td><td>"
       line += this.datum;

@@ -52,6 +52,7 @@ class Router
     $this->addRoute(  '/(^$)/',                             '\HisingeBussAB\RekoResor\website\router\Render::inc',                          'GET');
     $this->addRoute(  '/^adminp$/',                         '\HisingeBussAB\RekoResor\website\admin\includes\pages\Main::showAdminMain',    'GET');
     $this->addRoute(  '/^adminp\/nyresa\/?([\w-]+)?\/?$/',  '\HisingeBussAB\RekoResor\website\admin\includes\pages\Trip::showTrip',         'GET');
+    $this->addRoute(  '/^adminp\/kategori\/?([\w-]+)?\/?$/','\HisingeBussAB\RekoResor\website\admin\includes\pages\Category::showCategory', 'GET');
     $this->addRoute(  '/^adminp\/resetpw\/?([\w-]+)?\/?$/', '\HisingeBussAB\RekoResor\website\admin\includes\pages\PWReset::doReset',       'ANY');
     $this->addRoute(  '/^adminp\/settings$/',               '\HisingeBussAB\RekoResor\website\admin\includes\pages\Settings::show',         'GET');
     $this->addRoute(  '/^adminp\/logout$/',                 '\HisingeBussAB\RekoResor\website\admin\includes\classes\Logout::doLogout',     'GET');

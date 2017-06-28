@@ -23,7 +23,7 @@ if (!$firstinstall) {
   }
 
   try {
-    $table = TABLE_PREFIX . 'resor';
+    $table = TABLE_PREFIX . 'boenden_resor';
     $sql = "DROP TABLE " . $table . ";";
     $sth = $pdo->prepare($sql);
     $sth->execute();
@@ -34,16 +34,6 @@ if (!$firstinstall) {
 
   try {
     $table = TABLE_PREFIX . 'boenden';
-    $sql = "DROP TABLE " . $table . ";";
-    $sth = $pdo->prepare($sql);
-    $sth->execute();
-    echo "Table: " . $table . " dropped succesfully.<br>";
-  } catch(\PDOException $e) {
-    echo $sql . "<br>" . $e->getMessage() . "<br>";
-  }
-
-  try {
-    $table = TABLE_PREFIX . 'boenden_resor';
     $sql = "DROP TABLE " . $table . ";";
     $sth = $pdo->prepare($sql);
     $sth->execute();
@@ -151,6 +141,15 @@ if (!$firstinstall) {
   } catch(\PDOException $e) {
     echo $sql . "<br>" . $e->getMessage() . "<br>";
   }
+  try {
+    $table = TABLE_PREFIX . 'resor';
+    $sql = "DROP TABLE " . $table . ";";
+    $sth = $pdo->prepare($sql);
+    $sth->execute();
+    echo "Table: " . $table . " dropped succesfully.<br>";
+  } catch(\PDOException $e) {
+    echo $sql . "<br>" . $e->getMessage() . "<br>";
+  }
 }
 
 
@@ -158,7 +157,7 @@ if (!$firstinstall) {
 try {
   $table = TABLE_PREFIX . 'logins';
   $sql = "CREATE TABLE " . $table . " (
-    id INT NOT NULL PRIMARY KEY,
+    id BIGINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     username CHAR(64),
     pwd CHAR(255));";
   $sth = $pdo->prepare($sql);
@@ -204,12 +203,15 @@ try {
 try {
   $table = TABLE_PREFIX . 'loggedin';
   $sql = "CREATE TABLE " . $table . " (
-    user INT,
+    user BIGINT UNSIGNED,
     ip CHAR(64),
     time BIGINT,
     sessionid CHAR(64),
     jwtkey VARCHAR(200),
-    jwttoken VARCHAR(200));";
+    jwttoken VARCHAR(200),
+    CONSTRAINT
+      FOREIGN KEY (user) REFERENCES " . TABLE_PREFIX . "logins (id)
+    );";
   $sth = $pdo->prepare($sql);
   $sth->execute();
   echo "Table: " . $table . " created succesfully.<br>";
@@ -220,7 +222,7 @@ try {
 try {
   $table = TABLE_PREFIX . 'kategorier';
   $sql = "CREATE TABLE " . $table . " (
-    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    id BIGINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     kategori VARCHAR(80),
     uri_kategori VARCHAR(85) UNIQUE,
     ingress TEXT,
@@ -241,10 +243,10 @@ try {
 try {
   $table = TABLE_PREFIX . 'hallplatser';
   $sql = "CREATE TABLE " . $table . " (
-    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    id BIGINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     plats VARCHAR(80),
     ort VARCHAR(80),
-    sort INT UNSIGNED,
+    sort BIGINT UNSIGNED,
     aktiv BOOLEAN);";
   $sth = $pdo->prepare($sql);
   $sth->execute();
@@ -256,7 +258,7 @@ try {
 try {
   $table = TABLE_PREFIX . 'resor';
   $sql = "CREATE TABLE " . $table . " (
-    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    id BIGINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     namn VARCHAR(188),
     pris INT,
     program TEXT,
@@ -287,10 +289,14 @@ try {
 try {
   $table = TABLE_PREFIX . 'hallplatser_resor';
   $sql = "CREATE TABLE " . $table . " (
-    hallplatser_id INT UNSIGNED,
-    resa_id INT UNSIGNED,
+    hallplatser_id BIGINT UNSIGNED,
+    resa_id BIGINT UNSIGNED,
     tid_in TIME,
-    tid_ut TIME);";
+    tid_ut TIME,
+    CONSTRAINT
+      FOREIGN KEY (resa_id) REFERENCES " . TABLE_PREFIX . "resor (id),
+    CONSTRAINT
+      FOREIGN KEY (hallplatser_id) REFERENCES " . TABLE_PREFIX . "hallplatser (id));";
   $sth = $pdo->prepare($sql);
   $sth->execute();
   echo "Table: " . $table . " created succesfully.<br>";
@@ -301,8 +307,12 @@ try {
 try {
   $table = TABLE_PREFIX . 'kategorier_resor';
   $sql = "CREATE TABLE " . $table . " (
-    resa_id INT UNSIGNED,
-    kategorier_id INT UNSIGNED);";
+    resa_id BIGINT UNSIGNED,
+    kategorier_id BIGINT UNSIGNED,
+    CONSTRAINT
+      FOREIGN KEY (resa_id) REFERENCES " . TABLE_PREFIX . "resor (id),
+    CONSTRAINT
+      FOREIGN KEY (kategorier_id) REFERENCES " . TABLE_PREFIX . "kategorier (id));";
   $sth = $pdo->prepare($sql);
   $sth->execute();
   echo "Table: " . $table . " created succesfully.<br>";
@@ -313,9 +323,11 @@ try {
 try {
   $table = TABLE_PREFIX . 'tillaggslistor';
   $sql = "CREATE TABLE " . $table . " (
-    resa_id INT UNSIGNED,
+    resa_id BIGINT UNSIGNED,
     pris INT,
-    namn VARCHAR(255));";
+    namn VARCHAR(255),
+    CONSTRAINT
+      FOREIGN KEY (resa_id) REFERENCES " . TABLE_PREFIX . "resor (id));";
   $sth = $pdo->prepare($sql);
   $sth->execute();
   echo "Table: " . $table . " created succesfully.<br>";
@@ -326,7 +338,7 @@ try {
 try {
   $table = TABLE_PREFIX . 'boenden';
   $sql = "CREATE TABLE " . $table . " (
-    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    id BIGINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     boende VARCHAR(100),
     aktiv BOOLEAN);";
   $sth = $pdo->prepare($sql);
@@ -339,9 +351,13 @@ try {
 try {
   $table = TABLE_PREFIX . 'boenden_resor';
   $sql = "CREATE TABLE " . $table . " (
-    resa_id INT UNSIGNED,
-    boenden_id INT UNSIGNED,
-    pris INT);";
+    resa_id BIGINT UNSIGNED,
+    boenden_id BIGINT UNSIGNED,
+    pris INT,
+    CONSTRAINT
+      FOREIGN KEY (resa_id) REFERENCES " . TABLE_PREFIX . "resor (id),
+    CONSTRAINT
+      FOREIGN KEY (boenden_id) REFERENCES " . TABLE_PREFIX . "boenden (id));";
   $sth = $pdo->prepare($sql);
   $sth->execute();
   echo "Table: " . $table . " created succesfully.<br>";
@@ -352,8 +368,10 @@ try {
 try {
   $table = TABLE_PREFIX . 'datum';
   $sql = "CREATE TABLE " . $table . " (
-    resa_id INT UNSIGNED,
-    datum DATE);";
+    resa_id BIGINT UNSIGNED,
+    datum DATE,
+    CONSTRAINT
+      FOREIGN KEY (resa_id) REFERENCES " . TABLE_PREFIX . "resor (id));";
   $sth = $pdo->prepare($sql);
   $sth->execute();
   echo "Table: " . $table . " created succesfully.<br>";
@@ -364,7 +382,7 @@ try {
 try {
   $table = TABLE_PREFIX . 'settings';
   $sql = "CREATE TABLE " . $table . " (
-    id INT NOT NULL PRIMARY KEY,
+    id BIGINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     email VARCHAR(200),
     server VARCHAR(200),
     port INT UNSIGNED,
