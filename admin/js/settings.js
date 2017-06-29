@@ -55,7 +55,6 @@ function sendForm(formData, reply, button, form) {
       setTimeout(function(){ $( button ).prop("disabled",false); }, 1000);
     })
     .fail(function(data) {
-      console.log(data);
       if (data.status == 404)
         $( reply ).html( "Något har gått fel. Error: 404." )
       else

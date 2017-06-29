@@ -39,6 +39,10 @@ class AdminAjax
           self::newItemLauncher("category");
         break;
 
+        case 'editcategory':
+          root\admin\includes\classes\Categories::updateCategory();
+        break;
+
         case 'newroomopt':
           self::newItemLauncher("roomopt");
         break;
@@ -150,7 +154,7 @@ class AdminAjax
         http_response_code(411);
       }
     } else {
-      echo "Token stämmer inte";
+      echo "Säkerhetstoken stämmer inte. Ladda om sidan.";
       http_response_code(401);
     }
     exit;

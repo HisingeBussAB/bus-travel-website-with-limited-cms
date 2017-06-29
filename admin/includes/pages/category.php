@@ -61,42 +61,51 @@ class Category {
 
         ?>
         <main class="clearfix">
-          <form action="/adminajax/editcategory" method="post" accept-charset="utf-8" enctype="application/json">
+          <form action="/adminajax/editcategory" method="post" accept-charset="utf-8" enctype="application/json" id="category-form">
             <div class="col-md-12">
               <input type="hidden" name="token" value="<?php echo $token; ?>" />
-              <input type="hidden" name="token" value="<?php echo $cat['id']; ?>" />
+              <input type="hidden" name="id" value="<?php echo $cat['id']; ?>" />
               <fieldset>
-                <label for="kategori">Kategori</label>
-                <input type="text" name="kategori" value="<?php echo $cat['kategori']; ?>" />
+                <label for="kategori">Kategori titel:</label>
+                <input type="text" name="kategori" maxlength="80" value="<?php echo $cat['kategori']; ?>" />
               </fieldset>
               <fieldset>
-                <label for="kategori">Kategori URL (SEO vänlig sub-url)</label>
-                <input type="text" name="kategori" value="<?php echo $cat['uri_kategori']; ?>" />
+                <label for="ingress">Ingress (text på kategorisidan):</label>
+                <textarea type="text" name="ingress" value=""><?php echo functions::br2htmlnl($cat['ingress']); ?></textarea>
               </fieldset>
               <fieldset>
-                <label for="kategori">Kategori URL (SEO vänlig sub-url)</label>
-                <input type="text" name="kategori" value="<?php echo $cat['uri_kategori']; ?>" />
+                <label for="uri_kategori">Kategori URL (SEO vänlig sub-url):</label>
+                <input type="text" name="uri_kategori" maxlength="85" value="<?php echo $cat['uri_kategori']; ?>" />
               </fieldset>
               <fieldset>
-                <label for="kategori">Kategori URL (SEO vänlig sub-url)</label>
-                <input type="text" name="kategori" value="<?php echo $cat['uri_kategori']; ?>" />
+                <label for="og_title">Social media titel:</label>
+                <input type="text" name="og_title" maxlength="40" value="<?php echo $cat['og_title']; ?>" />
               </fieldset>
               <fieldset>
-                <label for="kategori">Kategori URL (SEO vänlig sub-url)</label>
-                <input type="text" name="kategori" value="<?php echo $cat['uri_kategori']; ?>" />
+                <label for="og_description">Social media beskrivning (max 255 tecken):</label>
+                <input type="text" name="og_description" maxlength="255" value="<?php echo $cat['og_description']; ?>" />
               </fieldset>
               <fieldset>
-                <label for="kategori">Kategori URL (SEO vänlig sub-url)</label>
-                <input type="text" name="kategori" value="<?php echo $cat['uri_kategori']; ?>" />
+                <label for="seo_description">SEO beskrivning (i sökresultat, max 160 tecken):</label>
+                <input type="text" name="seo_description" maxlength="160" value="<?php echo $cat['seo_description']; ?>" />
               </fieldset>
               <fieldset>
-                <label for="kategori">Kategori URL (SEO vänlig sub-url)</label>
-                <textarea type="text" name="kategori" value="" /><?php echo functions::br2htmlnl($cat['uri_kategori']); ?></fieldset>
+                <label for="seo_keywords">Nyckelord. Separerade med komma. (Använd bara ett eller två):</label>
+                <input type="text" name="seo_keywords" maxlength="255" value="<?php echo $cat['seo_keywords']; ?>" />
               </fieldset>
+              <fieldset>
+                <label for="meta_data_extra">Extra meta taggar (skriv in full HTML för ev extra meta taggar):</label>
+                <textarea type="text" name="meta_data_extra" value=""><?php echo $cat['meta_data_extra']; ?></textarea>
+              </fieldset>
+              <fieldset>
+                <button type="submit" id="save-trip-button">Spara</button>
+              </fieldset>
+              <div id="form-reply">
+              </div>
             </div>
           </form>
         </main>
-
+        <?php
 
         include __DIR__ . '/shared/scripts.php';
         echo "<script src='/admin/js/categoryform.js'></script>";
