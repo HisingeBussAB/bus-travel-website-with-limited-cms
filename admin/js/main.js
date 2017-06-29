@@ -5,9 +5,11 @@ $(function() {
 
   // Listeners sort
   $('#sort-stop-name').click(function(event){
+    event.preventDefault();
     loadItem("stop","plats");
     });
   $('#sort-stop-ort').click(function(event){
+    event.preventDefault();
     loadItem("stop","ort");
     });
 

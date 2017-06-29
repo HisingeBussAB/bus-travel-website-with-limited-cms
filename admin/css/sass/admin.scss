@@ -49,14 +49,15 @@ button {
   }
 }
 
-a,
-.anchor {
+a {
   color: $interactive-color;
   &:hover {
     color: $interactive-hover-color;
     text-decoration: underline;
   }
 }
+
+
 
 .button-right {
     float: right;
@@ -244,8 +245,7 @@ img.login-screen {
 }
 
 
-#sort-stop-name,
-#sort-stop-ort {
+.sort-stop {
   float: left;
   display: inline-block;
   width: 40%;

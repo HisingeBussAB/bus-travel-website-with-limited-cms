@@ -132,6 +132,7 @@ class Categories {
       $og_title         = filter_var(trim($_POST['og_title']), FILTER_SANITIZE_STRING);
       $seo_keywords     = filter_var(trim($_POST['seo_keywords']), FILTER_SANITIZE_STRING);
       $meta_data_extra  = strip_tags(trim($_POST['meta_data_extra']), ALLOWED_HTML_TAGS . "<meta>");
+      $ingress          = str_replace(array("\r\n", "\n","\r", PHP_EOL), '', $ingress);
 
 
       try {

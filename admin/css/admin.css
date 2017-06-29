@@ -43,13 +43,11 @@ button:hover {
   background-color: #0000ff;
 }
 
-a,
-.anchor {
+a {
   color: #0d61de;
 }
 
-a:hover,
-.anchor:hover {
+a:hover {
   color: #0000ff;
   text-decoration: underline;
 }
@@ -273,8 +271,7 @@ img.login-screen {
   margin-left: 4px;
 }
 
-#sort-stop-name,
-#sort-stop-ort {
+.sort-stop {
   float: left;
   display: inline-block;
   width: 40%;
@@ -282,8 +279,7 @@ img.login-screen {
   padding-left: 2px;
 }
 
-#sort-stop-name:not(:first-child),
-#sort-stop-ort:not(:first-child) {
+.sort-stop:not(:first-child) {
   margin-left: 4px;
 }
 
