@@ -29,8 +29,24 @@ class Main {
    */
   public static function showAdminMain() {
 
+
+
   root\includes\classes\Sessions::secSessionStart();
-  $token = root\includes\classes\ResetToken::getRandomToken();
+
+
+  //DEBUG
+  //root\includes\classes\Tokens::setFormToken($form, $onetimeuse, $expiration = 7500);
+  //root\includes\classes\Tokens::setCommonToken($expiration = 7500);
+  echo "<br><br>";
+  root\includes\classes\Tokens::cleanTokens();
+  var_dump(root\includes\classes\Tokens::setFormToken("formName", true, 1));
+  echo "<br><br>";
+  var_dump(root\includes\classes\Tokens::setCommonToken(1));
+  echo "<br><br>";
+  print_r($_SESSION);
+  echo "<br><br>";
+  $token = 1;
+  //DEBUG
 
   if (admin\includes\classes\Login::isLoggedIn() === TRUE) {
     //Is logged in

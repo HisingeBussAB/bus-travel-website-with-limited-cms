@@ -126,13 +126,14 @@ class Categories {
       $id               = filter_var(trim($_POST['id']), FILTER_SANITIZE_NUMBER_INT);
       $kategori         = filter_var(trim($_POST['kategori']), FILTER_SANITIZE_STRING);
       $ingress          = nl2br(strip_tags(trim($_POST['ingress']), ALLOWED_HTML_TAGS));
+      $ingress          = str_replace(array("\r\n", "\n","\r", PHP_EOL), '', $ingress);
       $uri_kategori     = filter_var(trim($_POST['uri_kategori']), FILTER_SANITIZE_URL);
       $seo_description  = filter_var(trim($_POST['seo_description']), FILTER_SANITIZE_STRING);
       $og_description   = filter_var(trim($_POST['og_description']), FILTER_SANITIZE_STRING);
       $og_title         = filter_var(trim($_POST['og_title']), FILTER_SANITIZE_STRING);
       $seo_keywords     = filter_var(trim($_POST['seo_keywords']), FILTER_SANITIZE_STRING);
       $meta_data_extra  = strip_tags(trim($_POST['meta_data_extra']), ALLOWED_HTML_TAGS . "<meta>");
-      $ingress          = str_replace(array("\r\n", "\n","\r", PHP_EOL), '', $ingress);
+
 
 
       try {

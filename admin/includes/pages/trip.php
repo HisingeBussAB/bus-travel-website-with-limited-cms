@@ -407,6 +407,13 @@ class Trip {
             <div class="extra-settings"><input type="checkbox" name="trip-personalid-required" id="trip-personalid-required" value="personalid-required"<?php if (isset($trip)) {if ($trip['personnr'] == 1) { echo " checked "; }} ?>>Personnummer behöver anges vid bokning.</div>
           </fieldset>
 
+
+          <fieldset>
+            <h3>Tekniska SEO &amp; social media inställningar (valfritt)</h3>
+              TODO auto generated for now
+          </fieldset>
+
+
           <fieldset>
             <input type="hidden" name="tripid" value="<?php echo $tripid ?>">
             <input type="hidden" name="token" value="<?php echo $token ?>">
