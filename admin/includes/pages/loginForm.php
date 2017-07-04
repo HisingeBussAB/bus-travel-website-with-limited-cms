@@ -4,8 +4,9 @@
  * @author    Håkan Arnoldson
  */
 
-$token = bin2hex(openssl_random_pseudo_bytes(64));
-$_SESSION['token'] = $token;
+use HisingeBussAB\RekoResor\website as root;
+
+$token = root\includes\classes\Tokens::getFormToken("login",1000);
 
 ?>
 <!DOCTYPE html>
@@ -34,7 +35,8 @@ $_SESSION['token'] = $token;
   <img class="login-screen" src="/img/logo.gif" alt="Rekå Resor AB">
 
   <form action="/ajax/admindologin" method="post" accept-charset="utf-8" id="login-form">
-    <input type="hidden" name="token" value="<?php echo $token ?>">
+    <input type="hidden" name="tokenid" value="<?php echo $token['id'] ?>">
+    <input type="hidden" name="token" value="<?php echo $token['token'] ?>">
     <fieldset>
       <label for="user">Användarnamn:</label>
       <input type="input" name="user" id="login-user">

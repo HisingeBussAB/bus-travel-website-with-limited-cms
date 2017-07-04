@@ -88,7 +88,6 @@ function newItem(item) {
     dataType: "json",
   })
     .done(function() {
-      resettoken(false);
       loadItem(item);
       $("#form-new-" + item + "-submit").prop("disabled",false);
     })
@@ -98,7 +97,6 @@ function newItem(item) {
       else
         $( "#" + item + "-list-error" ).html( "Något har gått fel. Fel: " + data.responseText + "." );
       $("#form-new-" + item + "-submit").prop("disabled",false);
-      resettoken(item);
     });
 }
 
@@ -112,6 +110,7 @@ function itemChange(item, method) {
   else
     dataObj["direction"] = "none";
   dataObj["method"] = method;
+  dataObj["tokenid"] = $( '.form-token-id' ).first().val();
   dataObj["token"] = $( '.form-token' ).first().val();
 
   $.ajax({
@@ -122,39 +121,15 @@ function itemChange(item, method) {
     dataType: "json",
   })
     .done(function() {
-        resettoken(false);
         loadItem(item[1]);
     })
     .fail(function(data) {
-      resettoken(item[1]);
-      $( "#" + item[1] + "-list-error" ).html( "Något har gått fel. Fel: " + data.responseText + "." );
-
+      $( "#" + item[1] + "-list-error" ).html( "Något har gått fel. Fel: " + data.responseText );
+      $( "#" + item[1] + "-list-loading" ).hide();
+      $( "#" + item[1] + "-list" ).show();
     });
 
 }
-
-function resettoken(item) {
-  $.getJSON({
-    type: 'POST',
-    cache: false,
-    url: '/ajax/resettoken',
-    dataType: "json",
-  })
-    .done(function(response) {
-      $( '.form-token' ).each(function(){
-        $( this ).val(response.token);
-      });
-      if (item !== false) {
-        $( "#" + item + "-list-loading" ).hide();
-        $( "#" + item + "-list" ).show();
-      }
-    })
-    .fail(function(data) {
-      alert("Fel token, provar ladda om sidan!");
-      location.reload(true);
-    });
-}
-
 
 function renderItem(item, response) {
   var line = "<table><tbody>";
@@ -229,8 +204,8 @@ function renderItem(item, response) {
         content: 'Är du säker på att du vill radera posten permanent?',
         buttons: {
           ja: function() {
-            console.log(item);
             //console.log(this);
+            event.target.offsetParent.parentNode.style.backgroundColor = "transparent";
             $( "#" + item + "-list" ).hide();
             $( "#" + item + "-list-loading" ).show();
             itemChange(me, "delete");

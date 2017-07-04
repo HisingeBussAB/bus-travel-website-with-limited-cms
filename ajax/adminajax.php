@@ -89,7 +89,7 @@ class AdminAjax
         break;
 
         case 'newtrip':
-        if ($_SESSION["token"] == trim($_POST['token'])) {
+        if (!root\includes\classes\Tokens::checkCommonToken(trim($_POST['token']),trim($_POST['tokenid']))) {
           if (!empty($_POST)) {
             root\admin\includes\classes\NewTrip::newTrip($_POST);
           } else {
@@ -97,7 +97,7 @@ class AdminAjax
             http_response_code(401);
           }
         } else {
-          echo "<p>Token stämmer inte. Prova ladda om sidan.</p>";
+          echo "<p>Token stämmer inte. Prova <a href='javascript:window.location.href=window.location.href'>ladda om</a> sidan.</p>";
           http_response_code(401);
         }
         break;
@@ -132,7 +132,7 @@ class AdminAjax
    *
    */
   private static function newItemLauncher($type) {
-    if ($_SESSION["token"] == trim($_POST['token'])) {
+    if (root\includes\classes\Tokens::checkCommonToken(trim($_POST['token']),trim($_POST['tokenid']))) {
 
       if (!empty($_POST["name"])) {
         $name = filter_var(trim($_POST["name"]), FILTER_SANITIZE_STRING);
@@ -154,7 +154,7 @@ class AdminAjax
         http_response_code(411);
       }
     } else {
-      echo "Säkerhetstoken stämmer inte. Ladda om sidan.";
+      echo "Säkerhetstoken stämmer inte. <a href='javascript:window.location.href=window.location.href'>Ladda om sidan.</a>";
       http_response_code(401);
     }
     exit;
@@ -167,7 +167,7 @@ class AdminAjax
    *
    */
   private static function changeFilter() {
-    if ($_SESSION["token"] == trim($_POST['token'])) {
+    if (root\includes\classes\Tokens::checkCommonToken(trim($_POST['token']),trim($_POST['tokenid']))) {
       if (!empty($_POST["table"]) || !empty($_POST["id"]) || !empty($_POST["direction"]) || !empty($_POST["method"])) {
         $id = filter_var(trim($_POST["id"]), FILTER_SANITIZE_NUMBER_INT);
         $table = self::translateTable(trim($_POST["table"])); //whitelist filter and translation
@@ -185,7 +185,7 @@ class AdminAjax
         http_response_code(411);
       }
     } else {
-      echo "Token stämmer inte";
+      echo "Token stämmer inte. <a href='javascript:window.location.href=window.location.href'>Ladda om sidan.</a>";
       http_response_code(401);
     }
     exit;

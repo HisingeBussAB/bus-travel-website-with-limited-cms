@@ -19,7 +19,13 @@ use \Firebase\JWT\JWT;
 
 
 class Login
-{
+  {
+
+  const DB_EXPIRE = 43200; //Maximum time a loggin session can last from first login
+  const JWT_EXPIRE = 5440; //Inactivity cutoff
+
+
+
   public static function isLoggedIn($regenJWT = TRUE) {
 
     if (!isset($_SESSION['isloggedin']) || !isset($_SESSION['useragent']) || !isset($_SESSION['id'])) {
@@ -40,7 +46,7 @@ class Login
     $pdo = DB::get();
 
     $result = false;
-    $timelimit = $_SERVER['REQUEST_TIME']-28800;
+    $timelimit = $_SERVER['REQUEST_TIME']-self::DB_EXPIRE;
     try {
       $sql = "SELECT ip, jwtkey, jwttoken, sessionid time FROM " . TABLE_PREFIX . "loggedin WHERE sessionid = :sessionid AND user = :user AND time > :timelimit;";
       $sth = $pdo->prepare($sql);
@@ -80,7 +86,7 @@ class Login
     if ($regenJWT) {
       unset($_COOKIE['RRJWT']);
       $tokenKey = base64_encode(openssl_random_pseudo_bytes(96));
-      $tokenId = self::setJWT($tokenKey, 5400, $username, $userAgent);
+      $tokenId = self::setJWT($tokenKey, self::JWT_EXPIRE, $username, $userAgent);
 
       //set new jwt in db
       try {
@@ -114,9 +120,9 @@ class Login
         http_response_code(406);
         return false;
       }
-
-      if ($_SESSION['token'] !== $_POST['token']) {
-        echo "Fel token skickad. HTTP 401.";
+;
+      if (!root\includes\classes\Tokens::checkFormToken(trim($_POST['token']),trim($_POST['tokenid']),"login")) {
+        echo "Fel token skickad. <a href='javascript:window.location.href=window.location.href'>Ladda om sidan.</a> HTTP 401.";
         http_response_code(401);
         return false;
       }
@@ -169,7 +175,7 @@ class Login
 
         //Set JWT status logged in
         $tokenKey = base64_encode(openssl_random_pseudo_bytes(96));
-        $tokenId  = self::setJWT($tokenKey, 5400, $username, $userAgent);
+        $tokenId  = self::setJWT($tokenKey, self::JWT_EXPIRE, $username, $userAgent);
 
         //Set DB status logged in
         try {
@@ -205,7 +211,7 @@ class Login
 
 
         //Finally clean up garbage in the database
-        $finalExpiration = $_SERVER['REQUEST_TIME']-28800;
+        $finalExpiration = $_SERVER['REQUEST_TIME']-self::DB_EXPIRE;
 
         try {
           $sql = "DELETE FROM " . TABLE_PREFIX . "loggedin WHERE time < :expiration;";

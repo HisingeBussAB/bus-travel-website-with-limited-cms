@@ -34,22 +34,12 @@ class Main {
   root\includes\classes\Sessions::secSessionStart();
 
 
-  //DEBUG
-  //root\includes\classes\Tokens::setFormToken($form, $onetimeuse, $expiration = 7500);
-  //root\includes\classes\Tokens::setCommonToken($expiration = 7500);
-  echo "<br><br>";
-  root\includes\classes\Tokens::cleanTokens();
-  var_dump(root\includes\classes\Tokens::setFormToken("formName", true, 1));
-  echo "<br><br>";
-  var_dump(root\includes\classes\Tokens::setCommonToken(1));
-  echo "<br><br>";
-  print_r($_SESSION);
-  echo "<br><br>";
-  $token = 1;
-  //DEBUG
+
 
   if (admin\includes\classes\Login::isLoggedIn() === TRUE) {
     //Is logged in
+
+    $token = root\includes\classes\Tokens::getCommonToken(1300);
 
     $pageTitle = "Rekå Admin - Huvudmeny";
     $more_stylesheets = "<link href='/dependencies/jquery-confirm/dist/jquery-confirm.min.css' rel='stylesheet'>";
@@ -93,7 +83,8 @@ class Main {
           <li>
             <form action="/adminajax/newcategory" method="post" accept-charset="utf-8" id="form-new-category" enctype='application/json'>
               <input type="text" maxlength="80" name="name" placeholder="Kategori" required id="form-new-category-name">
-              <input type="hidden" name="token" value="<?php echo $token ?>" class="form-token">
+              <input type="hidden" name="tokenid" value="<?php echo $token['id'] ?>" class="form-token-id">
+              <input type="hidden" name="token" value="<?php echo $token['token'] ?>" class="form-token">
               <button type="submit"id="form-new-category-submit" class="button-right">Skapa</button>
             </form>
           </li>
@@ -110,7 +101,8 @@ class Main {
           <li>
             <form action="/adminajax/newroomopt" method="post" accept-charset="utf-8" id="form-new-roomopt" enctype='application/json'>
               <input type="text" maxlength="100" name="name" placeholder="Boendealternativ" required id="form-new-roomopt-name">
-              <input type="hidden" name="token" value="<?php echo $token ?>" class="form-token">
+              <input type="hidden" name="tokenid" value="<?php echo $token['id'] ?>" class="form-token-id">
+              <input type="hidden" name="token" value="<?php echo $token['token'] ?>" class="form-token">
               <button type="submit"id="form-new-roomopt-submit" class="button-right">Skapa</button>
             </form>
           </li>
@@ -128,7 +120,8 @@ class Main {
             <form action="/adminajax/newstop" method="post" accept-charset="utf-8" id="form-new-stop" enctype='application/json'>
               <input type="text" maxlength="80" name="name" placeholder="Plats" required id="form-new-stop-name">
               <input type="text" maxlength="80" name="ort" placeholder="Ort" required id="form-new-stop-ort">
-              <input type="hidden" name="token" value="<?php echo $token ?>" class="form-token">
+              <input type="hidden" name="tokenid" value="<?php echo $token['id'] ?>" class="form-token-id">
+              <input type="hidden" name="token" value="<?php echo $token['token'] ?>" class="form-token">
               <button type="submit"id="form-new-stop-submit" class="button-right">Skapa</button>
               <div class="clearfix">
                 <div class="sort-stop"><a href="#" id="sort-stop-name">Sortera på plats</a></div>
