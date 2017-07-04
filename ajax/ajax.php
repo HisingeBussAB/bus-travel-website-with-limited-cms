@@ -37,8 +37,27 @@ class Ajax
         }
       break;
 
-      case 'resettoken':
-        $token = root\includes\classes\ResetToken::getRandomToken();
+      case 'gettoken':
+        if (!empty($_POST['form'])) {
+          $form = $_POST['form'];
+        } else {
+          $form = "form";
+        }
+
+        if (!empty($_POST['expiration'])) {
+          $exp = $_POST['expiration'];
+        } else {
+          $exp = 5000;
+        }
+        
+        if (!empty($_POST['unique'])) {
+          $unique = $_POST['unique'];
+        } else {
+          $unique = true;
+        }
+
+
+        $token = root\includes\classes\Tokens::getFormToken($form, $exp, $unique);
         header('Content-Type: application/json');
         echo json_encode(array('token' => $token));
         http_response_code(200);

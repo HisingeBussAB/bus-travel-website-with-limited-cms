@@ -89,7 +89,7 @@ class AdminAjax
         break;
 
         case 'newtrip':
-        if (!root\includes\classes\Tokens::checkCommonToken(trim($_POST['token']),trim($_POST['tokenid']))) {
+        if (root\includes\classes\Tokens::checkFormToken(trim($_POST['token']),trim($_POST['tokenid']),"newtour")) {
           if (!empty($_POST)) {
             root\admin\includes\classes\NewTrip::newTrip($_POST);
           } else {

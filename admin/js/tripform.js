@@ -100,15 +100,14 @@ function saveForm(formData) {
     dataType: "json",
   })
     .done(function(data) {
-      window.location.href = window.location.href.replace(/\/$/, "") + '/' + data.tripid;
+      $( "#sumbit-error" ).html( "<p>Resan sparad.<br><a href='" + window.location.href.replace(/\/nyresa\/?\/?.?\/?$/, '/nyresa/' + data.tripid) + "'>Ladda om formuläret.</a><p>")
+      window.location.href = window.location.href.replace(/\/nyresa\/?\/?.?\/?$/, '/nyresa/' + data.tripid);
     })
     .fail(function(data) {
-      console.log(data);
-      console.log(data.status);
       if (data.status == 404)
         $( "#sumbit-error" ).html( "Något har gått fel. Error: 404." )
       else
-        $( "#sumbit-error" ).html( "Något har gått fel. Fel: " + data.responseText + "." );
+        $( "#sumbit-error" ).html( "Något har gått fel. Fel: " + data.responseText );
 
       $("#save-trip-button").prop("disabled",false);
       $("#trip :input").prop("disabled", false);

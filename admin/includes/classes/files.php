@@ -26,8 +26,8 @@ class Files {
     header('Content-Type: text/plain; charset=utf-8');
 
     if (root\admin\includes\classes\Login::isLoggedIn(FALSE) === TRUE) {
-      if ($_SESSION["token"] != trim($_POST['token'])) {
-        echo "Felaktig token. Åtgärden stoppad.";
+      if (!root\includes\classes\Tokens::checkFormToken(trim($_POST['token']),trim($_POST['tokenid']),"ultoken")) {
+        echo "Felaktig token. Prova <a href='javascript:window.location.href=window.location.href'>ladda om</a> sidan.</p>";
         http_response_code(401);
         exit;
       }
@@ -144,13 +144,16 @@ class Files {
           }
 
         echo 'Bilden sparades.';
+        http_response_code(200);
         } else {
         echo "PDF sparades.";
+        http_response_code(200);
         }
 
       } catch (\RuntimeException $e) {
         echo $e->getMessage();
-
+        http_response_code(400);
+        exit;
       }
 
     } else {

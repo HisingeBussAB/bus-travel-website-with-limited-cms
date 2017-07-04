@@ -23,9 +23,10 @@ class Category {
   public static function showCategory($id = false) {
 
     root\includes\classes\Sessions::secSessionStart();
-    $token = root\includes\classes\ResetToken::getRandomToken();
+
 
     if (admin\includes\classes\Login::isLoggedIn() === TRUE) {
+      $token = root\includes\classes\Tokens::getFormToken("category",5400);
       //Is logged in
       try {
         $pageTitle = "Rekå Admin - Ändra kategori";
@@ -63,7 +64,8 @@ class Category {
         <main class="clearfix">
           <form action="/adminajax/editcategory" method="post" accept-charset="utf-8" enctype="application/json" id="category-form">
             <div class="col-md-12">
-              <input type="hidden" name="token" value="<?php echo $token; ?>" />
+              <input type="hidden" name="tokenid" value="<?php echo $token['id']; ?>" id="tokenid" />
+              <input type="hidden" name="token" value="<?php echo $token['token']; ?>" id="token" />
               <input type="hidden" name="id" value="<?php echo $cat['id']; ?>" />
               <fieldset>
                 <label for="kategori">Kategori titel:</label>

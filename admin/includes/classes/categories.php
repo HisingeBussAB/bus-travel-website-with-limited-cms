@@ -115,8 +115,8 @@ class Categories {
         throw new \RuntimeException("<p>Kan inte ansluta till databasen.</p>");
       }
 
-      if ($_SESSION["token"] !== trim($_POST['token'])) {
-        throw new \RuntimeException("<p>Fel säkerhetstoken. Ladda om sidan.</p>");
+      if (!root\includes\classes\Tokens::checkFormToken(trim($_POST['token']),trim($_POST['tokenid']),"category")) {
+        throw new \RuntimeException("<p>Fel säkerhetstoken. Prova <a href='javascript:window.location.href=window.location.href'>ladda om</a> sidan.</p>");
       }
 
       if (empty($_POST['id'])) {

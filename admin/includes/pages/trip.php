@@ -31,9 +31,10 @@ class Trip {
   public static function showTrip($tripid = "new") {
 
   root\includes\classes\Sessions::secSessionStart();
-  $token = root\includes\classes\ResetToken::getRandomToken();
+
 
   if (admin\includes\classes\Login::isLoggedIn() === TRUE) {
+    $token = root\includes\classes\Tokens::getFormToken("newtour",6500);
     //Is logged in
 
     $pageTitle = "Rekå Admin - Ny/Ändra resa";
@@ -415,8 +416,9 @@ class Trip {
 
 
           <fieldset>
-            <input type="hidden" name="tripid" value="<?php echo $tripid ?>">
-            <input type="hidden" name="token" value="<?php echo $token ?>">
+            <input type="hidden" name="tripid" value="<?php echo $tripid; ?>">
+            <input type="hidden" name="tokenid" value="<?php echo $token['id']; ?>">
+            <input type="hidden" name="token" value="<?php echo $token['token']; ?>">
           </fieldset>
 
           <fieldset>
@@ -437,48 +439,54 @@ class Trip {
               $web_path = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/" . $trip['bildkatalog'] . "/";
                 if ($files = functions::get_img_files($server_path)) {
                   foreach ($files as $file) {
-                  echo "<div class='picture-new'>";
-                  echo "<form action='/adminp/filemanager/upload' method='POST' enctype='multipart/form-data'>";
-                  echo "<label for='upfile' class='file-label'>";
-                  if ($i === 0) { echo "Huvudbild"; } else { echo "Bild " . ($i+1); }
-                  echo "</label>";
-                  echo "<input type='hidden' value='" . $tripid . "' name='id'>";
-                  echo "<input type='hidden' value='" . ($i+1) . "' name='position'>";
-                  echo "<input type='hidden' name='token' value='" . $token . "'>";
-                  echo "<input type='file' name='upfile' class='trip-picture' name= value=''><input type='hidden' name='old-file' value='" . $server_path . $file['file'] . "'>";
-                  echo "<button type='submit' name='' >Byt ut bild</button>";
-                  echo "</form>";
-                  echo "<div><a href='" . $web_path . $file['file'] . "' target='_blank'><img src='" . $web_path . $file['thumb'] . "' class='picture-list-thumb'></a>";
-                  echo "<p class='picture-info'>URL: <a href='" . $web_path . $file['file'] . "' target='_blank'>" . $web_path . $file['file'] . "</a><br>";
-                  echo "URL thumbnail: <a href='" . $web_path . $file['thumb'] . "' target='_blank'>" . $web_path . $file['thumb'] . "</a><br>";
-                  echo "Orginalstorlek: " . (getimagesize($server_path . $file['file'])[3]) . "<br>";
-                  echo "Filtyp: " . (mime_content_type($server_path . $file['file'])) . "<br>";
-                  echo "<p></div>";
-                  echo "</div>";
-                  $i++;
+                    $ultoken = root\includes\classes\Tokens::getFormToken("ultoken",3600);
+                    echo "<div class='picture-new'>";
+                    echo "<form action='/adminp/filemanager/upload' method='POST' enctype='multipart/form-data'>";
+                    echo "<label for='upfile' class='file-label'>";
+                    if ($i === 0) { echo "Huvudbild"; } else { echo "Bild " . ($i+1); }
+                    echo "</label>";
+                    echo "<input type='hidden' value='" . $tripid . "' name='id'>";
+                    echo "<input type='hidden' value='" . ($i+1) . "' name='position'>";
+                    echo "<input type='hidden' name='tokenid' value='" . $ultoken['id'] . "'>";
+                    echo "<input type='hidden' name='token' value='" . $ultoken['token'] . "'>";
+                    echo "<input type='file' name='upfile' class='trip-picture' name= value=''><input type='hidden' name='old-file' value='" . $server_path . $file['file'] . "'>";
+                    echo "<button type='submit' name='' >Byt ut bild</button>";
+                    echo "</form>";
+                    echo "<div><a href='" . $web_path . $file['file'] . "' target='_blank'><img src='" . $web_path . $file['thumb'] . "' class='picture-list-thumb'></a>";
+                    echo "<p class='picture-info'>URL: <a href='" . $web_path . $file['file'] . "' target='_blank'>" . $web_path . $file['file'] . "</a><br>";
+                    echo "URL thumbnail: <a href='" . $web_path . $file['thumb'] . "' target='_blank'>" . $web_path . $file['thumb'] . "</a><br>";
+                    echo "Orginalstorlek: " . (getimagesize($server_path . $file['file'])[3]) . "<br>";
+                    echo "Filtyp: " . (mime_content_type($server_path . $file['file'])) . "<br>";
+                    echo "<p></div>";
+                    echo "</div>";
+                    $i++;
+                  }
+                } else {
+                  echo "<p class='importaint'>Inga bilder hittades. Prova ladda upp nya.</p>";
                 }
               } else {
-                echo "<p class='importaint'>Inga bilder hittades. Prova ladda upp nya.</p>";
+                echo "<p class='importaint'>Spara reseinformationen först, sedan kan du ladda upp bilder.</p>";
               }
-            } else {
-              echo "<p class='importaint'>Spara reseinformationen först, sedan kan du ladda upp bilder.</p>";
-            }
 
-            while ($i < 6) {
-            echo "<div class='picture-new'>";
-            echo "<form action='/adminp/filemanager/upload' method='POST' enctype='multipart/form-data'>";
-            echo "<label for='upfile' class='file-label'>";
-            if ($i === 0) { echo "Huvudbild"; } else { echo "Bild " . ($i+1); }
-            echo "</label>";
-            echo "<input type='hidden' value='" . $tripid . "' name='id'>";
-            echo "<input type='hidden' value='" . ($i+1) . "' name='position'>";
-            echo "<input type='hidden' name='token' value='" . $token . "'>";
-            echo "<input type='file' name='upfile' class='trip-picture' name= value=''>";
-            echo "<button type='submit' name='' >Ladda upp bild</button>";
-            echo "</form>";
-            echo "</div>";
-            $i++;
-          }
+              while ($i < 6) {
+                $ultoken = root\includes\classes\Tokens::getFormToken("ultoken",3600);
+                echo "<div class='picture-new'>";
+                echo "<form action='/adminp/filemanager/upload' method='POST' enctype='multipart/form-data'>";
+                echo "<label for='upfile' class='file-label'>";
+                if ($i === 0) { echo "Huvudbild"; } else { echo "Bild " . ($i+1); }
+                echo "</label>";
+                echo "<input type='hidden' value='" . $tripid . "' name='id'>";
+                echo "<input type='hidden' value='" . ($i+1) . "' name='position'>";
+                echo "<input type='hidden' name='tokenid' value='" . $ultoken['id'] . "'>";
+                echo "<input type='hidden' name='token' value='" . $ultoken['token'] . "'>";
+                echo "<input type='file' name='upfile' class='trip-picture' name= value=''>";
+                echo "<button type='submit' name='' >Ladda upp bild</button>";
+                echo "</form>";
+                echo "</div>";
+                $i++;
+            }
+            $ultoken[0] = root\includes\classes\Tokens::getFormToken("ultoken",3600);
+            $ultoken[1] = root\includes\classes\Tokens::getFormToken("ultoken",3600);
            ?>
         </div>
 
@@ -489,7 +497,8 @@ class Trip {
           <input type="file" name="upfile" class="trip-pdf" value="">
           <input type="hidden" value="<?php echo $tripid ?>" name="id">
           <input type="hidden" value="1" name="position">
-          <input type="hidden" name="token" value="<?php echo $token ?>">
+          <input type="hidden" name="tokenid" value="<?php echo $ultoken[0]['id']; ?>">
+          <input type="hidden" name="token" value="<?php echo $ultoken[0]['token']; ?>">
           <button type="submit">Ladda upp / Byt ut pdf</button>
           </form>
         </div>
@@ -498,7 +507,8 @@ class Trip {
             <label for="upfile" class="file-label">Extra pdf</label>
           <input type="hidden" value="<?php echo $tripid ?>" name="id">
           <input type="hidden" value="2" name="position">
-          <input type="hidden" name="token" value="<?php echo $token ?>">
+          <input type="hidden" name="tokenid" value="<?php echo $ultoken[1]['id']; ?>">
+          <input type="hidden" name="token" value="<?php echo $ultoken[1]['token']; ?>">
           <input type="file" name="upfile" class="trip-pdf" value="">
           <button type="submit">Ladda upp / Byt ut pdf</button>
           </form>

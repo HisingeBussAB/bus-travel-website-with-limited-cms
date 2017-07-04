@@ -173,11 +173,13 @@ class NewTrip
     $this->addons['price'] = [];
 
     $i = 0;
-    foreach ($input["trip-tillagg"] as $key=>$addon) {
-      if (!empty($addon)) {
-        $this->addons['name'][$i] = strip_tags(trim($addon), $allowed_tags);
-        $this->addons['price'][$i] = filter_var(trim($input["trip-tillagg-pris"][$key]), FILTER_SANITIZE_NUMBER_INT);
-        $i++;
+    if (!empty($input["trip-tillagg"])) {
+      foreach ($input["trip-tillagg"] as $key=>$addon) {
+        if (!empty($addon)) {
+          $this->addons['name'][$i] = strip_tags(trim($addon), $allowed_tags);
+          $this->addons['price'][$i] = filter_var(trim($input["trip-tillagg-pris"][$key]), FILTER_SANITIZE_NUMBER_INT);
+          $i++;
+        }
       }
     }
 

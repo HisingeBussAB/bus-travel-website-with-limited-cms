@@ -37,7 +37,7 @@ class Tokens
       return false;
     }
 
-    if ($tokenarr['unique']) {
+    if ($tokenarr['unique'] && ($tokenarr['token'] === $token)) {
       $_SESSION["tokens"][$form][$tokenid]['token'] = "destroyed";
       unset($_SESSION["tokens"][$form][$tokenid]);
     }
