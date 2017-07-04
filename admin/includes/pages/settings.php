@@ -24,8 +24,8 @@ class Settings {
         header('Content-type: text/html; charset=utf-8');
         include __DIR__ . '/shared/header.php';
 
-        $token = bin2hex(openssl_random_pseudo_bytes(16));
-        $_SESSION['token'] = $token;
+        $ptoken = root\includes\classes\Tokens::getFormToken("password",5400);
+        $stoken = root\includes\classes\Tokens::getFormToken("settings",5400);
         $userid = $_SESSION['isloggedin'];
 
         $pdo = DB::get();
@@ -55,7 +55,8 @@ class Settings {
 
         echo "<form action='/adminajax/updatepassword' method='post' accept-charset='utf-8' class='settings-form' id='pwd-form'>
                 <h2>Ändra användarnamn/lösenord</h2>
-                <input type='hidden' name='token' value='$token' />
+                <input type='hidden' name='tokenid' value='" . $ptoken['id'] . "' id='tokenid-password' />
+                <input type='hidden' name='token' value='" . $ptoken['token'] . "' id='token-password' />
                 <input type='hidden' name='userid' value='$userid' />
                 <fieldset>
                   <label for='newuser'>Användarnamn:</label>
@@ -84,7 +85,8 @@ class Settings {
               <hr class='settings-form'>
               <form action='/adminajax/updatesettings' method='post' accept-charset='utf-8' class='settings-form' id='settings-form'>
                 <h2>Ändra SMTP inställningar</h2>
-                <input type='hidden' name='token' value='$token' />
+                <input type='hidden' name='tokenid' value='" . $stoken['id'] . "' id='tokenid-settings' />
+                <input type='hidden' name='token' value='" . $stoken['token'] . "' id='token-settings' />
                 <input type='hidden' name='userid' value='$userid' />
                 <fieldset>
                   <label for='adminemail'>Administratörs e-mail:</label>
@@ -170,9 +172,9 @@ class Settings {
 
       $pdo = DB::get();
       //Check token
-      if ($_SESSION['token'] !== trim($_POST['token'])) {
+      if (!root\includes\classes\Tokens::checkFormToken(trim($_POST['token']),trim($_POST['tokenid']),$update)) {
         $httpcode = 401;
-        throw new \RuntimeException("<p>Fel säkerhetstoken, prova ladda om sidan.</p>");
+        throw new \RuntimeException("<p>Fel säkerhetstoken. Prova <a href='javascript:window.location.href=window.location.href'>ladda om</a> sidan.</p>");
       }
 
       //Read and sanitize common form variables

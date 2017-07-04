@@ -26,7 +26,7 @@ $(function() {
       $("#send-pwd").prop("disabled",true);
       var formData = $("#pwd-form").serialize()
       $("#pwd-form :input").prop("disabled", true);
-      sendForm(formData, "#password-reply", "#send-pwd", "#pwd-form");
+      sendForm(formData, "#password-reply", "#send-pwd", "#pwd-form", "password");
     });
 
     $('#send-settings').click(function(event){
@@ -34,14 +34,14 @@ $(function() {
       $("#send-settings").prop("disabled",true);
       var formData = $("#settings-form").serialize()
       $("#settings-form :input").prop("disabled", true);
-      sendForm(formData, "#settings-reply", "#send-settings", "#settings-form");
+      sendForm(formData, "#settings-reply", "#send-settings", "#settings-form", "settings");
     });
 
 
 
 });
 
-function sendForm(formData, reply, button, form) {
+function sendForm(formData, reply, button, form, type) {
   $.ajax({
     type: 'POST',
     cache: false,
@@ -51,6 +51,7 @@ function sendForm(formData, reply, button, form) {
   })
     .done(function(data) {
       $( reply ).html( data.responseText );
+      newtoken(type, reply);
       setTimeout(function(){ $( form + " :input").prop("disabled", false); }, 1000);
       setTimeout(function(){ $( button ).prop("disabled",false); }, 1000);
     })
@@ -109,4 +110,26 @@ function checkPassStrength(pass) {
         return "Svagt";
 
     return "";
+}
+
+
+function newtoken(type, reply) {
+  var dataObj = {};
+  dataObj["form"] = type;
+  dataObj["expiration"] = 5400;
+  dataObj["unique"] = true;
+  $.ajax({
+    type: 'POST',
+    cache: false,
+    url: '/ajax/gettoken',
+    data: dataObj,
+    dataType: "json",
+  })
+    .done(function(data) {
+      $( "#tokenid-" + type ).val( data.token.id );
+      $( "#token-" + type ).val( data.token.token );
+    })
+    .fail(function() {
+      $( reply ).append( "<p>Kunde inte generera ny säkerhetoken. <a href='javascript:window.location.href=window.location.href'>Ladda om sidan.</a></p>" );
+    });
 }
