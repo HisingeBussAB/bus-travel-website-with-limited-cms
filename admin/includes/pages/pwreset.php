@@ -17,18 +17,18 @@ class PWReset
     try {
       root\includes\classes\Sessions::secSessionStart(TRUE);
       if (trim($request) === "requestnew" && $_SERVER['REQUEST_METHOD'] === 'GET') {
-        $token = bin2hex(openssl_random_pseudo_bytes(16));
-        $_SESSION['token'] = $token;
+        $token = root\includes\classes\Tokens::getFormToken("pwreset",600);
         echo "<html><head><title>Password Reset</title></head><body>";
         echo "<script src='https://www.google.com/recaptcha/api.js'></script>";
         echo "<form action='/adminp/resetpw/new' method='POST' accept-charset='utf-8'>
               <div class='g-recaptcha' data-sitekey='" . RECAPTCHA_PUBLIC . "'></div>
-              <input type='hidden' value='$token' name='token'>
+              <input type='hidden' value='" . $token['id'] . "' name='tokenid'>
+              <input type='hidden' value='" . $token['token'] . "' name='token'>
               <p><button type='submit' id='login-submit'>Begär återställningslänk</button></p>
               </form></body></html>";
       } elseif (trim($request) === "new" && $_SERVER['REQUEST_METHOD'] === 'POST') {
-        if ($_SESSION['token'] !== trim($_POST['token'])) {
-          throw new \RuntimeException("Fel säkerhetstoken skickad med begäran.");
+        if (!root\includes\classes\Tokens::checkFormToken(trim($_POST['token']),trim($_POST['tokenid']),"pwreset")) {
+          throw new \RuntimeException("Fel säkerhetstoken skickad med begäran. Ladda om.");
         }
 
         if (!root\admin\includes\classes\reCaptcha::tryReCaptcha()) {

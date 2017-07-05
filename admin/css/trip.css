@@ -9,7 +9,19 @@ body {
 h3, label {
   display: block;
   margin-top: 25px;
-  font-size: 1.25em;
+  font-size: 1.15em;
+  font-weight: bold;
+}
+
+h3.small-label, label.small-label {
+  margin-top: 7px;
+  font-size: 1em;
+}
+
+h2 {
+  display: block;
+  margin-top: 25px;
+  font-size: 1.30em;
   font-weight: bold;
 }
 
@@ -24,6 +36,12 @@ input[type=checkbox] {
   min-width: 20px;
   width: 20px;
   margin-left: 5px;
+}
+
+input[type=checkbox].settings-checkbox {
+  display: inline;
+  margin-right: 8px;
+  vertical-align: middle;
 }
 
 textarea {
@@ -58,13 +76,6 @@ table input[type=number],
 table input[type=time] {
   display: inline-block;
   margin-top: 4px;
-}
-
-#trip-address-required,
-#trip-personalid-required {
-  display: inline;
-  margin-right: 8px;
-  vertical-align: middle;
 }
 
 #trip-hotel-text {

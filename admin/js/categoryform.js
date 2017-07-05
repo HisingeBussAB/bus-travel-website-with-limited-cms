@@ -23,7 +23,7 @@ function sendForm(formData) {
   })
     .done(function(data) {
       $( "#form-reply" ).html( data.responseText );
-      newtoken();
+      newtoken("#tokenid", "#token",  "#form-reply");
       setTimeout(function(){ $( "#category-form :input").prop("disabled", false); }, 1000);
       setTimeout(function(){ $( "#save-trip-button" ).prop("disabled",false); }, 1000);
     })
@@ -33,7 +33,7 @@ function sendForm(formData) {
         $( "#form-reply" ).html( "Något har gått fel. Error: 404." )
       else
         $( "#form-reply" ).html( "Något har gått fel. Fel: " + data.responseText );
-
+      newtoken("#tokenid", "#token",  "#form-reply");
       $( "#save-trip-button" ).prop("disabled",false);
       $( "#category-form :input" ).prop("disabled", false);
     });

@@ -10,9 +10,22 @@ body {
 h3, label {
   display: block;
   margin-top: 25px;
-  font-size: 1.25em;
+  font-size: 1.15em;
+  font-weight: bold;
+
+  &.small-label {
+    margin-top: 7px;
+    font-size: 1em;
+  }
+}
+
+h2 {
+  display: block;
+  margin-top: 25px;
+  font-size: 1.30em;
   font-weight: bold;
 }
+
 
 input {
   min-width: 450px;
@@ -25,6 +38,12 @@ input[type=checkbox] {
   min-width: 20px;
   width: 20px;
   margin-left: 5px;
+
+  &.settings-checkbox {
+    display: inline;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
 }
 
 textarea {
@@ -65,13 +84,6 @@ table {
     margin-top: 4px;
   }
 
-}
-
-#trip-address-required,
-#trip-personalid-required {
-  display: inline;
-  margin-right: 8px;
-  vertical-align: middle;
 }
 
 #trip-hotel-text {

@@ -108,7 +108,7 @@ function saveForm(formData) {
         $( "#sumbit-error" ).html( "Något har gått fel. Error: 404." )
       else
         $( "#sumbit-error" ).html( "Något har gått fel. Fel: " + data.responseText );
-
+      newtoken("#tokenid", "#token",  "#sumbit-error");
       $("#save-trip-button").prop("disabled",false);
       $("#trip :input").prop("disabled", false);
     });

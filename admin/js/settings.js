@@ -51,7 +51,7 @@ function sendForm(formData, reply, button, form, type) {
   })
     .done(function(data) {
       $( reply ).html( data.responseText );
-      newtoken(type, reply);
+      newtoken("#tokenid-" + type, "#token-" + type, reply);      
       setTimeout(function(){ $( form + " :input").prop("disabled", false); }, 1000);
       setTimeout(function(){ $( button ).prop("disabled",false); }, 1000);
     })
@@ -110,26 +110,4 @@ function checkPassStrength(pass) {
         return "Svagt";
 
     return "";
-}
-
-
-function newtoken(type, reply) {
-  var dataObj = {};
-  dataObj["form"] = type;
-  dataObj["expiration"] = 5400;
-  dataObj["unique"] = true;
-  $.ajax({
-    type: 'POST',
-    cache: false,
-    url: '/ajax/gettoken',
-    data: dataObj,
-    dataType: "json",
-  })
-    .done(function(data) {
-      $( "#tokenid-" + type ).val( data.token.id );
-      $( "#token-" + type ).val( data.token.token );
-    })
-    .fail(function() {
-      $( reply ).append( "<p>Kunde inte generera ny säkerhetoken. <a href='javascript:window.location.href=window.location.href'>Ladda om sidan.</a></p>" );
-    });
 }

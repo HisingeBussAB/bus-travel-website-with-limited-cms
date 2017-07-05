@@ -214,7 +214,7 @@ class Trip {
           <fieldset>
             <label for="trip-text-hotel-heading">Hotell</label>
             <input type="text" maxlength="120" name="trip-text-hotel-heading" id="trip-hotel-heading" placeholder="Hotellets namn" value="<?php if (isset($trip)) {echo $hotelhead[0];} ?>">
-            <textarea type="text" name="trip-text-hotel-text" id="trip-hotel-text" placeholder="Hotellvägen 5&#10;888 88 Hotellstaden&#10;+46888888"><?php if (isset($trip)) {echo functions::br2htmlnl($hoteltext[0]);} ?></textarea>
+            <textarea type="text" name="trip-text-hotel-text" id="trip-hotel-text" placeholder="Om hotellet...&#10;&#10;Hotellvägen 5&#10;888 88 Hotellstaden&#10;+46888888"><?php if (isset($trip)) {echo functions::br2htmlnl($hoteltext[0]);} ?></textarea>
             <input type="text" maxlength="250" name="trip-text-hotel-link" id="trip-hotel-link" placeholder="http://www.hotel.se" value="<?php if (isset($trip)) {echo $trip['hotellink'];} ?>">
           </fieldset>
 
@@ -404,21 +404,49 @@ class Trip {
 
           <fieldset>
             <h3>Inställningar för bokning</h3>
-            <div class="extra-settings"><input type="checkbox" name="trip-address-required" id="trip-address-required" value="address-required"<?php if (isset($trip)) {if ($trip['fysiskadress'] == 1) { echo " checked "; }} else { echo " checked "; } ?>>Fysisk address behöver anges vid bokning.</div>
-            <div class="extra-settings"><input type="checkbox" name="trip-personalid-required" id="trip-personalid-required" value="personalid-required"<?php if (isset($trip)) {if ($trip['personnr'] == 1) { echo " checked "; }} ?>>Personnummer behöver anges vid bokning.</div>
+            <div class="extra-settings"><input type="checkbox" name="trip-address-required" class="settings-checkbox" value="address-required"<?php if (isset($trip)) {if ($trip['fysiskadress'] == 1) { echo " checked "; }} else { echo " checked "; } ?>>Fysisk address behöver anges vid bokning.</div>
+            <div class="extra-settings"><input type="checkbox" name="trip-personalid-required" class="settings-checkbox" value="personalid-required"<?php if (isset($trip)) {if ($trip['personnr'] == 1) { echo " checked "; }} ?>>Personnummer behöver anges vid bokning.</div>
+          </fieldset>
+          <fieldset>
+            <h3>Visa som utvald resa</h3>
+            <div class="extra-settings"><input type="checkbox" name="tour-featured" class="settings-checkbox" value="featured"<?php if (isset($trip)) {if ($trip['utvald'] == 1) { echo " checked "; }} else { echo " checked "; } ?>>Visa som utvald resa (när ingen annan utvald resa avgår tidigare).</div>
           </fieldset>
 
-
           <fieldset>
-            <h3>Tekniska SEO &amp; social media inställningar (valfritt)</h3>
-              TODO auto generated for now
+            <h3>Tekniska SEO &amp; social media inställningar</h3>
+            <p>Valfritt, ställs in automatiskt om det lämnas tomt.</p>
+            <fieldset>
+              <label for="uri_kategori" class="small-label">Resa URL (SEO vänlig sub-url):</label>
+              <input type="text" name="tour_url" maxlength="85" value="<?php if (isset($trip)) {echo $trip['url'];} ?>" />
+            </fieldset>
+            <fieldset>
+              <label for="og_title" class="small-label">Social media titel:</label>
+              <input type="text" name="og_title" maxlength="40" value="<?php if (isset($trip)) {echo $trip['og_title'];} ?>" />
+            </fieldset>
+            <fieldset>
+              <label for="og_description" class="small-label">Social media beskrivning (max 255 tecken):</label>
+              <input type="text" name="og_description" maxlength="255" value="<?php if (isset($trip)) {echo $trip['og_description'];} ?>" />
+            </fieldset>
+            <fieldset>
+              <label for="seo_description" class="small-label">SEO beskrivning (i sökresultat, max 160 tecken):</label>
+              <input type="text" name="seo_description" maxlength="160" value="<?php if (isset($trip)) {echo $trip['seo_description'];} ?>" />
+            </fieldset>
+            <fieldset>
+              <label for="seo_keywords" class="small-label">Nyckelord. Separerade med komma. (Använd bara ett eller två):</label>
+              <input type="text" name="seo_keywords" maxlength="255" value="<?php if (isset($trip)) {echo $trip['seo_keywords'];} ?>" />
+            </fieldset>
+            <fieldset>
+              <label for="meta_data_extra" class="small-label">Extra meta taggar (skriv in full HTML för ev extra meta taggar):</label>
+              <textarea type="text" name="meta_data_extra" value=""><?php if (isset($trip)) {echo $trip['meta_data_extra'];} ?></textarea>
+            </fieldset>
+
           </fieldset>
 
 
           <fieldset>
             <input type="hidden" name="tripid" value="<?php echo $tripid; ?>">
-            <input type="hidden" name="tokenid" value="<?php echo $token['id']; ?>">
-            <input type="hidden" name="token" value="<?php echo $token['token']; ?>">
+            <input type="hidden" name="tokenid" value="<?php echo $token['id']; ?>" id="tokenid">
+            <input type="hidden" name="token" value="<?php echo $token['token']; ?>" id="token">
           </fieldset>
 
           <fieldset>
