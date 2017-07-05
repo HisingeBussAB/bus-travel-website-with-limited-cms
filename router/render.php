@@ -5,6 +5,8 @@
 
 namespace HisingeBussAB\RekoResor\website\router;
 use HisingeBussAB\RekoResor\website as root;
+use HisingeBussAB\RekoResor\website\includes\classes\DB;
+use HisingeBussAB\RekoResor\website\includes\classes\DBError;
 
 class Render
 {

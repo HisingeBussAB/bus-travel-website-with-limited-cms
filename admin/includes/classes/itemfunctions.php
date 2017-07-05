@@ -96,6 +96,19 @@ class ItemFunctions {
         $sth = $pdo->prepare($sql);
         $sth->bindParam(':tripid', $id, \PDO::PARAM_INT);
         $sth->execute();
+        //Deleting image folder for the trip
+        $sql = "SELECT bildkatalog FROM " . TABLE_PREFIX . "resor WHERE
+          id = :tripid
+          ;";
+        $sth = $pdo->prepare($sql);
+        $sth->bindParam(':tripid', $id, \PDO::PARAM_INT);
+        $sth->execute();
+        $result = $sth->fetch(\PDO::FETCH_ASSOC);
+        $dirname = "./upload/resor/" . $result['bildkatalog'];
+        if (file_exists($dirname)) {
+          array_map('unlink', glob("$dirname/*.*"));
+          rmdir($dirname);
+        }
       }
 
 

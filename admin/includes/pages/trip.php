@@ -184,7 +184,10 @@ class Trip {
             <label for="trip-summary">Ingress</label>
             <textarea type="text" name="trip-summary" id="trip-summary" placeholder="Ingress"><?php if (isset($trip)) {echo functions::br2htmlnl($trip['ingress']);} ?></textarea>
           </fieldset>
-
+          <fieldset>
+            <label for="seo_description">Kort beskrivning (max 160 tecken, används i sökresultat och i månadens resa):</label>
+            <input type="text" name="seo_description" maxlength="160" value="<?php if (isset($trip)) {echo $trip['seo_description'];} ?>" />
+          </fieldset>
 
           <div id="trip-text">
             <?php
@@ -426,10 +429,6 @@ class Trip {
             <fieldset>
               <label for="og_description" class="small-label">Social media beskrivning (max 255 tecken):</label>
               <input type="text" name="og_description" maxlength="255" value="<?php if (isset($trip)) {echo $trip['og_description'];} ?>" />
-            </fieldset>
-            <fieldset>
-              <label for="seo_description" class="small-label">SEO beskrivning (i sökresultat, max 160 tecken):</label>
-              <input type="text" name="seo_description" maxlength="160" value="<?php if (isset($trip)) {echo $trip['seo_description'];} ?>" />
             </fieldset>
             <fieldset>
               <label for="seo_keywords" class="small-label">Nyckelord. Separerade med komma. (Använd bara ett eller två):</label>

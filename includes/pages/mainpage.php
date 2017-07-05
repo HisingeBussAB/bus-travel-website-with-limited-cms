@@ -8,12 +8,73 @@
  * @license   GNU General Public License v3.0
  * @author    Håkan Arnoldson
  */
+namespace HisingeBussAB\RekoResor\website\includes\pages;
+use HisingeBussAB\RekoResor\website as root;
+use HisingeBussAB\RekoResor\website\includes\classes\Functions;
+use HisingeBussAB\RekoResor\website\includes\classes\DB;
+use HisingeBussAB\RekoResor\website\includes\classes\DBError;
+
+$pageTitle = "Bussresor i Norden och Europa";
+
+try {
 
 header('Content-type: text/html; charset=utf-8');
 include __DIR__ . '/shared/header.php';
-?>
 
-<section class="main-section clearfix container">
+
+  try {
+    $pdo = DB::get();
+
+    $sql = "SELECT id, namn, url, bildkatalog, antaldagar, ingress, pris, utvald, seo_description, MIN(datum.datum) AS datum FROM " . TABLE_PREFIX . "resor AS resor INNER JOIN " . TABLE_PREFIX . "datum AS datum ON resor.id = datum.resa_id WHERE aktiv = 1 GROUP BY resor.id ORDER BY datum;";
+    $sth = $pdo->prepare($sql);
+    $sth->execute();
+    $result = $sth->fetchAll(\PDO::FETCH_ASSOC);
+  } catch(\PDOException $e) {
+    DBError::showError($e, __CLASS__, $sql);
+    $errorType = "Databasfel";
+    throw new \RuntimeException("Databasfel vid laddning av resor.");
+  }
+
+  $featured = [];
+  $featuredset = FALSE;
+  $tours = [];
+
+  $i=0;
+  foreach($result as $tour) {
+    if ($tour['utvald'] && !$featuredset) {
+      $featured['link']    = $tour['url'];
+      $featured['tour']    = $tour['namn'];
+      $featured['desc']    = $tour['seo_description'];
+      $featured['imgpath'] = $tour['bildkatalog'];
+      $server_path = __DIR__ . '/../../upload/resor/' . $tour['bildkatalog'] . '/';
+      $web_path = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/" . $tour['bildkatalog'] . "/";
+        if ($files = functions::get_img_files($server_path)) {
+          $featured['imgpath'] = $web_path . $files[0]['thumb'];
+        } else {
+          $featured['imgpath'] = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/generic/1-thumb.jpg";
+        }
+      $featuredset = TRUE;
+    }
+
+    $tours[$i]['tour'] = $tour['namn'];
+    $tours[$i]['link'] = $tour['url'];
+    $tours[$i]['days'] = $tour['antaldagar'];
+    $tours[$i]['summary'] = $tour['ingress'];
+    $tours[$i]['price'] = $tour['pris'];
+
+    $server_path = __DIR__ . '/../../upload/resor/' . $tour['bildkatalog'] . '/';
+    $web_path = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/" . $tour['bildkatalog'] . "/";
+      if ($files = functions::get_img_files($server_path)) {
+        $tours[$i]['imgsrc'] = $web_path . $files[0]['thumb'];
+      } else {
+        $tours[$i]['imgsrc'] = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/generic/1-thumb.jpg";
+      }
+    $i++;
+  }
+
+
+?>
+<main class="main-section clearfix container">
   <article class="col-md-6 col-xs-12 clearfix">
     <h1>Välkommen till Rekå Resor</h1>
     <p>För att genomföra en bra bussresa så krävs det planering och genomförande, oavsett om den ska gå inom Sverige eller ut i Europa.
@@ -21,9 +82,9 @@ include __DIR__ . '/shared/header.php';
     Med mer än 60 år i branschen har vi både erfarenheten såväl som kontaktnätet och det gör att vi kan ta fram i princip vilka gruppresor som helst –
     från korta endagsresor i närområdet runt Göteborg till veckolånga resor runt om i Europa. Alla bussresor kryddas med det lilla extra.</p>
   </article>
-  <article class="col-md-6 col-xs-12 trip-featured" style="background-image: url('upload/resor/timthumb.png')">
+  <article class="col-md-6 col-xs-12 trip-featured" style="background-image: url('<?php echo $featured['imgpath']; ?>')">
     <h2 class="invisible">Månadens resa</h2>
-    <h3 aria-label="Månadens resa">Följ med till glasriket på en spaupplevelse utöver det vanliga <i class="fa fa-chevron-right pull-right" aria-hidden="true"></i></h3>
+    <h3 aria-label="Månadens resa"><?php echo $featured['desc']; ?><i class="fa fa-chevron-right pull-right" aria-hidden="true"></i></h3>
   </article>
   <section class="col-md-12">
   <article class="col-md-4 col-xs-12 text-center">
@@ -134,6 +195,11 @@ include __DIR__ . '/shared/header.php';
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam a metus non enim elementum egestas at ac urna.
     Quisque porttitor sed enim sit amet vulputate. Nunc hendrerit, dui vel molestie pharetra, risus odio mattis lacus, gravida porta nunc ligula non ligula.</p>
   </article>
-</section>
+</main>
 <?php
 include __DIR__ . '/shared/footer.php';
+
+} catch(\RuntimeException $e) {
+  if (DEBUG_MODE) echo $e->getMessage();
+  include 'error/500.php';
+}

@@ -230,7 +230,7 @@ try {
     og_description VARCHAR(255),
     og_title VARCHAR(40),
     seo_keywords VARCHAR(255),
-    meta_data_extra TINYTEXT,
+    meta_data_extra TEXT,
     sort INT UNSIGNED,
     aktiv BOOLEAN);";
   $sth = $pdo->prepare($sql);
@@ -261,8 +261,8 @@ try {
     id BIGINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     namn VARCHAR(188),
     pris INT,
-    program TEXT,
-    ingress TINYTEXT,
+    program MEDIUMTEXT,
+    ingress TEXT,
     antaldagar INT UNSIGNED,
     ingar TEXT,
     bildkatalog VARCHAR(191) UNIQUE,
@@ -271,12 +271,12 @@ try {
     og_description VARCHAR(255),
     og_title VARCHAR(40),
     seo_keywords VARCHAR(255),
-    meta_data_extra TINYTEXT,
+    meta_data_extra TEXT,
     personnr BOOLEAN,
     fysiskadress BOOLEAN,
     aktiv BOOLEAN,
     utvald BOOLEAN DEFAULT 0,
-    hotel TINYTEXT,
+    hotel TEXT,
     hotellink VARCHAR(255),
     facebook VARCHAR(255));";
   $sth = $pdo->prepare($sql);

@@ -101,8 +101,10 @@ class Functions
       }
       $i++;
     }
+    sort($results);
     return $results;
   }
+
 
   public static function get_pdf_files($dir) {
 
@@ -114,6 +116,7 @@ class Functions
         }
       }
     }
+    sort($results);
     return $results;
   }
 

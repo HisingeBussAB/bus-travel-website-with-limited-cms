@@ -21,3 +21,10 @@
     Telefon: 031-22 21 20 | E-post: info@rekoresor.se | Fler kontaktuppgifter
   </section>
 </footer>
+<script src="/dependencies/jquery-3.1.1/jquery-3.1.1.min.js"></script>
+<script src="/dependencies/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+<?php
+if (!empty($morescripts)) echo $morescripts;
+?>
+</body>
+</html>

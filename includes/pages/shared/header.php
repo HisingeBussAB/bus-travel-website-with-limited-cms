@@ -12,7 +12,21 @@
  use HisingeBussAB\RekoResor\website as root;
 
  //Get dynamic content for this include
- $categories = json_decode(root\admin\includes\classes\Categories::getActiveCategories());
+ $categories = root\admin\includes\classes\Categories::getActiveCategories();
+
+ if ($categories !== false) {
+   $categories = json_decode($categories);
+ }
+
+ if (empty($meta)) {
+ $meta = "<meta property='og:site_name' content='Rekå Resor - Bussresor i Norden och Europa'>
+ <meta property='og:title' content='Rekå Resor - Bussresor i Norden och Europa'>
+
+ <meta property='og:url' content='http://www.rekoresor.se/'>
+ <meta name='description' content='Rekå Resor erbjuder bussresor inom Sverige och till hela Europa med utgångspunkt från Göteborg. Välkommen till en trevlig bussresa och ett spännande äventyr.'>
+ <meta property='og:description' content='Rekå Resor erbjuder bussresor inom Sverige och till hela Europa med utgångspunkt från Göteborg. Välkommen till en trevlig bussresa och ett spännande äventyr.'>";
+}
+
 
 ?>
 <!DOCTYPE html>
@@ -22,20 +36,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="author" content="Håkan K Arnoldson">
-  <title>Rekå Resor - Bussresor i Norden och Europa</title>
-  <meta property="og:site_name" content="Rekå Resor - Bussresor i Norden och Europa">
-  <meta property="og:title" content="Rekå Resor - Bussresor i Norden och Europa">
+  <title><?php echo $pageTitle . " - Rekå Resor"?></title>
 
-  <meta property="og:url" content="http://www.rekoresor.se/">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="sv_SE">
-
-  <meta name="description" content="Rekå Resor erbjuder bussresor inom Sverige och till hela Europa med utgångspunkt från Göteborg. Välkommen till en trevlig bussresa och ett spännande äventyr">
-  <meta property="og:description" content="Rekå Resor erbjuder bussresor inom Sverige och till hela Europa med utgångspunkt från Göteborg. Välkommen till en trevlig bussresa och ett spännande äventyr">
+  <?php
+  echo $meta;
+  ?>
 
   <meta name="robots" content="index, follow">
 
-  <meta property="DC.date.issued" content="2017-02-27T22:45:59+01:00">
 
   <link rel="icon" href="/favicon/favicon.ico">
 
@@ -63,9 +73,9 @@
   <link rel="stylesheet" href="/dependencies/bootstrap-3.3.7-dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="/dependencies/font-awesome-4.7.0/css/font-awesome.min.css" >
   <link rel="stylesheet" href="/css/main.min.css" >
-
-  <script src="/dependencies/jquery-3.1.1/jquery-3.1.1.min.js"></script>
-  <script src="/dependencies/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+  <?php
+  if (!empty($morestyles)) echo $morestyles;
+  ?>
 
 </head>
 <body>

@@ -45,15 +45,17 @@ class Categories {
    */
   public static function getActiveCategories() {
 
-    $pdo = DB::get();
+
 
     try {
+      $pdo = DB::get();
       $sql = "SELECT * FROM " . TABLE_PREFIX . "kategorier WHERE aktiv = 1 ORDER BY sort;";
       $sth = $pdo->prepare($sql);
       $sth->execute();
       $result = $sth->fetchAll(\PDO::FETCH_ASSOC);
     } catch(\PDOException $e) {
       DBError::showError($e, __CLASS__, $sql);
+      return false;
     }
 
       return json_encode($result);

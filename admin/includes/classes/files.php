@@ -106,10 +106,12 @@ class Files {
         }
 
         //Check if the image file exists already with another extension and delete
-        foreach ($img_exts as $img_ext) {
-          if (file_exists("./upload/resor/" . $dir . "/" .$pos . "_" . $dir . "." . $img_ext)) {
-            if (!unlink("./upload/resor/" . $dir . "/" .$pos . "_" . $dir . "." . $img_ext)) {
-              throw new \RuntimeException('Misslyckades med att radera tidigare bild.');
+        if ($ext !== "pdf") {
+          foreach ($img_exts as $img_ext) {
+            if (file_exists("./upload/resor/" . $dir . "/" .$pos . "_" . $dir . "." . $img_ext)) {
+              if (!unlink("./upload/resor/" . $dir . "/" .$pos . "_" . $dir . "." . $img_ext)) {
+                throw new \RuntimeException('Misslyckades med att radera tidigare bild.');
+              }
             }
           }
         }
