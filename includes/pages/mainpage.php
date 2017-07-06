@@ -42,7 +42,7 @@ include __DIR__ . '/shared/header.php';
   $i=0;
   foreach($result as $tour) {
     if ($tour['utvald'] && !$featuredset) {
-      $featured['link']    = $tour['url'];
+      $featured['link']    = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/resa/". $tour['url'];
       $featured['tour']    = $tour['namn'];
       $featured['desc']    = $tour['seo_description'];
       $featured['imgpath'] = $tour['bildkatalog'];
@@ -57,10 +57,11 @@ include __DIR__ . '/shared/header.php';
     }
 
     $tours[$i]['tour'] = $tour['namn'];
-    $tours[$i]['link'] = $tour['url'];
+    $tours[$i]['link'] = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/resa/". $tour['url'];
     $tours[$i]['days'] = $tour['antaldagar'];
     $tours[$i]['summary'] = $tour['ingress'];
     $tours[$i]['price'] = $tour['pris'];
+    $tours[$i]['departure'] = $tour['datum'];
 
     $server_path = __DIR__ . '/../../upload/resor/' . $tour['bildkatalog'] . '/';
     $web_path = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/" . $tour['bildkatalog'] . "/";
@@ -82,10 +83,10 @@ include __DIR__ . '/shared/header.php';
     Med mer än 60 år i branschen har vi både erfarenheten såväl som kontaktnätet och det gör att vi kan ta fram i princip vilka gruppresor som helst –
     från korta endagsresor i närområdet runt Göteborg till veckolånga resor runt om i Europa. Alla bussresor kryddas med det lilla extra.</p>
   </article>
-  <article class="col-md-6 col-xs-12 trip-featured" style="background-image: url('<?php echo $featured['imgpath']; ?>')">
+  <a href="<?php echo $featured['link']; ?>"><article class="col-md-6 col-xs-12 trip-featured" style="background-image: url('<?php echo $featured['imgpath']; ?>')">
     <h2 class="invisible">Månadens resa</h2>
-    <h3 aria-label="Månadens resa"><?php echo $featured['desc']; ?><i class="fa fa-chevron-right pull-right" aria-hidden="true"></i></h3>
-  </article>
+    <h3 aria-label="<?php echo $featured['tour']; ?>"><?php echo $featured['desc']; ?><i class="fa fa-chevron-right pull-right" aria-hidden="true"></i></h3>
+  </article></a>
   <section class="col-md-12">
   <article class="col-md-4 col-xs-12 text-center">
     <button class="btn btn-default action-btn">Boka resa här</button>
@@ -106,95 +107,22 @@ include __DIR__ . '/shared/header.php';
     Pellentesque malesuada, ipsum a sodales laoreet, lacus sapien vestibulum urna, eu rutrum sapien justo vel ex.
     Quisque porttitor sed enim sit amet vulputate. Nunc hendrerit, dui vel molestie pharetra, risus odio mattis lacus, gravida porta nunc ligula non ligula.</p>
   </article>
-  <article class="col-md-6 col-xs-12">
-    <h2>Lorem ipsum</h2>
-    <figure class="trip-featured-img-list">
-      <img src="upload/resor/timthumb.png"  alt="Månadens resa insert title"/>
-    </figure>
-    <div>
-      <p><i class="fa fa-hourglass blue" aria-hidden="true"></i> Antal dagar: 2 dagar</p>
-      <p><i class="fa fa-calendar blue" aria-hidden="true"></i> Avresedatum: 2017-03-27</p>
-      <p><i class="fa fa-money blue" aria-hidden="true"></i> Pris per person: 1775 kr</p>
-    </div>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam a metus non enim elementum egestas at ac urna.
-    Integer ultricies, arcu ac consequat porttitor, nibh nisi accumsan eros, ac pretium felis erat et lectus. Nullam pulvinar fermentum interdum. Integer lacinia orci elit,
-    a commodo odio scelerisque in. Pellentesque sed tincidunt libero. Quisque dignissim odio ut nisl efficitur sollicitudin. Ut at justo vitae metus varius gravida.
-    Quisque porttitor sed enim sit amet vulputate. Nunc hendrerit, dui vel molestie pharetra, risus odio mattis lacus, gravida porta nunc ligula non ligula.</p>
-  </article>
-  <article class="col-md-6 col-xs-12">
-    <h2>Lorem ipsum</h2>
-    <figure class="trip-featured-img-list">
-      <img src="upload/resor/timthumb.png"  alt="Månadens resa insert title"/>
-    </figure>
-    <div>
-      <p><i class="fa fa-hourglass blue" aria-hidden="true"></i> Antal dagar: 2 dagar</p>
-      <p><i class="fa fa-calendar blue" aria-hidden="true"></i> Avresedatum: 2017-03-27</p>
-      <p><i class="fa fa-money blue" aria-hidden="true"></i> Pris per person: 1775 kr</p>
-    </div>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam a metus non enim elementum egestas at ac urna.
-    Integer ultricies, arcu ac consequat porttitor, nibh nisi accumsan eros, ac pretium felis erat et lectus. Nullam pulvinar fermentum interdum. Integer lacinia orci elit,
-    a commodo odio scelerisque in. Pellentesque sed tincidunt libero. Quisque dignissim odio ut nisl efficitur sollicitudin. Ut at justo vitae metus varius gravida.
-    Quisque rhoncus sit amet quam egestas commodo. Morbi semper vestibulum diam, ac bibendum odio tristique et.
-    Pellentesque malesuada, ipsum a sodales laoreet, lacus sapien vestibulum urna, eu rutrum sapien justo vel ex.
-    Quisque porttitor sed enim sit amet vulputate. Nunc hendrerit, dui vel molestie pharetra, risus odio mattis lacus, gravida porta nunc ligula non ligula.</p>
-  </article>
-  <article class="col-md-6 col-xs-12">
-    <h2>Lorem ipsum</h2>
-    <figure class="trip-featured-img-list">
-      <img src="upload/resor/timthumb.png"  alt="Månadens resa insert title"/>
-    </figure>
-    <div>
-      <p><i class="fa fa-hourglass blue" aria-hidden="true"></i> Antal dagar: 2 dagar</p>
-      <p><i class="fa fa-calendar blue" aria-hidden="true"></i> Avresedatum: 2017-03-27</p>
-      <p><i class="fa fa-money blue" aria-hidden="true"></i> Pris per person: 1775 kr</p>
-    </div>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam a metus non enim elementum egestas at ac urna.
-    Integer ultricies, arcu ac consequat porttitor, nibh nisi accumsan eros, ac pretium felis erat et lectus. Nullam pulvinar fermentum interdum. Integer lacinia orci elit.</p>
-  </article>
-  <article class="col-md-6 col-xs-12">
-    <h2>Lorem ipsum</h2>
-    <figure class="trip-featured-img-list">
-      <img src="upload/resor/timthumb.png"  alt="Månadens resa insert title"/>
-    </figure>
-    <div>
-      <p><i class="fa fa-hourglass blue" aria-hidden="true"></i> Antal dagar: 2 dagar</p>
-      <p><i class="fa fa-calendar blue" aria-hidden="true"></i> Avresedatum: 2017-03-27</p>
-      <p><i class="fa fa-money blue" aria-hidden="true"></i> Pris per person: 1775 kr</p>
-    </div>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam a metus non enim elementum egestas at ac urna.
-    Integer ultricies, arcu ac consequat porttitor, nibh nisi accumsan eros, ac pretium felis erat et lectus. Nullam pulvinar fermentum interdum. Integer lacinia orci elit,
-    a commodo odio scelerisque in. Pellentesque sed tincidunt libero. Quisque dignissim odio ut nisl efficitur sollicitudin. Ut at justo vitae metus varius gravida.
-    Quisque rhoncus sit amet quam egestas commodo. Morbi semper vestibulum diam, ac bibendum odio tristique et.
-    Quisque porttitor sed enim sit amet vulputate. Nunc hendrerit, dui vel molestie pharetra, risus odio mattis lacus, gravida porta nunc ligula non ligula.</p>
-  </article>
-  <article class="col-md-6 col-xs-12">
-    <h2>Lorem ipsum</h2>
-    <figure class="trip-featured-img-list">
-      <img src="upload/resor/timthumb.png"  alt="Månadens resa insert title"/>
-    </figure>
-    <div>
-      <p><i class="fa fa-hourglass blue" aria-hidden="true"></i> Antal dagar: 2 dagar</p>
-      <p><i class="fa fa-calendar blue" aria-hidden="true"></i> Avresedatum: 2017-03-27</p>
-      <p><i class="fa fa-money blue" aria-hidden="true"></i> Pris per person: 1775 kr</p>
-    </div>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam a metus non enim elementum egestas at ac urna.
-    Quisque rhoncus sit amet quam egestas commodo. Morbi semper vestibulum diam, ac bibendum odio tristique et.
-    Pellentesque malesuada, ipsum a sodales laoreet, lacus sapien vestibulum urna, eu rutrum sapien justo vel ex.
-    Quisque porttitor sed enim sit amet vulputate. Nunc hendrerit, dui vel molestie pharetra, risus odio mattis lacus, gravida porta nunc ligula non ligula.</p>
-  </article>
-  <article class="col-md-6 col-xs-12">
-    <h2>Lorem ipsum</h2>
-    <figure class="trip-featured-img-list">
-      <img src="upload/resor/timthumb.png"  alt="Månadens resa insert title"/>
-    </figure>
-    <div>
-      <p><i class="fa fa-hourglass blue" aria-hidden="true"></i> Antal dagar: 2 dagar</p>
-      <p><i class="fa fa-calendar blue" aria-hidden="true"></i> Avresedatum: 2017-03-27</p>
-      <p><i class="fa fa-money blue" aria-hidden="true"></i> Pris per person: 1775 kr</p>
-    </div>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam a metus non enim elementum egestas at ac urna.
-    Quisque porttitor sed enim sit amet vulputate. Nunc hendrerit, dui vel molestie pharetra, risus odio mattis lacus, gravida porta nunc ligula non ligula.</p>
-  </article>
+  <?php
+    $output = "";
+    foreach ($tours as $tour) {
+      $output =  "<article class='col-md-6 col-xs-12'>";
+      $output .= "<h2><a href='" . $tour['link'] . "'>" . $tour['tour'] . "</a></h2>";
+      $output .= "<a href='" . $tour['link'] . "'><figure class='trip-featured-img-list'>";
+      $output .= "<img src='" . $tour['imgsrc'] . "'  alt='" . $tour['tour'] . "'/>";
+      $output .= "</figure></a><div>";
+      $output .= "<p><i class='fa fa-hourglass blue' aria-hidden='true'></i> Antal dagar: " . $tour['days'] . " dagar</p>";
+      $output .= "<p><i class='fa fa-calendar blue' aria-hidden='true'></i> Avresedatum: " . $tour['departure'] . "</p>";
+      $output .= "<p><i class='fa fa-money blue' aria-hidden='true'></i> Pris per person: " . $tour['price'] . " kr</p>";
+      $output .= "</div>";
+      $output .= "<p>" . $tour['summary'] . "</p></article>";
+      echo $output;
+  }
+  ?>
 </main>
 <?php
 include __DIR__ . '/shared/footer.php';

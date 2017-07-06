@@ -137,7 +137,13 @@ class Main {
           <i class="fa fa-spinner fa-4x fa-spin" aria-hidden="true"></i>
         </div>
       </div>
-      <div class="col-lg-12 col-md-12">
+      <div class="col-md-6">
+        <h2>Nyheter</h2>
+        <ul>
+          <textarea>NYHETER</textarea>
+        </ul>
+      </div>
+      <div class="col-md-6">
         <h2>Bildgallerier</h2>
         <ul>
           <li>Nytt galleri</li>

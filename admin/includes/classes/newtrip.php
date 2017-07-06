@@ -298,10 +298,8 @@ class NewTrip
       $this->url = filter_var(trim($input['tour_url']), FILTER_SANITIZE_URL);
     }
 
-    $photofolder = $this->url;
-    $photofolder = filter_var(trim($photofolder), FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW);
-    $photofolder = filter_var($photofolder, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
-    $photofolder = filter_var($photofolder, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_BACKTICK);
+    $photofolder = root\includes\classes\Functions::uri_recode($this->url);
+    $photofolder = filter_var(trim($photofolder), FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW | FILTER_FLAG_STRIP_HIGH | FILTER_FLAG_STRIP_BACKTICK);
     $this->photofolder = filter_var($photofolder, FILTER_SANITIZE_EMAIL);
 
 

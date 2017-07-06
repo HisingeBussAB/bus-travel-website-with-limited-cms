@@ -26,4 +26,22 @@ class Render
       if (DEBUG_MODE) echo $e->getMessage(); else include '/../includes/pages/error/404.php';
     }
   }
+
+  public static function category($cat) {
+
+    try {
+      include __DIR__ . '/../includes/pages/category.php';
+    } catch (Exception $e) {
+      if (DEBUG_MODE) echo $e->getMessage(); else include __DIR__ . '/../includes/pages/error/404.php';
+    }
+  }
+
+  public static function tour($toururl) {
+
+    try {
+      include __DIR__ . '/../includes/pages/tour.php';
+    } catch (Exception $e) {
+      if (DEBUG_MODE) echo $e->getMessage(); else include __DIR__ . '/../includes/pages/error/404.php';
+    }
+  }
 }

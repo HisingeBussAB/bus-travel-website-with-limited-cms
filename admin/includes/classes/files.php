@@ -78,8 +78,8 @@ class Files {
         }
 
         // You should also check filesize here.
-        if ($_FILES['upfile']['size'] > 4000000) {
-          throw new \RuntimeException('Filen kan inte vara större än 4MB.');
+        if ($_FILES['upfile']['size'] > 6000000) {
+          throw new \RuntimeException('Filen kan inte vara större än 6MB.');
         }
 
         // DO NOT TRUST $_FILES['upfile']['mime'] VALUE !!
