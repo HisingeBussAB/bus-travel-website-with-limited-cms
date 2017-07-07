@@ -107,7 +107,7 @@ try {
 
     $pageTitle = $tour['namn'];
 
-    $morestyles = "<link rel='stylesheet' href='/csstour.min.css' >";
+    $morestyles = "<link rel='stylesheet' href='/css/tour.min.css' >";
 
 
 header('Content-type: text/html; charset=utf-8');
