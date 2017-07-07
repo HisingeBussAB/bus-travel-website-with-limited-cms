@@ -40,6 +40,7 @@
 
   <meta property="og:type" content="website">
   <meta property="og:locale" content="sv_SE">
+  <meta property="og:site_name" content="Rekå Resor" />
   <?php
   echo $meta;
   ?>

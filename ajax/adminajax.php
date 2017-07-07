@@ -95,10 +95,12 @@ class AdminAjax
           } else {
             echo "<p>Ingen data skickad.</p>";
             http_response_code(401);
+            exit;
           }
         } else {
           echo "<p>Token stämmer inte. Prova <a href='javascript:window.location.href=window.location.href'>ladda om</a> sidan.</p>";
           http_response_code(401);
+          exit;
         }
         break;
 
@@ -108,6 +110,28 @@ class AdminAjax
 
         case 'updatepassword':
           root\admin\includes\pages\Settings::update("password");
+        break;
+
+        case 'news':
+          if (root\includes\classes\Tokens::checkCommonToken(trim($_POST['token']),trim($_POST['tokenid']))) {
+            $news = strip_tags(trim($_POST['nyheter']), ALLOWED_HTML_TAGS);
+            try {
+              $pdo = DB::get();
+              $sql = "UPDATE " . TABLE_PREFIX . "nyheter SET nyheter = :nyheter WHERE id = 1;";
+              $sth = $pdo->prepare($sql);
+              $sth->bindParam(':nyheter', $news, \PDO::PARAM_STR);
+              $sth->execute();
+            } catch(\PDOException $e) {
+              DBError::showError($e, __CLASS__, $sql);
+            }
+            echo json_encode("Texten sparad");
+            http_response_code(200);
+            exit;
+        } else {
+          echo "<p>Token stämmer inte. Prova <a href='javascript:window.location.href=window.location.href'>ladda om</a> sidan.</p>";
+          http_response_code(401);
+          exit;
+        }
         break;
 
         default:

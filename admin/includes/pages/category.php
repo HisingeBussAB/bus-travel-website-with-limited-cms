@@ -73,7 +73,7 @@ class Category {
               </fieldset>
               <fieldset>
                 <label for="ingress">Ingress (text på kategorisidan):</label>
-                <textarea type="text" name="ingress" value=""><?php echo functions::br2htmlnl($cat['ingress']); ?></textarea>
+                <textarea type="text" name="ingress" value=""><?php echo $cat['ingress']; ?></textarea>
               </fieldset>
               <fieldset>
                 <label for="uri_kategori">Kategori URL (SEO vänlig sub-url):</label>

@@ -15,6 +15,7 @@ use HisingeBussAB\RekoResor\website\includes\classes\DB;
 use HisingeBussAB\RekoResor\website\includes\classes\DBError;
 
 $pageTitle = "Bussresor i Norden och Europa";
+$allowed_tags = ALLOWED_HTML_TAGS;
 
 try {
 
@@ -42,12 +43,12 @@ include __DIR__ . '/shared/header.php';
   $i=0;
   foreach($result as $tour) {
     if ($tour['utvald'] && !$featuredset) {
-      $featured['link']    = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/resa/". $tour['url'];
-      $featured['tour']    = $tour['namn'];
-      $featured['desc']    = $tour['seo_description'];
+      $featured['link']    = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/resa/". rawurlencode($tour['url']);
+      $featured['tour']    = strip_tags($tour['namn'], $allowed_tags);
+      $featured['desc']    = strip_tags($tour['seo_description'], $allowed_tags);
       $featured['imgpath'] = $tour['bildkatalog'];
       $server_path = __DIR__ . '/../../upload/resor/' . $tour['bildkatalog'] . '/';
-      $web_path = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/" . $tour['bildkatalog'] . "/";
+      $web_path = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/" . rawurlencode($tour['bildkatalog']) . "/";
         if ($files = functions::get_img_files($server_path)) {
           $featured['imgpath'] = $web_path . $files[0]['thumb'];
         } else {
@@ -56,21 +57,31 @@ include __DIR__ . '/shared/header.php';
       $featuredset = TRUE;
     }
 
-    $tours[$i]['tour'] = $tour['namn'];
-    $tours[$i]['link'] = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/resa/". $tour['url'];
-    $tours[$i]['days'] = $tour['antaldagar'];
-    $tours[$i]['summary'] = $tour['ingress'];
-    $tours[$i]['price'] = $tour['pris'];
-    $tours[$i]['departure'] = $tour['datum'];
+    $tours[$i]['tour'] = strip_tags($tour['namn'], $allowed_tags);
+    $tours[$i]['link'] = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/resa/". rawurlencode($tour['url']);
+    $tours[$i]['days'] = strip_tags($tour['antaldagar'], $allowed_tags);
+    $tours[$i]['summary'] = nl2br(strip_tags($tour['ingress'], $allowed_tags));
+    $tours[$i]['price'] = strip_tags($tour['pris'], $allowed_tags);
+    $tours[$i]['departure'] = strip_tags($tour['datum'], $allowed_tags);
 
     $server_path = __DIR__ . '/../../upload/resor/' . $tour['bildkatalog'] . '/';
-    $web_path = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/" . $tour['bildkatalog'] . "/";
+    $web_path = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/" . rawurlencode($tour['bildkatalog']) . "/";
       if ($files = functions::get_img_files($server_path)) {
         $tours[$i]['imgsrc'] = $web_path . $files[0]['thumb'];
       } else {
         $tours[$i]['imgsrc'] = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/generic/1-thumb.jpg";
       }
     $i++;
+  }
+
+  try {
+    $sql = "SELECT nyheter FROM " . TABLE_PREFIX . "nyheter WHERE id = 1;";
+    $sth = $pdo->prepare($sql);
+    $sth->execute();
+    $result = $sth->fetch(\PDO::FETCH_ASSOC);
+  } catch(\PDOException $e) {
+    DBError::showError($e, __CLASS__, $sql);
+    throw new \RuntimeException("Databasfel vid laddning av nyheter.");
   }
 
 
@@ -99,13 +110,8 @@ include __DIR__ . '/shared/header.php';
   </article>
   </section>
   <article class="col-md-12 col-xs-12">
-    <h2>Några nyheter</h2>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam a metus non enim elementum egestas at ac urna.
-    Integer ultricies, arcu ac consequat porttitor, nibh nisi accumsan eros, ac pretium felis erat et lectus. Nullam pulvinar fermentum interdum. Integer lacinia orci elit,
-    a commodo odio scelerisque in. Pellentesque sed tincidunt libero. Quisque dignissim odio ut nisl efficitur sollicitudin. Ut at justo vitae metus varius gravida.
-    Quisque rhoncus sit amet quam egestas commodo. Morbi semper vestibulum diam, ac bibendum odio tristique et.
-    Pellentesque malesuada, ipsum a sodales laoreet, lacus sapien vestibulum urna, eu rutrum sapien justo vel ex.
-    Quisque porttitor sed enim sit amet vulputate. Nunc hendrerit, dui vel molestie pharetra, risus odio mattis lacus, gravida porta nunc ligula non ligula.</p>
+    <h2>Aktuellt från Rekå Resor</h2>
+    <p><?php echo nl2br(strip_tags($result['nyheter'], $allowed_tags)); ?></p>
   </article>
   <?php
     $output = "";

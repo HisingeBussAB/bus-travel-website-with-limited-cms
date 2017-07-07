@@ -127,8 +127,7 @@ class Categories {
 
       $id               = filter_var(trim($_POST['id']), FILTER_SANITIZE_NUMBER_INT);
       $kategori         = filter_var(trim($_POST['kategori']), FILTER_SANITIZE_STRING);
-      $ingress          = nl2br(strip_tags(trim($_POST['ingress']), ALLOWED_HTML_TAGS));
-      $ingress          = str_replace(array("\r\n", "\n","\r", PHP_EOL), '', $ingress);
+      $ingress          = strip_tags(trim($_POST['ingress']), ALLOWED_HTML_TAGS);
       $uri_kategori     = filter_var(trim($_POST['uri_kategori']), FILTER_SANITIZE_URL);
       $seo_description  = filter_var(trim($_POST['seo_description']), FILTER_SANITIZE_STRING);
       $og_description   = filter_var(trim($_POST['og_description']), FILTER_SANITIZE_STRING);

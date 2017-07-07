@@ -51,10 +51,10 @@ class Main {
     $pdo = DB::get();
 
     try {
-      $sql = "SELECT resor.id, resor.namn, resor.aktiv, MIN(datum.datum) AS datum FROM " . TABLE_PREFIX . "resor AS resor INNER JOIN " . TABLE_PREFIX . "datum AS datum ON resor.id = datum.resa_id GROUP BY resor.id ORDER BY datum ;";
+      $sql = "SELECT nyheter FROM " . TABLE_PREFIX . "nyheter WHERE id = 1;";
       $sth = $pdo->prepare($sql);
       $sth->execute();
-      $result = $sth->fetchAll(\PDO::FETCH_ASSOC);
+      $result = $sth->fetch(\PDO::FETCH_ASSOC);
 
     } catch(\PDOException $e) {
       DBError::showError($e, __CLASS__, $sql);
@@ -139,9 +139,12 @@ class Main {
       </div>
       <div class="col-md-6">
         <h2>Nyheter</h2>
-        <ul>
-          <textarea>NYHETER</textarea>
-        </ul>
+        <form action="/adminajax/news" method="post" accept-charset="utf-8" id="form-news" enctype='application/json'>
+          <input type="hidden" name="tokenid" value="<?php echo $token['id'] ?>" class="form-token-id">
+          <input type="hidden" name="token" value="<?php echo $token['token'] ?>" class="form-token">
+          <div><textarea name="nyheter"><?php echo $result['nyheter']; ?></textarea></div>
+          <button type="submit">Spara</button>
+        </form>
       </div>
       <div class="col-md-6">
         <h2>Bildgallerier</h2>

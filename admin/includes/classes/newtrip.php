@@ -125,14 +125,14 @@ class NewTrip
     $this->duration = filter_var(trim($input["trip-duration"]), FILTER_SANITIZE_NUMBER_INT);
 
     $this->heading = strip_tags(trim($input["trip-heading"]), $allowed_tags);
-    $this->summary = nl2br(strip_tags(trim($input["trip-summary"]), $allowed_tags));
-    $this->summary = str_replace(array("\r\n", "\n","\r", PHP_EOL), '', $this->summary);
+    $this->summary = strip_tags(trim($input["trip-summary"]), $allowed_tags);
+
 
     $this->text = "";
     foreach ($input["trip-text-heading"] as $id=>$texthead) {
       $texthead = strip_tags(trim($texthead), $allowed_tags);
-      $textbody = nl2br(strip_tags(trim($input["trip-text"][$id]), $allowed_tags));
-      $textbody = str_replace(array("\r\n", "\n","\r", PHP_EOL), '', $textbody);
+      $textbody = strip_tags(trim($input["trip-text"][$id]), $allowed_tags);
+
 
       if ((strpos($texthead, '<h3>') !== false) || (strpos($texthead, '<p>') !== false)) {
         echo "Inte accpterad. Det går inte att använda taggarna h3 eller p i programtext och underrubrik. Underrubriken visas automatiskt som h3 och knappen lägg till dag/paragraf skall användas för att få rätt formaterade paragrafer.";
@@ -144,8 +144,8 @@ class NewTrip
 
 
     $hotelname = strip_tags(trim($input["trip-text-hotel-heading"]), $allowed_tags);
-    $hoteltext = nl2br(strip_tags(trim($input["trip-text-hotel-text"]), $allowed_tags));
-    $hoteltext = str_replace(array("\r\n", "\n","\r", PHP_EOL), '', $hoteltext);
+    $hoteltext = strip_tags(trim($input["trip-text-hotel-text"]), $allowed_tags);
+
     if ((strpos($hotelname, '<h3>') !== false) || (strpos($hoteltext, '<p>') !== false)) {
       echo "Inte accpterad. Det går inte att använda taggarna h3 eller p i hotellnamn eller hotellbeskrivning/adress.";
       http_response_code(400);
@@ -166,12 +166,12 @@ class NewTrip
     $this->includes = "";
     foreach ($input["trip-ingar"] as $include) {
       if (!empty($include)) {
-        if (strpos($include, '<p>') !== false) {
-          echo "Inte accpterad. Det går inte att använda p taggen i ett listan med som ingår. Varje fält är en egen rad.";
+        if (strpos($include, '<li>') !== false) {
+          echo "Inte accpterad. Det går inte att använda li taggen i ett listan med som ingår. Varje fält är en egen list item.";
           http_response_code(400);
           exit;
         }
-        $this->includes .= "<p>" . strip_tags(trim($include), $allowed_tags) . "</p>";
+        $this->includes .= "<li>" . strip_tags(trim($include), $allowed_tags) . "</li>";
       }
     }
 

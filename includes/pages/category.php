@@ -18,6 +18,7 @@ use HisingeBussAB\RekoResor\website\includes\classes\DBError;
 
 try {
   $cat = filter_var(trim($cat), FILTER_SANITIZE_URL);
+  $allowed_tags = ALLOWED_HTML_TAGS;
   try {
     $pdo = DB::get();
 
@@ -34,8 +35,8 @@ try {
 
     if (count($category) > 0) {
       $catid = $category['id'];
-      $heading = $category['kategori'];
-      $text = $category['ingress'];
+      $heading = strip_tags($category['kategori'], $allowed_tags);
+      $text = nl2br(strip_tags($category['ingress'], $allowed_tags));
     } else {
       include __DIR__ . '/shared/header.php';
       throw new \UnexpectedValueException("Kategorin finns inte");
@@ -76,15 +77,15 @@ try {
   $i=0;
   foreach($result as $tour) {
 
-    $tours[$i]['tour'] = $tour['namn'];
-    $tours[$i]['link'] = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/resa/". $tour['url'];
-    $tours[$i]['days'] = $tour['antaldagar'];
-    $tours[$i]['summary'] = $tour['ingress'];
-    $tours[$i]['price'] = $tour['pris'];
-    $tours[$i]['departure'] = $tour['datum'];
+    $tours[$i]['tour'] = strip_tags($tour['namn'], $allowed_tags);
+    $tours[$i]['link'] = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/resa/". rawurlencode($tour['url']);
+    $tours[$i]['days'] = strip_tags($tour['antaldagar'], $allowed_tags);
+    $tours[$i]['summary'] = nl2br(strip_tags($tour['ingress'], $allowed_tags));
+    $tours[$i]['price'] = strip_tags($tour['pris'], $allowed_tags);
+    $tours[$i]['departure'] = strip_tags($tour['datum'], $allowed_tags);
 
     $server_path = __DIR__ . '/../../upload/resor/' . $tour['bildkatalog'] . '/';
-    $web_path = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/" . $tour['bildkatalog'] . "/";
+    $web_path = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/" . rawurlencode($tour['bildkatalog']) . "/";
       if ($files = functions::get_img_files($server_path)) {
         $tours[$i]['imgsrc'] = $web_path . $files[0]['thumb'];
       } else {

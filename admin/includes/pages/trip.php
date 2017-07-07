@@ -182,7 +182,7 @@ class Trip {
           </fieldset>
           <fieldset>
             <label for="trip-summary">Ingress</label>
-            <textarea type="text" name="trip-summary" id="trip-summary" placeholder="Ingress"><?php if (isset($trip)) {echo functions::br2htmlnl($trip['ingress']);} ?></textarea>
+            <textarea type="text" name="trip-summary" id="trip-summary" placeholder="Ingress"><?php if (isset($trip)) {echo $trip['ingress'];} ?></textarea>
           </fieldset>
           <fieldset>
             <label for="seo_description">Kort beskrivning (max 160 tecken, används i sökresultat och i månadens resa):</label>
@@ -202,7 +202,7 @@ class Trip {
                 echo "<fieldset id='trip-text-" . ($id+1) . "' class='trip-text'>";
                 echo "<label for='trip-text-heading[" . ($id+1) . "]'>Dag " . ($id+1) . "</label>";
                 echo "<input type='text' maxlength='200' name='trip-text-heading[" . ($id+1) . "]' class='trip-text-heading' value='" . $texthead . "'>";
-                echo "<textarea type='text' name='trip-text[" . ($id+1) . "]' class='trip-text-text'>" . functions::br2htmlnl($textbodies[$id]) . "</textarea>";
+                echo "<textarea type='text' name='trip-text[" . ($id+1) . "]' class='trip-text-text'>" . $textbodies[$id] . "</textarea>";
                 echo "</fieldset>";
               }
             }
@@ -217,7 +217,7 @@ class Trip {
           <fieldset>
             <label for="trip-text-hotel-heading">Hotell</label>
             <input type="text" maxlength="120" name="trip-text-hotel-heading" id="trip-hotel-heading" placeholder="Hotellets namn" value="<?php if (isset($trip)) {echo $hotelhead[0];} ?>">
-            <textarea type="text" name="trip-text-hotel-text" id="trip-hotel-text" placeholder="Om hotellet...&#10;&#10;Hotellvägen 5&#10;888 88 Hotellstaden&#10;+46888888"><?php if (isset($trip)) {echo functions::br2htmlnl($hoteltext[0]);} ?></textarea>
+            <textarea type="text" name="trip-text-hotel-text" id="trip-hotel-text" placeholder="Om hotellet...&#10;&#10;Hotellvägen 5&#10;888 88 Hotellstaden&#10;+46888888"><?php if (isset($trip)) {echo $hoteltext[0];} ?></textarea>
             <input type="text" maxlength="250" name="trip-text-hotel-link" id="trip-hotel-link" placeholder="http://www.hotel.se" value="<?php if (isset($trip)) {echo $trip['hotellink'];} ?>">
           </fieldset>
 
