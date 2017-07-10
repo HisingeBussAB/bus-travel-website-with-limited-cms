@@ -41,8 +41,9 @@ try {
       $tour['pris'] = strip_tags($result['pris']);
       $tour['program'] = nl2br(strip_tags($result['program'], $allowed_tags));
       $tour['antaldagar'] = strip_tags($result['antaldagar']);
-      $tour['ingar'] = strip_tags($result['ingar'], $allowed_tags);
-
+      $search = array('<li>', '</li>');
+      $replace = array('<tr><td>', '</td></tr>');
+      $tour['ingar'] = str_replace($search, $replace, strip_tags($result['ingar'], $allowed_tags . "<tr><td>"));
       $tour['personnr'] = ($result['personnr'] === "1");
       $tour['fysiskadress'] = ($result['fysiskadress'] === "1");
       $tour['hotel'] = nl2br(strip_tags($result['hotel'], $allowed_tags));
@@ -62,7 +63,7 @@ try {
         if ($imgfiles = functions::get_img_files($server_path)) {
           $tour['img'][0] = $web_path . $imgfiles[0]['thumb'];
         } else {
-          $tour['img'][0] = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/generic/1-thumb.jpg";
+          $tour['img'][0] = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/generic/small_1_generic.jpg";
         }
 
       $pdffiles = functions::get_pdf_files($server_path);
@@ -83,8 +84,6 @@ try {
     }
 
     try {
-      $pdo = DB::get();
-
       $sql = "SELECT datum FROM " . TABLE_PREFIX . "datum WHERE resa_id = :tourid ORDER BY datum;";
       $sth = $pdo->prepare($sql);
       $sth->bindParam(':tourid', $tour['id'], \PDO::PARAM_STR);
@@ -104,6 +103,47 @@ try {
       $i++;
     }
 
+    try {
+      $sql = "SELECT pris, namn FROM " . TABLE_PREFIX . "tillaggslistor WHERE resa_id = :tourid;";
+      $sth = $pdo->prepare($sql);
+      $sth->bindParam(':tourid', $tour['id'], \PDO::PARAM_STR);
+      $sth->execute();
+      $result = $sth->fetchAll(\PDO::FETCH_ASSOC);
+    } catch(\PDOException $e) {
+      include __DIR__ . '/shared/header.php';
+      DBError::showError($e, __CLASS__, $sql);
+      throw new \RuntimeException("Databasfel.");
+    }
+
+    $i = 0;
+    foreach ($result as $row) {
+      $tour['tillagg'][$i]['pris'] = $row['pris'];
+      $tour['tillagg'][$i]['namn'] = $row['namn'];
+      $i++;
+    }
+
+    try {
+      $sql = "SELECT plats, ort, tid_in, tid_ut FROM " . TABLE_PREFIX . "hallplatser AS hlp
+        LEFT OUTER JOIN " . TABLE_PREFIX . "hallplatser_resor AS hlp_r ON hlp.id = hlp_r.hallplatser_id WHERE resa_id = :tourid
+        ORDER BY tid_ut;";
+      $sth = $pdo->prepare($sql);
+      $sth->bindParam(':tourid', $tour['id'], \PDO::PARAM_STR);
+      $sth->execute();
+      $result = $sth->fetchAll(\PDO::FETCH_ASSOC);
+    } catch(\PDOException $e) {
+      include __DIR__ . '/shared/header.php';
+      DBError::showError($e, __CLASS__, $sql);
+      throw new \RuntimeException("Databasfel.");
+    }
+
+    $i = 0;
+    foreach ($result as $row) {
+      $tour['hlp'][$i]['in'] = $row['tid_in'];
+      $tour['hlp'][$i]['ut'] = $row['tid_ut'];
+      $tour['hlp'][$i]['ort'] = $row['ort'];
+      $tour['hlp'][$i]['plats'] = $row['plats'];
+      $i++;
+    }
 
     $pageTitle = $tour['namn'];
 
@@ -114,6 +154,8 @@ header('Content-type: text/html; charset=utf-8');
 include __DIR__ . '/shared/header.php';
 
 echo "<main class='main-section clearfix container'>";
+
+  //LEFT COLUMN
   echo "<div class='col-md-8'>
     <h1>" . $tour['namn'];
   $flag = TRUE;
@@ -128,7 +170,7 @@ echo "<main class='main-section clearfix container'>";
     }
   }
 
-  echo  "</h1><div>
+  echo  "</h1>
     <p><i class='fa fa-hourglass blue' aria-hidden='true'></i> " . $tour['antaldagar'] . " dagar</p>
     <p><i class='fa fa-money blue' aria-hidden='true'></i> " . $tour['pris'] . " kr/person</p>";
 
@@ -140,9 +182,8 @@ echo "<main class='main-section clearfix container'>";
 
 
   echo "
-    </div>
 
-    <div>" . $tour['ingress'] . "</div></div>";
+    <div>" . $tour['ingress'] . "</div>";
 
 
     echo "<div>" . $tour['program'] . "</div>";
@@ -150,45 +191,118 @@ echo "<main class='main-section clearfix container'>";
     echo "<div>" . $tour['hotellink'] . "</div>";
     echo "<div>" . $tour['facebook'] . "</div>";
 
-    echo "<div>" . $tour['personnr'] . "</div>";
-    echo "<div>" . $tour['fysiskadress'] . "</div>";
-
-/*
-
-
-    $tour['program'] = nl2br(strip_tags($result['program'], $allowed_tags));
-    $tour['ingar'] = strip_tags($result['ingar'], $allowed_tags);
-
-    $tour['personnr'] = ($result['personnr'] === "1");
-    $tour['fysiskadress'] = ($result['fysiskadress'] === "1");
-    $tour['hotel'] = nl2br(strip_tags($result['hotel'], $allowed_tags));
-    $tour['hotellink'] = urlencode($result['hotellink']);
-    $tour['facebook'] = urlencode($result['facebook']);
-*/
+    //echo "<div>" . $tour['personnr'] . "</div>";
+    //echo "<div>" . $tour['fysiskadress'] . "</div>";
+    echo "</div>";
 
 
   echo "<div class='col-md-4'>";
+  //RIGHT COLUMN
+
   echo "<div class='tourSlide-container'>";
-  if (!empty($imgfiles)) {
-    foreach ($imgfiles as $img) {
-      echo "<img class='tourSlide' src='" . $web_path . $img['thumb'] . "' data='" . $web_path . $img['file'] . "'>";
+  echo "<ul class='slides'>";
+  if (empty($imgfiles)) {
+    $imgfiles[0]['file'] = "1_generic.jpg";
+    $imgfiles[0]['thumb'] = "small_1_generic.jpg";
+    $web_path = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/generic/";
+  }
+  $max = count($imgfiles);
+  $i = 1;
+  $prev = $max;
+  $next = $i+1;
+  foreach ($imgfiles as $img) {
+    echo "
+          <input type='radio' name='radio-btn' id='img-" . $i . "'";
+    if ($i === 1) { echo " checked "; }
+    echo " />
+          <li class='slide-container'>
+          <div class='slide'>
+            <img src='" . $web_path . $img['thumb'] . "' data='" . $web_path . $img['file'] . "' />
+          </div>
+          <div class='slide-nav'>
+            <label for='img-" . $prev . "'' class='prev'>&#x2039;</label>
+            <label for='img-" . $next . "' class='next'>&#x203a;</label>
+          </div>
+          </li>";
+
+    if ($i < $max) {
+      $i++;
+      $prev = $i - 1;
+      $next = $i + 1;
+    } else {
+      $i++;
+      $prev = $i - 1;
+      $next = 1;
     }
+
   }
 
-  echo "</div>";
+  echo "<li class='nav-dots'>";
+  $i = 1;
+  foreach ($imgfiles as $img) {
+    echo "<label for='img-" . $i . "' class='nav-dot' id='img-dot-" . $i . "'></label>";
 
+    $i++;
+  }
+  echo "</li>";
+  echo "</ul><div>";
+
+
+
+
+
+  echo "<table>";
+  echo "<thead><tr><th>Program för nedladdning/utskrift</th></tr></thead><tbody>";
   $flag = TRUE;
   if (!empty($pdffiles)) {
     foreach ($pdffiles as $pdf) {
       if ($flag) {
         $flag = FALSE;
-        echo "<li><a href='" . $web_path . $pdf . "'><i class='fa fa-file-pdf-o' aria-hidden='true'></i> Öppna/Ladda ner program</a></li>";
+        echo "<tr><td><a href='" . $web_path . $pdf . "'><i class='fa fa-file-pdf-o' aria-hidden='true'></i> - Öppna/Ladda ner program</a><tr><td>";
       } else {
-        echo "<li><a href='" . $web_path . $pdf . "'><i class='fa fa-file-pdf-o' aria-hidden='true'></i> Öppna/Ladda ner pdf</a></li>";
+        echo "<tr><td><a href='" . $web_path . $pdf . "'><i class='fa fa-file-pdf-o' aria-hidden='true'></i> - Öppna/Ladda ner pdf</a><tr><td>";
       }
 
     }
   }
+
+  echo "</tbody></table>";
+
+  if (!empty($tour['ingar'])) {
+  echo "<table>";
+  echo "<thead><tr><th>Ingår i priset</th></tr></thead><tbody>";
+  echo $tour['ingar'];
+  echo "</tbody></table>";
+  }
+
+  if (!empty($tour['tillagg'])) {
+  echo "<table>";
+  echo "<thead><tr><th>Friviliiga tillägg</th></tr></thead><tbody>";
+
+    foreach ($tour['tillagg'] as $key => $addon) {
+      echo "<tr><td>" . $tour['tillagg'][$key]['namn'] . "</td><td>" . $tour['tillagg'][$key]['pris'] . " :-</td></tr>";
+    }
+
+
+  echo "</tbody></table>";
+  }
+
+  if (!empty($tour['hlp'])) {
+  echo "<table>";
+  echo "<thead><tr><th>Turlista</th></tr></thead><tbody>";
+
+  foreach ($tour['hlp'] as $key => $addon) {
+    echo "<tr><td>" . $tour['hlp'][$key]['ort'] . "</td><td>" . date('H:i',strtotime($tour['hlp'][$key]['ut'])) . "</td><td>" . date('H:i',strtotime($tour['hlp'][$key]['in'])) . "</td></tr>";
+  }
+
+
+  echo "</tbody></table>";
+  }
+
+
+  echo "</div>";
+
+
 
 
 

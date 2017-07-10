@@ -167,7 +167,7 @@ class Trip {
       }
 
       if (!empty($trip['ingar'])) {
-        $includes = functions::get_string_between($trip['ingar'], "<p>", "</p>");
+        $includes = functions::get_string_between($trip['ingar'], "<li>", "</li>");
       }
     }
     ?>
@@ -412,7 +412,7 @@ class Trip {
           </fieldset>
           <fieldset>
             <h3>Visa som utvald resa</h3>
-            <div class="extra-settings"><input type="checkbox" name="tour-featured" class="settings-checkbox" value="featured"<?php if (isset($trip)) {if ($trip['utvald'] == 1) { echo " checked "; }} else { echo " checked "; } ?>>Visa som utvald resa (när ingen annan utvald resa avgår tidigare).</div>
+            <div class="extra-settings"><input type="checkbox" name="tour-featured" class="settings-checkbox" value="featured"<?php if (isset($trip)) {if ($trip['utvald'] == 1) { echo " checked "; }} ?>>Visa som utvald resa (när ingen annan utvald resa avgår tidigare).</div>
           </fieldset>
 
           <fieldset>

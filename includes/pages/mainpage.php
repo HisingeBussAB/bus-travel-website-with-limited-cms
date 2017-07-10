@@ -52,7 +52,7 @@ include __DIR__ . '/shared/header.php';
         if ($files = functions::get_img_files($server_path)) {
           $featured['imgpath'] = $web_path . $files[0]['thumb'];
         } else {
-          $featured['imgpath'] = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/generic/1-thumb.jpg";
+          $featured['imgpath'] = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/generic/small_1_generic.jpg";
         }
       $featuredset = TRUE;
     }
@@ -69,7 +69,7 @@ include __DIR__ . '/shared/header.php';
       if ($files = functions::get_img_files($server_path)) {
         $tours[$i]['imgsrc'] = $web_path . $files[0]['thumb'];
       } else {
-        $tours[$i]['imgsrc'] = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/generic/1-thumb.jpg";
+        $tours[$i]['imgsrc'] = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/generic/small_1_generic.jpg";
       }
     $i++;
   }
