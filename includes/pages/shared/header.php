@@ -94,8 +94,8 @@
           <li role="presentation"><a href="/inforresan">Inför resan</a></li>
           <li role="presentation"><a href="/galleri">Bildgalleri</a></li>
           <li role="presentation"><a href="/bussresorgoteborg">Om Rekå Resor</a></li>
-          <li role="presentation"><a href="/kontaktarekaresor">Kontakt</a></li>
-          <li role="presentation"><a href="https://sv-se.facebook.com/rekoresor/" aria-label="Besök oss på Facebook"><i class="fa fa-facebook-square" aria-hidden="true"></i></a></li>
+          <li role="presentation"><a rel="nofollow" href="tel:+4631222120"><i class="fa fa-phone" aria-hidden="true"></i> Ring oss</a></li>
+          <li role="presentation"><a href="https://sv-se.facebook.com/rekoresor/" aria-label="Besök oss på Facebook"><i class="fa fa-facebook-square" aria-hidden="true"></i> Facebook</a></li>
         </ul>
       </nav>
     </div>

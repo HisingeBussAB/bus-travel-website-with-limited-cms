@@ -153,10 +153,11 @@ try {
 header('Content-type: text/html; charset=utf-8');
 include __DIR__ . '/shared/header.php';
 
-echo "<main class='main-section clearfix container'>";
+echo "<main class='main-section container'>";
 
+  echo "<div class='row'>";
   //LEFT COLUMN
-  echo "<div class='col-md-8'>
+  echo "<div class='col-lg-7 col-md-12'>
     <h1>" . $tour['namn'];
   $flag = TRUE;
   if (!empty($tour['datum'])) {
@@ -185,7 +186,69 @@ echo "<main class='main-section clearfix container'>";
 
     <div>" . $tour['ingress'] . "</div>";
 
+    echo "<div class='text-center'><a href='/boka/" . $tour['id'] . "' class='btn btn-default action-btn'>Boka resan</a><a href='/program/" . $tour['id'] . "' class='btn btn-default action-btn'>Beställ tryckt program</a></div>";
 
+    echo "</div>";
+
+    echo "<div class='tourSlide-container col-lg-5 col-md-12'>";
+    echo "<ul class='slides'>";
+    if (empty($imgfiles)) {
+      $imgfiles[0]['file'] = "1_generic.jpg";
+      $imgfiles[0]['thumb'] = "small_1_generic.jpg";
+      $web_path = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/generic/";
+    }
+    $max = count($imgfiles);
+    $i = 1;
+    $prev = $max;
+    $next = $i+1;
+    foreach ($imgfiles as $img) {
+      echo "
+            <input type='radio' name='radio-btn' id='img-" . $i . "'";
+      if ($i === 1) { echo " checked "; }
+      echo " />
+            <li class='slide-container'>
+            <div class='slide'>
+              <img src='" . $web_path . $img['thumb'] . "' data='" . $web_path . $img['file'] . "' />
+            </div>
+            <div class='slide-nav'>
+              <label for='img-" . $prev . "'' class='prev'>&#x2039;</label>
+              <label for='img-" . $next . "' class='next'>&#x203a;</label>
+            </div>
+            </li>";
+
+      if ($i < $max) {
+        $i++;
+        $prev = $i - 1;
+        $next = $i + 1;
+      } else {
+        $i++;
+        $prev = $i - 1;
+        $next = 1;
+      }
+
+    }
+
+    echo "<li class='nav-dots'>";
+    $i = 1;
+    foreach ($imgfiles as $img) {
+      echo "<label for='img-" . $i . "' class='nav-dot' id='img-dot-" . $i . "'></label>";
+
+      $i++;
+    }
+    echo "</li>";
+    echo "</ul></div>";
+
+
+
+
+
+
+
+
+    echo "</div><div class='row'>";
+    //LEFT COLUMN
+
+    echo "<div class='col-md-8 col-xs-12'>";
     echo "<div>" . $tour['program'] . "</div>";
     echo "<div>" . $tour['hotel'] . "</div>";
     echo "<div>" . $tour['hotellink'] . "</div>";
@@ -196,59 +259,8 @@ echo "<main class='main-section clearfix container'>";
     echo "</div>";
 
 
-  echo "<div class='col-md-4'>";
+  echo "<div class='col-md-4 col-xs-12'>";
   //RIGHT COLUMN
-
-  echo "<div class='tourSlide-container'>";
-  echo "<ul class='slides'>";
-  if (empty($imgfiles)) {
-    $imgfiles[0]['file'] = "1_generic.jpg";
-    $imgfiles[0]['thumb'] = "small_1_generic.jpg";
-    $web_path = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/generic/";
-  }
-  $max = count($imgfiles);
-  $i = 1;
-  $prev = $max;
-  $next = $i+1;
-  foreach ($imgfiles as $img) {
-    echo "
-          <input type='radio' name='radio-btn' id='img-" . $i . "'";
-    if ($i === 1) { echo " checked "; }
-    echo " />
-          <li class='slide-container'>
-          <div class='slide'>
-            <img src='" . $web_path . $img['thumb'] . "' data='" . $web_path . $img['file'] . "' />
-          </div>
-          <div class='slide-nav'>
-            <label for='img-" . $prev . "'' class='prev'>&#x2039;</label>
-            <label for='img-" . $next . "' class='next'>&#x203a;</label>
-          </div>
-          </li>";
-
-    if ($i < $max) {
-      $i++;
-      $prev = $i - 1;
-      $next = $i + 1;
-    } else {
-      $i++;
-      $prev = $i - 1;
-      $next = 1;
-    }
-
-  }
-
-  echo "<li class='nav-dots'>";
-  $i = 1;
-  foreach ($imgfiles as $img) {
-    echo "<label for='img-" . $i . "' class='nav-dot' id='img-dot-" . $i . "'></label>";
-
-    $i++;
-  }
-  echo "</li>";
-  echo "</ul><div>";
-
-
-
 
 
   echo "<table>";
@@ -301,9 +313,7 @@ echo "<main class='main-section clearfix container'>";
 
 
   echo "</div>";
-
-
-
+      echo "</div>";
 
 
 

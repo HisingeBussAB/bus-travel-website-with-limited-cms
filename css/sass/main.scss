@@ -13,6 +13,8 @@ $main-font-stack: 'Open Sans', sans-serif;
 $height-first-row: 300px;
 $page-max-width: 1300px;
 $page-desktop-relative-width: 80%;
+$page-desktop-relative-width-narrow: 93%;
+$page-desktop-relative-width-mobile: 98%;
 
 /*
 * === GLOBAL RESETS AND HELP CLASSES===
@@ -193,7 +195,9 @@ header {
   background: #fff;
   border-radius: 10px;
 
-  article {
+  article,
+  div,
+  section {
     overflow: hidden;
 
   }
@@ -248,7 +252,7 @@ header {
 * — Footer —
 */
 
-footer {
+.main-footer {
   color: $textonblue;
   background-color: $blue;
   border-radius: 10px;
@@ -260,6 +264,13 @@ footer {
 
 }
 
+.koncern-logo {
+  img {
+    height: 35px;
+    width: auto;
+  }
+}
+
 
 
 
@@ -267,18 +278,28 @@ footer {
 /*
 * === MEDIA QUERIES ===
 */
+@media (max-width: 992px) {
 
-/*
-* — Header and Navigation —
-*/
+  header .header-wrap,
+  header #categories-wrap,
+  main.main-section,
+  footer.main-footer {
+    width: $page-desktop-relative-width-narrow;
+  }
 
-/*
-* — Start Page —
-*/
+}
 
-/*
-* — Footer —
-*/
+@media (max-width: 415px) {
+
+  header .header-wrap,
+  header #categories-wrap,
+  main.main-section,
+  footer.main-footer {
+  width: $page-desktop-relative-width-mobile;
+
+  }
+
+}
 
 
 /*

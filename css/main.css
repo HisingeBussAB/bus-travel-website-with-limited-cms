@@ -177,7 +177,9 @@ header #categories-wrap li a {
   border-radius: 10px;
 }
 
-.main-section article {
+.main-section article,
+.main-section div,
+.main-section section {
   overflow: hidden;
 }
 
@@ -223,7 +225,7 @@ header #categories-wrap li a {
 /*
 * — Footer —
 */
-footer {
+.main-footer {
   color: #fff;
   background-color: #0d61de;
   border-radius: 10px;
@@ -234,18 +236,32 @@ footer {
   text-align: center;
 }
 
+.koncern-logo img {
+  height: 35px;
+  width: auto;
+}
+
 /*
 * === MEDIA QUERIES ===
 */
-/*
-* — Header and Navigation —
-*/
-/*
-* — Start Page —
-*/
-/*
-* — Footer —
-*/
+@media (max-width: 992px) {
+  header .header-wrap,
+  header #categories-wrap,
+  main.main-section,
+  footer.main-footer {
+    width: 93%;
+  }
+}
+
+@media (max-width: 415px) {
+  header .header-wrap,
+  header #categories-wrap,
+  main.main-section,
+  footer.main-footer {
+    width: 98%;
+  }
+}
+
 /*
 * === TEST ZONE & DEBUG ===
 */

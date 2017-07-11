@@ -87,48 +87,59 @@ include __DIR__ . '/shared/header.php';
 
 ?>
 <main class="main-section clearfix container">
-  <article class="col-md-6 col-xs-12 clearfix">
+  <div class="row">
+  <section class="col-md-6 col-xs-12 clearfix">
     <h1>Välkommen till Rekå Resor</h1>
     <p>För att genomföra en bra bussresa så krävs det planering och genomförande, oavsett om den ska gå inom Sverige eller ut i Europa.
     Det är där vi på Rekå Resor kommer in i bilden. Vi lyssnar på de önskemål du har och bidrar sedan med råd och idéer för bästa möjliga resultat.
     Med mer än 60 år i branschen har vi både erfarenheten såväl som kontaktnätet och det gör att vi kan ta fram i princip vilka gruppresor som helst –
     från korta endagsresor i närområdet runt Göteborg till veckolånga resor runt om i Europa. Alla bussresor kryddas med det lilla extra.</p>
-  </article>
-  <a href="<?php echo $featured['link']; ?>"><article class="col-md-6 col-xs-12 trip-featured" style="background-image: url('<?php echo $featured['imgpath']; ?>')">
+  </section>
+  <a href="<?php echo $featured['link']; ?>"><div class="col-md-6 col-xs-12 trip-featured" style="background-image: url('<?php echo $featured['imgpath']; ?>')">
     <h2 class="invisible">Månadens resa</h2>
     <h3 aria-label="<?php echo $featured['tour']; ?>"><?php echo $featured['desc']; ?><i class="fa fa-chevron-right pull-right" aria-hidden="true"></i></h3>
-  </article></a>
-  <section class="col-md-12">
-  <article class="col-md-4 col-xs-12 text-center">
-    <button class="btn btn-default action-btn">Boka resa här</button>
-  </article>
-  <article class="col-md-4 col-xs-12 text-center">
-    <button class="btn btn-default action-btn">Beställ program</button>
-  </article>
-  <article class="col-md-4 col-xs-12 text-center">
-    <a rel="nofollow" href="tel:+4631222120"><button class="btn btn-default action-btn"><i class="fa fa-phone" aria-hidden="true"></i> 031 - 22 21 20</button></a>
-  </article>
-  </section>
-  <article class="col-md-12 col-xs-12">
+  </div></a>
+  </div>
+
+  <section class="row">
     <h2>Aktuellt från Rekå Resor</h2>
     <p><?php echo nl2br(strip_tags($result['nyheter'], $allowed_tags)); ?></p>
-  </article>
+  </section>
+
+  <div class="row">
+  <div class="col-md-3 col-xs-6 text-center">
+    <a class="btn btn-default action-btn" href="/boka">Boka resa här</a>
+  </div>
+  <div class="col-md-3 col-xs-6 text-center">
+    <a class="btn btn-default action-btn" href="program">Beställ program</a>
+  </div>
+  <div class="col-md-3 col-xs-6 text-center">
+    <a class="btn btn-default action-btn" href="/gruppresor">Gruppresor</a>
+  </div>
+  <div class="col-md-3 col-xs-6 text-center">
+    <a class="btn btn-default action-btn" href="/kontakt">Kontakta oss</a>
+  </div>
+</div>
+
+  <div class="row">
+  <h2>Resekalender</h2>
+
   <?php
     $output = "";
     foreach ($tours as $tour) {
-      $output =  "<article class='col-md-6 col-xs-12'>";
-      $output .= "<h2><a href='" . $tour['link'] . "'>" . $tour['tour'] . "</a></h2>";
+      $output =  "<div class='col-md-6 col-xs-12'>";
+      $output .= "<h3><a href='" . $tour['link'] . "'>" . $tour['tour'] . "</a></h3>";
       $output .= "<a href='" . $tour['link'] . "'><figure class='trip-featured-img-list'>";
       $output .= "<img src='" . $tour['imgsrc'] . "'  alt='" . $tour['tour'] . "'/>";
-      $output .= "</figure></a><div>";
+      $output .= "</figure></a>";
       $output .= "<p><i class='fa fa-hourglass blue' aria-hidden='true'></i> Antal dagar: " . $tour['days'] . " dagar</p>";
       $output .= "<p><i class='fa fa-calendar blue' aria-hidden='true'></i> Avresedatum: " . $tour['departure'] . "</p>";
       $output .= "<p><i class='fa fa-money blue' aria-hidden='true'></i> Pris per person: " . $tour['price'] . " kr</p>";
-      $output .= "</div>";
-      $output .= "<p>" . $tour['summary'] . "</p></article>";
+      $output .= "<p>" . $tour['summary'] . "</p></div>";
       echo $output;
   }
   ?>
+  </div>
 </main>
 <?php
 include __DIR__ . '/shared/footer.php';
