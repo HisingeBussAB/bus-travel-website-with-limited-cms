@@ -27,12 +27,11 @@ try {
     $sth->execute();
     $result = $sth->fetch(\PDO::FETCH_ASSOC);
   } catch(\PDOException $e) {
-    include __DIR__ . '/shared/header.php';
     DBError::showError($e, __CLASS__, $sql);
     throw new \RuntimeException("Databasfel.");
   }
 
-    if (count($result) > 0) {
+    if ((count($result) > 0) && ($result !== false)) {
       $tour['id'] = filter_var($result['id'], FILTER_SANITIZE_NUMBER_INT);
       $tour['namn'] = strip_tags($result['namn'], $allowed_tags);
       $tour['ingress'] = nl2br(strip_tags($result['ingress'], $allowed_tags));
@@ -76,10 +75,11 @@ try {
       $meta .= "<meta property='og:url' content='" . $tour['url'] . "' />";
       $meta .= "<meta property='og:image' content='" . $tour['img'][0] . "' />";
 
-      $meta .= strip_tags($result['meta_data_extra'], "<meta>");
+      if (strpos($result['meta_data_extra'], '<meta') !== false) {
+        $meta .= strip_tags($result['meta_data_extra'], "<meta>");
+      }
 
     } else {
-      include __DIR__ . '/shared/header.php';
       throw new \UnexpectedValueException("Resan finns inte.");
     }
 
@@ -90,7 +90,6 @@ try {
       $sth->execute();
       $result = $sth->fetchAll(\PDO::FETCH_ASSOC);
     } catch(\PDOException $e) {
-      include __DIR__ . '/shared/header.php';
       DBError::showError($e, __CLASS__, $sql);
       throw new \RuntimeException("Databasfel.");
     }
@@ -110,7 +109,6 @@ try {
       $sth->execute();
       $result = $sth->fetchAll(\PDO::FETCH_ASSOC);
     } catch(\PDOException $e) {
-      include __DIR__ . '/shared/header.php';
       DBError::showError($e, __CLASS__, $sql);
       throw new \RuntimeException("Databasfel.");
     }
@@ -131,7 +129,6 @@ try {
       $sth->execute();
       $result = $sth->fetchAll(\PDO::FETCH_ASSOC);
     } catch(\PDOException $e) {
-      include __DIR__ . '/shared/header.php';
       DBError::showError($e, __CLASS__, $sql);
       throw new \RuntimeException("Databasfel.");
     }
@@ -186,7 +183,7 @@ echo "<main class='main-section container'>";
 
     <div>" . $tour['ingress'] . "</div>";
 
-    echo "<div class='text-center'><a href='/boka/" . $tour['id'] . "' class='btn btn-default action-btn'>Boka resan</a><a href='/program/" . $tour['id'] . "' class='btn btn-default action-btn'>Beställ tryckt program</a></div>";
+    echo "<div class='text-center'><a href='/boka/" . $toururl . "' class='btn btn-default action-btn'>Boka resan</a><a href='/program/" . $toururl . "' class='btn btn-default action-btn'>Beställ tryckt program</a></div>";
 
     echo "</div>";
 
@@ -322,12 +319,10 @@ echo "</main>";
 
 include __DIR__ . '/shared/footer.php';
 
+} catch(\UnexpectedValueException $e) {
+ if (DEBUG_MODE) echo $e->getMessage();
+ include 'error/404.php';
 } catch(\RuntimeException $e) {
   if (DEBUG_MODE) echo $e->getMessage();
   include 'error/500.php';
-}
-
-catch(\UnexpectedValueException $e) {
- if (DEBUG_MODE) echo $e->getMessage();
- include 'error/404.php';
 }

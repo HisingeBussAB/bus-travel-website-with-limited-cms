@@ -20,6 +20,8 @@ class Render
 
     if (empty($target)) $target = "mainpage";
 
+    if ($target === "bestallkatalog") $target = "orderprogram";
+
     try {
       include __DIR__ . '/../includes/pages/' . $target . '.php';
     } catch (Exception $e) {
@@ -40,6 +42,24 @@ class Render
 
     try {
       include __DIR__ . '/../includes/pages/tour.php';
+    } catch (Exception $e) {
+      if (DEBUG_MODE) echo $e->getMessage(); else include __DIR__ . '/../includes/pages/error/404.php';
+    }
+  }
+
+  public static function booktour($toururl) {
+
+    try {
+      include __DIR__ . '/../includes/pages/tour.php';
+    } catch (Exception $e) {
+      if (DEBUG_MODE) echo $e->getMessage(); else include __DIR__ . '/../includes/pages/error/404.php';
+    }
+  }
+
+  public static function ordertourprogram($toururl) {
+
+    try {
+      include __DIR__ . '/../includes/pages/orderprogram.php';
     } catch (Exception $e) {
       if (DEBUG_MODE) echo $e->getMessage(); else include __DIR__ . '/../includes/pages/error/404.php';
     }
