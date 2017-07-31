@@ -43,10 +43,11 @@ try {
 
     $pageTitle = "Beställ program för " . $tour['namn'];
 
-
   } else {
     $pageTitle = "Beställ katalog";
   }
+
+
 
   $morestyles = "<link rel='stylesheet' href='/css/program.min.css' >";
 
@@ -54,6 +55,12 @@ try {
   include __DIR__ . '/shared/header.php';
 
   echo "<main class='main-section container'>";
+
+  echo "<input type='checkbox' name=category[] value='Alla program'>Hela katalogen (alla program)</option>";
+  foreach($categories as $category){
+  echo "<input type='checkbox' name=category[] value='" . htmlspecialchars($category->kategori) . "'>" . htmlspecialchars($category->kategori) . "</option>";
+ }
+
   echo "<div class='row'>";
 
     if (!empty($toururl)) {
