@@ -95,6 +95,7 @@ if (empty($robots)) {
           <li role="presentation"><a href="/">Hem</a></li>
           <li role="presentation"><a href="/bestallkatalog">Beställ katalog</a></li>
           <li role="presentation"><a href="/inforresan">Inför resan</a></li>
+          <li role="presentation"><a href="/efterresan">Efter resan</a></li>
           <li role="presentation"><a href="/galleri">Bildgalleri</a></li>
           <li role="presentation"><a href="/bussresorgoteborg">Om Rekå Resor</a></li>
           <li role="presentation"><a rel="nofollow" href="tel:+4631222120"><i class="fa fa-phone" aria-hidden="true"></i> Ring oss</a></li>

@@ -13,6 +13,7 @@ echo "<html><head><meta http-equiv='content-type' content='text/html;charset=utf
 
 
 $firstinstall = NULL;
+
 $pdo = DB::get();
 try {
   $sql = "SELECT count(*) FROM " . TABLE_PREFIX . "logins;";

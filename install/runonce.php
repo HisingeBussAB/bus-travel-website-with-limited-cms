@@ -9,8 +9,6 @@
  */
 
 
-
-
 if (!$firstinstall) {
   try {
     $table = TABLE_PREFIX . 'hallplatser_resor';
@@ -189,6 +187,18 @@ $sql = "INSERT INTO " . TABLE_PREFIX . "logins (
 
 
 try {
+$sql = "GRANT REFERENCES ON udmyrs231446." . TABLE_PREFIX . "logins TO 'udmyrs231446'@'apache14.ilait.se';";
+
+  $sth = $pdo->prepare($sql);
+  $sth->execute();
+
+} catch(\PDOException $e) {
+  echo $sql . "<br>" . $e->getMessage() . "<br>";
+}
+
+
+
+try {
   $table = TABLE_PREFIX . 'hammerguard';
   $sql = "CREATE TABLE " . $table . " (
     iphash CHAR(64),
@@ -294,7 +304,7 @@ try {
     tid_in TIME,
     tid_ut TIME,
     CONSTRAINT
-      FOREIGN KEY (resa_id) REFERENCES " . TABLE_PREFIX . "resor (id),
+      FOREIGN KEY (resa_id) REFERENCES drs116573." . TABLE_PREFIX . "resor (id),
     CONSTRAINT
       FOREIGN KEY (hallplatser_id) REFERENCES " . TABLE_PREFIX . "hallplatser (id));";
   $sth = $pdo->prepare($sql);
