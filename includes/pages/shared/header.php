@@ -74,15 +74,12 @@ if (empty($robots)) {
   <!--FAVICON END-->
 
 
-  <link rel="stylesheet" href="/dependencies/bootstrap-3.3.7-dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/dependencies/font-awesome-4.7.0/css/font-awesome.min.css" >
-  <link rel="stylesheet" href="/css/main.min.css" >
-  <?php
-  if (!empty($morestyles)) echo $morestyles;
-  ?>
 
+
+  <link rel="stylesheet" href="/dependencies/bootstrap-3.3.7-dist/css/bootstrap.min.css">
 </head>
 <body>
+
 
   <header class="text-center">
     <div class="text-right header-wrap">

@@ -13,7 +13,9 @@ use HisingeBussAB\RekoResor\website\includes\classes\DBError;
 
 class Files {
 
-  public static function uploadfile() {
+  public static function uploadfile($allowreduce = TRUE) {
+
+    //FIX TO SET ALLOW REDUCE FROM FORM LOC LATER
 
     $img_exts = [
       'jpg',
@@ -53,6 +55,7 @@ class Files {
         } else {
           throw new \RuntimeException('Relaterad resa hittades inte.');
         }
+
 
 
         // Undefined | Multiple Files | $_FILES Corruption Attack
@@ -122,6 +125,8 @@ class Files {
         // You should name it uniquely.
         // DO NOT USE $_FILES['upfile']['name'] WITHOUT ANY VALIDATION !!
         // On this example, obtain safe unique name from its binary data.
+
+
         if (!move_uploaded_file(
             $_FILES['upfile']['tmp_name'],
             sprintf("./upload/resor/" . $dir . "/%s.%s",
@@ -133,15 +138,23 @@ class Files {
         }
 
         if ($ext != "pdf") {
-          //Create thumbnail if file is large$source_img = 'source.jpg';
+          //Reduce and or create thumbnail if file is large $source_img = 'source.jpg';
           $imagesize = getimagesize($file = "./upload/resor/" . $dir . "/" .$pos . "_" . $dir . "." . $ext);
-          if ($imagesize[1] > 600) {
-            if (!self::smart_resize_image($file = "./upload/resor/" . $dir . "/" .$pos . "_" . $dir . "." . $ext, $output = "./upload/resor/" . $dir . "/small_" .$pos . "_" . $dir . ".jpg", $height = 600)) {
+
+          if ($imagesize[1] > 300) {
+            if (!self::smart_resize_image('./upload/resor/' . $dir . '/' .$pos . '_' . $dir . '.' . $ext, './upload/resor/' . $dir . '/small_' . $pos . '_' . $dir . ".$ext",0,300)) {
               throw new \RuntimeException('Lyckades inte skapa thumbnail till bilden. Förminskning misslyckades.');
             }
           } else {
             if (!copy($file = "./upload/resor/" . $dir . "/" .$pos . "_" . $dir . "." . $ext, $output = "./upload/resor/" . $dir . "/small_" .$pos . "_" . $dir . "." . $ext)) {
               throw new \RuntimeException('Lyckades inte skapa thumbnail till bilden. Kopiering misslyckades.');
+            }
+          }
+
+          //Reduce if allowed
+          if ($imagesize[1] > 700 && $allowreduce === TRUE) {
+            if (!self::smart_resize_image("./upload/resor/" . $dir . "/" .$pos . "_" . $dir . "." . $ext, "./upload/resor/" . $dir . "/" .$pos . "_" . $dir . ".$ext",0,700)) {
+              throw new \RuntimeException('Lyckades inte reducera bilden. Förminskning misslyckades.');
             }
           }
 
@@ -184,7 +197,7 @@ class Files {
     private static function smart_resize_image($file,$output = 'file',
                                 $width              = 0,
                                 $height             = 0,
-                                $quality            = 100,
+                                $quality            = 80,
                                 $string             = null,
                                 $proportional       = true,
                                 $delete_original    = false,

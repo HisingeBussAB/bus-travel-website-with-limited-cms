@@ -88,7 +88,7 @@ include __DIR__ . '/shared/header.php';
 ?>
 <main class="main-section clearfix container">
   <div class="row">
-  <section class="col-md-6 col-xs-12 clearfix">
+  <section class="col-md-6 col-xs-12">
     <h1>Välkommen till Rekå Resor</h1>
     <p>För att genomföra en bra bussresa så krävs det planering och genomförande, oavsett om den ska gå inom Sverige eller ut i Europa.
     Det är där vi på Rekå Resor kommer in i bilden. Vi lyssnar på de önskemål du har och bidrar sedan med råd och idéer för bästa möjliga resultat.
@@ -122,7 +122,7 @@ include __DIR__ . '/shared/header.php';
 </div>
 
   <div class="row">
-  <h2>Resekalender</h2>
+  <h2 class='col-md-12'>Resekalender</h2>
 
   <?php
     $output = "";

@@ -271,7 +271,7 @@ class NewTrip
     }
 
     if (empty($input['tour_url'])) {
-      $this->url = root\includes\classes\Functions::uri_recode($this->heading);
+      $this->url = root\includes\classes\Functions::uri_recode(trim($this->heading));
       $this->url = filter_var(trim($this->url), FILTER_SANITIZE_URL);
       $urlbase = $this->url;
 
@@ -300,7 +300,8 @@ class NewTrip
 
     $photofolder = root\includes\classes\Functions::uri_recode($this->url);
     $photofolder = filter_var(trim($photofolder), FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW | FILTER_FLAG_STRIP_HIGH | FILTER_FLAG_STRIP_BACKTICK);
-    $this->photofolder = filter_var($photofolder, FILTER_SANITIZE_EMAIL);
+    $photofolder = filter_var($photofolder, FILTER_SANITIZE_EMAIL);
+    $this->photofolder = str_replace('%','',$photofolder);  //% will break sprintf command.
 
 
     if (empty($input['og_title'])) {

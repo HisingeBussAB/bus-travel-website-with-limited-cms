@@ -63,10 +63,11 @@ try {
     } else {
       echo "TOUR NOT SET!";
 
-      echo "<input type='checkbox' name=category[] value='Alla program'>Hela katalogen (alla program)</option>";
+      echo "<ul><li><input type='checkbox' name=category[] value='Alla program' />Hela katalogen (alla program)</li>";
       foreach($categories as $category) {
-        echo "<input type='checkbox' name=category[] value='" . htmlspecialchars($category->kategori) . "'>" . htmlspecialchars($category->kategori) . "</option>";
+        echo "<li><input type='checkbox' name=category[] value='" . htmlspecialchars($category->kategori) . "' />" . htmlspecialchars($category->kategori) . "</li>";
       }
+      echo "<ul>";
     }
 
 
