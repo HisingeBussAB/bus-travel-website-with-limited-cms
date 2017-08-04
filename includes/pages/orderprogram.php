@@ -16,13 +16,18 @@ use HisingeBussAB\RekoResor\website\includes\classes\DBError;
 
 $allowed_tags = ALLOWED_HTML_TAGS;
 
+root\includes\classes\Sessions::secSessionStart(TRUE);
+$token = root\includes\classes\Tokens::getFormToken('program', 3600, false);
+$clienthash = md5($_SERVER['HTTP_USER_AGENT']);
+$_SESSION['clienthash'] = $clienthash;
+
 try {
   if (!empty($toururl)) {
     $toururl = filter_var(trim($toururl), FILTER_SANITIZE_URL);
     try {
       $pdo = DB::get();
 
-      $sql = "SELECT * FROM " . TABLE_PREFIX . "resor WHERE aktiv = 1 AND url = :url;";
+      $sql = "SELECT namn, url FROM " . TABLE_PREFIX . "resor WHERE aktiv = 1 AND url = :url;";
       $sth = $pdo->prepare($sql);
       $sth->bindParam(':url', $toururl, \PDO::PARAM_STR);
       $sth->execute();
@@ -33,7 +38,6 @@ try {
     }
 
     if ((count($result) > 0) && ($result !== false)) {
-      $tour['id'] = filter_var($result['id'], FILTER_SANITIZE_NUMBER_INT);
       $tour['namn'] = strip_tags($result['namn'], $allowed_tags);
       $tour['url'] = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/resa/" . rawurlencode($result['url']);
 
@@ -58,20 +62,51 @@ try {
 
   echo "<div class='row'>";
 
-    if (!empty($toururl)) {
-      echo "TOUR SET!";
-    } else {
-      echo "TOUR NOT SET!";
 
-      echo "<ul><li><input type='checkbox' name=category[] value='Alla program' />Hela katalogen (alla program)</li>";
-      foreach($categories as $category) {
-        echo "<li><input type='checkbox' name=category[] value='" . htmlspecialchars($category->kategori) . "' />" . htmlspecialchars($category->kategori) . "</li>";
+      echo "
+      <form action='/ajax/program' method='post' accept-charset='utf-8' enctype='application/json'>";
+
+      if (empty($toururl)) {
+        echo "
+        <h1>Beställ katalog.</h1>
+        <p>Beställ vår tryckta katalog, eller delar av katalogen. Vi skickar dem via post till dig.</p>";
+      } else {
+        echo "
+        <h1>Beställ tryckt program för " . htmlspecialchars($tour['namn']) . "</h1>
+        <p>Vi skickar programmet via post till dig.</p>
+        <input type='hidden' value='" . htmlspecialchars($tour['namn']) . "' name='category[]' />";
       }
-      echo "<ul>";
-    }
 
 
-  echo "</div>";
+
+      echo "
+      <p><input type='text' placeholder='Namn' /></p>
+      <p><input type='text' placeholder='Gatuadress' /></p>
+      <p><input type='text' placeholder='Postnr.' /><input type='text' placeholder='Postort' /></p>
+      <p><input type='text' placeholder='E-post' /></p>
+      <input type='hidden' value='" . $token['id'] . "' name='tokenid' />
+      <input type='hidden' value='" . $token['token'] . "' name='token' />
+      <input type='hidden' value='$clienthash' name='client' />";
+
+
+      if (empty($toururl)) {
+        echo "<h3>Välj program</h3>";
+        echo "<ul><li><input type='checkbox' name='category[]' value='Alla program' />Hela katalogen (alla program)</li>";
+        foreach($categories as $category) {
+          echo "<li><input type='checkbox' name='category[]' value='" . htmlspecialchars($category->kategori) . "' />" . htmlspecialchars($category->kategori) . "</li>";
+        }
+        echo "</ul>";
+      }
+
+
+
+      echo "<p><input type='submit' value='Skicka' /><span class='ajax-loader'></span></p>
+      <div class='ajax-response'><div>
+      ";
+
+
+
+  echo "</form></div>";
   echo "</main>";
 
   include __DIR__ . '/shared/footer.php';
