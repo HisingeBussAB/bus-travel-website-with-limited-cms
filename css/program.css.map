@@ -1,0 +1,12 @@
+{
+	"version": 3,
+	"file": "program.css",
+	"sources": [
+		"sass/program.scss"
+	],
+	"sourcesContent": [
+		".antispam {\r\n  display: none;\r\n}\r\n"
+	],
+	"names": [],
+	"mappings": "AAAA,AAAA,SAAS,CAAC;EACR,OAAO,EAAE,IAAI;CACd"
+}

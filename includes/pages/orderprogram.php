@@ -17,9 +17,9 @@ use HisingeBussAB\RekoResor\website\includes\classes\DBError;
 $allowed_tags = ALLOWED_HTML_TAGS;
 
 root\includes\classes\Sessions::secSessionStart(TRUE);
-$token = root\includes\classes\Tokens::getFormToken('program', 3600, false);
+$token = root\includes\classes\Tokens::getFormToken('program', 3600, true);
 $clienthash = md5($_SERVER['HTTP_USER_AGENT']);
-$_SESSION['clienthash'] = $clienthash;
+
 
 try {
   if (!empty($toururl)) {
@@ -54,6 +54,7 @@ try {
 
 
   $morestyles = "<link rel='stylesheet' href='/css/program.min.css' >";
+  $morescripts = "<script src='/js/program.js'></script>";
 
   header('Content-type: text/html; charset=utf-8');
   include __DIR__ . '/shared/header.php';
@@ -80,13 +81,14 @@ try {
 
 
       echo "
-      <p><input type='text' placeholder='Namn' /></p>
-      <p><input type='text' placeholder='Gatuadress' /></p>
-      <p><input type='text' placeholder='Postnr.' /><input type='text' placeholder='Postort' /></p>
-      <p><input type='text' placeholder='E-post' /></p>
+      <p><input type='text' placeholder='Namn' name='name' /></p>
+      <p><input type='text' placeholder='Gatuadress' name='address' /></p>
+      <p><input type='text' placeholder='Postnr.' name='zip' /><input type='text' placeholder='Postort' name='city' /></p>
+      <p><input type='email' placeholder='E-post' name='e-mail' /></p>
       <input type='hidden' value='" . $token['id'] . "' name='tokenid' />
       <input type='hidden' value='" . $token['token'] . "' name='token' />
-      <input type='hidden' value='$clienthash' name='client' />";
+      <input type='hidden' value='$clienthash' name='client' />
+      <p class='antispam'>Leave this empty: <input type='text' name='url' /></p>";
 
 
       if (empty($toururl)) {

@@ -49,7 +49,7 @@ class Ajax
         } else {
           $exp = 5000;
         }
-        
+
         if (!empty($_POST['unique'])) {
           $unique = $_POST['unique'];
         } else {
@@ -64,6 +64,16 @@ class Ajax
         exit;
 
       break;
+
+      case 'program':
+        header('Content-Type: application/json');
+        if (root\includes\classes\ProgramForm::sendForm($_POST)) {
+          http_response_code(200);
+        } else {
+          http_response_code(500);
+        }
+      break;
+
 
       default:
         echo "Not found!";

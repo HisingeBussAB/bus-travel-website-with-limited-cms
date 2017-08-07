@@ -62,7 +62,7 @@ class PWReset
       $pdo = DB::get();
 
       try {
-        $sql = "SELECT * FROM " . TABLE_PREFIX . "settings WHERE id = 0;";
+        $sql = "SELECT * FROM " . TABLE_PREFIX . "settings WHERE id = 1;";
         $sth = $pdo->prepare($sql);
         $sth->execute();
         $smtpresult = $sth->fetch(\PDO::FETCH_ASSOC);
@@ -74,7 +74,7 @@ class PWReset
       if ($request === "new") {
 
         try {
-          $sql = "SELECT username FROM " . TABLE_PREFIX . "logins WHERE id = 0;";
+          $sql = "SELECT username FROM " . TABLE_PREFIX . "logins WHERE id = 1;";
           $sth = $pdo->prepare($sql);
           $sth->execute();
           $user = $sth->fetch(\PDO::FETCH_ASSOC);
