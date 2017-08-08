@@ -17,7 +17,7 @@ use HisingeBussAB\RekoResor\website\includes\classes\DBError;
 $allowed_tags = ALLOWED_HTML_TAGS;
 
 root\includes\classes\Sessions::secSessionStart(TRUE);
-$token = root\includes\classes\Tokens::getFormToken('program', 3600, true);
+$token = root\includes\classes\Tokens::getFormToken('program', 2000, true);
 $clienthash = md5($_SERVER['HTTP_USER_AGENT']);
 
 
@@ -65,7 +65,7 @@ try {
 
 
       echo "
-      <form action='/ajax/program' method='post' accept-charset='utf-8' enctype='application/json'>";
+      <form action='/ajax/program' method='post' accept-charset='utf-8' enctype='application/json' id='get-program-form'>";
 
       if (empty($toururl)) {
         echo "
@@ -81,19 +81,19 @@ try {
 
 
       echo "
-      <p><input type='text' placeholder='Namn' name='name' /></p>
-      <p><input type='text' placeholder='Gatuadress' name='address' /></p>
-      <p><input type='text' placeholder='Postnr.' name='zip' /><input type='text' placeholder='Postort' name='city' /></p>
-      <p><input type='email' placeholder='E-post' name='e-mail' /></p>
-      <input type='hidden' value='" . $token['id'] . "' name='tokenid' />
-      <input type='hidden' value='" . $token['token'] . "' name='token' />
+      <p><input type='text' placeholder='Namn' name='name' required /></p>
+      <p><input type='text' placeholder='Gatuadress' name='address' required /></p>
+      <p><input type='text' placeholder='Postnr.' name='zip' required /><input type='text' placeholder='Postort' name='city' required /></p>
+      <p><input type='email' placeholder='E-post' name='email' /></p>
+      <input type='hidden' value='" . $token['id'] . "' name='tokenid' id='tokenid' />
+      <input type='hidden' value='" . $token['token'] . "' name='token' id='token' />
       <input type='hidden' value='$clienthash' name='client' />
       <p class='antispam'>Leave this empty: <input type='text' name='url' /></p>";
 
 
       if (empty($toururl)) {
         echo "<h3>Välj program</h3>";
-        echo "<ul><li><input type='checkbox' name='category[]' value='Alla program' />Hela katalogen (alla program)</li>";
+        echo "<ul><li><input type='checkbox' name='category[]' value='Alla program' checked />Hela katalogen (alla program)</li>";
         foreach($categories as $category) {
           echo "<li><input type='checkbox' name='category[]' value='" . htmlspecialchars($category->kategori) . "' />" . htmlspecialchars($category->kategori) . "</li>";
         }
@@ -102,8 +102,8 @@ try {
 
 
 
-      echo "<p><input type='submit' value='Skicka' /><span class='ajax-loader'></span></p>
-      <div class='ajax-response'><div>
+      echo "<p><input type='submit' value='Skicka' id='get-program-button' /><span class='ajax-loader'></span></p>
+      <div class='ajax-response' id='ajax-response'><div>
       ";
 
 

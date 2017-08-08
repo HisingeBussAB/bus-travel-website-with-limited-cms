@@ -12,7 +12,7 @@ namespace HisingeBussAB\RekoResor\website\includes\classes;
 class HammerGuard {
 
   /**
-   * Function checks for brute force attacks using hammerguard table with sha256 has of REMOTE_ADDR for more then 20 tries in the last 3600 sec
+   * Function checks for brute force attacks and spam using hammerguard table with sha256 has of REMOTE_ADDR for more then 30 tries in the last 3600 sec
    *
    * @uses TABLE_PREFIX
    * @uses \HisingeBussAB\RekoResor\website\includes\classes\DB
@@ -34,7 +34,7 @@ class HammerGuard {
     $sth->execute();
   } catch(\PDOException $e) {
     DBError::showError($e, __CLASS__, $sql);
-    exit;
+    return true;
   }
 
   $thecount = 0;
@@ -47,10 +47,10 @@ class HammerGuard {
     $thecount = reset($count);
   } catch(\PDOException $e) {
     DBError::showError($e, __CLASS__, $sql);
-    exit;
+    return true;
   }
 
-  if ($thecount < 21) {
+  if ($thecount < 31) {
     try {
       $sql = "INSERT INTO " . TABLE_PREFIX . "hammerguard (
         iphash,
@@ -64,10 +64,13 @@ class HammerGuard {
       $sth->execute();
     } catch(\PDOException $e) {
       DBError::showError($e, __CLASS__, $sql);
-      exit;
+      return true;
     }
-      return false;
+
+    return false;
+
   } else {
+
     return true;
   }
 }

@@ -59,6 +59,28 @@ class Ajax
 
         $token = root\includes\classes\Tokens::getFormToken($form, $exp, $unique);
         header('Content-Type: application/json');
+        header('Access-Control-Allow-Origin: http' . APPEND_SSL . '://' .$_SERVER['HTTP_HOST']);
+
+
+        //These two checks below aren't safe but that is still no reason to let sloppy written spambots thru.
+        //All browsers do not set origin header on internal requests so we have to allow it to be empty also.
+
+        if( stripos($_SERVER['HTTP_REFERER'], $_SERVER['HTTP_HOST']) === FALSE ) {
+          echo 'Fel urspringssida.';
+          http_response_code(403);
+          exit;
+        }
+
+        if( !empty($_SERVER['HTTP_ORIGIN']) ) {
+          if( stripos($_SERVER['HTTP_ORIGIN'], $_SERVER['HTTP_HOST']) === FALSE ) {
+            echo 'Fel urspringssida.';
+            http_response_code(403);
+            exit;
+          }
+        }
+
+
+
         echo json_encode(array('token' => $token));
         http_response_code(200);
         exit;
@@ -66,12 +88,14 @@ class Ajax
       break;
 
       case 'program':
-        header('Content-Type: application/json');
+
         if (root\includes\classes\ProgramForm::sendForm($_POST)) {
+          header('Content-Type: application/json; charset=utf-8');
+          header('Access-Control-Allow-Origin: http' . APPEND_SSL . '://' .$_SERVER['HTTP_HOST']);
           http_response_code(200);
-        } else {
-          http_response_code(500);
         }
+        header('Content-Type: text/html; charset=utf-8');
+        exit;
       break;
 
 
