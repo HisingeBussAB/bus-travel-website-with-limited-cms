@@ -50,7 +50,7 @@ class Render
   public static function booktour($toururl) {
 
     try {
-      include __DIR__ . '/../includes/pages/tour.php';
+      include __DIR__ . '/../includes/pages/booking.php';
     } catch (Exception $e) {
       if (DEBUG_MODE) echo $e->getMessage(); else include __DIR__ . '/../includes/pages/error/404.php';
     }

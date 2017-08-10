@@ -298,10 +298,37 @@ class NewTrip
       $this->url = filter_var(trim($input['tour_url']), FILTER_SANITIZE_URL);
     }
 
-    $photofolder = root\includes\classes\Functions::uri_recode($this->url);
-    $photofolder = filter_var(trim($photofolder), FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW | FILTER_FLAG_STRIP_HIGH | FILTER_FLAG_STRIP_BACKTICK);
+    $photofolder = $this->url;
+    $photofolder = filter_var(trim($photofolder), FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW | FILTER_FLAG_STRIP_HIGH | FILTER_FLAG_STRIP_BACKTICK );
+    $photofolder = filter_var($photofolder, FILTER_SANITIZE_URL);
     $photofolder = filter_var($photofolder, FILTER_SANITIZE_EMAIL);
-    $this->photofolder = str_replace('%','',$photofolder);  //% will break sprintf command.
+    $photofolder = html_entity_decode($photofolder, ENT_QUOTES, "utf-8");
+    $photofolder = htmlentities($photofolder, ENT_QUOTES, "utf-8");
+    $photofolder = rawurlencode($photofolder);
+    $photofolder = str_replace('%','-',$photofolder);  //% will break sprintf command.
+    $this->photofolder = $photofolder;
+
+    //Check for collision
+    try {
+      $pdo = DB::get();
+      $i = 1;
+      do {
+          $sql = "SELECT id FROM " . TABLE_PREFIX . "resor WHERE bildkatalog = :photofolder";
+          $sth = $pdo->prepare($sql);
+          $sth->bindParam(':photofolder', $this->photofolder, \PDO::PARAM_STR);
+          $sth->execute();
+          $result = $sth->fetchAll(\PDO::FETCH_ASSOC);
+          if (count($result) > 0) {
+            $this->photofolder = $photofolder . "-" . $i;
+            $i++;
+          }
+      } while (count($result) > 0);
+    } catch(\PDOException $e) {
+      DBError::showError($e, __CLASS__, $sql);
+      http_response_code(500);
+    }
+
+
 
 
     if (empty($input['og_title'])) {

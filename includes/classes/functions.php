@@ -41,11 +41,13 @@ class Functions
 {
 
   public static function uri_recode($string) {
-    $string = mb_strtolower(trim($string));
     $string = strip_tags($string);
-    $search = array('å', 'ä', 'ö', ' ', '&', 'ü', 'é', 'è', '+', '#', '%', '?', '=', '!');
-    $replace = array('a', 'a', 'o', '-', 'och', 'u', 'e', 'e', '', '', '', '', '', '');
-    $string = urlencode(str_replace($search,$replace,$string));
+    $string = mb_strtolower(trim($string));
+    $search = array('.', 'å', 'ä', 'ö', ' ', '&', 'ü', 'é', 'è', '+', '#', '%', '?', '=', '!', '"', "'");
+    $replace = array('', 'a', 'a', 'o', '-', 'och', 'u', 'e', 'e', '', '', '', '', '', '', '', '');
+    $string = str_replace($search,$replace,$string);
+    $string = filter_var($string, FILTER_SANITIZE_URL);
+    $string = rawurlencode($string);
     return $string;
   }
 

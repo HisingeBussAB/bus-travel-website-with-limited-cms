@@ -102,7 +102,7 @@ try {
 
 
 
-      echo "<p><input type='submit' value='Skicka' id='get-program-button' /><span class='ajax-loader'></span></p>
+      echo "<p><input type='submit' value='Skicka' id='get-program-button' /><span class='ajax-loader'><i class='fa fa-spinner fa-pulse fa-2x' aria-hidden='true'></i></span></p>
       <div class='ajax-response' id='ajax-response'><div>
       ";
 

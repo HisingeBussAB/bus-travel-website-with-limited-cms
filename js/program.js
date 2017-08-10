@@ -7,6 +7,8 @@ $(function() {
     $("#get-program-button").prop("disabled",true);
     var formData = $("#get-program-form").serialize()
     $("#get-program-form :input").prop("disabled", true);
+    $(".ajax-loader").show();
+    $(".ajax-response").empty();
     sendForm(formData);
   });
 
@@ -25,18 +27,23 @@ function sendForm(formData) {
     .done(function(data) {
       $( "#ajax-response" ).html( data );
       newtoken();
-      setTimeout(function(){ $( "#get-program-form :input").prop("disabled", false); }, 200);
-      setTimeout(function(){ $( "#get-program-button" ).prop("disabled",false); }, 200);
+      setTimeout(function(){
+        $( "#get-program-button" ).prop("disabled",false);
+        $( "#get-program-form :input").prop("disabled", false);
+        $(".ajax-loader").hide();
+      }, 200);
+
       document.getElementById("get-program-form").reset();
     })
     .fail(function(data) {
       newtoken();
       if (data.status == 404)
-        $( "#ajax-response" ).html( "Något har gått fel. Kunde inte hitta svarssidan." )
+        $( "#ajax-response" ).html( "Något har gått fel. Kunde inte hitta svarssidan." );
       else
         $( "#ajax-response" ).html( "Något har gått fel. " + data.responseText );
       $( "#get-program-button" ).prop("disabled",false);
       $( "#get-program-form :input" ).prop("disabled", false);
+      $(".ajax-loader").hide();
     });
 }
 
