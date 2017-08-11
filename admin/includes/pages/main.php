@@ -65,8 +65,10 @@ class Main {
     ?>
 
 
-    <main class="clearfix">
+    <main class="clearfix container-fluid">
+    <div class="row">
       <div class="col-lg-3 col-md-6">
+
         <h2>Resor</h2>
         <ul id="trip-list">
           <li><a href="/adminp/nyresa/" title="Lägg in en ny resa"><button>Skapa ny resa</button></a></li>
@@ -137,7 +139,9 @@ class Main {
           <i class="fa fa-spinner fa-4x fa-spin" aria-hidden="true"></i>
         </div>
       </div>
-      <div class="col-md-6">
+    </div>
+    <div class="row">
+      <div class="col-lg-6 col-md-6">
         <h2>Nyheter</h2>
         <form action="/adminajax/news" method="post" accept-charset="utf-8" id="form-news" enctype='application/json'>
           <input type="hidden" name="tokenid" value="<?php echo $token['id'] ?>" class="form-token-id">
@@ -146,13 +150,14 @@ class Main {
           <button type="submit">Spara</button>
         </form>
       </div>
-      <div class="col-md-6">
+      <div class="col-lg-6 col-md-6">
         <h2>Bildgallerier</h2>
         <ul>
           <li>Nytt galleri</li>
           <li>Galleri | aktiv/inaktiv X</li>
         </ul>
       </div>
+    </div>
     </main>
 
 

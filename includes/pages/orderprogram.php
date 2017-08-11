@@ -14,15 +14,18 @@ use HisingeBussAB\RekoResor\website\includes\classes\Functions as functions;
 use HisingeBussAB\RekoResor\website\includes\classes\DB;
 use HisingeBussAB\RekoResor\website\includes\classes\DBError;
 
-$allowed_tags = ALLOWED_HTML_TAGS;
-
-root\includes\classes\Sessions::secSessionStart(TRUE);
-$token = root\includes\classes\Tokens::getFormToken('program', 2000, true);
-$clienthash = md5($_SERVER['HTTP_USER_AGENT']);
-
 
 try {
+
+  $allowed_tags = ALLOWED_HTML_TAGS;
+
+  root\includes\classes\Sessions::secSessionStart(TRUE);
+  $token = root\includes\classes\Tokens::getFormToken('program', 2000, true);
+  $clienthash = md5($_SERVER['HTTP_USER_AGENT']);
+  $html_ents = Functions::set_html_list();
+
   if (!empty($toururl)) {
+    $toururl = str_replace("'", "", $toururl); //Is urlencoded there should not be any ' and they will break the html if value is echoed and user enters a malicious query
     $toururl = filter_var(trim($toururl), FILTER_SANITIZE_URL);
     try {
       $pdo = DB::get();
@@ -38,8 +41,8 @@ try {
     }
 
     if ((count($result) > 0) && ($result !== false)) {
-      $tour['namn'] = strip_tags($result['namn'], $allowed_tags);
-      $tour['url'] = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/resa/" . rawurlencode($result['url']);
+      $tour['namn'] = strtr(strip_tags($result['namn'], $allowed_tags), $html_ents);
+      $tour['url'] = filter_var("http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/resa/" . rawurlencode($result['url']), FILTER_SANITIZE_URL);
 
     } else {
       throw new \UnexpectedValueException("Resan finns inte.");
@@ -95,7 +98,7 @@ try {
         echo "<h3>Välj program</h3>";
         echo "<ul><li><input type='checkbox' name='category[]' value='Alla program' checked />Hela katalogen (alla program)</li>";
         foreach($categories as $category) {
-          echo "<li><input type='checkbox' name='category[]' value='" . htmlspecialchars($category->kategori) . "' />" . htmlspecialchars($category->kategori) . "</li>";
+          echo "<li><input type='checkbox' name='category[]' value='" . htmlspecialchars($category->kategori, ENT_QUOTES) . "' />" . htmlspecialchars($category->kategori, ENT_QUOTES) . "</li>";
         }
         echo "</ul>";
       }

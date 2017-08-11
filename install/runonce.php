@@ -234,7 +234,7 @@ try {
   $sql = "CREATE TABLE " . $table . " (
     id BIGINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     kategori VARCHAR(80),
-    uri_kategori VARCHAR(85) UNIQUE,
+    uri_kategori VARCHAR(191) UNIQUE,
     ingress TEXT,
     seo_description VARCHAR(160),
     og_description VARCHAR(255),

@@ -14,13 +14,16 @@ use HisingeBussAB\RekoResor\website\includes\classes\Functions;
 use HisingeBussAB\RekoResor\website\includes\classes\DB;
 use HisingeBussAB\RekoResor\website\includes\classes\DBError;
 
-$pageTitle = "Bussresor i Norden och Europa";
-$allowed_tags = ALLOWED_HTML_TAGS;
+
 
 try {
+  $pageTitle = "Bussresor i Norden och Europa";
+  $allowed_tags = ALLOWED_HTML_TAGS;
+  $html_ents = Functions::set_html_list();
 
 header('Content-type: text/html; charset=utf-8');
 include __DIR__ . '/shared/header.php';
+
 
 
   try {
@@ -43,33 +46,33 @@ include __DIR__ . '/shared/header.php';
   $i=0;
   foreach($result as $tour) {
     if ($tour['utvald'] && !$featuredset) {
-      $featured['link']    = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/resa/". rawurlencode($tour['url']);
-      $featured['tour']    = strip_tags($tour['namn'], $allowed_tags);
-      $featured['desc']    = strip_tags($tour['seo_description'], $allowed_tags);
-      $featured['imgpath'] = $tour['bildkatalog'];
+      $featured['link']    = filter_var("http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/resa/". str_replace("'", "", $tour['url']), FILTER_SANITIZE_URL);
+      $featured['tour']    = strtr(strip_tags($tour['namn'], $allowed_tags), $html_ents);
+      $featured['desc']    = strtr(strip_tags($tour['seo_description'], $allowed_tags), $html_ents);
+      $featured['imgpath'] = filter_var($tour['bildkatalog'], FILTER_SANITIZE_URL);
       $server_path = __DIR__ . '/../../upload/resor/' . $tour['bildkatalog'] . '/';
-      $web_path = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/" . rawurlencode($tour['bildkatalog']) . "/";
-        if ($files = functions::get_img_files($server_path)) {
+      $web_path = filter_var("http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/" . $tour['bildkatalog'] . "/", FILTER_SANITIZE_URL);
+        if ($files = Functions::get_img_files($server_path)) {
           $featured['imgpath'] = $web_path . $files[0]['thumb'];
         } else {
-          $featured['imgpath'] = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/generic/small_1_generic.jpg";
+          $featured['imgpath'] = filter_var("http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/generic/small_1_generic.jpg", FILTER_SANITIZE_URL);
         }
       $featuredset = TRUE;
     }
 
-    $tours[$i]['tour'] = strip_tags($tour['namn'], $allowed_tags);
-    $tours[$i]['link'] = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/resa/". rawurlencode($tour['url']);
-    $tours[$i]['days'] = strip_tags($tour['antaldagar'], $allowed_tags);
-    $tours[$i]['summary'] = nl2br(strip_tags($tour['ingress'], $allowed_tags));
-    $tours[$i]['price'] = strip_tags($tour['pris'], $allowed_tags);
-    $tours[$i]['departure'] = strip_tags($tour['datum'], $allowed_tags);
+    $tours[$i]['tour'] = strtr(strip_tags($tour['namn'], $allowed_tags), $html_ents);
+    $tours[$i]['link'] = filter_var("http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/resa/". str_replace("'", "", $tour['url']), FILTER_SANITIZE_URL);
+    $tours[$i]['days'] = strtr(strip_tags($tour['antaldagar'], $allowed_tags), $html_ents);
+    $tours[$i]['summary'] = strtr(nl2br(strip_tags($tour['ingress'], $allowed_tags)), $html_ents);
+    $tours[$i]['price'] = strtr(strip_tags($tour['pris'], $allowed_tags), $html_ents);
+    $tours[$i]['departure'] = strtr(strip_tags($tour['datum'], $allowed_tags), $html_ents);
 
-    $server_path = __DIR__ . '/../../upload/resor/' . $tour['bildkatalog'] . '/';
-    $web_path = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/" . rawurlencode($tour['bildkatalog']) . "/";
-      if ($files = functions::get_img_files($server_path)) {
+    $server_path = __DIR__ . '/../../upload/resor/' . filter_var($tour['bildkatalog'], FILTER_SANITIZE_URL) . '/';
+    $web_path = filter_var("http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/" . $tour['bildkatalog'] . "/", FILTER_SANITIZE_URL);
+      if ($files = Functions::get_img_files($server_path)) {
         $tours[$i]['imgsrc'] = $web_path . $files[0]['thumb'];
       } else {
-        $tours[$i]['imgsrc'] = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/generic/small_1_generic.jpg";
+        filter_var($tours[$i]['imgsrc'] = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/generic/small_1_generic.jpg", FILTER_SANITIZE_URL);
       }
     $i++;
   }
@@ -86,8 +89,9 @@ include __DIR__ . '/shared/header.php';
 
 
 ?>
-<main class="main-section clearfix container">
-  <div class="row">
+<main class="main-section clearfix">
+  <div class="container-fluid">
+  <div class="row-fluid">
   <section class="col-md-6 col-xs-12">
     <h1>Välkommen till Rekå Resor</h1>
     <p>För att genomföra en bra bussresa så krävs det planering och genomförande, oavsett om den ska gå inom Sverige eller ut i Europa.
@@ -101,12 +105,14 @@ include __DIR__ . '/shared/header.php';
   </div></a>
   </div>
 
-  <section class="row">
-    <h2>Aktuellt från Rekå Resor</h2>
-    <p><?php echo nl2br(strip_tags($result['nyheter'], $allowed_tags)); ?></p>
+  <section class="row-fluid">
+    <div class="col-md-12 col-xs-12">
+      <h2>Aktuellt från Rekå Resor</h2>
+      <p><?php echo strtr(nl2br(strip_tags($result['nyheter'], $allowed_tags)), $html_ents); ?></p>
+    </div>
   </section>
 
-  <div class="row">
+  <div class="row-fluid">
   <div class="col-md-3 col-xs-6 text-center">
     <a class="btn btn-default action-btn" href="/boka">Boka resa här</a>
   </div>
@@ -121,8 +127,10 @@ include __DIR__ . '/shared/header.php';
   </div>
 </div>
 
-  <div class="row">
-  <h2 class='col-md-12'>Resekalender</h2>
+  <div class="row-fluid">
+    <h2 class='col-md-12'>Resekalender</h2>
+  </div>
+  <div class="row-fluid">
 
   <?php
     $output = "";
@@ -140,6 +148,7 @@ include __DIR__ . '/shared/header.php';
   }
   ?>
   </div>
+</div>
 </main>
 <?php
 include __DIR__ . '/shared/footer.php';

@@ -103,7 +103,8 @@ if (empty($robots)) {
     <ul aria-label="Resekategorier" id="categories-wrap">
       <?php
       foreach($categories as $category){
-      echo "<li><a href=\"/kategori/" . urlencode($category->uri_kategori) . "\">" . htmlspecialchars($category->kategori) . "</a></li>";
+        $category->uri_kategori;
+      echo "<li><a href=\"/kategori/" . $category->uri_kategori . "\">" . htmlentities($category->kategori, ENT_QUOTES) . "</a></li>";
      }
     ?>
     </ul>

@@ -12,6 +12,7 @@
 namespace HisingeBussAB\RekoResor\website;
 use HisingeBussAB\RekoResor\website\router\Router;
 
+
 ini_set("default_charset", "UTF-8");
 require __DIR__ . '/config/config.php';
 

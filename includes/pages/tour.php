@@ -14,10 +14,14 @@ use HisingeBussAB\RekoResor\website\includes\classes\Functions as functions;
 use HisingeBussAB\RekoResor\website\includes\classes\DB;
 use HisingeBussAB\RekoResor\website\includes\classes\DBError;
 
-$allowed_tags = ALLOWED_HTML_TAGS;
 
 try {
+  $allowed_tags = ALLOWED_HTML_TAGS;
+  $html_ents = Functions::set_html_list();
+
+  $toururl = str_replace("'", "", $toururl); //Is urlencoded there should not be any ' and they will break the html if value is echoed and user enters a malicious query
   $toururl = filter_var(trim($toururl), FILTER_SANITIZE_URL);
+
   try {
     $pdo = DB::get();
 
@@ -33,24 +37,30 @@ try {
 
     if ((count($result) > 0) && ($result !== false)) {
       $tour['id'] = filter_var($result['id'], FILTER_SANITIZE_NUMBER_INT);
-      $tour['namn'] = strip_tags($result['namn'], $allowed_tags);
-      $tour['ingress'] = nl2br(strip_tags($result['ingress'], $allowed_tags));
-      $tour['url'] = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/resa/" . rawurlencode($result['url']);
+      $tour['namn'] = strtr(strip_tags($result['namn'], $allowed_tags), $html_ents);
+      $tour['ingress'] = strtr(nl2br(strip_tags($result['ingress'], $allowed_tags)), $html_ents);
+      $tour['url'] = filter_var("http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/resa/" . $result['url'], FILTER_SANITIZE_URL);
 
-      $tour['pris'] = strip_tags($result['pris']);
-      $tour['program'] = nl2br(strip_tags($result['program'], $allowed_tags));
-      $tour['antaldagar'] = strip_tags($result['antaldagar']);
+      $tour['pris'] = strtr(strip_tags($result['pris']), $html_ents);
+      $tour['program'] = strtr(nl2br(strip_tags($result['program'], $allowed_tags)), $html_ents);
+      $tour['antaldagar'] = strtr(strip_tags($result['antaldagar']), $html_ents);
       $search = array('<li>', '</li>');
       $replace = array('<tr><td>', '</td></tr>');
-      $tour['ingar'] = str_replace($search, $replace, strip_tags($result['ingar'], $allowed_tags . "<tr><td>"));
+      $tour['ingar'] = strtr(str_replace($search, $replace, strip_tags($result['ingar'], $allowed_tags . "<tr><td>")), $html_ents);
       $tour['personnr'] = ($result['personnr'] === "1");
       $tour['fysiskadress'] = ($result['fysiskadress'] === "1");
-      $tour['hotel'] = nl2br(strip_tags($result['hotel'], $allowed_tags));
+      $tour['hotel'] = strtr(nl2br(strip_tags($result['hotel'], $allowed_tags)), $html_ents);
 
       $tour['hotellink'] = implode('/', array_map('rawurlencode', explode('/', $result['hotellink'])));
+      $tour['hotellink'] = str_replace("'", "", $tour['hotellink']);
       $tour['hotellink'] = str_replace("%3A//", "://", $tour['hotellink']);
+
       $tour['facebook'] = implode('/', array_map('rawurlencode', explode('/', $result['facebook'])));
-      $tour['facebook'] = str_replace("%3A//", "://", $result['facebook']);
+      $tour['facebook'] = str_replace("'", "", $tour['facebook']);
+      $tour['facebook'] = str_replace("%3A//", "://", $tour['facebook']);
+
+      $tour['hotellink'] = filter_var($tour['hotellink'], FILTER_SANITIZE_URL);
+      $tour['facebook'] = filter_var($tour['facebook'], FILTER_SANITIZE_URL);
 
 
 
@@ -67,16 +77,18 @@ try {
 
       $pdffiles = functions::get_pdf_files($server_path);
 
-      $meta  = "<meta property='description' content='" . strip_tags($result['seo_description']) . "' />";
-      $meta .= "<meta property='keywords' content='" . strip_tags($result['seo_keywords']) . "' />";
+      $meta  = "<meta property='description' content='" . htmlspecialchars(strip_tags($result['seo_description']), ENT_QUOTES) . "' />";
+      $meta .= "<meta property='keywords' content='" . htmlspecialchars(strip_tags($result['seo_keywords']), ENT_QUOTES) . "' />";
 
-      $meta .= "<meta property='og:description' content='" . strip_tags($result['og_description']) . "' />";
-      $meta .= "<meta property='og:title' content='" . strip_tags($tour['namn']) . "' />";
-      $meta .= "<meta property='og:url' content='" . $tour['url'] . "' />";
-      $meta .= "<meta property='og:image' content='" . $tour['img'][0] . "' />";
+      $meta .= "<meta property='og:description' content='" . htmlspecialchars(strip_tags($result['og_description']), ENT_QUOTES) . "' />";
+      $meta .= "<meta property='og:title' content='" . htmlspecialchars(strip_tags($tour['namn']), ENT_QUOTES) . "' />";
+      $meta .= "<meta property='og:url' content='" . str_replace("'", "", filter_var($tour['url'], FILTER_SANITIZE_URL)) . "' />";
+      $meta .= "<meta property='og:image' content='" . str_replace("'", "", filter_var($tour['img'][0], FILTER_SANITIZE_URL)) . "' />";
 
       if (strpos($result['meta_data_extra'], '<meta') !== false) {
-        $meta .= strip_tags($result['meta_data_extra'], "<meta>");
+        $html_ents2 = get_html_translation_table(HTML_ENTITIES);
+        unset($html_ents2['<'], $html_ents2['>'], $html_ents2['='], $html_ents2['"'], $html_ents2["'"], $html_ents2[":"] ,$html_ents2["/"]);
+        $meta .= strtr(strip_tags($result['meta_data_extra'], "<meta>"), $html_ents2);
       }
 
     } else {
@@ -115,8 +127,8 @@ try {
 
     $i = 0;
     foreach ($result as $row) {
-      $tour['tillagg'][$i]['pris'] = $row['pris'];
-      $tour['tillagg'][$i]['namn'] = $row['namn'];
+      $tour['tillagg'][$i]['pris'] = strtr($row['pris'], $html_ents);
+      $tour['tillagg'][$i]['namn'] = strtr($row['namn'], $html_ents);
       $i++;
     }
 
@@ -135,10 +147,10 @@ try {
 
     $i = 0;
     foreach ($result as $row) {
-      $tour['hlp'][$i]['in'] = $row['tid_in'];
-      $tour['hlp'][$i]['ut'] = $row['tid_ut'];
-      $tour['hlp'][$i]['ort'] = $row['ort'];
-      $tour['hlp'][$i]['plats'] = $row['plats'];
+      $tour['hlp'][$i]['in'] = strtr($row['tid_in'], $html_ents);
+      $tour['hlp'][$i]['ut'] = strtr($row['tid_ut'], $html_ents);
+      $tour['hlp'][$i]['ort'] = strtr($row['ort'], $html_ents);
+      $tour['hlp'][$i]['plats'] = strtr($row['plats'], $html_ents);
       $i++;
     }
 
@@ -150,9 +162,9 @@ try {
 header('Content-type: text/html; charset=utf-8');
 include __DIR__ . '/shared/header.php';
 
-echo "<main class='main-section container'>";
+echo "<main class='main-section container-fluid'>";
 
-  echo "<div class='row'>";
+  echo "<div class='row-fluid'>";
   //LEFT COLUMN
   echo "<div class='col-lg-7 col-md-12'>
     <h1>" . $tour['namn'];
@@ -242,7 +254,7 @@ echo "<main class='main-section container'>";
 
 
 
-    echo "</div><div class='row'>";
+    echo "</div><div class='row-fluid'>";
     //LEFT COLUMN
 
     echo "<div class='col-md-8 col-xs-12'>";

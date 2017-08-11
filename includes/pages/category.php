@@ -17,8 +17,11 @@ use HisingeBussAB\RekoResor\website\includes\classes\DBError;
 
 
 try {
+  $html_ents = Functions::set_html_list();
+  $cat = str_replace("'", "", $cat); //Is urlencoded there should not be any ' and they will break the html if value is echoed and user enters a malicious query
   $cat = filter_var(trim($cat), FILTER_SANITIZE_URL);
   $allowed_tags = ALLOWED_HTML_TAGS;
+
   try {
     $pdo = DB::get();
 
@@ -35,8 +38,8 @@ try {
 
     if (count($category) > 0) {
       $catid = $category['id'];
-      $heading = strip_tags($category['kategori'], $allowed_tags);
-      $text = nl2br(strip_tags($category['ingress'], $allowed_tags));
+      $heading = strtr(strip_tags($category['kategori'], $allowed_tags), $html_ents);
+      $text = strtr(nl2br(strip_tags($category['ingress'], $allowed_tags)), $html_ents);
     } else {
       include __DIR__ . '/shared/header.php';
       throw new \UnexpectedValueException("Kategorin finns inte");
@@ -47,11 +50,6 @@ $pageTitle = $heading;
 
 header('Content-type: text/html; charset=utf-8');
 include __DIR__ . '/shared/header.php';
-
-
-  $cat = filter_var(trim($cat), FILTER_SANITIZE_URL);
-
-
 
 
 try {
@@ -77,19 +75,19 @@ try {
   $i=0;
   foreach($result as $tour) {
 
-    $tours[$i]['tour'] = strip_tags($tour['namn'], $allowed_tags);
-    $tours[$i]['link'] = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/resa/". rawurlencode($tour['url']);
-    $tours[$i]['days'] = strip_tags($tour['antaldagar'], $allowed_tags);
-    $tours[$i]['summary'] = nl2br(strip_tags($tour['ingress'], $allowed_tags));
-    $tours[$i]['price'] = strip_tags($tour['pris'], $allowed_tags);
-    $tours[$i]['departure'] = strip_tags($tour['datum'], $allowed_tags);
+    $tours[$i]['tour'] = strtr(strip_tags($tour['namn'], $allowed_tags), $html_ents);
+    $tours[$i]['link'] = filter_var("http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/resa/". str_replace("'", "", $tour['url']), FILTER_SANITIZE_URL);
+    $tours[$i]['days'] = strtr(strip_tags($tour['antaldagar'], $allowed_tags), $html_ents);
+    $tours[$i]['summary'] = strtr(nl2br(strip_tags($tour['ingress'], $allowed_tags)), $html_ents);
+    $tours[$i]['price'] = strtr(strip_tags($tour['pris'], $allowed_tags), $html_ents);
+    $tours[$i]['departure'] = strtr(strip_tags($tour['datum'], $allowed_tags), $html_ents);
 
     $server_path = __DIR__ . '/../../upload/resor/' . $tour['bildkatalog'] . '/';
-    $web_path = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/" . rawurlencode($tour['bildkatalog']) . "/";
+    $web_path = filter_var("http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/" . $tour['bildkatalog'] . "/", FILTER_SANITIZE_URL);
       if ($files = functions::get_img_files($server_path)) {
         $tours[$i]['imgsrc'] = $web_path . $files[0]['thumb'];
       } else {
-        $tours[$i]['imgsrc'] = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/generic/1-thumb.jpg";
+        $tours[$i]['imgsrc'] = filter_var("http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/generic/1-thumb.jpg", FILTER_SANITIZE_URL);
       }
     $i++;
   }

@@ -39,7 +39,6 @@ class Render
   }
 
   public static function tour($toururl) {
-
     try {
       include __DIR__ . '/../includes/pages/tour.php';
     } catch (Exception $e) {

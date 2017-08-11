@@ -43,12 +43,20 @@ class Functions
   public static function uri_recode($string) {
     $string = strip_tags($string);
     $string = mb_strtolower(trim($string));
-    $search = array('.', 'å', 'ä', 'ö', ' ', '&', 'ü', 'é', 'è', '+', '#', '%', '?', '=', '!', '"', "'");
-    $replace = array('', 'a', 'a', 'o', '-', 'och', 'u', 'e', 'e', '', '', '', '', '', '', '', '');
+    $search = array('~', '.', 'å', 'ä', 'ö', ' ', '&', 'ü', 'é', 'è', '+', '#', '%', '?', '=', '!', '"', "'", 'ß', 'ø', 'æ', '>', '<');
+    $replace = array('-tilde-', '', 'a', 'a', 'o', '-', 'och', 'u', 'e', 'e', 'plus', 'hash', '-procent', '', '-lika-med-', '', '', '', 'ss', 'o', 'ae', '-gt-', '-lt-');
     $string = str_replace($search,$replace,$string);
     $string = filter_var($string, FILTER_SANITIZE_URL);
+    $string = filter_var($string, FILTER_SANITIZE_EMAIL);
+    $string = filter_var($string, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW | FILTER_FLAG_STRIP_HIGH | FILTER_FLAG_STRIP_BACKTICK);
     $string = rawurlencode($string);
     return $string;
+  }
+
+  public static function set_html_list() {
+    $list = get_html_translation_table(HTML_ENTITIES, ENT_QUOTES);
+    unset($list['<'], $list['>']);
+    return $list;
   }
 
   public static function swedish_long_date($day) {
@@ -166,8 +174,12 @@ class Functions
         }
       }
     }
-    sort($results);
-    return $results;
+    if (!empty($result)) {
+      sort($results);
+      return $results;
+    } else {
+      return false;
+    }
   }
 
 

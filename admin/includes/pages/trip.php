@@ -178,15 +178,15 @@ class Trip {
         <div class="col-md-12">
           <fieldset>
             <label for="trip-heading">Rubrik</label>
-            <input type="text" maxlength="200" name="trip-heading" id="trip-heading" placeholder="Resansnamn" <?php if (isset($trip)) {echo "value='" . htmlspecialchars($trip['namn'], ENT_QUOTES) . "'";} ?>>
+            <input type="text" maxlength="200" name="trip-heading" id="trip-heading" placeholder="Resansnamn" <?php if (isset($trip)) {echo "value='" . htmlentities($trip['namn'], ENT_QUOTES) . "'";} ?>>
           </fieldset>
           <fieldset>
             <label for="trip-summary">Ingress</label>
-            <textarea type="text" name="trip-summary" id="trip-summary" placeholder="Ingress"><?php if (isset($trip)) {echo htmlspecialchars($trip['ingress'], ENT_QUOTES);} ?></textarea>
+            <textarea type="text" name="trip-summary" id="trip-summary" placeholder="Ingress"><?php if (isset($trip)) {echo htmlentities($trip['ingress'], ENT_QUOTES);} ?></textarea>
           </fieldset>
           <fieldset>
             <label for="seo_description">Kort beskrivning (max 160 tecken, används i sökresultat och i månadens resa):</label>
-            <input type="text" name="seo_description" maxlength="160" value="<?php if (isset($trip)) {echo htmlspecialchars($trip['seo_description'], ENT_QUOTES);} ?>" />
+            <input type="text" name="seo_description" maxlength="160" value="<?php if (isset($trip)) {echo htmlentities($trip['seo_description'], ENT_QUOTES);} ?>" />
           </fieldset>
 
           <div id="trip-text">
@@ -201,8 +201,8 @@ class Trip {
               foreach ($textheads as $id=>$texthead) {
                 echo "<fieldset id='trip-text-" . ($id+1) . "' class='trip-text'>";
                 echo "<label for='trip-text-heading[" . ($id+1) . "]'>Dag " . ($id+1) . "</label>";
-                echo "<input type='text' maxlength='200' name='trip-text-heading[" . ($id+1) . "]' class='trip-text-heading' value='" . htmlspecialchars($texthead, ENT_QUOTES) . "'>";
-                echo "<textarea type='text' name='trip-text[" . ($id+1) . "]' class='trip-text-text'>" . htmlspecialchars($textbodies[$id], ENT_QUOTES) . "</textarea>";
+                echo "<input type='text' maxlength='200' name='trip-text-heading[" . ($id+1) . "]' class='trip-text-heading' value='" . htmlentities($texthead, ENT_QUOTES) . "'>";
+                echo "<textarea type='text' name='trip-text[" . ($id+1) . "]' class='trip-text-text'>" . htmlentities($textbodies[$id], ENT_QUOTES) . "</textarea>";
                 echo "</fieldset>";
               }
             }
@@ -216,9 +216,9 @@ class Trip {
 
           <fieldset>
             <label for="trip-text-hotel-heading">Hotell</label>
-            <input type="text" maxlength="120" name="trip-text-hotel-heading" id="trip-hotel-heading" placeholder="Hotellets namn" value="<?php if (isset($trip)) {echo htmlspecialchars($hotelhead[0], ENT_QUOTES);} ?>">
-            <textarea type="text" name="trip-text-hotel-text" id="trip-hotel-text" placeholder="Om hotellet...&#10;&#10;Hotellvägen 5&#10;888 88 Hotellstaden&#10;+46888888"><?php if (isset($trip)) {echo htmlspecialchars($hoteltext[0], ENT_QUOTES);} ?></textarea>
-            <input type="text" maxlength="250" name="trip-text-hotel-link" id="trip-hotel-link" placeholder="http://www.hotel.se" value="<?php if (isset($trip)) {echo htmlspecialchars($trip['hotellink'], ENT_QUOTES);} ?>">
+            <input type="text" maxlength="120" name="trip-text-hotel-heading" id="trip-hotel-heading" placeholder="Hotellets namn" value="<?php if (isset($trip)) {echo htmlentities($hotelhead[0], ENT_QUOTES);} ?>">
+            <textarea type="text" name="trip-text-hotel-text" id="trip-hotel-text" placeholder="Om hotellet...&#10;&#10;Hotellvägen 5&#10;888 88 Hotellstaden&#10;+46888888"><?php if (isset($trip)) {echo htmlentities($hoteltext[0], ENT_QUOTES);} ?></textarea>
+            <input type="text" maxlength="250" name="trip-text-hotel-link" id="trip-hotel-link" placeholder="http://www.hotel.se" value="<?php if (isset($trip)) {echo htmlentities($trip['hotellink'], ENT_QUOTES);} ?>">
           </fieldset>
 
           <fieldset>
@@ -255,7 +255,7 @@ class Trip {
 
           <fieldset>
             <label for="trip-facebook">Facebook event url</label>
-            <input type="text" maxlength="255" name="trip-facebook" id="trip-text-1-heading" placeholder="https://www.facebook.com/..." value="<?php if (isset($trip)) {echo htmlspecialchars($trip['facebook'], ENT_QUOTES);} ?>">
+            <input type="text" maxlength="255" name="trip-facebook" id="trip-text-1-heading" placeholder="https://www.facebook.com/..." value="<?php if (isset($trip)) {echo htmlentities($trip['facebook'], ENT_QUOTES);} ?>">
           </fieldset>
 
           <fieldset>
@@ -271,7 +271,7 @@ class Trip {
               } else {
                 foreach ($includes as $id=>$include) {
                   echo "<div id='include-" . ($id+1) . "' class='include-item'>";
-                  echo  "<input type='text' maxlength='400' name='trip-ingar[" . ($id+1) . "]' id='trip-tillagg-" . ($id+1) . "' value='" . htmlspecialchars($include, ENT_QUOTES) . "'>";
+                  echo  "<input type='text' maxlength='400' name='trip-ingar[" . ($id+1) . "]' id='trip-tillagg-" . ($id+1) . "' value='" . htmlentities($include, ENT_QUOTES) . "'>";
                   echo "</div>";
                 }
               }
@@ -297,7 +297,7 @@ class Trip {
             } else {
               foreach ($addons as $id=>$addon) {
                 echo "<div id='addon-" . ($id+1) . "' class='addon-item'>";
-                echo  "<input type='text' maxlength='255' name='trip-tillagg[" . ($id+1) . "]' id='trip-tillagg-" . ($id+1) . "' placeholder='Tillägg' value='" . htmlspecialchars($addon['namn'], ENT_QUOTES) . "'>";
+                echo  "<input type='text' maxlength='255' name='trip-tillagg[" . ($id+1) . "]' id='trip-tillagg-" . ($id+1) . "' placeholder='Tillägg' value='" . htmlentities($addon['namn'], ENT_QUOTES) . "'>";
                 echo  "<input type='number' name='trip-tillagg-pris[" . ($id+1) . "]' id='trip-tillagg-" . ($id+1) . "-pris' placeholder='0' value='" . $addon['pris'] . "'> :-";
                 echo "</div>";
               }
@@ -332,12 +332,12 @@ class Trip {
               <?php
                 foreach($rooms as $room) {
                   if ((isset($trip)) && (array_key_exists($room['id'], $rooms_trip))) {
-                    echo "<tr><td><input type='checkbox' name='useroom[]' value='" . $room['id'] . "' class='room-checkbox' checked></td><td>" . htmlspecialchars($room['boende'], ENT_QUOTES);
+                    echo "<tr><td><input type='checkbox' name='useroom[]' value='" . $room['id'] . "' class='room-checkbox' checked></td><td>" . htmlentities($room['boende'], ENT_QUOTES);
                     echo "</td>";
                     echo "<td><input type='number' name='roomprice[" . $room['id'] . "]' placeholder='0' class='room-price' value='" . $rooms_trip[$room['id']]['pris'] . "'> :-</td></tr>";
                   } else {
                     if ($room['aktiv'] == 1) {
-                      echo "<tr><td><input type='checkbox' name='useroom[]' value='" . $room['id'] . "' class='room-checkbox'></td><td>" . htmlspecialchars($room['boende'], ENT_QUOTES);
+                      echo "<tr><td><input type='checkbox' name='useroom[]' value='" . $room['id'] . "' class='room-checkbox'></td><td>" . htmlentities($room['boende'], ENT_QUOTES);
                       echo "</td>";
                       echo "<td><input type='number' name='roomprice[" . $room['id'] . "]' placeholder='0' class='room-price'> :-</td></tr>";
                     }
@@ -363,12 +363,12 @@ class Trip {
               <?php
                 foreach($stops as $stop) {
                   if ((isset($trip)) && (array_key_exists($stop['id'], $stops_trip))) {
-                    echo "<tr><td><input type='checkbox' name='usestop[]' value='" . $stop['id'] . "' class='stop-checkbox' checked></td><td>" .  htmlspecialchars($stop['ort'], ENT_QUOTES) . ", " .  htmlspecialchars($stop['plats'], ENT_QUOTES);
+                    echo "<tr><td><input type='checkbox' name='usestop[]' value='" . $stop['id'] . "' class='stop-checkbox' checked></td><td>" .  htmlentities($stop['ort'], ENT_QUOTES) . ", " .  htmlentities($stop['plats'], ENT_QUOTES);
                     echo "</td><td><input type='time' name='stopfrom[" . $stop['id'] . "]' placeholder='HH:MM' class='stop-input' value='" . $stops_trip[$stop['id']]['tid_ut'] . "'></td>";
                     echo "<td><input type='time' name='stopto[" . $stop['id'] . "]' placeholder='HH:MM' class='stop-input' value='" . $stops_trip[$stop['id']]['tid_in'] . "'></td></tr>";
                   } else {
                     if ($stop['aktiv'] == 1) {
-                      echo "<tr><td><input type='checkbox' name='usestop[]' value='" . $stop['id'] . "' class='stop-checkbox'></td><td>" .  htmlspecialchars($stop['ort'], ENT_QUOTES) . ", " .  htmlspecialchars($stop['plats'], ENT_QUOTES);
+                      echo "<tr><td><input type='checkbox' name='usestop[]' value='" . $stop['id'] . "' class='stop-checkbox'></td><td>" .  htmlentities($stop['ort'], ENT_QUOTES) . ", " .  htmlentities($stop['plats'], ENT_QUOTES);
                       echo "</td><td><input type='time' name='stopfrom[" . $stop['id'] . "]' placeholder='HH:MM' class='stop-input'></td>";
                       echo "<td><input type='time' name='stopto[" . $stop['id'] . "]' placeholder='HH:MM' class='stop-input'></td></tr>";
                     }
@@ -392,11 +392,11 @@ class Trip {
               <?php
                 foreach($categories as $category) {
                   if ((isset($trip)) && (array_key_exists($category['id'], $categories_trip))) {
-                    echo "<tr><td><input type='checkbox' name='usecategory[]' value='" . $category['id'] . "' class='category-checkbox' checked></td><td>" .  htmlspecialchars($category['kategori'], ENT_QUOTES);
+                    echo "<tr><td><input type='checkbox' name='usecategory[]' value='" . $category['id'] . "' class='category-checkbox' checked></td><td>" .  htmlentities($category['kategori'], ENT_QUOTES);
                     echo "</td></tr>";
                   } else {
                     if ($category['aktiv'] == 1) {
-                      echo "<tr><td><input type='checkbox' name='usecategory[]' value='" . $category['id'] . "' class='category-checkbox'></td><td>" .  htmlspecialchars($category['kategori'], ENT_QUOTES);
+                      echo "<tr><td><input type='checkbox' name='usecategory[]' value='" . $category['id'] . "' class='category-checkbox'></td><td>" .  htmlentities($category['kategori'], ENT_QUOTES);
                       echo "</td></tr>";
                     }
                   }
@@ -420,23 +420,23 @@ class Trip {
             <p>Valfritt, ställs in automatiskt om det lämnas tomt.</p>
             <fieldset>
               <label for="uri_kategori" class="small-label">Resa URL (SEO vänlig sub-url):</label>
-              <input type="text" name="tour_url" maxlength="85" value="<?php if (isset($trip)) {echo  htmlspecialchars($trip['url'], ENT_QUOTES);} ?>" />
+              <input type="text" name="tour_url" maxlength="85" value="<?php if (isset($trip)) {echo  htmlentities($trip['url'], ENT_QUOTES);} ?>" />
             </fieldset>
             <fieldset>
               <label for="og_title" class="small-label">Social media titel:</label>
-              <input type="text" name="og_title" maxlength="40" value="<?php if (isset($trip)) {echo  htmlspecialchars($trip['og_title'], ENT_QUOTES);} ?>" />
+              <input type="text" name="og_title" maxlength="40" value="<?php if (isset($trip)) {echo  htmlentities($trip['og_title'], ENT_QUOTES);} ?>" />
             </fieldset>
             <fieldset>
               <label for="og_description" class="small-label">Social media beskrivning (max 255 tecken):</label>
-              <input type="text" name="og_description" maxlength="255" value="<?php if (isset($trip)) {echo  htmlspecialchars($trip['og_description'], ENT_QUOTES);} ?>" />
+              <input type="text" name="og_description" maxlength="255" value="<?php if (isset($trip)) {echo  htmlentities($trip['og_description'], ENT_QUOTES);} ?>" />
             </fieldset>
             <fieldset>
               <label for="seo_keywords" class="small-label">Nyckelord. Separerade med komma. (Använd bara ett eller två):</label>
-              <input type="text" name="seo_keywords" maxlength="255" value="<?php if (isset($trip)) {echo  htmlspecialchars($trip['seo_keywords'], ENT_QUOTES);} ?>" />
+              <input type="text" name="seo_keywords" maxlength="255" value="<?php if (isset($trip)) {echo  htmlentities($trip['seo_keywords'], ENT_QUOTES);} ?>" />
             </fieldset>
             <fieldset>
               <label for="meta_data_extra" class="small-label">Extra meta taggar (skriv in full HTML för ev extra meta taggar):</label>
-              <textarea type="text" name="meta_data_extra" value=""><?php if (isset($trip)) {echo  htmlspecialchars($trip['meta_data_extra'], ENT_QUOTES);} ?></textarea>
+              <textarea type="text" name="meta_data_extra" value=""><?php if (isset($trip)) {echo  htmlentities($trip['meta_data_extra'], ENT_QUOTES);} ?></textarea>
             </fieldset>
 
           </fieldset>

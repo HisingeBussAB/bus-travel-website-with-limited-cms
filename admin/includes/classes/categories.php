@@ -76,7 +76,6 @@ class Categories {
     $pdo = DB::get();
 
     $uri = root\includes\classes\Functions::uri_recode($name);
-    $uri = filter_var($uri, FILTER_SANITIZE_URL);
 
     $seo_keywords = $name;
     $og_title = "Rekå Resor - " . $name;

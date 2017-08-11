@@ -272,7 +272,6 @@ class NewTrip
 
     if (empty($input['tour_url'])) {
       $this->url = root\includes\classes\Functions::uri_recode(trim($this->heading));
-      $this->url = filter_var(trim($this->url), FILTER_SANITIZE_URL);
       $urlbase = $this->url;
 
       //Check if it already exists
@@ -299,11 +298,11 @@ class NewTrip
     }
 
     $photofolder = $this->url;
+    $photofolder = html_entity_decode($photofolder, ENT_QUOTES, "utf-8");
+    $photofolder = htmlentities($photofolder, ENT_QUOTES, "utf-8");
     $photofolder = filter_var(trim($photofolder), FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW | FILTER_FLAG_STRIP_HIGH | FILTER_FLAG_STRIP_BACKTICK );
     $photofolder = filter_var($photofolder, FILTER_SANITIZE_URL);
     $photofolder = filter_var($photofolder, FILTER_SANITIZE_EMAIL);
-    $photofolder = html_entity_decode($photofolder, ENT_QUOTES, "utf-8");
-    $photofolder = htmlentities($photofolder, ENT_QUOTES, "utf-8");
     $photofolder = rawurlencode($photofolder);
     $photofolder = str_replace('%','-',$photofolder);  //% will break sprintf command.
     $this->photofolder = $photofolder;

@@ -48,6 +48,8 @@ class Router
 
     $this->routes = [];
 
+    
+
     //                Pattern with (arguments)               function to run on matchRoute                                                    METHOD
     $this->addRoute(  '/(^$)/',                              '\HisingeBussAB\RekoResor\website\router\Render::inc',                          'GET');
     $this->addRoute(  '/^adminp$/',                          '\HisingeBussAB\RekoResor\website\admin\includes\pages\Main::showAdminMain',    'GET');
