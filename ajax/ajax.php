@@ -98,6 +98,17 @@ class Ajax
         exit;
       break;
 
+      case 'booktour':
+
+        if (root\includes\classes\BookTour::sendForm($_POST)) {
+          header('Content-Type: application/json; charset=utf-8');
+          header('Access-Control-Allow-Origin: http' . APPEND_SSL . '://' .$_SERVER['HTTP_HOST']);
+          http_response_code(200);
+        }
+        header('Content-Type: text/html; charset=utf-8');
+        exit;
+      break;
+
 
       default:
         echo "Not found!";

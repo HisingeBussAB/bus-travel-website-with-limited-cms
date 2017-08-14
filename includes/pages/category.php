@@ -79,7 +79,7 @@ try {
     $tours[$i]['link'] = filter_var("http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/resa/". str_replace("'", "", $tour['url']), FILTER_SANITIZE_URL);
     $tours[$i]['days'] = strtr(strip_tags($tour['antaldagar'], $allowed_tags), $html_ents);
     $tours[$i]['summary'] = strtr(nl2br(strip_tags($tour['ingress'], $allowed_tags)), $html_ents);
-    $tours[$i]['price'] = strtr(strip_tags($tour['pris'], $allowed_tags), $html_ents);
+    $tours[$i]['price'] = number_format(filter_var($tour['pris'], FILTER_SANITIZE_NUMBER_INT), 0, ",", " ");
     $tours[$i]['departure'] = strtr(strip_tags($tour['datum'], $allowed_tags), $html_ents);
 
     $server_path = __DIR__ . '/../../upload/resor/' . $tour['bildkatalog'] . '/';
