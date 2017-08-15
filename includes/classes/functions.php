@@ -161,12 +161,13 @@ class Functions
 
 
   public static function get_pdf_files($dir) {
-
     if (!is_dir($dir)) {
       return false;
     }
 
-    $files = scandir($dir);
+    if (!($files = scandir($dir))) {
+      return false;
+    }
     foreach($files as $file) {
       if (substr($file, 0, 1) != ".") {
         if (strpos(mime_content_type($dir . $file), "pdf") !== FALSE) {
@@ -174,7 +175,8 @@ class Functions
         }
       }
     }
-    if (!empty($result)) {
+
+    if (!empty($results)) {
       sort($results);
       return $results;
     } else {

@@ -1,6 +1,6 @@
 "use strict";
 
-function newtoken(idfield, tokenfield, reply) {
+function newtoken(idfield, tokenfield, reply, type) {
   var dataObj = {};
   dataObj["form"] = type;
   dataObj["expiration"] = 5400;

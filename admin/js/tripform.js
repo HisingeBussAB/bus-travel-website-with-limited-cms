@@ -24,8 +24,8 @@ $(function() {
     days++;
     $('#trip-text').append(
       "<fieldset id='trip-text-" + days + "'>"
-      + "<label for='trip-text-heading[" + days + "]'>Dag " + days + "</label>"
-      + "<input type='text' maxlength='200' name='trip-text-heading[" + days + "]' id='trip-text-" + days + "-heading' placeholder='Dag " + days + "'>"
+      + "<label for='trip-text-heading[" + days + "]'>Paragraf " + days + "</label>"
+      + "<input type='text' maxlength='200' name='trip-text-heading[" + days + "]' id='trip-text-" + days + "-heading' placeholder='Dag " + days + " - Rubrik'>"
       + "<textarea type='text' name='trip-text[" + days + "]' id='trip-text-" + days + "-text'></textarea>"
       + "</fieldset>");
     });
@@ -108,7 +108,7 @@ function saveForm(formData) {
         $( "#sumbit-error" ).html( "Något har gått fel. Error: 404." )
       else
         $( "#sumbit-error" ).html( "Något har gått fel. Fel: " + data.responseText );
-      newtoken("#tokenid", "#token",  "#sumbit-error");
+      newtoken("#tokenid", "#token",  "#sumbit-error", "newtour");
       $("#save-trip-button").prop("disabled",false);
       $("#trip :input").prop("disabled", false);
     });

@@ -331,7 +331,7 @@ class NewTrip
 
 
     if (empty($input['og_title'])) {
-      $this->og_title = strip_tags($this->heading) . " - Rekå Resor.";
+      $this->og_title = strip_tags($this->heading) . " - Rekå Resor";
     } else {
       $this->og_title = filter_var($input['og_title'], FILTER_SANITIZE_STRING);
     }

@@ -193,14 +193,14 @@ class Trip {
             <?php
             if (!isset($trip)) {
               echo "<fieldset id='trip-text-1' class='trip-text'>";
-              echo  "<label for='trip-text-heading[1]'>Dag 1</label>";
-              echo  "<input type='text' maxlength='200' name='trip-text-heading[1]' id='trip-text-heading-1' placeholder='Dag 1'>";
+              echo  "<label for='trip-text-heading[1]'>Paragraf 1</label>";
+              echo  "<input type='text' maxlength='200' name='trip-text-heading[1]' id='trip-text-heading-1' placeholder='Paragraf 1 - Rubrik (ex: Dag 1)'>";
               echo  "<textarea type='text' name='trip-text[1]' id='trip-text-1-text' placeholder='Programtext dag 1'></textarea>";
               echo "</fieldset>";
             } else {
               foreach ($textheads as $id=>$texthead) {
                 echo "<fieldset id='trip-text-" . ($id+1) . "' class='trip-text'>";
-                echo "<label for='trip-text-heading[" . ($id+1) . "]'>Dag " . ($id+1) . "</label>";
+                echo "<label for='trip-text-heading[" . ($id+1) . "]'>Paragraf " . ($id+1) . "</label>";
                 echo "<input type='text' maxlength='200' name='trip-text-heading[" . ($id+1) . "]' class='trip-text-heading' value='" . htmlentities($texthead, ENT_QUOTES) . "'>";
                 echo "<textarea type='text' name='trip-text[" . ($id+1) . "]' class='trip-text-text'>" . htmlentities($textbodies[$id], ENT_QUOTES) . "</textarea>";
                 echo "</fieldset>";
