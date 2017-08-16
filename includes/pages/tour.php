@@ -38,11 +38,11 @@ try {
     if ((count($result) > 0) && ($result !== false)) {
       $tour['id'] = filter_var($result['id'], FILTER_SANITIZE_NUMBER_INT);
       $tour['namn'] = strtr(strip_tags($result['namn'], $allowed_tags), $html_ents);
-      $tour['ingress'] = strtr(nl2br(strip_tags($result['ingress'], $allowed_tags)), $html_ents);
+      $tour['ingress'] = functions::linksaver(strtr(nl2br(strip_tags($result['ingress'], $allowed_tags)), $html_ents));
       $tour['url'] = filter_var("http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/resa/" . $result['url'], FILTER_SANITIZE_URL);
 
       $tour['pris'] = number_format(filter_var($result['pris'], FILTER_SANITIZE_NUMBER_INT), 0, ",", " ");
-      $tour['program'] = strtr(nl2br(strip_tags($result['program'], $allowed_tags)), $html_ents);
+      $tour['program'] = functions::linksaver(strtr(nl2br(strip_tags($result['program'], $allowed_tags)), $html_ents));
       $tour['antaldagar'] = strtr(strip_tags($result['antaldagar']), $html_ents);
       $search = array('<li>', '</li>');
       $replace = array('<tr><td>', '</td></tr>');
@@ -322,9 +322,7 @@ echo "<main class='main-section container-fluid'>";
 
 
   echo "</div>";
-      echo "</div>";
-
-
+  echo "</div>";
 
 
 echo "</main>";

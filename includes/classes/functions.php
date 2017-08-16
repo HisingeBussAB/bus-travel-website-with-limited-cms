@@ -53,6 +53,18 @@ class Functions
     return $string;
   }
 
+  public static function linksaver($string) {
+
+    $string = preg_replace("/(www.|http:\/\/www.|https:\/\/www.|http:\/\/|https:\/\/)(\S*)/i", "<a href='$1$2' target='_blank'>$1$2</a>", $string);
+    $string = preg_replace("/(href='www.)/i", "href='http://www.", $string);
+    $string = preg_replace("/(_blank'>http:\/\/|_blank'>https:\/\/)/i", "_blank'>", $string);
+
+    return $string;
+
+    }
+
+
+
   public static function set_html_list() {
     $list = get_html_translation_table(HTML_ENTITIES, ENT_QUOTES);
     unset($list['<'], $list['>']);
