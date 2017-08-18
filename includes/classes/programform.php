@@ -88,6 +88,10 @@ class ProgramForm {
 
       $mail = new \PHPMailer;
 
+      $mail->setLanguage('sv', __DIR__ . '/../../dependencies/vendor/phpmailer/language/');
+
+
+
       $mailbody = "Programbeställning från hemsidan:\r\n\r\n" .
                   $data['name'] . "\r\n" .
                   $data['address'] . "\r\n" .
@@ -99,38 +103,47 @@ class ProgramForm {
 
       $mailbody .= "\r\n\r\nSkickad: " . date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']);
 
-      $SMTPDebug = 0; //Should always be 0 or the authtoken/password will show on the page directly. Set to 2 if specifc problems with this piece of code
+      $SMTPDebug = 2; //Should always be 0 or the authtoken/password will show on the page directly. Set to 2 if specifc problems with this piece of code
       $mail->SMTPDebug = $SMTPDebug;
       $mail->CharSet = 'UTF-8';
       $mail->isSMTP();
-      $mail->SMTPAuth   = ($smtpresult['auth'] === '1');
+      //$mail->SMTPAuth   = ($smtpresult['auth'] === '1');
       $mail->ClearAllRecipients();
 
-      $mail->Port       = $smtpresult['port'];
+      //$mail->Port       = $smtpresult['port'];
+      $mail->Port       = 25;
+      $mail->SMTPSecure = 'tls';
 
       if ($smtpresult['tls'] === "tls") {
-        $mail->SMTPSecure = 'tls';
+        //$mail->SMTPSecure = 'tls';
       }
       elseif ($smtpresult['tls'] === "ssl") {
-        $mail->SMTPSecure = 'ssl';
+        //$mail->SMTPSecure = 'ssl';
       }
 
-      $mail->Host       = $smtpresult['server'];
-      $mail->Username   = $smtpresult['smtpuser'];
-      $mail->Password   = $smtpresult['smtppwd'];
+      //$mail->Host       = $smtpresult['server'];
+      //$mail->Username   = $smtpresult['smtpuser'];
+      //$mail->Password   = $smtpresult['smtppwd'];
 
-      $mail->setFrom('info@rekoresor.se', 'Hemsidan - Rekå Resor');
+      $mail->Host       = "aspmx.l.google.com";
+      $mail->Username   = "";
+      $mail->Password   = "";
+      $mail->SMTPAuth = FALSE;
+
+      $mail->setFrom('c3350@hisingebuss.se', 'Hemsidan - Rekå Resor');
+      $mail->Sender="c3350@hisingebuss.se";
+      $mail->AddReplyTo("c3350@hisingebuss.se", "Rekå Resor");
       $mail->addAddress('program@rekoresor.se');
       $mail->Subject  = "Rekå Resor - Beställt program";
       $mail->Body     = $mailbody;
 
       if(!$mail->send()) {
         $reply .=  '<br>Meddelandet kunde inte skickas.<br>';
-        $reply .=  '<br>Mailer error: ' . $mail->ErrorInfo;
+        if (DEBUG_MODE) { $reply .=  '<br>Mailer error: ' . $mail->ErrorInfo; }
         throw new \Exception("Fel vid kommunikation med mailservern.");
       } else {
         $mail->ClearAllRecipients();
-        $mail->setFrom('info@rekoresor.se', 'Rekå Resor');
+        $mail->setFrom('c3350@hisingebuss.se', 'Rekå Resor');
         if (!empty($data['email'])) { $mail->addAddress($data['email']); }
         $mail->Subject  = "Tack för din programbeställning.";
         $mail->Body     = "Tack för att du beställt program.\r\nVi kommer skicka aktuella reseprogram till dig inom kort.";
@@ -138,7 +151,7 @@ class ProgramForm {
         if ($data['email'] !== FALSE) {
           if(!$mail->send()) {
             $reply .=  '<br>Meddelandet kunde inte skickas.<br>';
-            $reply .=  '<br>Mailer error: ' . $mail->ErrorInfo;
+            if (DEBUG_MODE) { $reply .=  '<br>Mailer error: ' . $mail->ErrorInfo; }
             throw new \Exception("Fel vid kommunikation med mailservern");
           }
         }

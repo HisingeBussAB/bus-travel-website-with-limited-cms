@@ -48,7 +48,7 @@ class Router
 
     $this->routes = [];
 
-    
+
 
     //                Pattern with (arguments)               function to run on matchRoute                                                    METHOD
     $this->addRoute(  '/(^$)/',                              '\HisingeBussAB\RekoResor\website\router\Render::inc',                          'GET');
@@ -71,6 +71,8 @@ class Router
     $this->addRoute(  '/^ajax\/([\w-%]+)$/',                 '\HisingeBussAB\RekoResor\website\ajax\Ajax::startAjax',                        'POST');
     $this->addRoute(  '/^adminajax\/([\w-%]+)$/',            '\HisingeBussAB\RekoResor\website\ajax\AdminAjax::startAjax',                   'POST');
 
+    //XOAuth2
+    $this->addRoute(  '/^authenticatexoauth2WVeAebVuKl$/',$func = function() {if (!include __DIR__ . '/../dependencies/vendor/phpmailer/get_oauth_token.php'){require __DIR__ . '/../includes/pages/error/404.php';} },'ANY');
 
     //INSTALL ROUTE
     $this->addRoute(  '/^installme$/',$func = function() {if (!include __DIR__ . '/../install/install.php'){require __DIR__ . '/../includes/pages/error/404.php';} },'ANY');

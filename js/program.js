@@ -25,6 +25,7 @@ function sendForm(formData) {
     dataType: "json",
   })
     .done(function(data) {
+      console.log(data);
       $( "#ajax-response" ).html( data );
       newtoken();
       setTimeout(function(){
@@ -36,6 +37,7 @@ function sendForm(formData) {
       document.getElementById("get-program-form").reset();
     })
     .fail(function(data) {
+      console.log(data);
       newtoken();
       if (data.status == 404)
         $( "#ajax-response" ).html( "Något har gått fel. Kunde inte hitta svarssidan." );

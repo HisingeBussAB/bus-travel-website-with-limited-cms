@@ -11,3 +11,4 @@ upload/**/*.png
 upload/**/*.pdf
 upload/**/*.jpg
 upload/**/*.jpeg
+vendor/*

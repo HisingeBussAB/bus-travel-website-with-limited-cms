@@ -114,6 +114,8 @@ class BookTour {
 
       $mail = new \PHPMailer;
 
+      $mail->setLanguage('sv', __DIR__ . '/../../dependencies/vendor/phpmailer/language/');
+
       $mailbody = "Resebokning från hemsidan:\r\n\r\n" .
                   "Resa: " . $data['tour'] . "\r\n" .
                   "Datum: " . $data['departure'] . "\r\n" .
@@ -156,13 +158,15 @@ class BookTour {
       $mail->Password   = $smtpresult['smtppwd'];
 
       $mail->setFrom('info@rekoresor.se', 'Hemsidan - Rekå Resor');
+      $mail->Sender="info@rekoresor.se";
+      $mail->AddReplyTo("info@rekoresor.se", "Rekå Resor");
       $mail->addAddress('program@rekoresor.se');
       $mail->Subject  = "Rekå Resor - Resebokning från hemsidan";
       $mail->Body     = $mailbody;
 
       if(!$mail->send()) {
         $reply .=  '<br>Meddelandet kunde inte skickas.<br>';
-        $reply .=  '<br>Mailer error: ' . $mail->ErrorInfo;
+        if (DEBUG_MODE) { $reply .=  '<br>Mailer error: ' . $mail->ErrorInfo; }
         throw new \Exception("Fel vid kommunikation med mailservern.");
       } else {
         $mail->ClearAllRecipients();
@@ -174,7 +178,7 @@ class BookTour {
         if ($data['email'] !== FALSE) {
           if(!$mail->send()) {
             $reply .=  '<br>Meddelandet kunde inte skickas.<br>';
-            $reply .=  '<br>Mailer error: ' . $mail->ErrorInfo;
+            if (DEBUG_MODE) { $reply .=  '<br>Mailer error: ' . $mail->ErrorInfo; }
             throw new \Exception("Fel vid kommunikation med mailservern");
           }
         }
