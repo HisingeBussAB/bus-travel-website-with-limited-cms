@@ -10,10 +10,7 @@ use HisingeBussAB\RekoResor\website as root;
 use HisingeBussAB\RekoResor\website\includes\classes\DB;
 use HisingeBussAB\RekoResor\website\includes\classes\DBError;
 
-require __DIR__ . '/../../../dependencies/vendor/phpjwt/JWT.php';
-require __DIR__ . '/../../../dependencies/vendor/phpjwt/BeforeValidException.php';
-require __DIR__ . '/../../../dependencies/vendor/phpjwt/ExpiredException.php';
-require __DIR__ . '/../../../dependencies/vendor/phpjwt/SignatureInvalidException.php';
+require __DIR__ . '/../../../vendor/autoload.php';
 
 use \Firebase\JWT\JWT;
 

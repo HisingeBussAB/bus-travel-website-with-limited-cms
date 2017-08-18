@@ -84,11 +84,11 @@ class ProgramForm {
         if (DEBUG_MODE) {throw new \Exception($reply .= DBError::showError($e, __CLASS__, $sql));} else {throw new \Exception($reply .= "Databasfel.");}
       }
 
-      if (!require_once __DIR__ . '/../../dependencies/vendor/phpmailer/PHPMailerAutoload.php') {throw new \Exception($reply .= "Mailer hittades inte.");}
+      if (!require_once __DIR__ . '/../../vendor/phpmailer/phpmailer/PHPMailerAutoload.php') {throw new \Exception($reply .= "Mailer hittades inte.");}
 
       $mail = new \PHPMailer;
 
-      $mail->setLanguage('sv', __DIR__ . '/../../dependencies/vendor/phpmailer/language/');
+      $mail->setLanguage('sv', __DIR__ . '/../../vendor/phpmailer/phpmailer/language/');
 
 
 

@@ -36,7 +36,7 @@ function sendLogin() {
 
     })
     .fail(function(data) {
-
+      newtoken();
       //exit prevent doubleclick
       setTimeout(function(){
         grecaptcha.reset();
@@ -52,4 +52,26 @@ function sendLogin() {
         };
 
       });
+}
+
+
+function newtoken() {
+  var dataObj = {};
+  dataObj["form"] = 'login';
+  dataObj["expiration"] = 1000;
+  dataObj["unique"] = true;
+  $.ajax({
+    type: 'POST',
+    cache: false,
+    url: '/ajax/gettoken',
+    data: dataObj,
+    dataType: "json",
+  })
+    .done(function(data) {
+      $( "#tokenid" ).val( data.token.id );
+      $( "#token" ).val( data.token.token );
+    })
+    .fail(function() {
+      $( "#ajax-response" ).append( "<p>Kunde inte generera ny säkerhetoken. <a href='javascript:window.location.href=window.location.href'>Ladda om sidan.</a></p>" );
+    });
 }

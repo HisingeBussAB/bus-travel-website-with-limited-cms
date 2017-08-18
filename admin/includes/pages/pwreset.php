@@ -133,7 +133,7 @@ class PWReset
 
 
 
-        require __DIR__ . '/../../../dependencies/vendor/phpmailer/PHPMailerAutoload.php';
+        require __DIR__ . '/../../../vendor/autoload.php';
         $mail = new \PHPMailer;
 
 

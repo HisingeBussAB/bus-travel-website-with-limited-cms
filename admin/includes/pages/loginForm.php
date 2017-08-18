@@ -35,15 +35,15 @@ $token = root\includes\classes\Tokens::getFormToken("login",1000);
   <img class="login-screen" src="/img/logo.gif" alt="Rekå Resor AB">
 
   <form action="/ajax/admindologin" method="post" accept-charset="utf-8" id="login-form">
-    <input type="hidden" name="tokenid" value="<?php echo $token['id'] ?>">
-    <input type="hidden" name="token" value="<?php echo $token['token'] ?>">
+    <input type="hidden" name="tokenid" id="tokenid" value="<?php echo $token['id'] ?>">
+    <input type="hidden" name="token" id="token" value="<?php echo $token['token'] ?>">
     <fieldset>
       <label for="user">Användarnamn:</label>
-      <input type="input" name="user" id="login-user">
+      <input type="input" name="user" id="login-user" required>
     </fieldset>
     <fieldset>
       <label for="pwd">Lösenord:</label>
-      <input type="password" name="pwd" id="loginpwd">
+      <input type="password" name="pwd" id="loginpwd" required>
     </fieldset>
     <fieldset>
       <div class="g-recaptcha" data-sitekey="<?php echo RECAPTCHA_PUBLIC ?>"></div>

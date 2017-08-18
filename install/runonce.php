@@ -8,7 +8,7 @@
  * @link      https://github.com/HisingeBussAB/bus-travel-website-with-limited-cms
  */
 
-
+//Prevent accidental re-install. This conditon must be changed to allow dropping and reinitalizing any existing db tables.
 if (!$firstinstall) {
   try {
     $table = TABLE_PREFIX . 'hallplatser_resor';
@@ -187,18 +187,6 @@ $sql = "INSERT INTO " . TABLE_PREFIX . "logins (
 
 
 try {
-$sql = "GRANT REFERENCES ON udmyrs231446." . TABLE_PREFIX . "logins TO 'udmyrs231446'@'apache14.ilait.se';";
-
-  $sth = $pdo->prepare($sql);
-  $sth->execute();
-
-} catch(\PDOException $e) {
-  echo $sql . "<br>" . $e->getMessage() . "<br>";
-}
-
-
-
-try {
   $table = TABLE_PREFIX . 'hammerguard';
   $sql = "CREATE TABLE " . $table . " (
     iphash CHAR(64),
@@ -218,10 +206,13 @@ try {
     time BIGINT,
     sessionid CHAR(64),
     jwtkey VARCHAR(200),
-    jwttoken VARCHAR(200),
+    jwttoken VARCHAR(200)";
+    if ($allow_references) {
+    $sql .= ",
     CONSTRAINT
       FOREIGN KEY (user) REFERENCES " . TABLE_PREFIX . "logins (id)
-    );";
+    );"; }
+    else { $sql .= ");"; }
   $sth = $pdo->prepare($sql);
   $sth->execute();
   echo "Table: " . $table . " created succesfully.<br>";
@@ -302,11 +293,14 @@ try {
     hallplatser_id BIGINT UNSIGNED,
     resa_id BIGINT UNSIGNED,
     tid_in TIME,
-    tid_ut TIME,
+    tid_ut TIME";
+    if ($allow_references) {
+    $sql .= ",
     CONSTRAINT
       FOREIGN KEY (resa_id) REFERENCES drs116573." . TABLE_PREFIX . "resor (id),
     CONSTRAINT
-      FOREIGN KEY (hallplatser_id) REFERENCES " . TABLE_PREFIX . "hallplatser (id));";
+      FOREIGN KEY (hallplatser_id) REFERENCES " . TABLE_PREFIX . "hallplatser (id));"; }
+    else { $sql .= ");"; }
   $sth = $pdo->prepare($sql);
   $sth->execute();
   echo "Table: " . $table . " created succesfully.<br>";
@@ -318,11 +312,14 @@ try {
   $table = TABLE_PREFIX . 'kategorier_resor';
   $sql = "CREATE TABLE " . $table . " (
     resa_id BIGINT UNSIGNED,
-    kategorier_id BIGINT UNSIGNED,
+    kategorier_id BIGINT UNSIGNED";
+    if ($allow_references) {
+    $sql .= ",
     CONSTRAINT
       FOREIGN KEY (resa_id) REFERENCES " . TABLE_PREFIX . "resor (id),
     CONSTRAINT
-      FOREIGN KEY (kategorier_id) REFERENCES " . TABLE_PREFIX . "kategorier (id));";
+      FOREIGN KEY (kategorier_id) REFERENCES " . TABLE_PREFIX . "kategorier (id));"; }
+    else { $sql .= ");"; }
   $sth = $pdo->prepare($sql);
   $sth->execute();
   echo "Table: " . $table . " created succesfully.<br>";
@@ -335,9 +332,13 @@ try {
   $sql = "CREATE TABLE " . $table . " (
     resa_id BIGINT UNSIGNED,
     pris INT,
-    namn VARCHAR(255),
+    namn VARCHAR(255)";
+    if ($allow_references) {
+    $sql .= ",
     CONSTRAINT
-      FOREIGN KEY (resa_id) REFERENCES " . TABLE_PREFIX . "resor (id));";
+      FOREIGN KEY (resa_id) REFERENCES " . TABLE_PREFIX . "resor (id));"; }
+    else { $sql .= ");"; }
+
   $sth = $pdo->prepare($sql);
   $sth->execute();
   echo "Table: " . $table . " created succesfully.<br>";
@@ -363,11 +364,15 @@ try {
   $sql = "CREATE TABLE " . $table . " (
     resa_id BIGINT UNSIGNED,
     boenden_id BIGINT UNSIGNED,
-    pris INT,
+    pris INT";
+    if ($allow_references) {
+    $sql .= ",
     CONSTRAINT
       FOREIGN KEY (resa_id) REFERENCES " . TABLE_PREFIX . "resor (id),
     CONSTRAINT
-      FOREIGN KEY (boenden_id) REFERENCES " . TABLE_PREFIX . "boenden (id));";
+      FOREIGN KEY (boenden_id) REFERENCES " . TABLE_PREFIX . "boenden (id));"; }
+    else { $sql .= ");"; }
+
   $sth = $pdo->prepare($sql);
   $sth->execute();
   echo "Table: " . $table . " created succesfully.<br>";
@@ -379,9 +384,13 @@ try {
   $table = TABLE_PREFIX . 'datum';
   $sql = "CREATE TABLE " . $table . " (
     resa_id BIGINT UNSIGNED,
-    datum DATE,
+    datum DATE";
+    if ($allow_references) {
+    $sql .= ",
     CONSTRAINT
-      FOREIGN KEY (resa_id) REFERENCES " . TABLE_PREFIX . "resor (id));";
+      FOREIGN KEY (resa_id) REFERENCES " . TABLE_PREFIX . "resor (id));"; }
+    else { $sql .= ");"; }
+
   $sth = $pdo->prepare($sql);
   $sth->execute();
   echo "Table: " . $table . " created succesfully.<br>";
@@ -393,6 +402,10 @@ try {
   $table = TABLE_PREFIX . 'settings';
   $sql = "CREATE TABLE " . $table . " (
     id BIGINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    mode VARCHAR(20),
+    oauth_clientid VARCHAR(200),
+    oauth_clientsecret VARCHAR(100),
+    oauth_initalized BOOLEAN,
     email VARCHAR(200),
     server VARCHAR(200),
     port INT UNSIGNED,
@@ -412,6 +425,18 @@ try {
   $sql = "CREATE TABLE " . $table . " (
     token CHAR(128),
     time TIMESTAMP DEFAULT CURRENT_TIMESTAMP);";
+  $sth = $pdo->prepare($sql);
+  $sth->execute();
+  echo "Table: " . $table . " created succesfully.<br>";
+} catch(\PDOException $e) {
+  echo $sql . "<br>" . $e->getMessage() . "<br>";
+}
+
+try {
+  $table = TABLE_PREFIX . 'nyheter';
+  $sql = "CREATE TABLE " . $table . " (
+    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    nyheter TIMESTAMP DEFAULT CURRENT_TIMESTAMP);";
   $sth = $pdo->prepare($sql);
   $sth->execute();
   echo "Table: " . $table . " created succesfully.<br>";
