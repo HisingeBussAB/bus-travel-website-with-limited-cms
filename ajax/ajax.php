@@ -20,6 +20,7 @@ use HisingeBussAB\RekoResor\website as root;
 class Ajax
 {
   public static function startAjax($request) {
+
     root\includes\classes\Sessions::secSessionStart(FALSE);
 
     /**
@@ -29,6 +30,7 @@ class Ajax
      */
     switch ($request) {
       case 'admindologin':
+
         if (!root\admin\includes\classes\Login::setLogin()) {
           exit;
         } else {

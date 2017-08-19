@@ -51,11 +51,12 @@ function sendForm(formData, reply, button, form, type) {
   })
     .done(function(data) {
       $( reply ).html( data.responseText );
-      newtoken("#tokenid-" + type, "#token-" + type, reply);      
+      newtoken("#tokenid-" + type, "#token-" + type, reply, type);
       setTimeout(function(){ $( form + " :input").prop("disabled", false); }, 1000);
       setTimeout(function(){ $( button ).prop("disabled",false); }, 1000);
     })
     .fail(function(data) {
+      newtoken("#tokenid-" + type, "#token-" + type, reply,  type);
       if (data.status == 404)
         $( reply ).html( "Något har gått fel. Error: 404." )
       else

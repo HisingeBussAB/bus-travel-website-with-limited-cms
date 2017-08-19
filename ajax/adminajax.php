@@ -21,6 +21,7 @@ use HisingeBussAB\RekoResor\website\includes\classes\DBError;
 class AdminAjax
 {
   public static function startAjax($request) {
+
     root\includes\classes\Sessions::secSessionStart(FALSE);
 
     header('Content-Type: application/json; charset=utf-8');

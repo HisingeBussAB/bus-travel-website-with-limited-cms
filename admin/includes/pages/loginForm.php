@@ -6,8 +6,8 @@
 
 use HisingeBussAB\RekoResor\website as root;
 
+root\includes\classes\Sessions::secSessionStart();
 $token = root\includes\classes\Tokens::getFormToken("login",1000);
-
 ?>
 <!DOCTYPE html>
 <html lang="sv">

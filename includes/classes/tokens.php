@@ -29,6 +29,7 @@ class Tokens
     if (empty($_SESSION["tokens"][$form][$tokenid])) {
       return false;
     } else {
+
       $tokenarr = $_SESSION["tokens"][$form][$tokenid];
     }
 

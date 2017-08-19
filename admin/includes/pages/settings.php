@@ -53,6 +53,13 @@ class Settings {
           throw new \RuntimeException("<p>Databasfel! Kontakta systemadministratören om problemet består.</p>");
         }
 
+        if ($stmpresult['mode'] === 'smtp') {
+          $usesmtp = TRUE;
+        } elseif ($stmpresult['mode'] === 'gmail') {
+          $usegmail = TRUE;
+        }
+
+
         echo "<form action='/adminajax/updatepassword' method='post' accept-charset='utf-8' class='settings-form' id='pwd-form'>
                 <h2>Ändra användarnamn/lösenord</h2>
                 <input type='hidden' name='tokenid' value='" . $ptoken['id'] . "' id='tokenid-password' />
@@ -85,16 +92,20 @@ class Settings {
               <hr class='settings-form'>
               <form action='/adminajax/updatesettings' method='post' accept-charset='utf-8' class='settings-form' id='settings-form'>
                 <h2>Ändra SMTP inställningar</h2>
+                  <input type='radio' name='mode' id='usesmtp' value='smtp' ";
+                  if ($usesmtp) { echo " checked "; }
+                  echo "/>
+                  <label for='usesmtp'>Använd SMTP</label>
                 <input type='hidden' name='tokenid' value='" . $stoken['id'] . "' id='tokenid-settings' />
                 <input type='hidden' name='token' value='" . $stoken['token'] . "' id='token-settings' />
                 <input type='hidden' name='userid' value='$userid' />
                 <fieldset>
                   <label for='adminemail'>Administratörs e-mail:</label>
-                  <input type='email' maxlength='200' name='adminemail' value='" . $stmpresult['email'] . "' />
+                  <input type='email' maxlength='200' name='adminemail' value='" . htmlspecialchars($stmpresult['email'], ENT_QUOTES) . "' />
                 </fieldset>
                 <fieldset>
                   <label for='smtpserver'>SMTP server:</label>
-                  <input type='input' maxlength='200' name='smtpserver' value='" . $stmpresult['server'] . "' />
+                  <input type='input' maxlength='200' name='smtpserver' value='" . htmlspecialchars($stmpresult['server'], ENT_QUOTES) . "' />
                 </fieldset>
                 <fieldset>
                   <label for='smtpport'>SMTP port:</label>
@@ -122,15 +133,31 @@ class Settings {
                 </fieldset>
                 <fieldset>
                   <label for='smtpuser'>SMTP användarnamn:</label>
-                  <input type='input' maxlength='200' name='smtpuser' value='" . $stmpresult['smtpuser'] . "' />
+                  <input type='input' maxlength='200' name='smtpuser' value='" . htmlspecialchars($stmpresult['smtpuser'], ENT_QUOTES) . "' />
                 </fieldset>
                 <fieldset>
                   <label for='smtppwd'>SMTP lösenord:</label>
-                  <input type='input' maxlength='200' name='smtppwd' value='" . htmlspecialchars($stmpresult['smtppwd']) . "' />
+                  <input type='input' maxlength='200' name='smtppwd' value='" . htmlspecialchars($stmpresult['smtppwd'], ENT_QUOTES) . "' />
+                </fieldset>
+                <h2>Ändra Gmail API inställningar</h2>
+                  <input type='radio' name='mode' id='usegmail' value='gmail' ";
+                  if ($usegmail) { echo " checked "; }
+                  echo "/>
+                  <label for='usegmail'>Använd Gmail API</label>
+                <fieldset>
+                  <label for='clientid'>ClientId:</label>
+                  <input type='input' maxlength='200' name='clientid' id='clientid' value='" . htmlspecialchars($stmpresult['oauth_clientid'], ENT_QUOTES) . "' />
                 </fieldset>
                 <fieldset>
+                  <label for='clientsecret'>ClientSecret:</label>
+                  <input type='input' maxlength='200' name='clientsecret' id='clientsecret' value='" . htmlspecialchars($stmpresult['oauth_clientsecret'], ENT_QUOTES) . "' />
+                </fieldset>
+                <p>
+                Authorize this site with Google by clicking here.
+                </p>
+                <fieldset>
                   <label for='mainpwd'>Lösenord för inloggning på den här sidan:</label>
-                  <input type='password' maxlength='250' name='mainpwd' required />
+                  <input type='password' maxlength='250' name='mainpwd' id='mainpwd' required />
                 </fieldset>
                 <fieldset>
                   <button type='submit' id='send-settings'>Ändra inställningar</button>
@@ -160,7 +187,7 @@ class Settings {
   public static function update($update) {
 
     $httpcode = 500;
-    $result['responseText'] = "";
+    $reply['responseText'] = "";
 
 
     try {
@@ -172,6 +199,7 @@ class Settings {
 
       $pdo = DB::get();
       //Check token
+
       if (!root\includes\classes\Tokens::checkFormToken(trim($_POST['token']),trim($_POST['tokenid']),$update)) {
         $httpcode = 401;
         throw new \RuntimeException("<p>Fel säkerhetstoken. Prova <a href='javascript:window.location.href=window.location.href'>ladda om</a> sidan.</p>");
@@ -189,7 +217,7 @@ class Settings {
         $sth->execute();
         $userresult = $sth->fetch(\PDO::FETCH_ASSOC);
       } catch(\PDOException $e) {
-        $result['responseText'] .= DBError::showError($e, __CLASS__, $sql);
+        $reply['responseText'] .= DBError::showError($e, __CLASS__, $sql);
         $httpcode = 500;
         throw new \RuntimeException("<p>Databasfel! Kontakta systemadministratören om problemet består.</p>");
       }
@@ -239,14 +267,42 @@ class Settings {
           }
           $sth->execute();
         } catch(\PDOException $e) {
-          $result['responseText'] .= DBError::showError($e, __CLASS__, $sql);
+          $reply['responseText'] .= DBError::showError($e, __CLASS__, $sql);
           $httpcode = 500;
           throw new \RuntimeException("<p>Databasfel! Kontakta systemadministratören om problemet består.</p>");
         }
-        $result['responseText'] .= "Lösenord/Användarnamn uppdaterat.";
+        $reply['responseText'] .= "Lösenord/Användarnamn uppdaterat.";
         $httpcode = 200;
 
       } elseif ($update === "settings") {
+
+        try {
+          $sql = "SELECT * FROM " . TABLE_PREFIX . "settings WHERE id = 1;";
+          $sth = $pdo->prepare($sql);
+          $sth->execute();
+          $result = $sth->fetch(\PDO::FETCH_ASSOC);
+
+        } catch(\PDOException $e) {
+          DBError::showError($e, __CLASS__, $sql);
+          throw new \RuntimeException("<p>Databasfel! Kontakta systemadministratören om problemet består.</p>");
+        }
+
+        if (empty($result)) {
+          try {
+            $sql = "INSERT INTO " . TABLE_PREFIX . "settings (email) VALUES ('voidline');";
+            $sth = $pdo->prepare($sql);
+            $sth->execute();
+            $result = $sth->fetch(\PDO::FETCH_ASSOC);
+
+          } catch(\PDOException $e) {
+            DBError::showError($e, __CLASS__, $sql);
+            throw new \RuntimeException("<p>Databasfel! Kontakta systemadministratören om problemet består.</p>");
+          }
+
+
+        }
+
+
 
         //Read and sanitie form
         $email = filter_var(trim($_POST['adminemail']), FILTER_SANITIZE_EMAIL);
@@ -270,6 +326,14 @@ class Settings {
         $smtpuser = filter_var(trim($_POST['smtpuser']), FILTER_SANITIZE_STRING);
         $smtppwd = filter_var(trim($_POST['smtppwd']), FILTER_UNSAFE_RAW);
 
+        $gmailsec = filter_var(trim($_POST['clientsecret']), FILTER_UNSAFE_RAW);
+
+        $gmailid = filter_var(trim($_POST['clientid']), FILTER_UNSAFE_RAW);
+
+        $mailmode = filter_var(trim($_POST['mode']), FILTER_SANITIZE_STRING);
+
+        if ($mailmode !== 'gmail' && $mailmode !== 'smtp') { $mailmode = 'invalid'; }
+
         try {
           $sql = "UPDATE " . TABLE_PREFIX . "settings SET
           email = :email,
@@ -278,8 +342,12 @@ class Settings {
           auth = :auth,
           tls = :tls,
           smtpuser = :user,
-          smtppwd = :pwd
-            WHERE id = 0;";
+          smtppwd = :pwd,
+          oauth_clientid = :clientid,
+          oauth_clientsecret = :clientsecret,
+          mode = :mode,
+          oauth_initalized = 0
+            WHERE id = 1;";
           $sth = $pdo->prepare($sql);
           $sth->bindParam(':email', $email, \PDO::PARAM_STR);
           $sth->bindParam(':server', $smtpserver, \PDO::PARAM_STR);
@@ -288,26 +356,29 @@ class Settings {
           $sth->bindParam(':tls', $smtptls, \PDO::PARAM_STR);
           $sth->bindParam(':user', $smtpuser, \PDO::PARAM_STR);
           $sth->bindParam(':pwd', $smtppwd, \PDO::PARAM_STR);
+          $sth->bindParam(':clientid', $gmailid, \PDO::PARAM_STR);
+          $sth->bindParam(':clientsecret', $gmailsec, \PDO::PARAM_STR);
+          $sth->bindParam(':mode', $mailmode, \PDO::PARAM_STR);
           $sth->execute();
         } catch(\PDOException $e) {
-          $result['responseText'] .= DBError::showError($e, __CLASS__, $sql);
+          $reply['responseText'] .= DBError::showError($e, __CLASS__, $sql);
           $httpcode = 500;
           throw new \RuntimeException("<p>Databasfel! Kontakta systemadministratören om problemet består.</p>");
         }
 
-        $result['responseText'] .= "Inställningarna har uppdaterats.";
+        $reply['responseText'] .= "Inställningarna har uppdaterats.";
         $httpcode = 200;
       } else {
         $httpcode = 401;
         throw new \RuntimeException("<p>Felaktigt utförd begäran.</p>");
       }
 
-      echo json_encode($result);
+      echo json_encode($reply);
       http_response_code($httpcode);
 
     } catch(\RuntimeException $e) {
-      $result['responseText'] .= $e->getMessage();
-      echo $result['responseText'];
+      $reply['responseText'] .= $e->getMessage();
+      echo $reply['responseText'];
       http_response_code($httpcode);
       exit;
     }

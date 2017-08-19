@@ -12,3 +12,4 @@ upload/**/*.pdf
 upload/**/*.jpg
 upload/**/*.jpeg
 vendor/*
+ignore/get_oauth_token.php

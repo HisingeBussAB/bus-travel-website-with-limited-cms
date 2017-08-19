@@ -119,6 +119,8 @@ class Login
       }
 ;
       if (!root\includes\classes\Tokens::checkFormToken(trim($_POST['token']),trim($_POST['tokenid']),"login")) {
+        echo "<pre>";
+        var_dump($_SESSION);
         echo "Fel token skickad. <a href='javascript:window.location.href=window.location.href'>Ladda om sidan.</a> HTTP 401.";
         http_response_code(401);
         return false;
