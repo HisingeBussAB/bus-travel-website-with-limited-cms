@@ -21,6 +21,7 @@ class PWReset
         echo "<html><head><title>Password Reset</title></head><body>";
         echo "<script src='https://www.google.com/recaptcha/api.js'></script>";
         echo "<form action='/adminp/resetpw/new' method='POST' accept-charset='utf-8'>
+              <div><input type='text' placeholder='Ditt användarnamn (ex: admin)' value='' name='user' maxlength='64' size='40' required /></div>
               <div class='g-recaptcha' data-sitekey='" . RECAPTCHA_PUBLIC . "'></div>
               <input type='hidden' value='" . $token['id'] . "' name='tokenid'>
               <input type='hidden' value='" . $token['token'] . "' name='token'>
@@ -56,8 +57,11 @@ class PWReset
 
 
 
+
+
     try {
 
+      require __DIR__ . '/../../../vendor/autoload.php';
 
       $pdo = DB::get();
 
@@ -71,10 +75,60 @@ class PWReset
       }
       $auth = ($smtpresult['auth'] === '1');
 
+      $SMTPDebug = 0; //Should always be 0 or the authtoken/password will show on the page directly. Set to 2 if specifc problems with this piece of code
+
+
+      if ($smtpresult['mode'] === "smtp") {
+
+        $mail = new \PHPMailer;
+
+
+        $mail->SMTPDebug = $SMTPDebug;
+        $mail->CharSet = 'UTF-8';
+        $mail->isSMTP();
+        $mail->SMTPAuth   = $auth;
+
+        $mail->Port       = $smtpresult['port'];
+
+        if ($smtpresult['tls'] === "tls") {
+          $mail->SMTPSecure = 'tls';
+        }
+        elseif ($smtpresult['tls'] === "ssl") {
+          $mail->SMTPSecure = 'ssl';
+        }
+
+        $mail->Host       = $smtpresult['server'];
+        $mail->Username   = $smtpresult['smtpuser'];
+        $mail->Password   = $smtpresult['smtppwd'];
+
+      } elseif ($smtpresult['mode'] === "gmail") {
+
+        $mail = new \PHPMailerOAuth;
+
+        $mail->CharSet = 'UTF-8';
+        $mail->SMTPDebug = $SMTPDebug;
+
+        $mail->oauthUserEmail = $smtpresult['googleemail'];
+        $mail->oauthClientId = $smtpresult['oauth_clientid'];
+        $mail->oauthClientSecret = $smtpresult['oauth_clientsecret'];
+        $mail->oauthRefreshToken = $smtpresult['oauth_refreshtoken'];
+        $smtpresult['smtpuser'] = $smtpresult['googleemail'];
+
+
+      } else {
+        throw new \Exception("Ogiltiga mail inställningar, kontrollera inställningarna https://rekoresor.busspoolen.se/adminp/settings");
+      }
+
+
+
+
       if ($request === "new") {
 
+        $username = filter_var($_POST['user'], FILTER_SANITIZE_STRING);
+
         try {
-          $sql = "SELECT username FROM " . TABLE_PREFIX . "logins WHERE id = 1;";
+          $sql = "SELECT username FROM " . TABLE_PREFIX . "logins WHERE username = :user LIMIT 1;";
+          $sth->bindParam(':username', $username, \PDO::PARAM_STR);
           $sth = $pdo->prepare($sql);
           $sth->execute();
           $user = $sth->fetch(\PDO::FETCH_ASSOC);
@@ -82,9 +136,15 @@ class PWReset
           throw new \Exception(DBError::showError($e, __CLASS__, $sql));
         }
 
+        if (empty($user)) {
+          throw new \Exception("Användaren finns inte! Prova igen.");
+        }
+
+        $username = $user['username'];
+
         //Generate and save reset auth token
         $unixtime = $_SERVER['REQUEST_TIME'];
-        $authtoken = hash('sha512', bin2hex(openssl_random_pseudo_bytes(128)) . $unixtime);
+        $authtoken = hash('sha512', bin2hex(openssl_random_pseudo_bytes(128)) . $unixtime . $username);
 
         $expired = $unixtime - 600;
 
@@ -118,13 +178,16 @@ class PWReset
         try {
           $sql = "INSERT INTO " . TABLE_PREFIX . "pwreset (
             token,
+            username,
             time)
             VALUES (
             :token,
+            :user,
             :timestamp);";
           $sth = $pdo->prepare($sql);
           $sth->bindParam(':token', $authtoken, \PDO::PARAM_STR);
           $sth->bindParam(':timestamp', $unixtime, \PDO::PARAM_STR);
+          $sth->bindParam(':user', $username, \PDO::PARAM_STR);
           $sth->execute();
         } catch(\PDOException $e) {
           throw new \Exception(DBError::showError($e, __CLASS__, $sql));
@@ -133,28 +196,6 @@ class PWReset
 
 
 
-        require __DIR__ . '/../../../vendor/autoload.php';
-        $mail = new \PHPMailer;
-
-
-        $SMTPDebug = 0; //Should always be 0 or the authtoken/password will show on the page directly. Set to 2 if specifc problems with this piece of code
-        $mail->SMTPDebug = $SMTPDebug;
-        $mail->CharSet = 'UTF-8';
-        $mail->isSMTP();
-        $mail->SMTPAuth   = $auth;
-
-        $mail->Port       = $smtpresult['port'];
-
-        if ($smtpresult['tls'] === "tls") {
-          $mail->SMTPSecure = 'tls';
-        }
-        elseif ($smtpresult['tls'] === "ssl") {
-          $mail->SMTPSecure = 'ssl';
-        }
-
-        $mail->Host       = $smtpresult['server'];
-        $mail->Username   = $smtpresult['smtpuser'];
-        $mail->Password   = $smtpresult['smtppwd'];
 
         $mail->setFrom($smtpresult['smtpuser'], 'Hemsidan');
         $mail->addAddress($smtpresult['email']);
@@ -178,7 +219,7 @@ class PWReset
         $authtoken = $request;
 
         try {
-          $sql = "SELECT token FROM " . TABLE_PREFIX . "pwreset WHERE token = :token;";
+          $sql = "SELECT token, username FROM " . TABLE_PREFIX . "pwreset WHERE token = :token;";
           $sth = $pdo->prepare($sql);
           $sth->bindParam(':token', $authtoken, \PDO::PARAM_STR);
           $sth->execute();
@@ -189,6 +230,7 @@ class PWReset
 
         if (!empty($result['token'])) {
 
+          $username = $result['username'];
 
           $i = 0;
           do {
@@ -220,38 +262,19 @@ class PWReset
 
           try {
 
-            $sql = "UPDATE " . TABLE_PREFIX . "logins SET pwd = :pwd WHERE id = 0;";
+            $sql = "UPDATE " . TABLE_PREFIX . "logins SET pwd = :pwd WHERE username = :user;";
 
             $sth = $pdo->prepare($sql);
+            $sth->bindParam(':user', $username, \PDO::PARAM_STR);
             $sth->bindParam(':pwd', $hashedpassword, \PDO::PARAM_STR);
             $sth->execute();
           } catch(\PDOException $e) {
             throw new \Exception(DBError::showError($e, __CLASS__, $sql));
           }
 
-          require __DIR__ . '/../../../dependencies/vendor/phpmailer/PHPMailerAutoload.php';
 
-          $mail = new \PHPMailer;
+          $mail->ClearAllRecipients();
 
-
-          $SMTPDebug = 0; //Should always be 0 or the authtoken/password will show on the page directly. Set to 2 if specifc problems with this piece of code
-          $mail->SMTPDebug = $SMTPDebug;
-          $mail->CharSet = 'UTF-8';
-          $mail->isSMTP();
-          $mail->SMTPAuth   = $auth;
-
-          $mail->Port       = $smtpresult['port'];
-
-          if ($smtpresult['tls'] === "tls") {
-            $mail->SMTPSecure = 'tls';
-          }
-          elseif ($smtpresult['tls'] === "ssl") {
-            $mail->SMTPSecure = 'ssl';
-          }
-
-          $mail->Host       = $smtpresult['server'];
-          $mail->Username   = $smtpresult['smtpuser'];
-          $mail->Password   = $smtpresult['smtppwd'];
 
           $mail->setFrom($smtpresult['smtpuser'], 'Hemsidan');
           $mail->addAddress($smtpresult['email']);

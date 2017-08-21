@@ -16,9 +16,70 @@ class ProgramForm {
 
   public static function sendForm($data) {
 
-    $reply = "";
+
 
     try {
+
+      $reply = "";
+
+      $pdo = DB::get();
+
+      try {
+        $pdo = DB::get();
+        $sql = "SELECT * FROM " . TABLE_PREFIX . "settings WHERE id = 1;";
+        $sth = $pdo->prepare($sql);
+        $sth->execute();
+        $smtpresult = $sth->fetch(\PDO::FETCH_ASSOC);
+      } catch(\PDOException $e) {
+        if (DEBUG_MODE) {throw new \Exception($reply .= DBError::showError($e, __CLASS__, $sql));} else {throw new \Exception("Internt serverfel!");}
+      }
+
+      if (!require __DIR__ . '/../../vendor/autoload.php') { throw new \Exception("Internt serverfel!"); };
+
+      $auth = ($smtpresult['auth'] === '1');
+
+      $SMTPDebug = 0; //Should always be 0 or the authtoken/password will show on the page directly. Set to 2 if specifc problems with this piece of code
+
+      if ($smtpresult['mode'] === "smtp") {
+
+        $mail = new \PHPMailer;
+
+
+        $mail->SMTPDebug = $SMTPDebug;
+        $mail->CharSet = 'UTF-8';
+        $mail->isSMTP();
+        $mail->SMTPAuth   = $auth;
+
+        $mail->Port       = $smtpresult['port'];
+
+        if ($smtpresult['tls'] === "tls") {
+          $mail->SMTPSecure = 'tls';
+        }
+        elseif ($smtpresult['tls'] === "ssl") {
+          $mail->SMTPSecure = 'ssl';
+        }
+
+        $mail->Host       = $smtpresult['server'];
+        $mail->Username   = $smtpresult['smtpuser'];
+        $mail->Password   = $smtpresult['smtppwd'];
+
+      } elseif ($smtpresult['mode'] === "gmail") {
+
+        $mail = new \PHPMailerOAuth;
+
+        $mail->CharSet = 'UTF-8';
+        $mail->SMTPDebug = $SMTPDebug;
+
+        $mail->oauthUserEmail = $smtpresult['googleemail'];
+        $mail->oauthClientId = $smtpresult['oauth_clientid'];
+        $mail->oauthClientSecret = $smtpresult['oauth_clientsecret'];
+        $mail->oauthRefreshToken = $smtpresult['oauth_refreshtoken'];
+        $smtpresult['smtpuser'] = $smtpresult['googleemail'];
+
+
+      } else {
+        throw new \Exception("Felkonfigurerade e-post inställningar för sidan.");
+      }
 
       //VALIDATE REQUEST
       if( stripos($_SERVER['HTTP_REFERER'], $_SERVER['HTTP_HOST']) === FALSE ) {
@@ -74,24 +135,8 @@ class ProgramForm {
       }
 
 
-      try {
-        $pdo = DB::get();
-        $sql = "SELECT * FROM " . TABLE_PREFIX . "settings WHERE id = 1;";
-        $sth = $pdo->prepare($sql);
-        $sth->execute();
-        $smtpresult = $sth->fetch(\PDO::FETCH_ASSOC);
-      } catch(\PDOException $e) {
-        if (DEBUG_MODE) {throw new \Exception($reply .= DBError::showError($e, __CLASS__, $sql));} else {throw new \Exception($reply .= "Databasfel.");}
-      }
 
-      if (!require_once __DIR__ . '/../../vendor/phpmailer/phpmailer/PHPMailerAutoload.php') {throw new \Exception($reply .= "Mailer hittades inte.");}
-
-      $mail = new \PHPMailer;
-
-      $mail->setLanguage('sv', __DIR__ . '/../../vendor/phpmailer/phpmailer/language/');
-
-
-
+      $mail->ClearAllRecipients();
       $mailbody = "Programbeställning från hemsidan:\r\n\r\n" .
                   $data['name'] . "\r\n" .
                   $data['address'] . "\r\n" .
@@ -103,36 +148,11 @@ class ProgramForm {
 
       $mailbody .= "\r\n\r\nSkickad: " . date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']);
 
-      $SMTPDebug = 2; //Should always be 0 or the authtoken/password will show on the page directly. Set to 2 if specifc problems with this piece of code
-      $mail->SMTPDebug = $SMTPDebug;
-      $mail->CharSet = 'UTF-8';
-      $mail->isSMTP();
-      //$mail->SMTPAuth   = ($smtpresult['auth'] === '1');
-      $mail->ClearAllRecipients();
 
-      //$mail->Port       = $smtpresult['port'];
-      $mail->Port       = 25;
-      $mail->SMTPSecure = 'tls';
 
-      if ($smtpresult['tls'] === "tls") {
-        //$mail->SMTPSecure = 'tls';
-      }
-      elseif ($smtpresult['tls'] === "ssl") {
-        //$mail->SMTPSecure = 'ssl';
-      }
-
-      //$mail->Host       = $smtpresult['server'];
-      //$mail->Username   = $smtpresult['smtpuser'];
-      //$mail->Password   = $smtpresult['smtppwd'];
-
-      $mail->Host       = "aspmx.l.google.com";
-      $mail->Username   = "";
-      $mail->Password   = "";
-      $mail->SMTPAuth = FALSE;
-
-      $mail->setFrom('c3350@hisingebuss.se', 'Hemsidan - Rekå Resor');
-      $mail->Sender="c3350@hisingebuss.se";
-      $mail->AddReplyTo("c3350@hisingebuss.se", "Rekå Resor");
+      $mail->setFrom('program@rekoresor.se', 'Hemsidan - Rekå Resor');
+      $mail->Sender="program@rekoresor.se";
+      $mail->AddReplyTo("program@rekoresor.se", "Rekå Resor");
       $mail->addAddress('program@rekoresor.se');
       $mail->Subject  = "Rekå Resor - Beställt program";
       $mail->Body     = $mailbody;
@@ -143,7 +163,7 @@ class ProgramForm {
         throw new \Exception("Fel vid kommunikation med mailservern.");
       } else {
         $mail->ClearAllRecipients();
-        $mail->setFrom('c3350@hisingebuss.se', 'Rekå Resor');
+        $mail->setFrom('program@rekoresor.se', 'Rekå Resor');
         if (!empty($data['email'])) { $mail->addAddress($data['email']); }
         $mail->Subject  = "Tack för din programbeställning.";
         $mail->Body     = "Tack för att du beställt program.\r\nVi kommer skicka aktuella reseprogram till dig inom kort.";
@@ -165,16 +185,15 @@ class ProgramForm {
 
 
   } catch(\RuntimeException $e) {
-    if (DEBUG_MODE) echo $e->getMessage();
-    echo "Åtgärden har stoppats.";
+    echo $e->getMessage();
     http_response_code(403);
     return false;
   } catch(\Exception $e) {
-  $reply .=  "Ett tekniskt fel har uppstått.";
-  if (DEBUG_MODE) echo $e->getMessage();
-  echo $reply;
-  http_response_code(500);
-  return false;
+    echo $e->getMessage();
+    echo "Misslyckades tyvärr! Prova gärna igen.<br />Vänligen skicka e-post till <a href='mailto:info@rekoresor.se'>info@rekoresor.se</a> eller ring oss på <a href='tel:+4631222120'>031-22 21 20</a> istället.";
+    if (DEBUG_MODE) echo $reply;
+    http_response_code(500);
+    return false;
   }
   }
 }

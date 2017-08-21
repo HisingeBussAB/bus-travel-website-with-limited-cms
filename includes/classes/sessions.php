@@ -15,6 +15,7 @@ class Sessions
    */
   public static function secSessionStart($regenerate = TRUE) {
 
+
     $session_name = 'RRSESSID';   // Set a custom session name
     /*Sets the session name.
      *This must come before session_set_cookie_params due to an undocumented bug/feature in PHP.
@@ -32,6 +33,9 @@ class Sessions
     if (session_status() == PHP_SESSION_NONE) {
       session_start();
     }
+
+    $_SESSION['origin'] = $_SERVER['HTTP_HOST'];
+
     if ($regenerate) session_regenerate_id(true); //Allows prevention of regenerating session on asyncronus requests
   }
 }

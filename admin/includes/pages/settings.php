@@ -144,6 +144,10 @@ class Settings {
                   if ($usegmail) { echo " checked "; }
                   echo "/>
                   <label for='usegmail'>Använd Gmail API</label>
+                  <fieldset>
+                    <label for='googleemail'>Google konto (e-mail):</label>
+                    <input type='input' maxlength='200' name='googleemail' id='googleemail' value='" . htmlspecialchars($stmpresult['googleemail'], ENT_QUOTES) . "' />
+                  </fieldset>
                 <fieldset>
                   <label for='clientid'>ClientId:</label>
                   <input type='input' maxlength='200' name='clientid' id='clientid' value='" . htmlspecialchars($stmpresult['oauth_clientid'], ENT_QUOTES) . "' />
@@ -153,8 +157,14 @@ class Settings {
                   <input type='input' maxlength='200' name='clientsecret' id='clientsecret' value='" . htmlspecialchars($stmpresult['oauth_clientsecret'], ENT_QUOTES) . "' />
                 </fieldset>
                 <p>
-                Authorize this site with Google by clicking here.
+                Authorize this site with Google by using the script at " . $_SERVER['HTTP_HOST'] . "/ignore/get_oauth_token.php<br>
+                You will need to manually remove the exit line from the top of that file to get it to run.<br>
+                Put the token from the script below.
                 </p>
+                <fieldset>
+                  <label for='refreshtoken'>Refresh Token:</label>
+                  <input type='input' maxlength='200' name='refreshtoken' id='refreshtoken' value='" . htmlspecialchars($stmpresult['oauth_refreshtoken'], ENT_QUOTES) . "' />
+                </fieldset>
                 <fieldset>
                   <label for='mainpwd'>Lösenord för inloggning på den här sidan:</label>
                   <input type='password' maxlength='250' name='mainpwd' id='mainpwd' required />
@@ -330,6 +340,10 @@ class Settings {
 
         $gmailid = filter_var(trim($_POST['clientid']), FILTER_UNSAFE_RAW);
 
+        $googleemail = filter_var(trim($_POST['googleemail']), FILTER_SANITIZE_EMAIL);
+
+        $gmailtoken = filter_var(trim($_POST['refreshtoken']), FILTER_UNSAFE_RAW);
+
         $mailmode = filter_var(trim($_POST['mode']), FILTER_SANITIZE_STRING);
 
         if ($mailmode !== 'gmail' && $mailmode !== 'smtp') { $mailmode = 'invalid'; }
@@ -345,6 +359,8 @@ class Settings {
           smtppwd = :pwd,
           oauth_clientid = :clientid,
           oauth_clientsecret = :clientsecret,
+          oauth_refreshtoken = :refreshtoken,
+          googleemail = :googleemail,
           mode = :mode,
           oauth_initalized = 0
             WHERE id = 1;";
@@ -358,6 +374,8 @@ class Settings {
           $sth->bindParam(':pwd', $smtppwd, \PDO::PARAM_STR);
           $sth->bindParam(':clientid', $gmailid, \PDO::PARAM_STR);
           $sth->bindParam(':clientsecret', $gmailsec, \PDO::PARAM_STR);
+          $sth->bindParam(':refreshtoken', $gmailtoken, \PDO::PARAM_STR);
+          $sth->bindParam(':googleemail', $googleemail, \PDO::PARAM_STR);
           $sth->bindParam(':mode', $mailmode, \PDO::PARAM_STR);
           $sth->execute();
         } catch(\PDOException $e) {

@@ -406,6 +406,8 @@ try {
     oauth_clientid VARCHAR(200),
     oauth_clientsecret VARCHAR(100),
     oauth_initalized BOOLEAN,
+    oauth_refreshtoken VARCHAR(200),
+    googleemail VARCHAR(200),
     email VARCHAR(200),
     server VARCHAR(200),
     port INT UNSIGNED,
@@ -424,6 +426,7 @@ try {
   $table = TABLE_PREFIX . 'pwreset';
   $sql = "CREATE TABLE " . $table . " (
     token CHAR(128),
+    username CHAR(64),
     time TIMESTAMP DEFAULT CURRENT_TIMESTAMP);";
   $sth = $pdo->prepare($sql);
   $sth->execute();
