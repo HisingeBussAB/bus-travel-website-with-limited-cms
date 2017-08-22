@@ -29,7 +29,18 @@ include __DIR__ . '/shared/header.php';
   try {
     $pdo = DB::get();
 
-    $sql = "SELECT id, namn, url, bildkatalog, antaldagar, ingress, pris, utvald, seo_description, MIN(datum.datum) AS datum FROM " . TABLE_PREFIX . "resor AS resor INNER JOIN " . TABLE_PREFIX . "datum AS datum ON resor.id = datum.resa_id WHERE aktiv = 1 GROUP BY resor.id ORDER BY datum;";
+    //$sql = "SELECT id, namn, url, bildkatalog, antaldagar, ingress, pris, utvald, seo_description, MIN(datum.datum) AS datum FROM " . TABLE_PREFIX . "resor AS resor INNER JOIN " . TABLE_PREFIX . "datum AS datum ON resor.id = datum.resa_id WHERE aktiv = 1 GROUP BY resor.id ORDER BY datum;";
+
+    $sql = "SELECT resor.id, resor.utvald, resor.seo_description, resor.namn, resor.url, resor.bildkatalog, resor.antaldagar, resor.ingress,resor.pris, MIN(datum.datum) AS datum FROM " . TABLE_PREFIX . "resor AS resor
+            LEFT OUTER JOIN " . TABLE_PREFIX . "datum AS datum ON resor.id = datum.resa_id
+            LEFT OUTER JOIN " . TABLE_PREFIX . "kategorier_resor AS k_r ON resor.id = k_r.resa_id
+            LEFT OUTER JOIN " . TABLE_PREFIX . "kategorier AS kategorier ON kategorier.id = k_r.kategorier_id
+            WHERE kategorier.kategori != 'gruppresor' AND resor.aktiv = 1 AND datum > NOW()
+            GROUP BY resor.id
+            ORDER BY datum;";
+
+
+
     $sth = $pdo->prepare($sql);
     $sth->execute();
     $result = $sth->fetchAll(\PDO::FETCH_ASSOC);
@@ -133,18 +144,26 @@ include __DIR__ . '/shared/header.php';
   <div class="row-fluid">
 
   <?php
-    $output = "";
+
+    $i = 0;
+    $lenght = count($tours);
     foreach ($tours as $tour) {
-      $output =  "<div class='col-md-6 col-xs-12'>";
+      $output = "";
+      if ($i % 2 == 0) { $output .= "<div class='row-fluid'>"; }
+      $output .=  "<div class='col-md-6 col-xs-12'>";
       $output .= "<h3><a href='" . $tour['link'] . "'>" . $tour['tour'] . "</a></h3>";
       $output .= "<a href='" . $tour['link'] . "'><figure class='trip-featured-img-list'>";
-      $output .= "<img src='" . $tour['imgsrc'] . "'  alt='" . $tour['tour'] . "'/>";
+      $output .= "<img src='" . $tour['imgsrc'] . "'  alt='" . $tour['tour'] . "'/> ";
       $output .= "</figure></a>";
       $output .= "<p><i class='fa fa-hourglass blue' aria-hidden='true'></i> Antal dagar: " . $tour['days'] . " dagar</p>";
       $output .= "<p><i class='fa fa-calendar blue' aria-hidden='true'></i> Avresedatum: " . $tour['departure'] . "</p>";
       $output .= "<p><i class='fa fa-money blue' aria-hidden='true'></i> Pris per person: " . $tour['price'] . " kr</p>";
       $output .= "<p>" . $tour['summary'] . "</p></div>";
+      if ($i % 2 != 0) { $output .= "</div>"; }
+      elseif ($i+1 >= $lenght) { $output .= "</div>"; }
+
       echo $output;
+      $i++;
   }
   ?>
   </div>

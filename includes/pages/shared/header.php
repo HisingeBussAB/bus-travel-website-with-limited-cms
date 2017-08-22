@@ -90,7 +90,7 @@ if (empty($robots)) {
       <nav>
         <ul class="nav nav-pills" aria-label="Meny">
           <li role="presentation"><a href="/">Hem</a></li>
-          <li role="presentation"><a href="/bestallkatalog">Beställ katalog</a></li>
+          <li role="presentation"><a href="/bestall-katalog">Beställ katalog</a></li>
           <li role="presentation"><a href="/inforresan">Inför resan</a></li>
           <li role="presentation"><a href="/efterresan">Efter resan</a></li>
           <li role="presentation"><a href="/galleri">Bildgalleri</a></li>

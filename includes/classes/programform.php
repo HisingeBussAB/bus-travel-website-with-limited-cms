@@ -150,9 +150,9 @@ class ProgramForm {
 
 
 
-      $mail->setFrom('program@rekoresor.se', 'Hemsidan - Rekå Resor');
-      $mail->Sender="program@rekoresor.se";
-      $mail->AddReplyTo("program@rekoresor.se", "Rekå Resor");
+      $mail->setFrom('hemsidan@rekoresor.se', 'Hemsidan - Rekå Resor');
+      $mail->Sender="hemsidan@rekoresor.se";
+      $mail->AddReplyTo($data['email']);
       $mail->addAddress('program@rekoresor.se');
       $mail->Subject  = "Rekå Resor - Beställt program";
       $mail->Body     = $mailbody;
@@ -163,7 +163,9 @@ class ProgramForm {
         throw new \Exception("Fel vid kommunikation med mailservern.");
       } else {
         $mail->ClearAllRecipients();
-        $mail->setFrom('program@rekoresor.se', 'Rekå Resor');
+        $mail->ClearReplyTos();
+        $mail->setFrom('hemsidan@rekoresor.se', 'Rekå Resor');
+        $mail->AddReplyTo("info@rekoresor.se", "Rekå Resor");
         if (!empty($data['email'])) { $mail->addAddress($data['email']); }
         $mail->Subject  = "Tack för din programbeställning.";
         $mail->Body     = "Tack för att du beställt program.\r\nVi kommer skicka aktuella reseprogram till dig inom kort.";

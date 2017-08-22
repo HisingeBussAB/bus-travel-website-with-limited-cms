@@ -154,6 +154,26 @@ try {
       $i++;
     }
 
+    try {
+      $sql = "SELECT kategori FROM " . TABLE_PREFIX . "kategorier AS kategorier
+        LEFT OUTER JOIN " . TABLE_PREFIX . "kategorier_resor AS kategorier_resor ON kategorier.id = kategorier_resor.kategorier_id WHERE resa_id = :tourid AND kategori = 'gruppresor';";
+      $sth = $pdo->prepare($sql);
+      $sth->bindParam(':tourid', $tour['id'], \PDO::PARAM_STR);
+      $sth->execute();
+      $result = $sth->fetch(\PDO::FETCH_ASSOC);
+    } catch(\PDOException $e) {
+      DBError::showError($e, __CLASS__, $sql);
+      throw new \RuntimeException("Databasfel.");
+    }
+
+    if(!empty($result)) {
+      $grouptour = true;
+    } else {
+      $grouptour = false;
+    }
+
+
+
     $pageTitle = $tour['namn'];
 
     $morestyles = "<link rel='stylesheet' href='/css/tour.min.css' >";
@@ -169,7 +189,7 @@ echo "<main class='main-section container-fluid'>";
   echo "<div class='col-lg-7 col-md-12'>
     <h1>" . $tour['namn'];
   $flag = TRUE;
-  if (!empty($tour['datum'])) {
+  if (!empty($tour['datum']) && !$grouptour) {
     foreach ($tour['datum'] as $datum) {
       if ($flag) {
       echo  " " . $datum['mini'];
@@ -180,13 +200,18 @@ echo "<main class='main-section container-fluid'>";
     }
   }
 
-  echo  "</h1>
-    <p><i class='fa fa-hourglass blue' aria-hidden='true'></i> " . $tour['antaldagar'] . " dagar</p>
-    <p><i class='fa fa-money blue' aria-hidden='true'></i> " . $tour['pris'] . " kr/person</p>";
+  echo  "</h1>";
+  if ($grouptour) { echo "<h3>Gruppreseförslag</h2>"; }
+
+  echo "<p><i class='fa fa-hourglass blue' aria-hidden='true'></i> " . $tour['antaldagar'] . " dagar</p>
+    <p><i class='fa fa-money blue' aria-hidden='true'></i> ";
+    if ($grouptour) { echo "Ca "; }
+    echo $tour['pris'] . " kr/person</p>";
 
     if (!empty($tour['datum'])) {
       foreach ($tour['datum'] as $datum) {
-        echo "<p><i class='fa fa-calendar blue' aria-hidden='true'></i> " . $datum['long'] . "</p>";
+        echo "<p><i class='fa fa-calendar blue' aria-hidden='true'></i> ";
+        if ($grouptour) { echo "Enlight önskemål"; } else { echo $datum['long'] . "</p>"; }
       }
     }
 

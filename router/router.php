@@ -64,7 +64,7 @@ class Router
     $this->addRoute(  '/^program\/([\w-%]+)\/?$/',           '\HisingeBussAB\RekoResor\website\router\Render::ordertourprogram',             'GET');
     $this->addRoute(  '/^galleri\/([\w-%]+)\/?$/',           '\HisingeBussAB\RekoResor\website\router\Render::inc',                          'GET');
     $this->addRoute(  '/^kategori\/([\w-%]+)\/?$/',          '\HisingeBussAB\RekoResor\website\router\Render::category',                     'GET');
-    $this->addRoute(  '/^(bestallkatalog)$/',                '\HisingeBussAB\RekoResor\website\router\Render::inc',                          'GET');
+    $this->addRoute(  '/^(bestall-katalog)$/',               '\HisingeBussAB\RekoResor\website\router\Render::inc',             'GET');
     $this->addRoute(  '/^(inforresan)$/',                    '\HisingeBussAB\RekoResor\website\router\Render::inc',                          'GET');
     $this->addRoute(  '/^(bussresorgoteborg)$/',             '\HisingeBussAB\RekoResor\website\router\Render::inc',                          'GET');
     $this->addRoute(  '/^(kontaktarekaresor)$/',             '\HisingeBussAB\RekoResor\website\router\Render::inc',                          'GET');

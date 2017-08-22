@@ -110,9 +110,53 @@ class BookTour {
         if (DEBUG_MODE) {throw new \Exception($reply .= DBError::showError($e, __CLASS__, $sql));} else {throw new \Exception($reply .= "Databasfel.");}
       }
 
-      if (!require_once __DIR__ . '/../../vendor/phpmailer/phpmailer/PHPMailerAutoload.php') {throw new \Exception($reply .= "Mailer hittades inte.");}
+      if (!require __DIR__ . '/../../vendor/autoload.php') { throw new \Exception("Internt serverfel!"); };
 
-      $mail = new \PHPMailer;
+      $auth = ($smtpresult['auth'] === '1');
+
+      $SMTPDebug = 0; //Should always be 0 or the authtoken/password will show on the page directly. Set to 2 if specifc problems with this piece of code
+
+      if ($smtpresult['mode'] === "smtp") {
+
+        $mail = new \PHPMailer;
+
+
+        $mail->SMTPDebug = $SMTPDebug;
+        $mail->CharSet = 'UTF-8';
+        $mail->isSMTP();
+        $mail->SMTPAuth   = $auth;
+
+        $mail->Port       = $smtpresult['port'];
+
+        if ($smtpresult['tls'] === "tls") {
+          $mail->SMTPSecure = 'tls';
+        }
+        elseif ($smtpresult['tls'] === "ssl") {
+          $mail->SMTPSecure = 'ssl';
+        }
+
+        $mail->Host       = $smtpresult['server'];
+        $mail->Username   = $smtpresult['smtpuser'];
+        $mail->Password   = $smtpresult['smtppwd'];
+
+      } elseif ($smtpresult['mode'] === "gmail") {
+
+        $mail = new \PHPMailerOAuth;
+
+        $mail->CharSet = 'UTF-8';
+        $mail->SMTPDebug = $SMTPDebug;
+
+        $mail->oauthUserEmail = $smtpresult['googleemail'];
+        $mail->oauthClientId = $smtpresult['oauth_clientid'];
+        $mail->oauthClientSecret = $smtpresult['oauth_clientsecret'];
+        $mail->oauthRefreshToken = $smtpresult['oauth_refreshtoken'];
+        $smtpresult['smtpuser'] = $smtpresult['googleemail'];
+
+
+      } else {
+        throw new \Exception("Felkonfigurerade e-post inställningar för sidan.");
+      }
+
 
       $mail->setLanguage('sv', __DIR__ . '/../../vendor/phpmailer/phpmailer/language/');
 
@@ -137,29 +181,12 @@ class BookTour {
 
       $mailbody .= "\r\n\r\nSkickad: " . date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']);
 
-      $SMTPDebug = 0; //Should always be 0 or the authtoken/password will show on the page directly. Set to 2 if specifc problems with this piece of code
-      $mail->SMTPDebug = $SMTPDebug;
-      $mail->CharSet = 'UTF-8';
-      $mail->isSMTP();
-      $mail->SMTPAuth   = ($smtpresult['auth'] === '1');
       $mail->ClearAllRecipients();
 
-      $mail->Port       = $smtpresult['port'];
 
-      if ($smtpresult['tls'] === "tls") {
-        $mail->SMTPSecure = 'tls';
-      }
-      elseif ($smtpresult['tls'] === "ssl") {
-        $mail->SMTPSecure = 'ssl';
-      }
-
-      $mail->Host       = $smtpresult['server'];
-      $mail->Username   = $smtpresult['smtpuser'];
-      $mail->Password   = $smtpresult['smtppwd'];
-
-      $mail->setFrom('info@rekoresor.se', 'Hemsidan - Rekå Resor');
-      $mail->Sender="info@rekoresor.se";
-      $mail->AddReplyTo("info@rekoresor.se", "Rekå Resor");
+      $mail->setFrom('hemsidan@rekoresor.se', 'Hemsidan - Rekå Resor');
+      $mail->Sender="hemsidan@rekoresor.se";
+      $mail->AddReplyTo($data['email']);
       $mail->addAddress('program@rekoresor.se');
       $mail->Subject  = "Rekå Resor - Resebokning från hemsidan";
       $mail->Body     = $mailbody;
@@ -170,7 +197,9 @@ class BookTour {
         throw new \Exception("Fel vid kommunikation med mailservern.");
       } else {
         $mail->ClearAllRecipients();
-        $mail->setFrom('info@rekoresor.se', 'Rekå Resor');
+        $mail->ClearReplyTos();
+        $mail->setFrom('hemsidan@rekoresor.se', 'Rekå Resor');
+        $mail->AddReplyTo("info@rekoresor.se", "Rekå Resor");
         if (!empty($data['email'])) { $mail->addAddress($data['email']); }
         $mail->Subject  = "Tack för din bokning.";
         $mail->Body     = "Tack för att du bokat en resa.\r\nIfall det är en fleragarsresa kommer bokningsbekräftelse och inbetalningskort på posten inom kort.\r\nNedan är en kopia på uppgifterna vi tagit emot.\r\n\r\n" . $mailbody;

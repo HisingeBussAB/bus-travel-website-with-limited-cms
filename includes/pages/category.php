@@ -45,6 +45,12 @@ try {
       throw new \UnexpectedValueException("Kategorin finns inte");
     }
 
+    if (mb_strtolower($category['kategori']) === 'gruppresor') {
+      $grouptour = true;
+    } else {
+      $grouptour = false;
+    }
+
 
 $pageTitle = $heading;
 
@@ -52,14 +58,18 @@ header('Content-type: text/html; charset=utf-8');
 include __DIR__ . '/shared/header.php';
 
 
+
 try {
   $sql = "SELECT resor.id, resor.namn, resor.url, resor.bildkatalog, resor.antaldagar, resor.ingress,resor.pris, MIN(datum.datum) AS datum FROM " . TABLE_PREFIX . "resor AS resor
           LEFT OUTER JOIN " . TABLE_PREFIX . "datum AS datum ON resor.id = datum.resa_id
           LEFT OUTER JOIN " . TABLE_PREFIX . "kategorier_resor AS k_r ON resor.id = k_r.resa_id
           LEFT OUTER JOIN " . TABLE_PREFIX . "kategorier AS kategorier ON kategorier.id = k_r.kategorier_id
-          WHERE kategorier.id = :catid
-          GROUP BY resor.id
-          ORDER BY datum;";
+          WHERE kategorier.id = :catid AND resor.aktiv = 1 ";
+          if (!$grouptour) { $sql .= "AND datum > NOW() "; }
+ $sql .= "GROUP BY resor.id
+          ORDER BY ";
+          if ($grouptour) { $sql .= "resor.antaldagar, resor.namn;"; }
+          else { $sql .= "datum;"; }
   $sth = $pdo->prepare($sql);
   $sth->bindParam(':catid', $catid, \PDO::PARAM_INT);
   $sth->execute();
@@ -68,6 +78,7 @@ try {
   DBError::showError($e, __CLASS__, $sql);
   throw new \RuntimeException("Databasfel.");
 }
+
 
 
   $tours = [];
@@ -87,31 +98,51 @@ try {
       if ($files = functions::get_img_files($server_path)) {
         $tours[$i]['imgsrc'] = $web_path . $files[0]['thumb'];
       } else {
-        $tours[$i]['imgsrc'] = filter_var("http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/generic/small_1-generic.jpg", FILTER_SANITIZE_URL);
+        $tours[$i]['imgsrc'] = filter_var("http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/generic/small_1_generic.jpg", FILTER_SANITIZE_URL);
       }
     $i++;
   }
 
 
-  echo "<main class='main-section clearfix container'>
-          <article class='col-md-12 col-xs-12 clearfix'>
+
+  echo "<main class='main-section clearfix container-fluid'>
+    <div class='row-fluid'>
+              <div class='col-md-12 col-xs-12'>
             <h1>" .  $heading . "</h1>
             <p>" . $text . "</p>
-          </article>";
+          </div></div>";
 
-    $output = "";
+    $i = 0;
+    $lenght = count($tours);
     foreach ($tours as $tour) {
-      $output =  "<article class='col-md-6 col-xs-12'>";
+      $output = "";
+      if ($i % 2 == 0) { $output .= "<div class='row-fluid'>"; }
+      $output .= "<article class='col-md-6 col-xs-12'>";
       $output .= "<h2><a href='" . $tour['link'] . "'>" . $tour['tour'] . "</a></h2>";
+
+
       $output .= "<a href='" . $tour['link'] . "'><figure class='trip-featured-img-list'>";
       $output .= "<img src='" . $tour['imgsrc'] . "'  alt='" . $tour['tour'] . "'/>";
-      $output .= "</figure></a><div>";
+      $output .= "</figure></a>";
+      if ($grouptour) {
+        if ($tour['days'] <= 1) {
+          $output .= "<p class='larger'><i class='fa fa-lg fa-hourglass blue' aria-hidden='true'></i> Dagsresa</p>";
+        } else {
+          $output .= "<p class='larger'><i class='fa fa-lg fa-hourglass blue' aria-hidden='true'></i> Flerdagarsresa</p>";
+        }
+        $output .= "<p class='larger'><i class='fa fa-lg fa-money blue' aria-hidden='true'></i> Pris per person: " . $tour['price'] . " kr</p>";
+      } else {
       $output .= "<p><i class='fa fa-hourglass blue' aria-hidden='true'></i> Antal dagar: " . $tour['days'] . " dagar</p>";
       $output .= "<p><i class='fa fa-calendar blue' aria-hidden='true'></i> Avresedatum: " . $tour['departure'] . "</p>";
       $output .= "<p><i class='fa fa-money blue' aria-hidden='true'></i> Pris per person: " . $tour['price'] . " kr</p>";
-      $output .= "</div>";
+      }
+
+
       $output .= "<p>" . $tour['summary'] . "</p></article>";
+      if ($i % 2 != 0) { $output .= "</div>"; }
+      elseif ($i+1 >= $lenght) { $output .= "</div>"; }
       echo $output;
+      $i++;
   }
   ?>
 </main>

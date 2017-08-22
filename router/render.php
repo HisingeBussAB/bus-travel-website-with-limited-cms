@@ -18,9 +18,13 @@ class Render
    */
   public static function inc($target) {
 
+    //LIST OF PAGES
+
     if (empty($target)) $target = "mainpage";
 
-    if ($target === "bestallkatalog") $target = "orderprogram";
+    if ($target === "bestall-katalog") $target = "orderprogram";
+
+    //END LIST OF PAGES
 
     try {
       include __DIR__ . '/../includes/pages/' . $target . '.php';
