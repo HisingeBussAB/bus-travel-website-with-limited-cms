@@ -112,14 +112,14 @@ include __DIR__ . '/shared/header.php';
   </section>
   <a href="<?php echo $featured['link']; ?>"><div class="col-md-6 col-xs-12 trip-featured" style="background-image: url('<?php echo $featured['imgpath']; ?>')">
     <h2 class="invisible">Månadens resa</h2>
-    <h3 aria-label="<?php echo $featured['tour']; ?>"><?php echo $featured['desc']; ?><i class="fa fa-chevron-right pull-right" aria-hidden="true"></i></h3>
+    <div aria-label="<?php echo $featured['tour']; ?>"><?php echo $featured['desc']; ?><i class="fa fa-chevron-right pull-right" aria-hidden="true"></i></div>
   </div></a>
   </div>
 
   <section class="row-fluid">
     <div class="col-md-12 col-xs-12">
       <h2>Aktuellt från Rekå Resor</h2>
-      <p><?php echo strtr(nl2br(strip_tags($result['nyheter'], $allowed_tags)), $html_ents); ?></p>
+      <p><?php echo Functions::linksaver(strtr(nl2br(strip_tags($result['nyheter'], $allowed_tags)), $html_ents)); ?></p>
     </div>
   </section>
 
@@ -139,7 +139,7 @@ include __DIR__ . '/shared/header.php';
 </div>
 
   <div class="row-fluid">
-    <h2 class='col-md-12'>Resekalender</h2>
+    <h2 class='col-md-12' id='resekalender'>Resekalender</h2>
   </div>
   <div class="row-fluid">
 

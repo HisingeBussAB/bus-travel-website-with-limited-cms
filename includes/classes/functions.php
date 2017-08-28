@@ -55,9 +55,15 @@ class Functions
 
   public static function linksaver($string) {
 
-    $string = preg_replace("/(www.|http:\/\/www.|https:\/\/www.|http:\/\/|https:\/\/)([^\s<]*)/i", "<a href='$1$2' class='auto_link' target='_blank'>$1$2</a>", $string);
+    //Replace markup links
+    $string = preg_replace("/[[]link (.*)[]](.*)[[]\/link[]]/", "<a href='$1' class='markup_link'>$2</a>", $string);
+
+    //Link markup raw urls in text
+    $string = preg_replace("/([\s\A]|^)(www.|http:\/\/www.|https:\/\/www.|http:\/\/|https:\/\/)([^\s<]*)/i", "<a href='$2$3' class='auto_link' target='_blank'>$2$3</a>", $string);
     $string = preg_replace("/(href='www.)/i", "href='http://www.", $string);
     $string = preg_replace("/(_blank'>http:\/\/|_blank'>https:\/\/)/i", "_blank'>", $string);
+
+
 
     return $string;
 

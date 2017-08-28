@@ -4,8 +4,11 @@
 * === SASS VARIABLES ===
 */
 
-$blue: rgb(13, 97, 222);
-$blue-transparent: rgba(13, 97, 222, .65);
+$blue: rgb(8, 86, 251);
+//$blue: rgb(0, 50, 153);
+$blue-transparent: rgba(8, 86, 251, .65);
+$blue-transparent-light: rgba(8, 86, 251, .25);
+//$blue-transparent: rgba(0, 50, 153, .65);
 $logo-blue: rgb(0, 50, 153);
 $textonblue: #fff;
 $main-font-stack: 'Open Sans', sans-serif;
@@ -79,6 +82,33 @@ body {
 * — Header and Navigation —
 */
 
+nav#to-top-chevron {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  text-align: right;
+  opacity: 0;
+
+
+  a {
+    display: inline-block;
+    color: rgba(255,255,255,.35);
+    width: 50px;
+    height: 50px;
+    background-color: rgba(0,0,0,.3);
+    text-align: center;
+    border-radius: 100%;
+    line-height: 53px;
+    vertical-align: middle;
+
+    &:hover {
+      color: rgba(255,255,255,.95);
+    }
+
+  }
+
+}
+
 header {
 
   padding: 40px 0;
@@ -91,39 +121,72 @@ header {
     margin: 0 auto;
 
 
-    figure {
+    .top-logo {
       float: left;
       display: block;
       position: relative;
+      background-color: rgba(255,255,255,0.52);
+      padding: 2px;
+      border-radius: 6px;
+      margin-right: 10px;
+      max-width: 174px;
+
+
 
 
       figcaption {
-        font-size: 1rem;
+        font-size: 1.05rem;
+        font-weight: bolder;
         color: $logo-blue;
+        text-align: center;
+        padding-top: 1px;
       }
     }
 
     nav {
       display: block;
-      margin-left: 50px;
+
       text-align: right;
+
 
       .nav {
         text-align: right;
-        display: block;
+        margin-left: 30%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+
+
+        overflow: hidden;
 
         li {
-          display: inline-block;
-          float: none;
+          display: block;
+          flex: 1 0 auto;
+          white-space: nowrap;
+          margin: 0px;
+          padding: 0px;
+
+
+
+
         }
       }
 
       .nav-pills a {
         color: $textonblue;
+        text-align: center;
+        margin: 0px;
+        padding: 10px;
+        border-radius: 10px;
+        border: 1px solid white;
+        margin: 2px;
+        background-color: $logo-blue;
 
         &:hover {
           background-color: $blue-transparent;
         }
+
+
       }
 
     }
@@ -213,7 +276,7 @@ header {
     border-radius: 3px;
     overflow: hidden;
 
-    h3 {
+    div {
       font-size: 1.045vw;
       background-color: rgba(0, 0, 0, 0.6);
       color: white;
@@ -264,11 +327,18 @@ header {
 
 }
 
-.koncern-logo {
-  img {
-    height: 35px;
-    width: auto;
-  }
+  .koncern-logo {
+    display: inline-block;
+    overflow: hidden;
+    border-radius: 5px;
+    width: 200px;
+    &:nth-child(2) {
+      width: 150px;
+    }
+    img {
+      height: 35px;
+      width: 100%;
+    }
 }
 
 
@@ -276,8 +346,28 @@ header {
 
 
 /*
-* === MEDIA QUERIES ===
+* === LAYOUT MEDIA QUERIES ===
 */
+
+
+@media (max-width: 768px) {
+  .hide-on-tiny { display: none !important; }
+  .clear-on-tiny {
+    clear: both !important;
+  }
+  .center-on-tiny {
+    text-align: center !important;
+    margin: 0 auto !important;
+    margin-bottom: 6px !important;
+    float: none !important;
+  }
+}
+
+
+/*
+* === LAYOUT MEDIA QUERIES ===
+*/
+
 @media (max-width: 992px) {
 
   header .header-wrap,
@@ -290,6 +380,8 @@ header {
 }
 
 @media (max-width: 415px) {
+
+
 
   header .header-wrap,
   header #categories-wrap,

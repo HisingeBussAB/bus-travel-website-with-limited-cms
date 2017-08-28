@@ -15,7 +15,7 @@ body {
 }
 
 .blue {
-  color: #0d61de;
+  color: #0856fb;
 }
 
 img {
@@ -66,6 +66,30 @@ body.body6::after {
 /*
 * — Header and Navigation —
 */
+nav#to-top-chevron {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  text-align: right;
+  opacity: 0;
+}
+
+nav#to-top-chevron a {
+  display: inline-block;
+  color: rgba(255, 255, 255, 0.35);
+  width: 50px;
+  height: 50px;
+  background-color: rgba(0, 0, 0, 0.3);
+  text-align: center;
+  border-radius: 100%;
+  line-height: 53px;
+  vertical-align: middle;
+}
+
+nav#to-top-chevron a:hover {
+  color: rgba(255, 255, 255, 0.95);
+}
+
 header {
   padding: 40px 0;
 }
@@ -78,44 +102,65 @@ header .header-wrap {
   margin: 0 auto;
 }
 
-header .header-wrap figure {
+header .header-wrap .top-logo {
   float: left;
   display: block;
   position: relative;
+  background-color: rgba(255, 255, 255, 0.52);
+  padding: 2px;
+  border-radius: 6px;
+  margin-right: 10px;
+  max-width: 174px;
 }
 
-header .header-wrap figure figcaption {
-  font-size: 1rem;
+header .header-wrap .top-logo figcaption {
+  font-size: 1.05rem;
+  font-weight: bolder;
   color: #003299;
+  text-align: center;
+  padding-top: 1px;
 }
 
 header .header-wrap nav {
   display: block;
-  margin-left: 50px;
   text-align: right;
 }
 
 header .header-wrap nav .nav {
   text-align: right;
-  display: block;
+  margin-left: 30%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  overflow: hidden;
 }
 
 header .header-wrap nav .nav li {
-  display: inline-block;
-  float: none;
+  display: block;
+  flex: 1 0 auto;
+  white-space: nowrap;
+  margin: 0px;
+  padding: 0px;
 }
 
 header .header-wrap nav .nav-pills a {
   color: #fff;
+  text-align: center;
+  margin: 0px;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid white;
+  margin: 2px;
+  background-color: #003299;
 }
 
 header .header-wrap nav .nav-pills a:hover {
-  background-color: rgba(13, 97, 222, 0.65);
+  background-color: rgba(8, 86, 251, 0.65);
 }
 
 header #categories-wrap {
   border: #fff 1px solid;
-  background-color: #0d61de;
+  background-color: #0856fb;
   border-radius: 10px;
   list-style: none;
   display: flex;
@@ -129,7 +174,7 @@ header #categories-wrap {
 
 header #categories-wrap li {
   display: block;
-  background-color: #0d61de;
+  background-color: #0856fb;
   font-weight: bold;
   font-size: 1.6rem;
   flex: 1 0 auto;
@@ -146,7 +191,7 @@ header #categories-wrap li:hover {
 }
 
 header #categories-wrap li:hover a {
-  color: #0d61de;
+  color: #0856fb;
 }
 
 header #categories-wrap li a {
@@ -161,7 +206,7 @@ header #categories-wrap li a {
 * — Start Page —
 */
 .btn-default {
-  background-color: #0d61de;
+  background-color: #0856fb;
   color: #fff;
   font-weight: bold;
   font-size: 1.6rem;
@@ -193,7 +238,7 @@ header #categories-wrap li a {
   overflow: hidden;
 }
 
-.main-section .trip-featured h3 {
+.main-section .trip-featured div {
   font-size: 1.045vw;
   background-color: rgba(0, 0, 0, 0.6);
   color: white;
@@ -227,7 +272,7 @@ header #categories-wrap li a {
 */
 .main-footer {
   color: #fff;
-  background-color: #0d61de;
+  background-color: #0856fb;
   border-radius: 10px;
   max-width: 1300px;
   width: 80%;
@@ -236,13 +281,42 @@ header #categories-wrap li a {
   text-align: center;
 }
 
+.koncern-logo {
+  display: inline-block;
+  overflow: hidden;
+  border-radius: 5px;
+  width: 200px;
+}
+
+.koncern-logo:nth-child(2) {
+  width: 150px;
+}
+
 .koncern-logo img {
   height: 35px;
-  width: auto;
+  width: 100%;
 }
 
 /*
-* === MEDIA QUERIES ===
+* === LAYOUT MEDIA QUERIES ===
+*/
+@media (max-width: 768px) {
+  .hide-on-tiny {
+    display: none !important;
+  }
+  .clear-on-tiny {
+    clear: both !important;
+  }
+  .center-on-tiny {
+    text-align: center !important;
+    margin: 0 auto !important;
+    margin-bottom: 6px !important;
+    float: none !important;
+  }
+}
+
+/*
+* === LAYOUT MEDIA QUERIES ===
 */
 @media (max-width: 992px) {
   header .header-wrap,

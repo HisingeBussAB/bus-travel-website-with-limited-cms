@@ -81,22 +81,23 @@ if (empty($robots)) {
 <body>
 
 
-  <header class="text-center">
+  <header class="text-center hidden-print">
     <div class="text-right header-wrap">
-      <figure>
-        <a href="/"><img src="/img/logo.gif" alt="Rekå Resor AB"></a>
+      <figure class="top-logo clear-on-tiny center-on-tiny">
+        <a href="/"><img src="/img/logo.gif" alt="Rekå Resor AB"><span class="sr-only">Välkommen till Rekå Resor</span></a>
         <figcaption>- mer än 60 år av resor -</figcaption>
       </figure>
-      <nav>
-        <ul class="nav nav-pills" aria-label="Meny">
-          <li role="presentation"><a href="/">Hem</a></li>
+      <nav class="clear-on-tiny">
+        <ul class="nav nav-pills center-on-tiny" aria-label="Meny">
+          <li role="presentation"><a href="/#resekalender">Resekalender</a></li>
           <li role="presentation"><a href="/bestall-katalog">Beställ katalog</a></li>
           <li role="presentation"><a href="/inforresan">Inför resan</a></li>
           <li role="presentation"><a href="/efterresan">Efter resan</a></li>
           <li role="presentation"><a href="/galleri">Bildgalleri</a></li>
           <li role="presentation"><a href="/bussresorgoteborg">Om Rekå Resor</a></li>
-          <li role="presentation"><a rel="nofollow" href="tel:+4631222120"><i class="fa fa-phone" aria-hidden="true"></i> Ring oss</a></li>
-          <li role="presentation"><a href="https://sv-se.facebook.com/rekoresor/" aria-label="Besök oss på Facebook"><i class="fa fa-facebook-square" aria-hidden="true"></i> Facebook</a></li>
+          <li role="presentation" class="hidden-xs"><a href="/kontakt">Kontakt</a></li>
+          <li role="presentation" class="visible-xs-block"><a rel="nofollow" href="tel:+4631222120"><i class="fa fa-phone" aria-hidden="true"></i><span class="sr-only">Telefon</span>&nbsp;Ring oss</a></li>
+          <li role="presentation"><a href="https://sv-se.facebook.com/rekoresor/" aria-label="Besök oss på Facebook"><i class="fa fa-facebook-square" aria-hidden="true"></i><span class="sr-only">Facebook länk</span><span class="hidden-sm hidden-xs">&nbsp;Facebook</span></a></li>
         </ul>
       </nav>
     </div>
@@ -109,3 +110,4 @@ if (empty($robots)) {
     ?>
     </ul>
   </header>
+  <nav class="visible-xs-block" id="to-top-chevron"><a href="#" target="_top" aria-label="Till toppen av sidan"><i class="fa fa-chevron-up fa-2x" aria-hidden="true"></i><span class="sr-only">Till toppen av sidan</span></a></nav>

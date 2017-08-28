@@ -39,7 +39,7 @@ try {
     if (count($category) > 0) {
       $catid = $category['id'];
       $heading = strtr(strip_tags($category['kategori'], $allowed_tags), $html_ents);
-      $text = strtr(nl2br(strip_tags($category['ingress'], $allowed_tags)), $html_ents);
+      $text = Functions::linksaver(strtr(nl2br(strip_tags($category['ingress'], $allowed_tags)), $html_ents));
     } else {
       include __DIR__ . '/shared/header.php';
       throw new \UnexpectedValueException("Kategorin finns inte");
