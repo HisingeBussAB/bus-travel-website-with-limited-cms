@@ -23,6 +23,48 @@ img {
   height: auto;
 }
 
+.white-link {
+  color: white;
+}
+
+.white-link:link {
+  color: white;
+}
+
+.white-link:visited {
+  color: white;
+}
+
+.white-link:active {
+  color: grey;
+}
+
+.white-link:hover {
+  color: white;
+  text-decoration: underline;
+}
+
+a {
+  color: #003299;
+}
+
+a:link {
+  color: #003299;
+}
+
+a:visited {
+  color: #003299;
+}
+
+a:active {
+  color: #0856fb;
+}
+
+a:hover {
+  color: #003299;
+  text-decoration: underline;
+}
+
 /*
 * === SPECIFIC STYLES ===
 */
@@ -239,7 +281,7 @@ header #categories-wrap li a {
 }
 
 .main-section .trip-featured div {
-  font-size: 1.045vw;
+  font-size: .93vw;
   background-color: rgba(0, 0, 0, 0.6);
   color: white;
   margin: 0;
@@ -281,19 +323,58 @@ header #categories-wrap li a {
   text-align: center;
 }
 
-.koncern-logo {
-  display: inline-block;
+.main-footer .footer-heading {
+  font-size: 2.21rem;
+}
+
+.main-footer input[type=email] {
+  width: 30%;
+  min-width: 250px;
+  padding: 3px;
+  border-radius: 5px;
+  border: 1px solid white;
+}
+
+.main-footer input[type=submit] {
+  background-color: #003299;
+  color: white;
+  border: 1px solid white;
+  border-radius: 5px;
+  text-transform: uppercase;
+  padding: 3px;
+}
+
+.main-footer figure {
+  margin: 15px auto;
+  width: 100px;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.main-footer address {
+  margin: 15px auto;
+  font-size: 1rem;
+  line-height: 120%;
+}
+
+.main-footer address p {
+  margin: 1px;
+}
+
+.main-footer .koncern-logo-container {
+  display: flex;
+  align-content: center;
+  justify-content: space-between;
+}
+
+.main-footer .koncern-logo-container .koncern-logo {
+  flex: 0 0 auto;
   overflow: hidden;
   border-radius: 5px;
-  width: 200px;
 }
 
-.koncern-logo:nth-child(2) {
-  width: 150px;
-}
-
-.koncern-logo img {
-  height: 35px;
+.main-footer .koncern-logo-container .koncern-logo img {
+  height: auto;
   width: 100%;
 }
 
@@ -319,6 +400,9 @@ header #categories-wrap li a {
 * === LAYOUT MEDIA QUERIES ===
 */
 @media (max-width: 992px) {
+  .main-section .trip-featured div {
+    font-size: 1.085rem;
+  }
   header .header-wrap,
   header #categories-wrap,
   main.main-section,

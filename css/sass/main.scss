@@ -40,6 +40,40 @@ img {
   height: auto;
 }
 
+.white-link {
+  color: white;
+  &:link {
+    color: white;
+  }
+  &:visited {
+    color: white;
+  }
+  &:active {
+    color: grey;
+  }
+  &:hover {
+    color: white;
+    text-decoration: underline;
+  }
+}
+
+a {
+  color: $logo-blue;
+  &:link {
+    color: $logo-blue;
+  }
+  &:visited {
+    color: $logo-blue;
+  }
+  &:active {
+    color: $blue;
+  }
+  &:hover {
+    color: $logo-blue;
+    text-decoration: underline;
+  }
+}
+
 /*
 * === SPECIFIC STYLES ===
 */
@@ -277,7 +311,7 @@ header {
     overflow: hidden;
 
     div {
-      font-size: 1.045vw;
+      font-size: .93vw;
       background-color: rgba(0, 0, 0, 0.6);
       color: white;
       margin: 0;
@@ -325,23 +359,71 @@ header {
   margin: 30px auto;
   text-align: center;
 
-}
+  .footer-heading {
+    font-size: 2.21rem;
+  }
+
+  input[type=email] {
+    width: 30%;
+    min-width: 250px;
+    padding: 3px;
+    border-radius: 5px;
+    border: 1px solid rgb(255,255,255);
+  }
+
+  input[type=submit] {
+    background-color: $logo-blue;
+    color: rgb(255,255,255);
+    border: 1px solid rgb(255,255,255);
+    border-radius: 5px;
+    text-transform: uppercase;
+    padding: 3px;
+
+  }
+
+    figure {
+      margin: 15px auto;
+      width: 100px;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    address {
+      margin: 15px auto;
+      font-size: 1rem;
+      line-height: 120%;
+
+      p {
+        margin: 1px;
+
+
+      }
+    }
+
+
+
+
+ .koncern-logo-container {
+   display: flex;
+   align-content: center;
+   justify-content: space-between;
 
   .koncern-logo {
-    display: inline-block;
+    flex: 0 0 auto;
     overflow: hidden;
     border-radius: 5px;
-    width: 200px;
-    &:nth-child(2) {
-      width: 150px;
-    }
+
+
     img {
-      height: 35px;
+      height: auto;
       width: 100%;
     }
+
+
+    }
+  }
+
 }
-
-
 
 
 
@@ -351,6 +433,8 @@ header {
 
 
 @media (max-width: 768px) {
+
+
   .hide-on-tiny { display: none !important; }
   .clear-on-tiny {
     clear: both !important;
@@ -370,6 +454,11 @@ header {
 
 @media (max-width: 992px) {
 
+  .main-section .trip-featured div {
+    font-size: 1.085rem;
+  }
+
+
   header .header-wrap,
   header #categories-wrap,
   main.main-section,
@@ -380,7 +469,6 @@ header {
 }
 
 @media (max-width: 415px) {
-
 
 
   header .header-wrap,
