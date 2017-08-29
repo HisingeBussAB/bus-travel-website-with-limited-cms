@@ -134,7 +134,7 @@ include __DIR__ . '/shared/header.php';
     <a class="btn btn-default action-btn" href="/gruppresor">Gruppresor</a>
   </div>
   <div class="col-md-3 col-xs-6 text-center">
-    <a class="btn btn-default action-btn" href="/kontakt">Kontakta oss</a>
+      <a class="facebook-visit action-btn btn btn-default" href="https://www.facebook.com/rekoresor/" target="_blank"><img src='/img/facebook.png' alt="Besök oss på Facebook" /><span class='sr-only'>Besök vår Facebooksida</span></a>
   </div>
 </div>
 

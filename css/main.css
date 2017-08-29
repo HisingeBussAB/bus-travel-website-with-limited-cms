@@ -309,6 +309,16 @@ header #categories-wrap li a {
   margin-right: 30px;
 }
 
+.main-section .facebook-visit {
+  padding: 0px;
+}
+
+.main-section .facebook-visit img {
+  height: 42px;
+  width: auto;
+  border-radius: 2px;
+}
+
 /*
 * — Footer —
 */
@@ -328,11 +338,12 @@ header #categories-wrap li a {
 }
 
 .main-footer input[type=email] {
-  width: 30%;
-  min-width: 250px;
-  padding: 3px;
+  width: calc(95%-100px);
+  min-width: 300px;
+  padding: 4px;
   border-radius: 5px;
   border: 1px solid white;
+  margin: 3px;
 }
 
 .main-footer input[type=submit] {
@@ -341,14 +352,8 @@ header #categories-wrap li a {
   border: 1px solid white;
   border-radius: 5px;
   text-transform: uppercase;
-  padding: 3px;
-}
-
-.main-footer figure {
-  margin: 15px auto;
-  width: 100px;
-  border-radius: 5px;
-  overflow: hidden;
+  padding: 4px 6px;
+  margin: 3px;
 }
 
 .main-footer address {
@@ -363,19 +368,19 @@ header #categories-wrap li a {
 
 .main-footer .koncern-logo-container {
   display: flex;
+  justify-content: space-around;
   align-content: center;
-  justify-content: space-between;
+  align-items: center;
+  flex-flow: row wrap;
 }
 
-.main-footer .koncern-logo-container .koncern-logo {
+.main-footer .koncern-logo-container img {
   flex: 0 0 auto;
-  overflow: hidden;
   border-radius: 5px;
-}
-
-.main-footer .koncern-logo-container .koncern-logo img {
-  height: auto;
-  width: 100%;
+  width: 137px;
+  height: 32px;
+  border: 2px solid rgba(255, 255, 255, 0.52);
+  margin: 3px;
 }
 
 /*

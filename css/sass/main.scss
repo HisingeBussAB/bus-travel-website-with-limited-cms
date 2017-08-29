@@ -342,6 +342,17 @@ header {
       margin-right: 30px;
       }
 
+      .facebook-visit {
+
+        padding: 0px;
+
+        img {
+           height: 42px;
+           width:auto;
+           border-radius: 2px;
+        }
+      }
+
 
 }
 
@@ -364,11 +375,12 @@ header {
   }
 
   input[type=email] {
-    width: 30%;
-    min-width: 250px;
-    padding: 3px;
+    width: calc(95%-100px);
+    min-width: 300px;
+    padding: 4px;
     border-radius: 5px;
     border: 1px solid rgb(255,255,255);
+    margin: 3px;
   }
 
   input[type=submit] {
@@ -377,16 +389,12 @@ header {
     border: 1px solid rgb(255,255,255);
     border-radius: 5px;
     text-transform: uppercase;
-    padding: 3px;
+    padding: 4px 6px;
+    margin: 3px;
 
   }
 
-    figure {
-      margin: 15px auto;
-      width: 100px;
-      border-radius: 5px;
-      overflow: hidden;
-    }
+
 
     address {
       margin: 15px auto;
@@ -405,22 +413,24 @@ header {
 
  .koncern-logo-container {
    display: flex;
+   //align-content: center;
+   justify-content: space-around;
    align-content: center;
-   justify-content: space-between;
-
-  .koncern-logo {
-    flex: 0 0 auto;
-    overflow: hidden;
-    border-radius: 5px;
+   align-items: center;
+   flex-flow: row wrap;
 
 
-    img {
-      height: auto;
-      width: 100%;
+  img {
+      flex: 0 0 auto;
+      border-radius: 5px;
+      width: 137px;
+      height: 32px;
+      border: 2px solid rgba(255,255,255,.52);
+      margin: 3px;
     }
 
 
-    }
+
   }
 
 }
