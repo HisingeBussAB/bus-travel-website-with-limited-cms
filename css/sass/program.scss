@@ -1,3 +1,80 @@
-.antispam {
-  display: none;
+@import "variables";
+
+
+#get-program-form {
+
+  .antispam {
+    display: none;
+
+  }
+
+  .ajax-loader {
+    display: none;
+    background-color: $logo-blue;
+    color: rgb(255,255,255);
+    border: 1px solid rgb(255,255,255);
+    border-radius: 5px;
+    text-align: center;
+    padding: 4px 7px;
+    margin-top: 10px;
+    width: 172px;
+    height: 38px;
+  }
+
+  input[type=email],
+  input[type=text] {
+    width: 343px;
+    padding: 4px;
+    border-radius: 5px;
+    border: 1px solid $logo-blue;
+    margin: 2px;
+  }
+
+  input[name=zip] {
+    width: 110px;
+  }
+
+  input[name=city] {
+    width: 230px;
+  }
+
+  h2 {
+    font-size: 2rem;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+
+
+  input[type=checkbox] {
+    display: none;
+  }
+
+  .checklabel {
+    margin-left: 0px;
+
+    i.checked {
+      margin-right: 0px;
+      color: $logo-blue;
+      display: none;
+    }
+  }
+
+
+
+  input[type=submit] {
+    background-color: $logo-blue;
+    color: rgb(255,255,255);
+    border: 1px solid rgb(255,255,255);
+    border-radius: 5px;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 4px 7px;
+    margin-top: 10px;
+    width: 172px;
+    height: 38px;
+  }
+
 }

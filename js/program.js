@@ -7,10 +7,28 @@ $(function() {
     $("#get-program-button").prop("disabled",true);
     var formData = $("#get-program-form").serialize()
     $("#get-program-form :input").prop("disabled", true);
+    $("#get-program-button").hide();
     $(".ajax-loader").show();
     $(".ajax-response").empty();
     sendForm(formData);
   });
+
+  $('.checkmark').hover(function(event){
+    $(this).removeClass( "fa-square-o" );
+    $(this).addClass( "fa-check-square-o" );
+    $(this).parent().siblings("input").show();
+  });
+
+  $('.checkmark').mouseout(function(event){
+    $(this).addClass( "fa-square-o" );
+    $(this).removeClass( "fa-check-square-o" );
+  });
+
+  $('.checkmark').click(function(event){
+    $(this).removeClass( "fa-square-o" );
+    $(this).addClass( "fa-check-square-o" );
+  });
+
 
 
 });
@@ -32,6 +50,7 @@ function sendForm(formData) {
         $( "#get-program-button" ).prop("disabled",false);
         $( "#get-program-form :input").prop("disabled", false);
         $(".ajax-loader").hide();
+        $("#get-program-button").show();
       }, 200);
 
       document.getElementById("get-program-form").reset();
@@ -46,6 +65,7 @@ function sendForm(formData) {
       $( "#get-program-button" ).prop("disabled",false);
       $( "#get-program-form :input" ).prop("disabled", false);
       $(".ajax-loader").hide();
+      $("#get-program-button").show();
     });
 }
 

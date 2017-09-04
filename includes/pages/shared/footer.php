@@ -35,9 +35,9 @@ if (!empty($morestyles)) echo $morestyles;
       <section class='col-md-6 col-xs-12'>
       <h2 class='footer-heading'>Företag i koncernen</h2>
       <div class='koncern-logo-container'>
-          <img src="/img/hb-logga.png" alt="Hisinge Buss AB" />
-          <img src="/img/reka-logga.jpg" alt="Rekå Resor AB" />
-          <img src="/img/bp-logga.png" alt="Buss- och Resepoolen i Göteborg AB" />
+          <a href="http://www.hisigebuss.se"><img src="/img/hb-logga.png" alt="Hisinge Buss AB" /></a>
+          <a href="http://www.rekoresor.se"><img src="/img/reka-logga.jpg" alt="Rekå Resor AB" /></a>
+          <a href="http://www.busspoolen.se"><img src="/img/bp-logga.png" alt="Buss- och Resepoolen i Göteborg AB" /></a>
       </div>
       </section>
     </div>

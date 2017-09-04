@@ -1,5 +1,74 @@
-.antispam {
+/*
+* === SASS VARIABLES ===
+*/
+#get-program-form .antispam {
   display: none;
+}
+
+#get-program-form .ajax-loader {
+  display: none;
+  background-color: #003299;
+  color: white;
+  border: 1px solid white;
+  border-radius: 5px;
+  text-align: center;
+  padding: 4px 7px;
+  margin-top: 10px;
+  width: 172px;
+  height: 38px;
+}
+
+#get-program-form input[type=email],
+#get-program-form input[type=text] {
+  width: 343px;
+  padding: 4px;
+  border-radius: 5px;
+  border: 1px solid #003299;
+  margin: 2px;
+}
+
+#get-program-form input[name=zip] {
+  width: 110px;
+}
+
+#get-program-form input[name=city] {
+  width: 230px;
+}
+
+#get-program-form h2 {
+  font-size: 2rem;
+}
+
+#get-program-form ul {
+  list-style: none;
+  padding: 0;
+}
+
+#get-program-form input[type=checkbox] {
+  display: none;
+}
+
+#get-program-form .checklabel {
+  margin-left: 0px;
+}
+
+#get-program-form .checklabel i.checked {
+  margin-right: 0px;
+  color: #003299;
+  display: none;
+}
+
+#get-program-form input[type=submit] {
+  background-color: #003299;
+  color: white;
+  border: 1px solid white;
+  border-radius: 5px;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 4px 7px;
+  margin-top: 10px;
+  width: 172px;
+  height: 38px;
 }
 
 /*# sourceMappingURL=program.css.map */

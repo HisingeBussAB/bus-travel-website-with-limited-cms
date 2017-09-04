@@ -62,9 +62,9 @@ try {
   header('Content-type: text/html; charset=utf-8');
   include __DIR__ . '/shared/header.php';
 
-  echo "<main class='main-section container'>";
+  echo "<main class='main-section container-fluid'>";
 
-  echo "<div class='row'>";
+  echo "<div class='row-fluid'>";
 
 
       echo "
@@ -93,19 +93,20 @@ try {
       <input type='hidden' value='$clienthash' name='client' />
       <p class='antispam'>Leave this empty: <input type='text' name='url' /></p>";
 
-
+      $i = 1;
       if (empty($toururl)) {
-        echo "<h3>Välj program</h3>";
-        echo "<ul><li><input type='checkbox' name='category[]' value='Alla program' checked />Hela katalogen (alla program)</li>";
+        echo "<h2>Välj program</h2>";
+        echo "<ul><li><input type='checkbox' id='check0'name='category[]' value='Alla program' checked /><label class='checklabel' for='check0'><i class='fa fa-square-o fa-lg checkmark' aria-hidden='true'></i>Hela katalogen (alla program)</label></li>";
         foreach($categories as $category) {
-          echo "<li><input type='checkbox' name='category[]' value='" . htmlspecialchars($category->kategori, ENT_QUOTES) . "' />" . htmlspecialchars($category->kategori, ENT_QUOTES) . "</li>";
+          echo "<li><input type='checkbox' id='check" . $i . "' name='category[]' value='" . htmlspecialchars($category->kategori, ENT_QUOTES) . "' /><label class='checklabel' for='check" . $i . "'><i class='fa fa-square-o fa-lg checkmark' aria-hidden='true'></i>" . htmlspecialchars($category->kategori, ENT_QUOTES) . "</label></li>";
+          $i++;
         }
         echo "</ul>";
       }
 
 
 
-      echo "<p><input type='submit' value='Beställ programmet' id='get-program-button' /><span class='ajax-loader'><i class='fa fa-spinner fa-pulse fa-2x' aria-hidden='true'></i></span></p>
+      echo "<p><input type='submit' value='Beställ program' id='get-program-button' /><button class='ajax-loader'><i class='fa fa-spinner fa-pulse fa-2x' aria-hidden='true'></i></button></p>
       <div class='ajax-response' id='ajax-response'></div>
       ";
 
