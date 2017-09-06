@@ -143,9 +143,9 @@ try {
   header('Content-type: text/html; charset=utf-8');
   include __DIR__ . '/shared/header.php';
 
-  echo "<main class='main-section container'>";
+  echo "<main class='main-section container-fluid'>";
 
-  echo "<div class='row'>";
+  echo "<div class='row-fluid'>";
 
       echo "
       <form action='/ajax/booktour' method='post' accept-charset='utf-8' enctype='application/json' id='booktour-form'>";
@@ -248,10 +248,12 @@ try {
       <p class='antispam'>Leave this empty: <input type='text' name='url' /></p>";
 
       echo "<h3>Villkor</h3>";
-      echo "<p><input type='checkbox' name='terms' id='terms' value='ja' required /><label for='terms'>Ja, jag godkänner <a href='/resevillkor/' target='_blank'>resevillkoren</a>.</label></p>";
+      echo "<ul><li>";
+      echo "<input type='checkbox' name='terms' id='terms' value='ja' required /><label for='terms'>Ja, jag godkänner <a href='/resevillkor/' target='_blank'>resevillkoren</a>.</label>";
+      echo "</li></ul>";
       echo "<h3>Övriga önskemål/frågor</h3>";
       echo "<textarea maxlength='800' name='misc' placeholder='Eventuella övriga önskemål eller frågor.'></textarea>";
-      echo "<p><input type='submit' value='Skicka bokning' id='book-tour-button' /><span class='ajax-loader'><i class='fa fa-spinner fa-pulse fa-2x' aria-hidden='true'></i></span></p>
+      echo "<p><input type='submit' value='Skicka bokning' id='booktour-button' /><span class='ajax-loader'><i class='fa fa-spinner fa-pulse fa-2x' aria-hidden='true'></i></span></p>
       <div class='ajax-response' id='ajax-response'></div>
       ";
 

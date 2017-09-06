@@ -2,12 +2,12 @@
 
 
 $(function() {
-  $('#get-program-form').submit(function(event){
+  $('#booktour-form').submit(function(event){
     event.preventDefault();
-    $("#get-program-button").prop("disabled",true);
-    var formData = $("#get-program-form").serialize()
-    $("#get-program-form :input").prop("disabled", true);
-    $("#get-program-button").hide();
+    $("#booktour-button").prop("disabled",true);
+    var formData = $("#booktour-form").serialize()
+    $("#booktour-form :input").prop("disabled", true);
+    $("#booktour-button").hide();
     $(".ajax-loader").show();
     $(".ajax-response").empty();
     sendForm(formData);
@@ -23,7 +23,7 @@ function sendForm(formData) {
   $.ajax({
     type: 'POST',
     cache: false,
-    url: $("#get-program-form").attr('action'),
+    url: $("#booktour-form").attr('action'),
     data: formData,
     dataType: "json",
   })
@@ -32,13 +32,13 @@ function sendForm(formData) {
       $( "#ajax-response" ).html( data );
       newtoken();
       setTimeout(function(){
-        $( "#get-program-button" ).prop("disabled",false);
-        $( "#get-program-form :input").prop("disabled", false);
+        $( "#booktour-button" ).prop("disabled",false);
+        $( "#booktour-form :input").prop("disabled", false);
         $(".ajax-loader").hide();
-        $("#get-program-button").show();
+        $("#booktour-button").show();
       }, 200);
 
-      document.getElementById("get-program-form").reset();
+      document.getElementById("booktour-form").reset();
     })
     .fail(function(data) {
       console.log(data);
@@ -47,10 +47,10 @@ function sendForm(formData) {
         $( "#ajax-response" ).html( "Något har gått fel. Kunde inte hitta svarssidan." );
       else
         $( "#ajax-response" ).html( "Något har gått fel. " + data.responseText );
-      $( "#get-program-button" ).prop("disabled",false);
-      $( "#get-program-form :input" ).prop("disabled", false);
+      $( "#booktour-button" ).prop("disabled",false);
+      $( "#booktour-form :input" ).prop("disabled", false);
       $(".ajax-loader").hide();
-      $("#get-program-button").show();
+      $("#booktour-button").show();
     });
 }
 

@@ -96,9 +96,9 @@ try {
       $i = 1;
       if (empty($toururl)) {
         echo "<h2>Välj program</h2>";
-        echo "<ul><li><input type='checkbox' id='check0'name='category[]' value='Alla program' checked /><label class='checklabel' for='check0'><i class='fa fa-square-o fa-lg checkmark' aria-hidden='true'></i>Hela katalogen (alla program)</label></li>";
+        echo "<ul><li><input type='checkbox' id='check0'name='category[]' value='Alla program' checked /><label class='checklabel' for='check0'>Hela katalogen (alla program)</label></li>";
         foreach($categories as $category) {
-          echo "<li><input type='checkbox' id='check" . $i . "' name='category[]' value='" . htmlspecialchars($category->kategori, ENT_QUOTES) . "' /><label class='checklabel' for='check" . $i . "'><i class='fa fa-square-o fa-lg checkmark' aria-hidden='true'></i>" . htmlspecialchars($category->kategori, ENT_QUOTES) . "</label></li>";
+          echo "<li><input type='checkbox' id='check" . $i . "' name='category[]' value='" . htmlspecialchars($category->kategori, ENT_QUOTES) . "' /><label class='checklabel' for='check" . $i . "'>" . htmlspecialchars($category->kategori, ENT_QUOTES) . "</label></li>";
           $i++;
         }
         echo "</ul>";

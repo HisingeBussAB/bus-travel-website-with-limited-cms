@@ -65,6 +65,52 @@ a:hover {
   text-decoration: underline;
 }
 
+input[type=submit] {
+  background-color: #003299;
+  color: white;
+  border: 1px solid white;
+  border-radius: 5px;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 4px 7px;
+  margin-top: 10px;
+}
+
+input[type=tel],
+input[type=email],
+input[type=text] {
+  padding: 4px;
+  border-radius: 5px;
+  border: 1px solid #003299;
+  margin: 2px;
+}
+
+textarea {
+  border-radius: 5px;
+  border: 1px solid #003299;
+  margin: 2px;
+}
+
+.antispam {
+  display: none;
+}
+
+.ajax-loader {
+  display: none;
+  background-color: #003299;
+  color: white;
+  border: 1px solid white;
+  border-radius: 5px;
+  text-align: center;
+  padding: 4px 7px;
+  margin-top: 10px;
+}
+
+ul {
+  list-style: none;
+  padding-left: 0;
+}
+
 /*
 * === SPECIFIC STYLES ===
 */
