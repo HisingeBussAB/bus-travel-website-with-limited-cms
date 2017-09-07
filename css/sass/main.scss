@@ -342,7 +342,7 @@ header {
     overflow: hidden;
 
     div {
-      font-size: .93vw;
+      font-size: .92vw;
       background-color: rgba(0, 0, 0, 0.6);
       color: white;
       margin: 0;
@@ -350,6 +350,14 @@ header {
       width: 100%;
       position: absolute;
       bottom: 0;
+
+      p {
+        float: left;
+      }
+
+      i {
+        float: right;
+      }
 
     }
   }
@@ -492,6 +500,13 @@ header {
 /*
 * === LAYOUT MEDIA QUERIES ===
 */
+
+@media (max-width: 1300px) {
+
+  .main-section .trip-featured div {
+    font-size: 1rem;
+  }
+}
 
 @media (max-width: 992px) {
 

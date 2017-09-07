@@ -327,7 +327,7 @@ header #categories-wrap li a {
 }
 
 .main-section .trip-featured div {
-  font-size: .93vw;
+  font-size: .92vw;
   background-color: rgba(0, 0, 0, 0.6);
   color: white;
   margin: 0;
@@ -335,6 +335,14 @@ header #categories-wrap li a {
   width: 100%;
   position: absolute;
   bottom: 0;
+}
+
+.main-section .trip-featured div p {
+  float: left;
+}
+
+.main-section .trip-featured div i {
+  float: right;
 }
 
 .main-section .trip-featured-img-list {
@@ -450,6 +458,12 @@ header #categories-wrap li a {
 /*
 * === LAYOUT MEDIA QUERIES ===
 */
+@media (max-width: 1300px) {
+  .main-section .trip-featured div {
+    font-size: 1rem;
+  }
+}
+
 @media (max-width: 992px) {
   .main-section .trip-featured div {
     font-size: 1.085rem;
