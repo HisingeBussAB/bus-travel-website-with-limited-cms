@@ -111,6 +111,11 @@ ul {
   padding-left: 0;
 }
 
+.nopadding {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
 /*
 * === SPECIFIC STYLES ===
 */
@@ -316,6 +321,12 @@ header #categories-wrap li a {
   overflow: hidden;
 }
 
+.main-section .featured-box {
+  margin: 0;
+  margin-top: 20px;
+  padding: 5px;
+}
+
 .main-section .trip-featured {
   min-height: 300px;
   background-repeat: no-repeat;
@@ -324,9 +335,42 @@ header #categories-wrap li a {
   padding: 0;
   border-radius: 3px;
   overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.6);
+  position: relative;
 }
 
-.main-section .trip-featured div {
+.main-section .trip-featured .trip-featured-head {
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  float: left;
+  margin: 0px;
+  padding: 10px;
+  border-radius: 3px 0 3px 0;
+}
+
+.main-section .trip-featured .trip-featured-details {
+  border-radius: 50%;
+  float: right;
+  padding: 16px 13px;
+  margin: 5px;
+  font-size: 1.05vw;
+  font-weight: bold;
+  background-color: rgba(34, 139, 34, 0.7);
+  border: 1px solid white;
+}
+
+.main-section .trip-featured .trip-featured-details .trip-featured-dur {
+  color: white;
+  padding: 1px;
+  border-bottom: 1px solid white;
+}
+
+.main-section .trip-featured .trip-featured-details .trip-featured-price {
+  color: white;
+  padding: 1px;
+}
+
+.main-section .trip-featured .trip-featured-desc {
   font-size: .92vw;
   background-color: rgba(0, 0, 0, 0.6);
   color: white;
@@ -335,13 +379,14 @@ header #categories-wrap li a {
   width: 100%;
   position: absolute;
   bottom: 0;
+  border-radius: 0 0 3px 3px;
 }
 
-.main-section .trip-featured div p {
+.main-section .trip-featured .trip-featured-desc p {
   float: left;
 }
 
-.main-section .trip-featured div i {
+.main-section .trip-featured .trip-featured-desc i {
   float: right;
 }
 
@@ -459,14 +504,22 @@ header #categories-wrap li a {
 * === LAYOUT MEDIA QUERIES ===
 */
 @media (max-width: 1300px) {
-  .main-section .trip-featured div {
-    font-size: 1rem;
+  .main-section .trip-featured .trip-featured-desc {
+    font-size: 1.07rem;
+  }
+  .main-section .trip-featured .trip-featured-details .trip-featured-dur,
+  .main-section .trip-featured .trip-featured-details .trip-featured-price {
+    font-size: 1.4rem;
   }
 }
 
 @media (max-width: 992px) {
-  .main-section .trip-featured div {
-    font-size: 1.085rem;
+  .main-section .trip-featured .trip-featured-desc {
+    font-size: 1.2rem;
+  }
+  .main-section .trip-featured .trip-featured-details .trip-featured-dur,
+  .main-section .trip-featured .trip-featured-details .trip-featured-price {
+    font-size: 1.6rem;
   }
   header .header-wrap,
   header #categories-wrap,

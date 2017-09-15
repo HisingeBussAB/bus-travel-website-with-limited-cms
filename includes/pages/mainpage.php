@@ -51,24 +51,27 @@ include __DIR__ . '/shared/header.php';
   }
 
   $featured = [];
-  $featuredset = FALSE;
+  $featuredcounter = 0;
   $tours = [];
 
   $i=0;
   foreach($result as $tour) {
-    if ($tour['utvald'] && !$featuredset) {
-      $featured['link']    = filter_var("http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/resa/". str_replace("'", "", $tour['url']), FILTER_SANITIZE_URL);
-      $featured['tour']    = strtr(strip_tags($tour['namn'], $allowed_tags), $html_ents);
-      $featured['desc']    = strtr(strip_tags($tour['seo_description'], $allowed_tags), $html_ents);
-      $featured['imgpath'] = filter_var($tour['bildkatalog'], FILTER_SANITIZE_URL);
+    if ($tour['utvald'] && $featuredcounter < 3) {
+
+      $featured[$featuredcounter]['link']    = filter_var("http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/resa/". str_replace("'", "", $tour['url']), FILTER_SANITIZE_URL);
+      $featured[$featuredcounter]['days'] = strtr(strip_tags($tour['antaldagar'], $allowed_tags), $html_ents);
+      $featured[$featuredcounter]['price'] = number_format(filter_var($tour['pris'], FILTER_SANITIZE_NUMBER_INT), 0, ",", " ");
+      $featured[$featuredcounter]['tour']    = strtr(strip_tags($tour['namn'], $allowed_tags), $html_ents);
+      $featured[$featuredcounter]['desc']    = strtr(strip_tags($tour['seo_description'], $allowed_tags), $html_ents);
+      $featured[$featuredcounter]['imgpath'] = filter_var($tour['bildkatalog'], FILTER_SANITIZE_URL);
       $server_path = __DIR__ . '/../../upload/resor/' . $tour['bildkatalog'] . '/';
       $web_path = filter_var("http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/" . $tour['bildkatalog'] . "/", FILTER_SANITIZE_URL);
         if ($files = Functions::get_img_files($server_path)) {
-          $featured['imgpath'] = $web_path . $files[0]['thumb'];
+          $featured[$featuredcounter]['imgpath'] = $web_path . $files[0]['thumb'];
         } else {
-          $featured['imgpath'] = filter_var("http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/generic/small_1_generic.jpg", FILTER_SANITIZE_URL);
+          $featured[$featuredcounter]['imgpath'] = filter_var("http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/generic/small_1_generic.jpg", FILTER_SANITIZE_URL);
         }
-      $featuredset = TRUE;
+      $featuredcounter++;
     }
 
     $tours[$i]['tour'] = strtr(strip_tags($tour['namn'], $allowed_tags), $html_ents);
@@ -103,17 +106,29 @@ include __DIR__ . '/shared/header.php';
 <main class="main-section clearfix">
   <div class="container-fluid">
   <div class="row-fluid">
-  <section class="col-md-6 col-xs-12">
-    <h1>Välkommen till Rekå Resor</h1>
+  <h1 class="hidden">Välkommen till Rekå Resor</h1>
+  <!--<section class="col-md-4 col-xs-12">
+
     <p>För att genomföra en bra bussresa så krävs det planering och genomförande, oavsett om den ska gå inom Sverige eller ut i Europa.
     Det är där vi på Rekå Resor kommer in i bilden. Vi lyssnar på de önskemål du har och bidrar sedan med råd och idéer för bästa möjliga resultat.
     Med mer än 60 år i branschen har vi både erfarenheten såväl som kontaktnätet och det gör att vi kan ta fram i princip vilka gruppresor som helst –
     från korta endagsresor i närområdet runt Göteborg till veckolånga resor runt om i Europa. Alla bussresor kryddas med det lilla extra.</p>
-  </section>
-  <a href="<?php echo $featured['link']; ?>"><div class="col-md-6 col-xs-12 trip-featured" style="background-image: url('<?php echo $featured['imgpath']; ?>')">
-    <h2 class="invisible">Månadens resa</h2>
-    <div aria-label="<?php echo $featured['tour']; ?>"><?php echo $featured['desc']; ?><i class="fa fa-chevron-right pull-right" aria-hidden="true"></i></div>
+  </section>-->
+  <h2 class="hidden">Utvalda resor</h2>
+  <?php foreach($featured as $featuredtrip) { ?>
+
+    <div class="col-md-4 col-xs-12 featured-box">
+      <a href="<?php echo $featuredtrip['link']; ?>">
+    <div class="trip-featured" style="background-image: url('<?php echo $featuredtrip['imgpath']; ?>')">
+    <h3 class="trip-featured-head"><?php echo $featuredtrip['tour']; ?></h3>
+    <div class="trip-featured-details text-center">
+      <div class="trip-featured-dur text-center"><?php echo $featuredtrip['days']; ?> dagar</div>
+      <div class="trip-featured-price text-center"><?php echo $featuredtrip['price']; ?>:-</div>
+    </div>
+    <div class="trip-featured-desc" aria-label="<?php echo $featuredtrip['tour']; ?>"><?php echo $featuredtrip['desc']; ?><i class="fa fa-chevron-right pull-right" aria-hidden="true"></i></div>
   </div></a>
+  </div>
+<?php } ?>
   </div>
 
   <section class="row-fluid">

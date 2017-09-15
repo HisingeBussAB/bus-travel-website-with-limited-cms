@@ -105,6 +105,11 @@ ul {
   padding-left: 0;
 }
 
+.nopadding {
+   padding: 0 !important;
+   margin: 0 !important;
+}
+
 /*
 * === SPECIFIC STYLES ===
 */
@@ -330,7 +335,11 @@ header {
 
   }
 
-
+  .featured-box {
+    margin: 0;
+    margin-top: 20px;
+    padding: 5px;
+  }
 
   .trip-featured {
     min-height: $height-first-row;
@@ -340,8 +349,50 @@ header {
     padding: 0;
     border-radius: 3px;
     overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.6);
+    position: relative;
 
-    div {
+
+    .trip-featured-head {
+      background-color: rgba(0, 0, 0, 0.6);
+      color: white;
+      float: left;
+      margin: 0px;
+      padding: 10px;
+      border-radius: 3px 0 3px 0;
+
+
+    }
+
+    .trip-featured-details {
+
+      border-radius: 50%;
+
+      float: right;
+      padding: 16px 13px;
+      margin: 5px;
+      font-size: 1.05vw;
+      font-weight: bold;
+      background-color: rgba(34,139,34,.7);
+      border: 1px solid white;
+
+
+
+      .trip-featured-dur {
+        color: white;
+        padding: 1px;
+        border-bottom: 1px solid white;
+
+
+      }
+      .trip-featured-price {
+        color: white;
+        padding: 1px;
+
+      }
+    }
+
+    .trip-featured-desc {
       font-size: .92vw;
       background-color: rgba(0, 0, 0, 0.6);
       color: white;
@@ -350,6 +401,7 @@ header {
       width: 100%;
       position: absolute;
       bottom: 0;
+      border-radius: 0 0 3px 3px;
 
       p {
         float: left;
@@ -503,15 +555,35 @@ header {
 
 @media (max-width: 1300px) {
 
-  .main-section .trip-featured div {
-    font-size: 1rem;
+  .main-section .trip-featured {
+    .trip-featured-desc  {
+      font-size: 1.07rem;
+  }
+
+
+    .trip-featured-details {
+      .trip-featured-dur,
+      .trip-featured-price {
+        font-size: 1.4rem;
+      }
+    }
   }
 }
 
 @media (max-width: 992px) {
 
-  .main-section .trip-featured div {
-    font-size: 1.085rem;
+  .main-section .trip-featured {
+    .trip-featured-desc  {
+      font-size: 1.2rem;
+  }
+
+
+    .trip-featured-details {
+      .trip-featured-dur,
+      .trip-featured-price {
+        font-size: 1.6rem;
+      }
+    }
   }
 
 
