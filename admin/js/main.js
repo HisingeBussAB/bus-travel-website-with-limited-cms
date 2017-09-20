@@ -136,7 +136,7 @@ function renderItem(item, response) {
   jQuery.each(response, function() {
     line += "<tr><td class='table-name'>";
     if (item == "category") {
-      line += "<a href='http://rekoresor.busspoolen.se/adminp/kategori/";
+      line += "<a href='" + window.location.href + "/kategori/";
       line += this.id;
       line += "'>";
       line += this.kategori;
@@ -150,7 +150,7 @@ function renderItem(item, response) {
       line += this.ort;
     }
     if (item == "trip") {
-      line += "<a href='http://rekoresor.busspoolen.se/adminp/nyresa/";
+      line += "<a href='" + window.location.href + "/nyresa/";
       line += this.id;
       line += "'>";
       line += this.namn;
