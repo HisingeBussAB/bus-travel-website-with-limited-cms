@@ -12,5 +12,6 @@ This project is part of a trainee employment in co-operation with Lernia YH (fro
 * [Font Awesome 4.7.0](https://github.com/FortAwesome/Font-Awesome)
 * [Firebase PHP-JWT](https://github.com/firebase/php-jwt)
 * [PHPMailer](https://github.com/PHPMailer/PHPMailer)
+* [The League OAuth2-Google](https://github.com/thephpleague/oauth2-google)
 
 With Thanks!
