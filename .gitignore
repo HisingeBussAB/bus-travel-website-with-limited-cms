@@ -13,4 +13,4 @@ upload/**/*.jpg
 upload/**/*.jpeg
 vendor/*
 ignore/get_oauth_token.php
-.idea/**
+.idea/*
