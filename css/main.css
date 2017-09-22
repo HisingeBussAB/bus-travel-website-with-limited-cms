@@ -307,7 +307,8 @@ header #categories-wrap li a {
 }
 
 .main-section {
-  padding: 15px;
+  padding: 10px;
+  padding-top: 25px;
   max-width: 1300px;
   width: 80%;
   margin: auto;
@@ -323,7 +324,6 @@ header #categories-wrap li a {
 
 .main-section .featured-box {
   margin: 0;
-  margin-top: 20px;
   padding: 5px;
 }
 
@@ -402,10 +402,15 @@ header #categories-wrap li a {
 }
 
 .main-section .action-btn {
-  margin-top: 40px;
-  margin-bottom: 30px;
-  margin-left: 30px;
-  margin-right: 30px;
+  margin: 30px auto;
+  border-radius: 5px;
+  background-color: #003299;
+  color: #fff;
+}
+
+.main-section .action-btn:hover {
+  transform: scale(1.087);
+  opacity: 0.95;
 }
 
 .main-section .facebook-visit {
@@ -415,7 +420,7 @@ header #categories-wrap li a {
 .main-section .facebook-visit img {
   height: 42px;
   width: auto;
-  border-radius: 2px;
+  border-radius: 5px;
 }
 
 /*

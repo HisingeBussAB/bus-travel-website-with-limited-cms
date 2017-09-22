@@ -321,7 +321,8 @@ header {
 }
 
 .main-section {
-  padding: 15px;
+  padding: 10px;
+  padding-top: 25px;
   max-width: $page-max-width;
   width: $page-desktop-relative-width;
   margin: auto;
@@ -337,7 +338,6 @@ header {
 
   .featured-box {
     margin: 0;
-    margin-top: 20px;
     padding: 5px;
   }
 
@@ -427,20 +427,26 @@ header {
 
 
     .action-btn {
-      margin-top: 40px;
-      margin-bottom: 30px;
-      margin-left: 30px;
-      margin-right: 30px;
+      margin: 30px auto;
+      border-radius: 5px;
+      background-color: $logo-blue;
+      color: $textonblue;
+
+      &:hover {
+        transform: scale(1.087);
+        opacity: 0.95;
+      }
+
+
       }
 
       .facebook-visit {
-
         padding: 0px;
 
         img {
            height: 42px;
            width:auto;
-           border-radius: 2px;
+           border-radius: 5px;
         }
       }
 

@@ -56,7 +56,7 @@ include __DIR__ . '/shared/header.php';
 
   $i=0;
   foreach($result as $tour) {
-    if ($tour['utvald'] && $featuredcounter < 3) {
+    if ($tour['utvald'] && $featuredcounter < 4) {
 
       $featured[$featuredcounter]['link']    = filter_var("http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/resa/". str_replace("'", "", $tour['url']), FILTER_SANITIZE_URL);
       $featured[$featuredcounter]['days'] = strtr(strip_tags($tour['antaldagar'], $allowed_tags), $html_ents);
@@ -102,22 +102,30 @@ include __DIR__ . '/shared/header.php';
   }
 
 
+
 ?>
+
 <main class="main-section clearfix">
   <div class="container-fluid">
   <div class="row-fluid">
   <h1 class="hidden">Välkommen till Rekå Resor</h1>
-  <!--<section class="col-md-4 col-xs-12">
-
-    <p>För att genomföra en bra bussresa så krävs det planering och genomförande, oavsett om den ska gå inom Sverige eller ut i Europa.
-    Det är där vi på Rekå Resor kommer in i bilden. Vi lyssnar på de önskemål du har och bidrar sedan med råd och idéer för bästa möjliga resultat.
-    Med mer än 60 år i branschen har vi både erfarenheten såväl som kontaktnätet och det gör att vi kan ta fram i princip vilka gruppresor som helst –
-    från korta endagsresor i närområdet runt Göteborg till veckolånga resor runt om i Europa. Alla bussresor kryddas med det lilla extra.</p>
-  </section>-->
   <h2 class="hidden">Utvalda resor</h2>
-  <?php foreach($featured as $featuredtrip) { ?>
+  <?php foreach($featured as $featuredtrip) {
+    if ($featuredcounter > 3)       { echo "<div class='col-md-6 col-sm-12 featured-box'>"; }
+    elseif ($featuredcounter === 3)  { echo "<div class='col-lg-4 col-md-12 featured-box'>"; }
+    elseif ($featuredcounter === 2)   { echo "<div class='col-md-6 col-sm-12 featured-box'>"; }
+    elseif ($featuredcounter < 2)   {
+      echo "<div class='col-md-6 col-sm-12 featured-box'>
+            <h1>Välkommen till Rekå Resor</h1>
+            <p>För att genomföra en bra bussresa så krävs det planering och genomförande, oavsett om den ska gå inom Sverige eller ut i Europa.
+            Det är där vi på Rekå Resor kommer in i bilden. Vi lyssnar på de önskemål du har och bidrar sedan med råd och idéer för bästa möjliga resultat.
+            Med mer än 60 år i branschen har vi både erfarenheten såväl som kontaktnätet och det gör att vi kan ta fram i princip vilka gruppresor som helst –
+            från korta endagsresor i närområdet runt Göteborg till veckolånga resor runt om i Europa. Alla bussresor kryddas med det lilla extra.</p>
+            <h3>Följ med oss på bussresor som har det lilla extra.</h3></div>
+            <div class='col-md-6 col-sm-12 featured-box'>";
+          }
 
-    <div class="col-md-4 col-xs-12 featured-box">
+    ?>
       <a href="<?php echo $featuredtrip['link']; ?>">
     <div class="trip-featured" style="background-image: url('<?php echo $featuredtrip['imgpath']; ?>')">
     <h3 class="trip-featured-head"><?php echo $featuredtrip['tour']; ?></h3>
