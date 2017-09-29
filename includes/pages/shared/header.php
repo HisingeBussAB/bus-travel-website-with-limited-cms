@@ -23,7 +23,6 @@
 
  <meta property='og:url' content='http" . APPEND_SSL . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . "' />
  <meta name='description' content='Rekå Resor erbjuder bussresor inom Sverige och till hela Europa med utgångspunkt från Göteborg. Välkommen till en trevlig bussresa och ett spännande äventyr.' />
- <meta name='keywords' content='bussresor, göteborg, gruppresor' />
  <meta property='og:description' content='Rekå Resor erbjuder bussresor inom Sverige och till hela Europa med utgångspunkt från Göteborg. Välkommen till en trevlig bussresa och ett spännande äventyr.' />";
 }
 

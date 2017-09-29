@@ -189,8 +189,8 @@ header {
 
 header .header-wrap {
   padding-bottom: 35px;
-  max-width: 1300px;
-  width: 80%;
+  max-width: 1500px;
+  width: 90%;
   overflow: hidden;
   margin: 0 auto;
 }
@@ -260,8 +260,8 @@ header #categories-wrap {
   flex-wrap: wrap;
   overflow: hidden;
   padding: 0;
-  max-width: 1300px;
-  width: 80%;
+  max-width: 1500px;
+  width: 90%;
   margin: auto;
 }
 
@@ -309,8 +309,8 @@ header #categories-wrap li a {
 .main-section {
   padding: 10px;
   padding-top: 25px;
-  max-width: 1300px;
-  width: 80%;
+  max-width: 1500px;
+  width: 90%;
   margin: auto;
   background: #fff;
   border-radius: 10px;
@@ -430,8 +430,8 @@ header #categories-wrap li a {
   color: #fff;
   background-color: #0856fb;
   border-radius: 10px;
-  max-width: 1300px;
-  width: 80%;
+  max-width: 1500px;
+  width: 90%;
   padding: 10px;
   margin: 30px auto;
   text-align: center;
@@ -530,7 +530,7 @@ header #categories-wrap li a {
   header #categories-wrap,
   main.main-section,
   footer.main-footer {
-    width: 93%;
+    width: 95%;
   }
 }
 
@@ -539,7 +539,7 @@ header #categories-wrap li a {
   header #categories-wrap,
   main.main-section,
   footer.main-footer {
-    width: 98%;
+    width: 100%;
   }
 }
 

@@ -78,7 +78,6 @@ try {
       $pdffiles = functions::get_pdf_files($server_path);
 
       $meta  = "<meta property='description' content='" . htmlspecialchars(strip_tags($result['seo_description']), ENT_QUOTES) . "' />";
-      $meta .= "<meta property='keywords' content='" . htmlspecialchars(strip_tags($result['seo_keywords']), ENT_QUOTES) . "' />";
 
       $meta .= "<meta property='og:description' content='" . htmlspecialchars(strip_tags($result['og_description']), ENT_QUOTES) . "' />";
       $meta .= "<meta property='og:title' content='" . htmlspecialchars(strip_tags($tour['namn']), ENT_QUOTES) . "' />";
