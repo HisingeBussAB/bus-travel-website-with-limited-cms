@@ -148,6 +148,15 @@ if (!$firstinstall) {
   } catch(\PDOException $e) {
     echo $sql . "<br>" . $e->getMessage() . "<br>";
   }
+  try {
+    $table = TABLE_PREFIX . 'nyheter';
+    $sql = "DROP TABLE " . $table . ";";
+    $sth = $pdo->prepare($sql);
+    $sth->execute();
+    echo "Table: " . $table . " dropped succesfully.<br>";
+  } catch(\PDOException $e) {
+    echo $sql . "<br>" . $e->getMessage() . "<br>";
+  }
 }
 
 

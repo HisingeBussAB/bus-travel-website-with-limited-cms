@@ -43,13 +43,17 @@ class Categories {
    *
    * @return array json
    */
-  public static function getActiveCategories() {
+  public static function getActiveCategories($nonempty = false) {
 
 
 
     try {
       $pdo = DB::get();
-      $sql = "SELECT * FROM " . TABLE_PREFIX . "kategorier WHERE aktiv = 1 ORDER BY sort;";
+      if (!$nonempty) {
+        $sql = "SELECT * FROM " . TABLE_PREFIX . "kategorier WHERE aktiv = 1 ORDER BY sort;";
+      } else {
+        $sql = "SELECT * FROM " . TABLE_PREFIX . "kategorier WHERE aktiv = 1 AND id IN (SELECT resa_id FROM " . TABLE_PREFIX . "kategorier_resor) ORDER BY sort;";
+      }
       $sth = $pdo->prepare($sql);
       $sth->execute();
       $result = $sth->fetchAll(\PDO::FETCH_ASSOC);

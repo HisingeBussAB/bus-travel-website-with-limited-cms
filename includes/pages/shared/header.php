@@ -12,7 +12,7 @@
  use HisingeBussAB\RekoResor\website as root;
 
  //Get dynamic content for this include
- $categories = root\admin\includes\classes\Categories::getActiveCategories();
+ $categories = root\admin\includes\classes\Categories::getActiveCategories(true);
 
  if ($categories !== false) {
    $categories = json_decode($categories);
