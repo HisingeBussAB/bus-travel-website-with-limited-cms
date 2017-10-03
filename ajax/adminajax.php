@@ -122,12 +122,14 @@ class AdminAjax
               $sth = $pdo->prepare($sql);
               $sth->bindParam(':nyheter', $news, \PDO::PARAM_STR);
               $sth->execute();
+              echo json_encode("Texten sparades.");
+              http_response_code(200);
+              exit;
             } catch(\PDOException $e) {
               DBError::showError($e, __CLASS__, $sql);
+              http_response_code(500);
+              exit;
             }
-            echo json_encode("Texten sparad");
-            http_response_code(200);
-            exit;
         } else {
           echo "<p>Token stämmer inte. Prova <a href='javascript:window.location.href=window.location.href'>ladda om</a> sidan.</p>";
           http_response_code(401);

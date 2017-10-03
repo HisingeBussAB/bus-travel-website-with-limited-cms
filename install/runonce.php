@@ -448,10 +448,18 @@ try {
   $table = TABLE_PREFIX . 'nyheter';
   $sql = "CREATE TABLE " . $table . " (
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    nyheter TIMESTAMP DEFAULT CURRENT_TIMESTAMP);";
+    nyheter MEDIUMTEXT);";
   $sth = $pdo->prepare($sql);
   $sth->execute();
   echo "Table: " . $table . " created succesfully.<br>";
+} catch(\PDOException $e) {
+  echo $sql . "<br>" . $e->getMessage() . "<br>";
+}
+try {
+$sql = "INSERT INTO " . $table . " (nyheter) VALUES (' ');";
+$sth = $pdo->prepare($sql);
+$sth->execute();
+echo "Table: " . $table . " dummy news post created succesfully.<br>";
 } catch(\PDOException $e) {
   echo $sql . "<br>" . $e->getMessage() . "<br>";
 }

@@ -61,7 +61,6 @@ class Main {
     }
 
 
-
     ?>
 
 
@@ -146,8 +145,9 @@ class Main {
         <form action="/adminajax/news" method="post" accept-charset="utf-8" id="form-news" enctype='application/json'>
           <input type="hidden" name="tokenid" value="<?php echo $token['id'] ?>" class="form-token-id">
           <input type="hidden" name="token" value="<?php echo $token['token'] ?>" class="form-token">
-          <div><textarea name="nyheter"><?php echo $result['nyheter']; ?></textarea></div>
-          <button type="submit">Spara</button>
+          <div><textarea name="nyheter"><?php echo trim($result['nyheter']); ?></textarea></div>
+          <button type="submit" id="form-news-submit"><span id="form-news-submit-text">Spara</span><i id="form-news-submit-spinner" class="fa fa-spinner fa-lg fa-spin" aria-hidden="true"></i></button>
+          <div id="form-news-reply"></div>
         </form>
       </div>
       <div class="col-lg-6 col-md-6">

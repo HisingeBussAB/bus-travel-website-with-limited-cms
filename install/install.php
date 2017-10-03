@@ -42,7 +42,6 @@ $default_login = filter_var(trim("admin"), FILTER_SANITIZE_STRING);
 $default_pwd = password_hash($default_pwd_plain . FIX_PWD_PEPPER, PASSWORD_DEFAULT, $options);
 
 
-
 if ($firstinstall) {
   echo "<p>Installing...</p>";
   require "runonce.php";

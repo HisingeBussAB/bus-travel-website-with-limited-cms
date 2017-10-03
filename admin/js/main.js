@@ -42,6 +42,16 @@ $(function() {
     $("#form-new-stop-ort").val('');
   });
 
+  $('#form-news').submit(function(event){
+    event.preventDefault();
+    $( "#form-news-submit-text" ).hide();
+    $( "#form-news-submit-spinner" ).show();
+    $("#form-news-submit").prop("disabled",true);
+    var formdata = $("#form-news").serialize();
+    $("#form-news").prop("disabled",true);
+    newsUpdate(formdata);
+  });
+
   //Load content
   loadItem("trip");
   loadItem("category");
@@ -50,6 +60,35 @@ $(function() {
 
 
 });
+
+function newsUpdate(formdata) {
+  $.ajax({
+    type: 'POST',
+    cache: false,
+    url: $("#form-news").attr('action'),
+    data: formdata,
+    dataType: "json",
+  })
+    .done(function(data) {
+      console.log(data);
+      $( "#form-news-submit-spinner" ).hide();
+      $( "#form-news-submit-text" ).show();
+      $("#form-news-submit").prop("disabled",false);
+      $("#form-news").prop("disabled",false);
+      $( "#form-news-reply" ).html( data );
+    })
+    .fail(function(data) {
+      console.log(data);
+      if (data.status == 404)
+        $( "#form-news-reply" ).html( "Något har gått fel. Error: 404." )
+      else
+        $( "#form-news-reply" ).html( "Något har gått fel. Fel: " + data.responseText + "." );
+        $( "#form-news-submit-spinner" ).hide();
+        $( "#form-news-submit-text" ).show();
+        $("#form-news-submit").prop("disabled",false);
+        $("#form-news").prop("disabled",false);
+    });
+}
 
 
 function loadItem(item, sort = "sort") {
