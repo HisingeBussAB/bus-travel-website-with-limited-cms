@@ -29,23 +29,23 @@ try {
     $sth = $pdo->prepare($sql);
     $sth->bindParam(':cat', $cat, \PDO::PARAM_STR);
     $sth->execute();
-    $category = $sth->fetch(\PDO::FETCH_ASSOC);
+    $thiscategory = $sth->fetch(\PDO::FETCH_ASSOC);
   } catch(\PDOException $e) {
     include __DIR__ . '/shared/header.php';
     DBError::showError($e, __CLASS__, $sql);
     throw new \RuntimeException("Databasfel.");
   }
 
-    if (count($category) > 0) {
-      $catid = $category['id'];
-      $heading = strtr(strip_tags($category['kategori'], $allowed_tags), $html_ents);
-      $text = Functions::linksaver(strtr(nl2br(strip_tags($category['ingress'], $allowed_tags)), $html_ents));
+    if (count($thiscategory) > 0) {
+      $catid = $thiscategory['id'];
+      $heading = strtr(strip_tags($thiscategory['kategori'], $allowed_tags), $html_ents);
+      $text = Functions::linksaver(strtr(nl2br(strip_tags($thiscategory['ingress'], $allowed_tags)), $html_ents));
     } else {
       include __DIR__ . '/shared/header.php';
       throw new \UnexpectedValueException("Kategorin finns inte");
     }
 
-    if (mb_strtolower($category['kategori']) === 'gruppresor') {
+    if (mb_strtolower($thiscategory['kategori']) === 'gruppresor') {
       $grouptour = true;
     } else {
       $grouptour = false;

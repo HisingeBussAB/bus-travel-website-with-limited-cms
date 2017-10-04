@@ -291,4 +291,9 @@ img.login-screen {
   color: red;
 }
 
+textarea[name=nyheter] {
+  width: 100%;
+  height: 250px;
+}
+
 /*# sourceMappingURL=admin.css.map */
