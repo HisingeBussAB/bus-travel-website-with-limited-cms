@@ -223,8 +223,10 @@ header {
         text-align: right;
         margin-left: 30%;
         display: flex;
+
         flex-wrap: wrap;
         justify-content: flex-end;
+
 
 
         overflow: hidden;
@@ -235,8 +237,6 @@ header {
           white-space: nowrap;
           margin: 0px;
           padding: 0px;
-
-
 
 
         }
@@ -321,8 +321,9 @@ header {
 }
 
 .main-section {
-  padding: 10px;
-  padding-top: 25px;
+  padding: 15px;
+  padding-top: 20px;
+  padding-bottom: 20px;
   max-width: $page-max-width;
   width: $page-desktop-relative-width;
   margin: auto;
@@ -338,7 +339,7 @@ header {
 
   .featured-box {
     margin: 0;
-    padding: 5px;
+    padding: 15px;
   }
 
   .trip-featured {
@@ -349,12 +350,12 @@ header {
     padding: 0;
     border-radius: 3px;
     overflow: hidden;
-    border: 1px solid rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(0, 0, 0, .70);
     position: relative;
 
 
     .trip-featured-head {
-      background-color: rgba(0, 0, 0, 0.6);
+      background-color: rgba(0, 0, 0, .70);
       color: white;
       float: left;
       margin: 0px;
@@ -373,7 +374,7 @@ header {
       margin: 5px;
       font-size: 1.05vw;
       font-weight: bold;
-      background-color: rgba(34,139,34,.7);
+      background-color: rgba(34,139,34,.70);
       border: 1px solid white;
 
 
@@ -394,7 +395,7 @@ header {
 
     .trip-featured-desc {
       font-size: .92vw;
-      background-color: rgba(0, 0, 0, 0.6);
+      background-color: rgba(0, 0, 0, .70);
       color: white;
       margin: 0;
       padding: 5px;
@@ -414,15 +415,54 @@ header {
     }
   }
 
+
+  .tour-box {
+
+    margin-top: 20px;
+
+  div.tour-quick-facts {
+    font-size: 1.6rem;
+    width: 63.5%;
+    float: right;
+    h3 {
+      margin-top: 0;
+      font-weight: bold;
+      margin-bottom: 10px;
+
+      a {
+        color: black;
+
+        &:hover {
+          text-decoration: none;
+          color: $logo-blue;
+        }
+      }
+
+
+    }
+  }
+
+  div.tour-summary {
+    font-size: 1.5rem;
+    clear: both;
+    margin-top: 10px;
+  }
+
   .trip-featured-img-list {
-    max-height: 220px;
-    max-width: 220px;
-    width: 25%;
-    min-width: 150px;
+    max-height: 320px;
+    max-width: 320px;
+    width: 31.8%;
     float: left;
-    padding: 10px;
-    border: solid 1px black; //TODO
-    margin-right: 20px
+    padding: 1px;
+    border: solid 1px black;
+    margin-right: 15px;
+    margin-bottom: 4px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    }
   }
 
 
@@ -449,7 +489,6 @@ header {
            border-radius: 5px;
         }
       }
-
 
 }
 
@@ -578,6 +617,27 @@ header {
 
 @media (max-width: 992px) {
 
+  div[class^="col"] {
+    padding-left:   5px;
+    padding-right:  5px;
+  }
+
+
+
+  .main-section {
+    padding: 6px;
+    padding-top: 8px;
+    padding-bottom: 10px;
+
+    .featured-box {
+      margin: 0;
+      padding: 7px;
+      .trip-featured-head {
+        font-size: 1.91rem;
+      }
+    }
+  }
+
   .main-section .trip-featured {
     .trip-featured-desc  {
       font-size: 1.2rem;
@@ -602,7 +662,28 @@ header {
 
 }
 
-@media (max-width: 415px) {
+@media (max-width: 416px) {
+
+  .main-section .tour-box a figure.trip-featured-img-list,
+  .main-section .tour-box div.tour-quick-facts {
+    float: none;
+    width: 100%;
+  }
+
+  .main-section {
+    padding: 4px;
+    padding-top: 7px;
+    padding-bottom: 10px;
+
+    .featured-box {
+      margin: 0;
+      padding: 6px;
+
+      .trip-featured-head {
+        font-size: 1.82rem;
+      }
+    }
+  }
 
 
   header .header-wrap,
@@ -615,6 +696,13 @@ header {
 
 }
 
+/* - Nav flex wrap order - */
+
+@media (max-width: 1292px) {
+.nav li:nth-child(1) {
+  order: 1;
+  }
+}
 
 /*
 * === TEST ZONE & DEBUG ===

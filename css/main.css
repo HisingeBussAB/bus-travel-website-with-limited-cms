@@ -307,8 +307,9 @@ header #categories-wrap li a {
 }
 
 .main-section {
-  padding: 10px;
-  padding-top: 25px;
+  padding: 15px;
+  padding-top: 20px;
+  padding-bottom: 20px;
   max-width: 1500px;
   width: 90%;
   margin: auto;
@@ -324,7 +325,7 @@ header #categories-wrap li a {
 
 .main-section .featured-box {
   margin: 0;
-  padding: 5px;
+  padding: 15px;
 }
 
 .main-section .trip-featured {
@@ -335,12 +336,12 @@ header #categories-wrap li a {
   padding: 0;
   border-radius: 3px;
   overflow: hidden;
-  border: 1px solid rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(0, 0, 0, 0.7);
   position: relative;
 }
 
 .main-section .trip-featured .trip-featured-head {
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.7);
   color: white;
   float: left;
   margin: 0px;
@@ -372,7 +373,7 @@ header #categories-wrap li a {
 
 .main-section .trip-featured .trip-featured-desc {
   font-size: .92vw;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.7);
   color: white;
   margin: 0;
   padding: 5px;
@@ -390,15 +391,49 @@ header #categories-wrap li a {
   float: right;
 }
 
-.main-section .trip-featured-img-list {
-  max-height: 220px;
-  max-width: 220px;
-  width: 25%;
-  min-width: 150px;
+.main-section .tour-box {
+  margin-top: 20px;
+}
+
+.main-section .tour-box div.tour-quick-facts {
+  font-size: 1.6rem;
+  width: 63.5%;
+  float: right;
+}
+
+.main-section .tour-box div.tour-quick-facts h3 {
+  margin-top: 0;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.main-section .tour-box div.tour-quick-facts h3 a {
+  color: black;
+}
+
+.main-section .tour-box div.tour-quick-facts h3 a:hover {
+  text-decoration: none;
+  color: #003299;
+}
+
+.main-section .tour-box div.tour-summary {
+  font-size: 1.5rem;
+  clear: both;
+  margin-top: 10px;
+}
+
+.main-section .tour-box .trip-featured-img-list {
+  max-height: 320px;
+  max-width: 320px;
+  width: 31.8%;
   float: left;
-  padding: 10px;
+  padding: 1px;
   border: solid 1px black;
-  margin-right: 20px;
+  margin-right: 15px;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .main-section .action-btn {
@@ -519,6 +554,22 @@ header #categories-wrap li a {
 }
 
 @media (max-width: 992px) {
+  div[class^="col"] {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+  .main-section {
+    padding: 6px;
+    padding-top: 8px;
+    padding-bottom: 10px;
+  }
+  .main-section .featured-box {
+    margin: 0;
+    padding: 7px;
+  }
+  .main-section .featured-box .trip-featured-head {
+    font-size: 1.91rem;
+  }
   .main-section .trip-featured .trip-featured-desc {
     font-size: 1.2rem;
   }
@@ -530,16 +581,40 @@ header #categories-wrap li a {
   header #categories-wrap,
   main.main-section,
   footer.main-footer {
-    width: 95%;
+    width: 97%;
   }
 }
 
-@media (max-width: 415px) {
+@media (max-width: 416px) {
+  .main-section .tour-box a figure.trip-featured-img-list,
+  .main-section .tour-box div.tour-quick-facts {
+    float: none;
+    width: 100%;
+  }
+  .main-section {
+    padding: 4px;
+    padding-top: 7px;
+    padding-bottom: 10px;
+  }
+  .main-section .featured-box {
+    margin: 0;
+    padding: 6px;
+  }
+  .main-section .featured-box .trip-featured-head {
+    font-size: 1.82rem;
+  }
   header .header-wrap,
   header #categories-wrap,
   main.main-section,
   footer.main-footer {
     width: 100%;
+  }
+}
+
+/* - Nav flex wrap order - */
+@media (max-width: 1292px) {
+  .nav li:nth-child(1) {
+    order: 1;
   }
 }
 

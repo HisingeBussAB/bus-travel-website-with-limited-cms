@@ -117,7 +117,7 @@ try {
     foreach ($tours as $tour) {
       $output = "";
       if ($i % 2 == 0) { $output .= "<div class='row-fluid'>"; }
-      $output .= "<article class='col-md-6 col-xs-12'>";
+      $output .= "<div class='col-lg-6 col-md-6 col-sm-12 col-xs-12'>";
       $output .= "<h2><a href='" . $tour['link'] . "'>" . $tour['tour'] . "</a></h2>";
 
 
@@ -138,7 +138,7 @@ try {
       }
 
 
-      $output .= "<p>" . $tour['summary'] . "</p></article>";
+      $output .= "<p>" . $tour['summary'] . "</p></div>";
       if ($i % 2 != 0) { $output .= "</div>"; }
       elseif ($i+1 >= $lenght) { $output .= "</div>"; }
       echo $output;

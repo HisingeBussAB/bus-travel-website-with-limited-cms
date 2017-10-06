@@ -88,7 +88,7 @@ if (empty($robots)) {
       <nav class="clear-on-tiny">
         <ul class="nav nav-pills center-on-tiny" aria-label="Meny">
           <li role="presentation"><a href="/#resekalender">Resekalender</a></li>
-          <li role="presentation"><a href="/bestall-katalog">Beställ katalog</a></li>
+          <li role="presentation"><a href="/bestall-katalog">Beställ program</a></li>
           <li role="presentation"><a href="/inforresan">Inför resan</a></li>
           <li role="presentation"><a href="/efterresan">Efter resan</a></li>
           <li role="presentation"><a href="/galleri">Bildgalleri</a></li>
@@ -108,4 +108,4 @@ if (empty($robots)) {
     ?>
     </ul>
   </header>
-  <nav class="visible-xs-block" id="to-top-chevron"><a href="#" target="_top" aria-label="Till toppen av sidan"><i class="fa fa-chevron-up fa-2x" aria-hidden="true"></i><span class="sr-only">Till toppen av sidan</span></a></nav>
+  <nav class="visible-xs-block" id="to-top-chevron"><a href="#top" aria-label="Till toppen av sidan"><i class="fa fa-chevron-up fa-2x" aria-hidden="true"></i><span class="sr-only">Till toppen av sidan</span></a></nav>

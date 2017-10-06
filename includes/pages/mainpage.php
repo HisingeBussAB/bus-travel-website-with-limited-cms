@@ -103,24 +103,23 @@ include __DIR__ . '/shared/header.php';
 
 ?>
 
-<main class="main-section clearfix">
-  <div class="container-fluid">
+<main class="main-section clearfix container-fluid">
   <div class="row-fluid">
   <h1 class="hidden">Välkommen till Rekå Resor</h1>
   <h2 class="hidden">Utvalda resor</h2>
   <?php foreach($featured as $featuredtrip) {
-    if ($featuredcounter > 3)       { echo "<div class='col-md-6 col-sm-12 featured-box'>"; }
-    elseif ($featuredcounter === 3)  { echo "<div class='col-lg-4 col-md-12 featured-box'>"; }
-    elseif ($featuredcounter === 2)   { echo "<div class='col-md-6 col-sm-12 featured-box'>"; }
+    if ($featuredcounter > 3)       { echo "<div class='col-lg-6 col-md-12 col-xs-12 featured-box'>"; }
+    elseif ($featuredcounter === 3)  { echo "<div class='col-lg-4 col-md-12 col-xs-12 featured-box'>"; }
+    elseif ($featuredcounter === 2)   { echo "<div class='col-lg-6 col-md-12 col-xs-12 featured-box'>"; }
     elseif ($featuredcounter < 2)   {
-      echo "<div class='col-md-6 col-sm-12 featured-box'>
+      echo "<div class='col-lg-6 col-md-12 col-xs-12 featured-box'>
             <h1>Välkommen till Rekå Resor</h1>
             <p>För att genomföra en bra bussresa så krävs det planering och genomförande, oavsett om den ska gå inom Sverige eller ut i Europa.
             Det är där vi på Rekå Resor kommer in i bilden. Vi lyssnar på de önskemål du har och bidrar sedan med råd och idéer för bästa möjliga resultat.
             Med mer än 60 år i branschen har vi både erfarenheten såväl som kontaktnätet och det gör att vi kan ta fram i princip vilka gruppresor som helst –
             från korta endagsresor i närområdet runt Göteborg till veckolånga resor runt om i Europa. Alla bussresor kryddas med det lilla extra.</p>
             <h3>Följ med oss på bussresor som har det lilla extra.</h3></div>
-            <div class='col-md-6 col-sm-12 featured-box'>";
+            <div class='col-lg-6 col-md-12 col-xs-12 featured-box'>";
           }
 
     ?>
@@ -145,16 +144,16 @@ include __DIR__ . '/shared/header.php';
   </section>
 
   <div class="row-fluid">
-  <div class="col-md-3 col-xs-6 text-center">
-    <a class="btn btn-default action-btn" href="/boka">Boka resa här</a>
+  <div class="col-lg-3 col-md-3 text-center hidden-sm hidden-xs">
+    <a class="btn btn-default action-btn" href="/boka">Boka resa</a>
   </div>
-  <div class="col-md-3 col-xs-6 text-center">
+  <div class="col-lg-3 col-md-3 col-sm-4 text-center hidden-xs">
     <a class="btn btn-default action-btn" href="program">Beställ program</a>
   </div>
-  <div class="col-md-3 col-xs-6 text-center">
+  <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6 text-center">
     <a class="btn btn-default action-btn" href="/gruppresor">Gruppresor</a>
   </div>
-  <div class="col-md-3 col-xs-6 text-center">
+  <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6 text-center">
       <a class="facebook-visit action-btn btn btn-default" href="https://www.facebook.com/rekoresor/" target="_blank"><img src='/img/facebook.png' alt="Besök oss på Facebook" /><span class='sr-only'>Besök vår Facebooksida</span></a>
   </div>
 </div>
@@ -171,15 +170,17 @@ include __DIR__ . '/shared/header.php';
     foreach ($tours as $tour) {
       $output = "";
       if ($i % 2 == 0) { $output .= "<div class='row-fluid'>"; }
-      $output .=  "<div class='col-md-6 col-xs-12'>";
-      $output .= "<h3><a href='" . $tour['link'] . "'>" . $tour['tour'] . "</a></h3>";
+      $output .=  "<div class='col-lg-6 col-md-6 col-sm-12 col-xs-12 tour-box'>";
+
+
+      $output .= "<div class='tour-quick-facts'><h3><a href='" . $tour['link'] . "'>" . $tour['tour'] . "</a></h3>";
+      $output .= "<p><i class='fa fa-hourglass fa-lg blue' aria-hidden='true'></i> Antal dagar: " . $tour['days'] . " dagar</p>";
+      $output .= "<p><i class='fa fa-calendar fa-lg blue' aria-hidden='true'></i> Avresedatum: " . $tour['departure'] . "</p>";
+      $output .= "<p><i class='fa fa-money fa-lg blue' aria-hidden='true'></i> Pris per person: " . $tour['price'] . " kr</p></div>";
       $output .= "<a href='" . $tour['link'] . "'><figure class='trip-featured-img-list'>";
       $output .= "<img src='" . $tour['imgsrc'] . "'  alt='" . $tour['tour'] . "'/> ";
       $output .= "</figure></a>";
-      $output .= "<p><i class='fa fa-hourglass blue' aria-hidden='true'></i> Antal dagar: " . $tour['days'] . " dagar</p>";
-      $output .= "<p><i class='fa fa-calendar blue' aria-hidden='true'></i> Avresedatum: " . $tour['departure'] . "</p>";
-      $output .= "<p><i class='fa fa-money blue' aria-hidden='true'></i> Pris per person: " . $tour['price'] . " kr</p>";
-      $output .= "<p>" . $tour['summary'] . "</p></div>";
+      $output .= "<div class='tour-summary'>" . $tour['summary'] . "</div></div>";
       if ($i % 2 != 0) { $output .= "</div>"; }
       elseif ($i+1 >= $lenght) { $output .= "</div>"; }
 
@@ -188,7 +189,6 @@ include __DIR__ . '/shared/header.php';
   }
   ?>
   </div>
-</div>
 </main>
 <?php
 include __DIR__ . '/shared/footer.php';
