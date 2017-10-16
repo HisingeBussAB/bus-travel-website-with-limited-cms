@@ -1,5 +1,5 @@
 @charset "UTF-8";
-@import url("https://fonts.googleapis.com/css?family=Open+Sans|Signika");
+@import url("https://fonts.googleapis.com/css?family=Open+Sans|Signika|Pacifico|Courgette|Roboto");
 /*
 * === SASS VARIABLES ===
 */
@@ -11,7 +11,7 @@
 }
 
 body {
-  font-family: "Open Sans", sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 .blue {
@@ -165,6 +165,7 @@ nav#to-top-chevron {
   right: 10px;
   text-align: right;
   opacity: 0;
+  z-index: 20000;
 }
 
 nav#to-top-chevron a {
@@ -329,6 +330,7 @@ header #categories-wrap li a {
 }
 
 .main-section .trip-featured {
+  font-family: "Courgette", cursive;
   min-height: 300px;
   background-repeat: no-repeat;
   background-size: cover;
@@ -336,44 +338,61 @@ header #categories-wrap li a {
   padding: 0;
   border-radius: 3px;
   overflow: hidden;
-  border: 1px solid rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(0, 0, 0, 0.9);
   position: relative;
 }
 
 .main-section .trip-featured .trip-featured-head {
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.9);
   color: white;
   float: left;
   margin: 0px;
   padding: 10px;
   border-radius: 3px 0 3px 0;
+  border-right: 1px solid rgba(255, 255, 255, 0.12);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 1.93vw;
 }
 
 .main-section .trip-featured .trip-featured-details {
   border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1em;
+  vertical-align: middle;
+  flex-wrap: wrap;
   float: right;
-  padding: 16px 13px;
+  padding: 13px;
   margin: 5px;
-  font-size: 1.05vw;
+  font-size: 1.1vw;
   font-weight: bold;
-  background-color: rgba(34, 139, 34, 0.7);
-  border: 1px solid white;
+  background-color: rgba(0, 160, 0, 0.93);
+  border: 1px solid rgba(255, 255, 255, 0.9);
 }
 
-.main-section .trip-featured .trip-featured-details .trip-featured-dur {
-  color: white;
-  padding: 1px;
-  border-bottom: 1px solid white;
+.main-section .trip-featured .trip-featured-details:before {
+  content: '';
+  float: right;
+  width: auto;
+  padding-bottom: 100%;
 }
 
-.main-section .trip-featured .trip-featured-details .trip-featured-price {
+.main-section .trip-featured .trip-featured-details .trip-featured-details-wrapper .trip-featured-dur {
   color: white;
   padding: 1px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.9);
+}
+
+.main-section .trip-featured .trip-featured-details .trip-featured-details-wrapper .trip-featured-price {
+  color: white;
+  padding: 1px;
+  margin-left: 6px;
 }
 
 .main-section .trip-featured .trip-featured-desc {
-  font-size: .92vw;
-  background-color: rgba(0, 0, 0, 0.7);
+  font-size: .96vw;
+  background-color: rgba(0, 0, 0, 0.9);
   color: white;
   margin: 0;
   padding: 5px;
@@ -381,14 +400,29 @@ header #categories-wrap li a {
   position: absolute;
   bottom: 0;
   border-radius: 0 0 3px 3px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  display: table-cell;
+  vertical-align: middle;
 }
 
 .main-section .trip-featured .trip-featured-desc p {
   float: left;
+  width: calc(100% - 25px);
+  display: block;
+  margin: 1px;
+  padding-right: 4px;
 }
 
 .main-section .trip-featured .trip-featured-desc i {
   float: right;
+  width: 22px;
+  margin: 1px auto;
+  display: block;
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translate(-50%, -50%);
 }
 
 .main-section .tour-box {

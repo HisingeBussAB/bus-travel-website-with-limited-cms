@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Open+Sans|Signika');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans|Signika|Pacifico|Courgette|Roboto');
 
 @import "variables";
 
@@ -158,6 +158,7 @@ nav#to-top-chevron {
   right: 10px;
   text-align: right;
   opacity: 0;
+  z-index: 20000;
 
 
   a {
@@ -343,6 +344,7 @@ header {
   }
 
   .trip-featured {
+    font-family: $cursive-font-stack;
     min-height: $height-first-row;
     background-repeat: no-repeat;
     background-size: cover;
@@ -350,17 +352,21 @@ header {
     padding: 0;
     border-radius: 3px;
     overflow: hidden;
-    border: 1px solid rgba(0, 0, 0, .70);
+    border: 1px solid rgba(0, 0, 0, .9);
     position: relative;
 
 
+
     .trip-featured-head {
-      background-color: rgba(0, 0, 0, .70);
+      background-color: rgba(0, 0, 0, .9);
       color: white;
       float: left;
       margin: 0px;
       padding: 10px;
       border-radius: 3px 0 3px 0;
+      border-right: 1px solid rgba(255, 255, 255, .12);
+      border-bottom: 1px solid rgba(255, 255, 255, .12);
+      font-size: 1.93vw;
 
 
     }
@@ -369,33 +375,52 @@ header {
 
       border-radius: 50%;
 
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 1em;
+      vertical-align: middle;
+      flex-wrap: wrap;
+
       float: right;
-      padding: 16px 13px;
+      padding: 13px;
       margin: 5px;
-      font-size: 1.05vw;
+      font-size: 1.1vw;
       font-weight: bold;
-      background-color: rgba(34,139,34,.70);
-      border: 1px solid white;
+      background-color: $pricetag-bg;
+      border: 1px solid rgba(255, 255, 255, .9);
 
-
-
-      .trip-featured-dur {
-        color: white;
-        padding: 1px;
-        border-bottom: 1px solid white;
-
-
+      &:before {
+        content:'';
+        float: right;
+        width: auto;
+        padding-bottom: 100%;
       }
-      .trip-featured-price {
-        color: white;
-        padding: 1px;
 
+
+
+      .trip-featured-details-wrapper {
+
+
+        .trip-featured-dur {
+          color: white;
+          padding: 1px;
+          border-bottom: 1px solid rgba(255, 255, 255, .9);
+
+
+        }
+        .trip-featured-price {
+          color: white;
+          padding: 1px;
+          margin-left: 6px;
+
+        }
       }
     }
 
     .trip-featured-desc {
-      font-size: .92vw;
-      background-color: rgba(0, 0, 0, .70);
+      font-size: .96vw;
+      background-color: rgba(0, 0, 0, .9);
       color: white;
       margin: 0;
       padding: 5px;
@@ -403,14 +428,29 @@ header {
       position: absolute;
       bottom: 0;
       border-radius: 0 0 3px 3px;
+      border-top: 1px solid rgba(255, 255, 255, .12);
+      display: table-cell;
+      vertical-align: middle;
 
       p {
         float: left;
+        width: calc(100% - 25px);
+        display: block;
+        margin: 1px;
+        padding-right: 4px;
       }
 
       i {
         float: right;
-      }
+        width: 22px;
+        margin: 1px auto;
+        display: block;
+        text-align: center;
+        position: absolute;
+        top: 50%;
+        right: 0;
+        transform: translate(-50%, -50%);
+        }
 
     }
   }

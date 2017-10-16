@@ -185,7 +185,7 @@ echo "<main class='main-section container-fluid'>";
 
   echo "<div class='row-fluid'>";
   //LEFT COLUMN
-  echo "<div class='col-lg-7 col-md-12'>
+  echo "<div class='col-lg-6 col-md-12'>
     <h1>" . $tour['namn'];
   $flag = TRUE;
   if (!empty($tour['datum']) && !$grouptour) {
@@ -223,7 +223,7 @@ echo "<main class='main-section container-fluid'>";
 
     echo "</div>";
 
-    echo "<div class='tourSlide-container col-lg-5 col-md-12'>";
+    echo "<div class='tourSlide-container col-lg-6 col-md-12'>";
     echo "<ul class='slides'>";
     if (empty($imgfiles)) {
       $imgfiles[0]['file'] = "1_generic.jpg";

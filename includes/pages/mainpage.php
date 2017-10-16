@@ -127,10 +127,12 @@ include __DIR__ . '/shared/header.php';
     <div class="trip-featured" style="background-image: url('<?php echo $featuredtrip['imgpath']; ?>')">
     <h3 class="trip-featured-head"><?php echo $featuredtrip['tour']; ?></h3>
     <div class="trip-featured-details text-center">
-      <div class="trip-featured-dur text-center"><?php echo $featuredtrip['days']; ?> dagar</div>
-      <div class="trip-featured-price text-center"><?php echo $featuredtrip['price']; ?>:-</div>
+      <div class="trip-featured-details-wrapper text-center">
+        <div class="trip-featured-dur text-center"><?php if ($featuredtrip['days'] > 1) echo $featuredtrip['days'] . " dagar"; else echo "Dagsresa"; ?></div>
+        <div class="trip-featured-price text-center"><?php echo $featuredtrip['price']; ?>:-</div>
+      </div>
     </div>
-    <div class="trip-featured-desc" aria-label="<?php echo $featuredtrip['tour']; ?>"><?php echo $featuredtrip['desc']; ?><i class="fa fa-chevron-right pull-right" aria-hidden="true"></i></div>
+    <div class="trip-featured-desc" aria-label="<?php echo $featuredtrip['tour']; ?>"><p><?php echo $featuredtrip['desc']; ?></p><i class="fa fa-chevron-right pull-right" aria-hidden="true"></i></div>
   </div></a>
   </div>
 <?php } ?>
