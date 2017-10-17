@@ -8,11 +8,10 @@ namespace HisingeBussAB\RekoResor\website\includes\classes;
 use HisingeBussAB\RekoResor\website as root;
 use HisingeBussAB\RekoResor\website\includes\classes\Functions;
 use HisingeBussAB\RekoResor\website\includes\classes\HammerGuard;
-use HisingeBussAB\RekoResor\website\includes\classes\Tokens;
 use HisingeBussAB\RekoResor\website\includes\classes\DB;
 use HisingeBussAB\RekoResor\website\includes\classes\DBError;
 
-class ProgramForm {
+class NewsletterForm {
 
   public static function sendForm($data) {
 
@@ -92,10 +91,6 @@ class ProgramForm {
         }
       }
 
-      if (!Tokens::checkFormToken($data['token'], $data['tokenid'], 'program')) {
-        throw new \RuntimeException("Fel säkerhetstoken skickad. <a href='javascript:window.location.href=window.location.href'>Prova att ladda om sidan.</a>");
-      }
-
       if (!empty($data['url'])) {
         throw new \RuntimeException("Inte skickad. Lämna fältet \"Leave this empty:\" tomt.");
       }
@@ -107,27 +102,9 @@ class ProgramForm {
 
 
       //VALIDATE FORM DATA
-      if (empty($data['email'])) {
-        $data['email'] = FALSE;
-      }
-
-      $data['name'] = filter_var(trim($data['name']), FILTER_SANITIZE_STRING);
-      $data['address'] = filter_var(trim($data['address']), FILTER_SANITIZE_STRING);
-      $data['zip'] = filter_var(trim($data['zip']), FILTER_SANITIZE_STRING);
-      $data['city'] = filter_var(trim($data['city']), FILTER_SANITIZE_STRING);
-
-      if ($data['email'] !== FALSE) {
-        $data['email'] = filter_var(trim($data['email']), FILTER_SANITIZE_EMAIL);
-      }
-
       if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL) && $data['email'] !== FALSE) {
         throw new \RuntimeException("Det här verkar inte vara en giltig e-mail. Försök igen.");
       }
-
-      if ( empty($data['name']) OR empty($data['address'])) {
-        throw new \RuntimeException("Vänligen fyll i mer information och försök igen.");
-      }
-
 
       //FINAL HAMMER CHECK
       if (HammerGuard::hammerGuard($_SERVER['REMOTE_ADDR'])) {
@@ -135,26 +112,17 @@ class ProgramForm {
       }
 
 
-
       $mail->ClearAllRecipients();
-      $mailbody = "Programbeställning från hemsidan:\r\n\r\n" .
-                  $data['name'] . "\r\n" .
-                  $data['address'] . "\r\n" .
-                  $data['zip'] . " " . $data['city'] . "\r\n\r\n" .
-                  $data['email'] . " \r\n\r\nBeställda program:\r\n";
-      foreach ($data['category'] as $category) {
-        $mailbody .= "$category\r\n";
-      }
+      $mailbody = "Beställning av nyhetsbrev från hemsidan:\r\n\r\n" .
+                  "e-Mail: " . $data['email'] . " \r\n\r\n";
 
       $mailbody .= "\r\n\r\nSkickad: " . date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']);
-
-
 
       $mail->setFrom('hemsidan@rekoresor.se', 'Hemsidan - Rekå Resor');
       $mail->Sender="hemsidan@rekoresor.se";
       $mail->AddReplyTo($data['email']);
       $mail->addAddress('program@rekoresor.se');
-      $mail->Subject  = "Rekå Resor - Beställt program";
+      $mail->Subject  = "Rekå Resor - Anmälan nyhetsbrev";
       $mail->Body     = $mailbody;
 
       if(!$mail->send()) {
@@ -167,8 +135,8 @@ class ProgramForm {
         $mail->setFrom('hemsidan@rekoresor.se', 'Rekå Resor');
         $mail->AddReplyTo("info@rekoresor.se", "Rekå Resor");
         if (!empty($data['email'])) { $mail->addAddress($data['email']); }
-        $mail->Subject  = "Tack för din programbeställning.";
-        $mail->Body     = "Tack för att du beställt program.\r\nVi kommer skicka aktuella reseprogram till dig inom kort.";
+        $mail->Subject  = "Tack för din anmälan till vårt nyhetsbrev.";
+        $mail->Body     = "\r\nVi kommer då och då e-posta nyheter och reseprogram till er.\r\n\r\nSvara på det här mailet och låt oss veta ifall ni skulle anmälts av misstag.";
 
         if ($data['email'] !== FALSE) {
           if(!$mail->send()) {
@@ -177,7 +145,7 @@ class ProgramForm {
             throw new \Exception("Fel vid kommunikation med mailservern");
           }
         }
-          $reply .= "Tack! Vi skickar programmen snart.";
+          $reply .= "Tack! Du är anmäld till vårt nyhetsbrev.";
           echo json_encode($reply);
           http_response_code(200);
           return true;

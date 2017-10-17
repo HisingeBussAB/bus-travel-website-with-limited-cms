@@ -222,12 +222,14 @@ class BookTour {
 
   } catch(\RuntimeException $e) {
     if (DEBUG_MODE) echo $e->getMessage();
+    header('Content-Type: text/html; charset=utf-8');
     echo "Åtgärden har stoppats.";
     http_response_code(403);
     return false;
   } catch(\Exception $e) {
   $reply .=  "Ett tekniskt fel har uppstått.";
   if (DEBUG_MODE) echo $e->getMessage();
+  header('Content-Type: text/html; charset=utf-8');
   echo $reply;
   http_response_code(500);
   return false;

@@ -58,7 +58,8 @@ a {
   }
 }
 
-input[type=submit] {
+input[type=submit],
+button[type=submit] {
   background-color: $logo-blue;
   color: rgb(255,255,255);
   border: 1px solid rgb(255,255,255);
@@ -366,7 +367,7 @@ header {
       border-radius: 3px 0 3px 0;
       border-right: 1px solid rgba(255, 255, 255, .12);
       border-bottom: 1px solid rgba(255, 255, 255, .12);
-      font-size: 1.93vw;
+      font-size: 1.96vw;
 
 
     }
@@ -385,7 +386,7 @@ header {
       float: right;
       padding: 13px;
       margin: 5px;
-      font-size: 1.1vw;
+      font-size: 1.17vw;
       font-weight: bold;
       background-color: $pricetag-bg;
       border: 1px solid rgba(255, 255, 255, .9);
@@ -419,7 +420,7 @@ header {
     }
 
     .trip-featured-desc {
-      font-size: .96vw;
+      font-size: 1.13vw;
       background-color: rgba(0, 0, 0, .9);
       color: white;
       margin: 0;
@@ -536,6 +537,16 @@ header {
 * — Footer —
 */
 
+#newsletter-loader,
+#newsletter-response {
+  display: none;
+}
+
+#newsletter-response {
+  margin: 15px;
+  font-size: 1.44rem;
+}
+
 .main-footer {
   color: $textonblue;
   background-color: $blue;
@@ -551,15 +562,18 @@ header {
   }
 
   input[type=email] {
-    width: calc(95%-100px);
-    min-width: 300px;
+    width: calc(95% - 130px);
+    min-width: 250px;
+    max-width: 420px;
     padding: 4px;
     border-radius: 5px;
     border: 1px solid rgb(255,255,255);
     margin: 3px;
+    color: black;
   }
 
-  input[type=submit] {
+  #newsletter-form-send,
+  button[type=submit] {
     background-color: $logo-blue;
     color: rgb(255,255,255);
     border: 1px solid rgb(255,255,255);
@@ -567,6 +581,7 @@ header {
     text-transform: uppercase;
     padding: 4px 7px;
     margin: 3px;
+    min-width: 100px;
 
   }
 
@@ -641,15 +656,20 @@ header {
 @media (max-width: 1300px) {
 
   .main-section .trip-featured {
+
+    .trip-featured-head {
+      font-size: 2.5rem;
+    }
+
     .trip-featured-desc  {
-      font-size: 1.07rem;
+      font-size: 1.615rem;
   }
 
 
     .trip-featured-details {
       .trip-featured-dur,
       .trip-featured-price {
-        font-size: 1.4rem;
+        font-size: 1.61rem;
       }
     }
   }
@@ -673,14 +693,14 @@ header {
       margin: 0;
       padding: 7px;
       .trip-featured-head {
-        font-size: 1.91rem;
+        font-size: 1.96rem;
       }
     }
   }
 
   .main-section .trip-featured {
     .trip-featured-desc  {
-      font-size: 1.2rem;
+      font-size: 1.45rem;
   }
 
 
@@ -720,7 +740,13 @@ header {
       padding: 6px;
 
       .trip-featured-head {
-        font-size: 1.82rem;
+        font-size: 1.75rem;
+      }
+      .trip-featured-details {
+        .trip-featured-dur,
+        .trip-featured-price {
+          font-size: 1.42rem;
+        }
       }
     }
   }

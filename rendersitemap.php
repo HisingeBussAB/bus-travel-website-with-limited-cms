@@ -41,7 +41,7 @@ class RenderSitemap {
     if (!empty($sitemap)) {
       foreach ($sitemap as $url) {
         echo "<url>
-        <loc>http" . APPEND_SSL . "://" . $_SERVER['HTTP_HOST'] . "/kategori/" . $url . "/</loc>
+        <loc>http" . APPEND_SSL . "://" . $_SERVER['HTTP_HOST'] . "/" . $url . "/</loc>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
         </url>\n";
@@ -51,7 +51,7 @@ class RenderSitemap {
     if (!empty($categories)) {
       foreach ($categories as $url) {
         echo "<url>
-        <loc>http" . APPEND_SSL . "://" . $_SERVER['HTTP_HOST'] . "/" . $url['uri_kategori'] . "/</loc>
+        <loc>http" . APPEND_SSL . "://" . $_SERVER['HTTP_HOST'] . "/kategori/" . $url['uri_kategori'] . "/</loc>
         <changefreq>weekly</changefreq>
         <priority>0.4</priority>
         </url>\n";

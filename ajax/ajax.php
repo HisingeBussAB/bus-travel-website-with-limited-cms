@@ -96,7 +96,6 @@ class Ajax
           header('Access-Control-Allow-Origin: http' . APPEND_SSL . '://' .$_SERVER['HTTP_HOST']);
           http_response_code(200);
         }
-        header('Content-Type: text/html; charset=utf-8');
         exit;
       break;
 
@@ -107,7 +106,16 @@ class Ajax
           header('Access-Control-Allow-Origin: http' . APPEND_SSL . '://' .$_SERVER['HTTP_HOST']);
           http_response_code(200);
         }
-        header('Content-Type: text/html; charset=utf-8');
+        exit;
+      break;
+
+      case 'newsletter':
+
+        if (root\includes\classes\NewsletterForm::sendForm($_POST)) {
+          header('Content-Type: application/json; charset=utf-8');
+          header('Access-Control-Allow-Origin: http' . APPEND_SSL . '://' .$_SERVER['HTTP_HOST']);
+          http_response_code(200);
+        }
         exit;
       break;
 

@@ -284,8 +284,13 @@ echo "<main class='main-section container-fluid'>";
     echo "<div class='col-md-8 col-xs-12'>";
     echo "<div>" . $tour['program'] . "</div>";
     echo "<div>" . $tour['hotel'] . "</div>";
-    echo "<div>" . $tour['hotellink'] . "</div>";
-    echo "<div>" . $tour['facebook'] . "</div>";
+
+    if (!empty($tour['hotellink']) || $tour['hotellink'] != "http://" || $tour['hotellink'] != "https://") {
+      echo "<div><a href='" . $tour['hotellink'] . "' target='_blank'><i class='fa fa-external-link' aria-hidden='true'></i> Hotellets hemsida</a></div>";
+    }
+    if (!empty($tour['facebook']) || $tour['facebook'] != "http://" || $tour['facebook'] != "https://") {
+      echo "<div><a href='" . $tour['facebook'] . "' target='_blank'><img src='/img/join-facebook-event.png' /></a></div>";
+    }
 
     //echo "<div>" . $tour['personnr'] . "</div>";
     //echo "<div>" . $tour['fysiskadress'] . "</div>";

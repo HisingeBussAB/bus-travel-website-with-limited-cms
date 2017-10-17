@@ -22,7 +22,12 @@ class Render
 
     if (empty($target)) $target = "mainpage";
 
-    if ($target === "bestall-katalog") $target = "orderprogram";
+    if ($target === "bestall-program")    $target = "orderprogram";
+    if ($target === "inforresan")         $target = "beforetour";
+    if ($target === "efterresan")         $target = "aftertour";
+    if ($target === "bussresorgoteborg")  $target = "about";
+    if ($target === "kontakt")            $target = "contact";
+    if ($target === "galleri")            $target = "gallery";
 
     //END LIST OF PAGES
 

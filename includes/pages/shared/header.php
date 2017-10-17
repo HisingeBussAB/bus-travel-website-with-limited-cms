@@ -88,7 +88,7 @@ if (empty($robots)) {
       <nav class="clear-on-tiny">
         <ul class="nav nav-pills center-on-tiny" aria-label="Meny">
           <li role="presentation"><a href="/#resekalender">Resekalender</a></li>
-          <li role="presentation"><a href="/bestall-katalog">Beställ program</a></li>
+          <li role="presentation"><a href="/bestall-program">Beställ program</a></li>
           <li role="presentation"><a href="/inforresan">Inför resan</a></li>
           <li role="presentation"><a href="/efterresan">Efter resan</a></li>
           <li role="presentation"><a href="/galleri">Bildgalleri</a></li>

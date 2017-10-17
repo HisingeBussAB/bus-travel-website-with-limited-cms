@@ -28,7 +28,6 @@ function sendForm(formData) {
     dataType: "json",
   })
     .done(function(data) {
-      console.log(data);
       $( "#ajax-response" ).html( data );
       newtoken();
       setTimeout(function(){

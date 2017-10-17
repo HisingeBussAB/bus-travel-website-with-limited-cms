@@ -65,7 +65,8 @@ a:hover {
   text-decoration: underline;
 }
 
-input[type=submit] {
+input[type=submit],
+button[type=submit] {
   background-color: #003299;
   color: white;
   border: 1px solid white;
@@ -351,7 +352,7 @@ header #categories-wrap li a {
   border-radius: 3px 0 3px 0;
   border-right: 1px solid rgba(255, 255, 255, 0.12);
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-  font-size: 1.93vw;
+  font-size: 1.96vw;
 }
 
 .main-section .trip-featured .trip-featured-details {
@@ -365,7 +366,7 @@ header #categories-wrap li a {
   float: right;
   padding: 13px;
   margin: 5px;
-  font-size: 1.1vw;
+  font-size: 1.17vw;
   font-weight: bold;
   background-color: rgba(0, 160, 0, 0.93);
   border: 1px solid rgba(255, 255, 255, 0.9);
@@ -391,7 +392,7 @@ header #categories-wrap li a {
 }
 
 .main-section .trip-featured .trip-featured-desc {
-  font-size: .96vw;
+  font-size: 1.13vw;
   background-color: rgba(0, 0, 0, 0.9);
   color: white;
   margin: 0;
@@ -495,6 +496,16 @@ header #categories-wrap li a {
 /*
 * — Footer —
 */
+#newsletter-loader,
+#newsletter-response {
+  display: none;
+}
+
+#newsletter-response {
+  margin: 15px;
+  font-size: 1.44rem;
+}
+
 .main-footer {
   color: #fff;
   background-color: #0856fb;
@@ -511,15 +522,18 @@ header #categories-wrap li a {
 }
 
 .main-footer input[type=email] {
-  width: calc(95%-100px);
-  min-width: 300px;
+  width: calc(95% - 130px);
+  min-width: 250px;
+  max-width: 420px;
   padding: 4px;
   border-radius: 5px;
   border: 1px solid white;
   margin: 3px;
+  color: black;
 }
 
-.main-footer input[type=submit] {
+.main-footer #newsletter-form-send,
+.main-footer button[type=submit] {
   background-color: #003299;
   color: white;
   border: 1px solid white;
@@ -527,6 +541,7 @@ header #categories-wrap li a {
   text-transform: uppercase;
   padding: 4px 7px;
   margin: 3px;
+  min-width: 100px;
 }
 
 .main-footer address {
@@ -578,12 +593,15 @@ header #categories-wrap li a {
 * === LAYOUT MEDIA QUERIES ===
 */
 @media (max-width: 1300px) {
+  .main-section .trip-featured .trip-featured-head {
+    font-size: 2.5rem;
+  }
   .main-section .trip-featured .trip-featured-desc {
-    font-size: 1.07rem;
+    font-size: 1.615rem;
   }
   .main-section .trip-featured .trip-featured-details .trip-featured-dur,
   .main-section .trip-featured .trip-featured-details .trip-featured-price {
-    font-size: 1.4rem;
+    font-size: 1.61rem;
   }
 }
 
@@ -602,10 +620,10 @@ header #categories-wrap li a {
     padding: 7px;
   }
   .main-section .featured-box .trip-featured-head {
-    font-size: 1.91rem;
+    font-size: 1.96rem;
   }
   .main-section .trip-featured .trip-featured-desc {
-    font-size: 1.2rem;
+    font-size: 1.45rem;
   }
   .main-section .trip-featured .trip-featured-details .trip-featured-dur,
   .main-section .trip-featured .trip-featured-details .trip-featured-price {
@@ -635,7 +653,11 @@ header #categories-wrap li a {
     padding: 6px;
   }
   .main-section .featured-box .trip-featured-head {
-    font-size: 1.82rem;
+    font-size: 1.75rem;
+  }
+  .main-section .featured-box .trip-featured-details .trip-featured-dur,
+  .main-section .featured-box .trip-featured-details .trip-featured-price {
+    font-size: 1.42rem;
   }
   header .header-wrap,
   header #categories-wrap,

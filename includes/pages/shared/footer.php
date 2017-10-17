@@ -27,16 +27,19 @@ if (!empty($morestyles)) echo $morestyles;
     <div class="row-fluid">
       <section class='col-md-6 col-xs-12'>
         <h2 class='footer-heading'>Vill du ha information om våra resor?</h2>
-        <form>
-          <input type="email" placeholder="E-post..." />
-          <input type="submit" value="Prenumerera" />
+        <form action='/ajax/newsletter' method='post' accept-charset='utf-8' enctype='application/json' id='newsletter-form'>
+          <input type="email" name="email" placeholder="E-post..." />
+          <input type="url" name="url" class="hidden" placeholder="Lämna tomt!" />
+          <input type="hidden" name="client" value="<?php echo md5($_SERVER['HTTP_USER_AGENT']); ?>" />
+          <button type="submit" id='newsletter-form-send'><span id='newsletter-form-send-default'>Prenumerera</span><span id='newsletter-loader'><i class="fa fa-spinner fa-lg fa-spin" aria-hidden="true"></i></span></button>
+          <div id='newsletter-response' class='text-center'></div>
         </form>
 
       </section>
       <section class='col-md-6 col-xs-12'>
       <h2 class='footer-heading'>Företag i koncernen</h2>
       <div class='koncern-logo-container'>
-          <a href="http://www.hisigebuss.se"><img src="/img/hb-logga.png" alt="Hisinge Buss AB" /></a>
+          <a href="http://www.hisingebuss.se"><img src="/img/hb-logga.png" alt="Hisinge Buss AB" /></a>
           <a href="http://www.rekoresor.se"><img src="/img/reka-logga.jpg" alt="Rekå Resor AB" /></a>
           <a href="http://www.busspoolen.se"><img src="/img/bp-logga.png" alt="Buss- och Resepoolen i Göteborg AB" /></a>
       </div>
