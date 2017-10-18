@@ -27,12 +27,24 @@ class Render
     if ($target === "efterresan")         $target = "aftertour";
     if ($target === "bussresorgoteborg")  $target = "about";
     if ($target === "kontakt")            $target = "contact";
+    if ($target === "resevillkor")        $target = "terms";
     if ($target === "galleri")            $target = "gallery";
 
     //END LIST OF PAGES
 
     try {
       include __DIR__ . '/../includes/pages/' . $target . '.php';
+    } catch (Exception $e) {
+      if (DEBUG_MODE) echo $e->getMessage(); else include '/../includes/pages/error/404.php';
+    }
+  }
+
+  public static function landing($target) {
+
+    if (empty($target)) $target = "mainpage";
+
+    try {
+      include __DIR__ . '/../includes/pages/landingp' . $target . '.php';
     } catch (Exception $e) {
       if (DEBUG_MODE) echo $e->getMessage(); else include '/../includes/pages/error/404.php';
     }

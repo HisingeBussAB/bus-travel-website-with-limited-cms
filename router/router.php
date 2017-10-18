@@ -7,6 +7,8 @@
  */
 
 namespace HisingeBussAB\RekoResor\website\router;
+use HisingeBussAB\RekoResor\website as root;
+use HisingeBussAB\RekoResor\website\router\Render as Render;
 
 /**
  * Router class
@@ -80,10 +82,24 @@ class Router
     array_push($this->sitemap, "bussresorgoteborg");
     $this->addRoute(  '/^(kontakt)$/',                       '\HisingeBussAB\RekoResor\website\router\Render::inc',                          'GET');
     array_push($this->sitemap, "kontakt");
+    $this->addRoute(  '/^(resevillkor)$/',                   '\HisingeBussAB\RekoResor\website\router\Render::inc',                          'GET');
+    array_push($this->sitemap, "resevillkor");
+
+
+    //SEO landing pages
+    $this->addRoute(  '/^(pensionarsresor)$/',               $func = function() { Render::landing(1); },                        'GET');
+    array_push($this->sitemap, "pensionarsresor");
+    $this->addRoute(  '/^(pensionarsresor-med-buss)$/',               $func = function() { Render::landing(2); },                     'GET');
+    array_push($this->sitemap, "pensionarsresor-med-buss");
+
+
+    //Admin and middleware
     $this->addRoute(  '/^ajax\/([\w-%]+)$/',                 '\HisingeBussAB\RekoResor\website\ajax\Ajax::startAjax',                        'POST');
     $this->addRoute(  '/^adminajax\/([\w-%]+)$/',            '\HisingeBussAB\RekoResor\website\ajax\AdminAjax::startAjax',                   'POST');
+
+    //Sitemap robots
     $this->addRoute(  '/^robots.txt$/',                      $func = function() {if (!include __DIR__ . '/../render-robots.php')  { require __DIR__ . '/../includes/pages/error/404.php'; } },  'GET');
-    $this->addRoute(  '/^sitemap.xml$/',                     $func = function() { \HisingeBussAB\RekoResor\website\RenderSitemap::render($this->sitemap); },                    'GET');
+    $this->addRoute(  '/^sitemap.xml$/',                     $func = function() { root\RenderSitemap::render($this->sitemap); },                    'GET');
 
     //INSTALL ROUTE
     $this->addRoute(  '/^installme$/',$func = function() {if (!include __DIR__ . '/../install/install.php'){require __DIR__ . '/../includes/pages/error/404.php';} },'ANY');
