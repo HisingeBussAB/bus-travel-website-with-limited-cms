@@ -87,7 +87,7 @@ class Router
 
 
     //SEO landing pages
-    $this->addRoute(  '/^(pensionarsresor)$/',               $func = function() { Render::landing(1); },                        'GET');
+    $this->addRoute(  '/^(pensionarsresor)$/',                        $func = function() { Render::landing(1); },                        'GET');
     array_push($this->sitemap, "pensionarsresor");
     $this->addRoute(  '/^(pensionarsresor-med-buss)$/',               $func = function() { Render::landing(2); },                     'GET');
     array_push($this->sitemap, "pensionarsresor-med-buss");
@@ -119,9 +119,15 @@ class Router
     $this->addRoute(  '/^Weekend$/'         ,$func = function() {header('Location: http://www.rekoresor.se/kategori/weekend/', true, 301); exit;} , 'ANY');
 
     $this->addRoute(  '/^grupp-och-konferens$/',$func = function() {header('Location: http://www.rekoresor.se/kategori/gruppresor-och-konferens/', true, 301); exit;} , 'ANY');
+    $this->addRoute(  '/^gruppresor-dagsresor$/',$func = function() {header('Location: http://www.rekoresor.se/kategori/gruppresor-och-konferens/', true, 301); exit;} , 'ANY');
+    $this->addRoute(  '/^gruppresor-flerdagsresor$/',$func = function() {header('Location: http://www.rekoresor.se/kategori/gruppresor-och-konferens/', true, 301); exit;} , 'ANY');
+    $this->addRoute(  '/^gruppresor-foretag$/',$func = function() {header('Location: http://www.rekoresor.se/kategori/gruppresor-och-konferens/', true, 301); exit;} , 'ANY');
 
     $this->addRoute(  '/^resekalender$/', $func = function() {header('Location: http://www.rekoresor.se/#resekalender', true, 301); exit;} , 'ANY');
     $this->addRoute(  '/^vara-resor$/',   $func = function() {header('Location: http://www.rekoresor.se/#resekalender', true, 301); exit;} , 'ANY');
+
+    $this->addRoute(  '/^var-stiger-jag-pa$/',   $func = function() {header('Location: http://www.rekoresor.se/inforresan', true, 301); exit;} , 'ANY');
+    $this->addRoute(  '/^bra-att-veta$/',   $func = function() {header('Location: http://www.rekoresor.se/inforresan', true, 301); exit;} , 'ANY');
 
     $this->addRoute(  '/^om-oss$/',     $func = function() {header('Location: http://www.rekoresor.se/bussresorgoteborg/', true, 301); exit;} , 'ANY');
 

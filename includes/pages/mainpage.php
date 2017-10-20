@@ -176,7 +176,12 @@ include __DIR__ . '/shared/header.php';
 
 
       $output .= "<div class='tour-quick-facts'><h3><a href='" . $tour['link'] . "'>" . $tour['tour'] . "</a></h3>";
-      $output .= "<p><i class='fa fa-hourglass fa-lg blue' aria-hidden='true'></i> Antal dagar: " . $tour['days'] . " dagar</p>";
+      $output .= "<p><i class='fa fa-hourglass fa-lg blue' aria-hidden='true'></i> Antal dagar: ";
+      if ($tour['days'] == 1) {
+        $output .= "Dagsresa";
+      } else {
+        $output .= $tour['days'] . " dagar</p>";
+      }
       $output .= "<p><i class='fa fa-calendar fa-lg blue' aria-hidden='true'></i> Avresedatum: " . $tour['departure'] . "</p>";
       $output .= "<p><i class='fa fa-money fa-lg blue' aria-hidden='true'></i> Pris per person: " . $tour['price'] . " kr</p></div>";
       $output .= "<a href='" . $tour['link'] . "'><figure class='trip-featured-img-list'>";

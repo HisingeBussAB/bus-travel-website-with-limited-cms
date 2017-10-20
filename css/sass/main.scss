@@ -464,7 +464,8 @@ header {
   div.tour-quick-facts {
     font-size: 1.6rem;
     width: 63.5%;
-    float: right;
+    margin-bottom: 14px;
+    float: left;
     h3 {
       margin-top: 0;
       font-weight: bold;
@@ -490,18 +491,18 @@ header {
   }
 
   .trip-featured-img-list {
-    max-height: 320px;
-    max-width: 320px;
-    width: 31.8%;
-    float: left;
+    max-height: 360px;
+    max-width: 360px;
+    width: 32%;
     padding: 1px;
     border: solid 1px black;
     margin-right: 15px;
-    margin-bottom: 4px;
+    margin-bottom: 14px;
 
     display: flex;
     align-items: center;
     justify-content: center;
+    float: right;
 
     }
   }
