@@ -20,94 +20,79 @@ try {
   $allowed_tags = ALLOWED_HTML_TAGS;
 
   root\includes\classes\Sessions::secSessionStart(TRUE);
-  $token = root\includes\classes\Tokens::getFormToken('program', 2000, true);
+  $token = root\includes\classes\Tokens::getFormToken('contact', 4000, true);
   $clienthash = md5($_SERVER['HTTP_USER_AGENT']);
-  $html_ents = Functions::set_html_list();
 
-  if (!empty($toururl)) {
-    $toururl = str_replace("'", "", $toururl); //Is urlencoded there should not be any ' and they will break the html if value is echoed and user enters a malicious query
-    $toururl = filter_var(trim($toururl), FILTER_SANITIZE_URL);
-    try {
-      $pdo = DB::get();
-
-      $sql = "SELECT namn, url FROM " . TABLE_PREFIX . "resor WHERE aktiv = 1 AND url = :url;";
-      $sth = $pdo->prepare($sql);
-      $sth->bindParam(':url', $toururl, \PDO::PARAM_STR);
-      $sth->execute();
-      $result = $sth->fetch(\PDO::FETCH_ASSOC);
-    } catch(\PDOException $e) {
-      DBError::showError($e, __CLASS__, $sql);
-      throw new \RuntimeException("Databasfel.");
-    }
-
-    if ((count($result) > 0) && ($result !== false)) {
-      $tour['namn'] = strtr(strip_tags($result['namn'], $allowed_tags), $html_ents);
-      $tour['url'] = filter_var("http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/resa/" . rawurlencode($result['url']), FILTER_SANITIZE_URL);
-
-    } else {
-      throw new \UnexpectedValueException("Resan finns inte.");
-    }
-
-    $pageTitle = "Beställ program för " . $tour['namn'];
-
-  } else {
-    $pageTitle = "Beställ katalog";
-  }
+  $pageTitle = "Kontakta oss";
 
 
-
-  $morestyles = "<link rel='stylesheet' href='/css/program.min.css' >";
-  $morescripts = "<script src='/js/program.js'></script>";
+  $morestyles = "<link rel='stylesheet' href='/css/contact.min.css' >";
+  $morescripts = "<script src='/js/contact.js'></script>";
 
   header('Content-type: text/html; charset=utf-8');
   include __DIR__ . '/shared/header.php';
 
   echo "<main class='main-section container-fluid'>";
 
-  echo "<div class='row-fluid'>";
+  echo "<div class='row-fluid'><div class='col-xs-12'>";
 
 
       echo "
-      <form action='/ajax/program' method='post' accept-charset='utf-8' enctype='application/json' id='get-program-form'>";
-
-      if (empty($toururl)) {
-        echo "
-        <h1>Beställ katalog.</h1>
-        <p>Beställ vår tryckta katalog, eller delar av katalogen. Vi skickar dem via post till dig.</p>";
-      } else {
-        echo "
-        <h1>Beställ tryckt program för " . htmlspecialchars($tour['namn']) . "</h1>
-        <p>Vi skickar programmet via post till dig.</p>
-        <input type='hidden' value='" . htmlspecialchars($tour['namn']) . "' name='category[]' />";
-      }
 
 
+        <h1>Kontakta oss</h1>
+        <iframe id='embedded-map'
+  frameborder='0'
+  src='https://www.google.com/maps/embed/v1/place?key=AIzaSyAko8gQvMnnoD9cIsjcjHxLJaNXQzr-xF8
+    &q=Rekå+Resor,Aröds+Industriväg+30' allowfullscreen>
+</iframe></div>
+</div><div class='row-fluid'>
+<div class='col-md-6 col-sm-12'>
 
-      echo "
-      <p><input type='text' placeholder='Namn' name='name' required /></p>
-      <p><input type='text' placeholder='Gatuadress' name='address' required /></p>
-      <p><input type='text' placeholder='Postnr.' name='zip' required /><input type='text' placeholder='Postort' name='city' required /></p>
-      <p><input type='email' placeholder='E-post' name='email' /></p>
-      <input type='hidden' value='" . $token['id'] . "' name='tokenid' id='tokenid' />
-      <input type='hidden' value='" . $token['token'] . "' name='token' id='token' />
-      <input type='hidden' value='$clienthash' name='client' />
-      <p class='antispam'>Leave this empty: <input type='text' name='url' /></p>";
+<h2>Skicka meddelande</h2>
 
-      $i = 1;
-      if (empty($toururl)) {
-        echo "<h2>Välj program</h2>";
-        echo "<ul><li><input type='checkbox' id='check0'name='category[]' value='Alla program' checked /><label class='checklabel' for='check0'>Hela katalogen (alla program)</label></li>";
-        foreach($categories as $category) {
-          echo "<li><input type='checkbox' id='check" . $i . "' name='category[]' value='" . htmlspecialchars($category->kategori, ENT_QUOTES) . "' /><label class='checklabel' for='check" . $i . "'>" . htmlspecialchars($category->kategori, ENT_QUOTES) . "</label></li>";
-          $i++;
-        }
-        echo "</ul>";
-      }
+<form action='/ajax/contact' method='post' accept-charset='utf-8' enctype='application/json' id='get-contact-form'>
+<p><input type='text' placeholder='Namn' name='name' /></p>
+<p><input type='text' placeholder='Gatuadress' name='address' /></p>
+<p><input type='text' placeholder='Postnr.' name='zip /><input type='text' placeholder='Postort' name='city' /></p>
+<p><input type='tel' placeholder='Telefonnummer' name='tel' /></p>
+<p><input type='email' placeholder='E-post' name='email' /></p>
+<input type='hidden' value='" . $token['id'] . "' name='tokenid' id='tokenid' />
+<input type='hidden' value='" . $token['token'] . "' name='token' id='token' />
+<input type='hidden' value='$clienthash' name='client' />
+<p class='antispam'>Leave this empty: <input type='text' name='url' /></p>
+<p><textarea placeholder='Ditt meddelande...' id='contact-text' name='message' required></textarea>";
 
 
 
-      echo "<p><input type='submit' value='Beställ program' id='get-program-button' /><button class='ajax-loader'><i class='fa fa-spinner fa-pulse fa-2x' aria-hidden='true'></i></button></p>
-      <div class='ajax-response' id='ajax-response'></div>
+
+echo "<p><input type='submit' value='Skicka meddelande' id='get-contact-button' /><button class='ajax-loader'><i class='fa fa-spinner fa-pulse fa-2x' aria-hidden='true'></i></button></p>
+<div class='ajax-response' id='ajax-response'></div>
+
+
+</div><div class='col-md-6 col-sm-12'>
+<h4>Telefon</h4>
+<p><a href='tel:+463122120'>031-22 21 20</a><br />
+<h5>Jourtelefon</h5>
+<p>Ibland kan det oförutsedda hända.
+Något som gör att du måste få tag på oss när kontoret är stängt.
+Då når du oss lättast genom vår jourtelefon via vår växel 031-22 21 20.</p></p>
+
+<h4>Öppettider</h4>
+<p>Vardagar 09:00 - 16:30<br />
+Lördagar och Södnagar stängt</p>
+
+      <h4>Besöksadress</h4>
+      <p>Aröds Industriväg 30<br />
+      Hisings Backa</p>
+
+
+      <h4>Postadress</h4>
+      <p>Rekå Resor AB<br />
+      Box 8797<br />
+      402 76 Göteborg</p>
+
+
       ";
 
 

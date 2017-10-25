@@ -72,7 +72,7 @@ class AdminAjax
         break;
 
         case 'gettrip':
-          echo root\admin\includes\classes\NewTrip::getTripsJSON();
+          echo root\admin\includes\classes\NewTrip::getTripsJSON(TRUE);
           http_response_code(200);
           exit;
         break;

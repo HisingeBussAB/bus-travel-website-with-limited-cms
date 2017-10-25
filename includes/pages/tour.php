@@ -186,7 +186,7 @@ echo "<main class='main-section container-fluid'>";
   echo "<div class='row-fluid'>";
   //LEFT COLUMN
   echo "<div class='col-lg-6 col-md-12'>
-    <h1>" . $tour['namn'];
+    <h1>" . $tour['namn'] . "</h1><h4 class='dates'>";
   $flag = TRUE;
   if (!empty($tour['datum']) && !$grouptour) {
     foreach ($tour['datum'] as $datum) {
@@ -199,10 +199,10 @@ echo "<main class='main-section container-fluid'>";
     }
   }
 
-  echo  "</h1>";
-  if ($grouptour) { echo "<h3>Gruppreseförslag</h2>"; }
+  echo  "</h4>";
+  if ($grouptour) { echo "<h4 class='dates'>Gruppreseförslag</h4>"; }
 
-  echo "<p><i class='fa fa-hourglass blue' aria-hidden='true'></i> " . $tour['antaldagar'] . " dagar</p>
+  echo "<div class='quickfacts'><p><i class='fa fa-hourglass blue' aria-hidden='true'></i> " . $tour['antaldagar'] . " dagar</p>
     <p><i class='fa fa-money blue' aria-hidden='true'></i> ";
     if ($grouptour) { echo "Ca "; }
     echo $tour['pris'] . " kr/person</p>";
@@ -215,9 +215,9 @@ echo "<main class='main-section container-fluid'>";
     }
 
 
-  echo "
+  echo "</div>
 
-    <div>" . $tour['ingress'] . "</div>";
+    <div class='lead'>" . $tour['ingress'] . "</div>";
 
     echo "<div class='text-center'><a href='/boka/" . $toururl . "' class='btn btn-default action-btn'>Boka resan</a><a href='/program/" . $toururl . "' class='btn btn-default action-btn'>Beställ tryckt program</a></div>";
 

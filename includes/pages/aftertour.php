@@ -38,8 +38,10 @@ try {
 
 
 <h2 id='bilder'>Bilder</h2>
-<p><a href='https://www.flickr.com/photos/134541462@N04/collections/'>Flickr</a></p>
-<p><a href='https://plus.google.com/collection/Qt0SWE'>Google+</a></p>
+<p><a href='https://www.flickr.com/photos/134541462@N04/collections/72157658328450860/'>Bruksvallarna 2015</a></p>
+<p><a href='https://www.flickr.com/photos/134541462@N04/sets/72157670307084845'>Midsommar 2016</a></p>
+<p><a href='https://photos.google.com/share/AF1QipN1t70VQWXPyLGwuDyf8Do9aQGoS9KMdseCw7SmQAmSJvI7594vP7RRfxb-K2_SsA?key=ZUVSWEpaUHFWOXFjcVNWUnY3U1V3VHk1YzRhNjN3'>Bruksvallarna 2016</a></p>
+
 
 
   ";

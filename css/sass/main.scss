@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Open+Sans|Signika|Pacifico|Courgette|Roboto');
+@import url('https://fonts.googleapis.com/css?family=PT+Sans|Courgette');
 
 @import "variables";
 
@@ -217,7 +217,7 @@ header {
 
     nav {
       display: block;
-
+      text-rendering: optimizeLegibility;
       text-align: right;
 
 
@@ -276,6 +276,7 @@ header {
     max-width: $page-max-width;
     width: $page-desktop-relative-width;
     margin: auto;
+    text-rendering: optimizeLegibility;
 
     li {
       display: block;
@@ -320,6 +321,7 @@ header {
   font-weight: bold;
   font-size: 1.6rem;
   padding: 10px 15px;
+  text-rendering: optimizeLegibility;
 }
 
 .main-section {
@@ -513,11 +515,24 @@ header {
       border-radius: 5px;
       background-color: $logo-blue;
       color: $textonblue;
+      text-rendering: optimizeLegibility;
 
+
+      &:focus {
+        background-color: $textonblue;
+        color: $logo-blue;
+      }
+
+      &:active:focus,
+      &:active:hover,
       &:hover {
         transform: scale(1.087);
         opacity: 0.95;
+        background-color: $logo-blue;
+        color: $textonblue;
       }
+
+
 
 
       }

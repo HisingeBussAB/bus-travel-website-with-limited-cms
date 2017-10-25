@@ -1,0 +1,107 @@
+@import "variables";
+
+
+h4 {
+  padding-top: 20px;
+}
+
+#embedded-map {
+  border: 0;
+  border-radius: 5px;
+  width: 100%;
+  height: 300px;
+}
+
+#get-contact-form {
+
+
+  .ajax-loader {
+    width: 172px;
+    height: 38px;
+  }
+
+  textarea,
+  input[type=tel],
+  input[type=email],
+  input[type=text] {
+    width: 343px;
+    padding: 4px;
+    border-radius: 5px;
+    border: 1px solid $logo-blue;
+    margin: 2px;
+  }
+
+  textarea {
+    height: 250px;
+  }
+
+  input[name=zip] {
+    width: 110px;
+  }
+
+  input[name=city] {
+    width: 230px;
+  }
+
+  h2 {
+    font-size: 2rem;
+  }
+
+
+  ul {
+  	margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  ul li {
+  	position: relative;
+  	line-height: 1.8em;
+  	height: 2em;
+  }
+
+
+  //Inspired by https://codepen.io/Rafiozoo/details/RrBXNx
+  input[type=checkbox] {
+  	display: none;
+  }
+  input[type=checkbox] + label {
+  	font-weight: normal;
+  	position: absolute;
+  	right:0; left:0;
+  	padding-left: 5px;
+  	cursor: pointer;
+  }
+  input[type=checkbox] + label:hover {
+  	font-weight: bold;
+    //&::before {
+    //  content: "\f046";
+    //}
+  }
+  input[type=checkbox] + label::before {
+  	font-family: FontAwesome;
+  	display: inline-block;
+  	content: "\f096";
+  	width: 1.5em;
+    color: $logo-blue;
+  }
+  input[type=checkbox]:checked + label::before {
+  	content: "\f046";
+  }
+  //END SNIPPLET
+
+
+
+  input[type=submit] {
+    background-color: $logo-blue;
+    color: rgb(255,255,255);
+    border: 1px solid rgb(255,255,255);
+    border-radius: 5px;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 4px 7px;
+    margin-top: 10px;
+    width: 172px;
+    height: 38px;
+  }
+
+}

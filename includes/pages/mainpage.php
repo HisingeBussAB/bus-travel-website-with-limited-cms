@@ -147,13 +147,13 @@ include __DIR__ . '/shared/header.php';
 
   <div class="row-fluid">
   <div class="col-lg-3 col-md-3 text-center hidden-sm hidden-xs">
-    <a class="btn btn-default action-btn" href="/boka">Boka resa</a>
+    <a class="btn btn-default action-btn" href="boka">Boka resa</a>
   </div>
   <div class="col-lg-3 col-md-3 col-sm-4 text-center hidden-xs">
-    <a class="btn btn-default action-btn" href="program">Beställ program</a>
+    <a class="btn btn-default action-btn" href="bestall-program">Beställ program</a>
   </div>
   <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6 text-center">
-    <a class="btn btn-default action-btn" href="/gruppresor">Gruppresor</a>
+    <a class="btn btn-default action-btn" href="kategori/gruppresor-och-konferens">Gruppresor</a>
   </div>
   <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6 text-center">
       <a class="facebook-visit action-btn btn btn-default" href="https://www.facebook.com/rekoresor/" target="_blank"><img src='/img/facebook.png' alt="Besök oss på Facebook" /><span class='sr-only'>Besök vår Facebooksida</span></a>

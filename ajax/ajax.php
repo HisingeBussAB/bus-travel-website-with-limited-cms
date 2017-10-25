@@ -99,6 +99,16 @@ class Ajax
         exit;
       break;
 
+      case 'contact':
+
+        if (root\includes\classes\ContactForm::sendForm($_POST)) {
+          header('Content-Type: application/json; charset=utf-8');
+          header('Access-Control-Allow-Origin: http' . APPEND_SSL . '://' .$_SERVER['HTTP_HOST']);
+          http_response_code(200);
+        }
+        exit;
+      break;
+
       case 'booktour':
 
         if (root\includes\classes\BookTour::sendForm($_POST)) {

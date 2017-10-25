@@ -2,7 +2,50 @@
 //Image slider inspired by Avi Kohn https://codepen.io/AMKohn/pen/EKJHf
 
 @import url(https://fonts.googleapis.com/css?family=Varela+Round);
+@import "variables";
 
+h1 {
+  font-style: italic;
+  color: $blue;
+  font-size: 3.8rem;
+}
+
+h4.dates {
+  font-style: italic;
+  color: $blue;
+  font-size: 2.2rem;
+  margin-left: 20px;
+}
+
+div.quickfacts {
+  font-size: 1.7rem;
+  margin-top: 20px;
+  background-color: $bluefaint;
+  border-radius: 5px;
+  padding: 10px;
+  max-width: 500px;
+  font-weight: bold;
+  font-style: italic;
+}
+
+div.lead {
+  font-size: 1.65rem;
+  margin-top: 15px;
+}
+
+.main-section {
+  a.action-btn {
+    margin: 5px 15px;
+
+      &:hover {
+        transform: scale(1);
+    }
+  }
+}
+
+
+
+//SLIDES
 .slides {
     padding: 0;
     width: 100%;

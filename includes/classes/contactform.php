@@ -12,7 +12,7 @@ use HisingeBussAB\RekoResor\website\includes\classes\Tokens;
 use HisingeBussAB\RekoResor\website\includes\classes\DB;
 use HisingeBussAB\RekoResor\website\includes\classes\DBError;
 
-class ProgramForm {
+class ContactForm {
 
   public static function sendForm($data) {
 
@@ -92,7 +92,7 @@ class ProgramForm {
         }
       }
 
-      if (!Tokens::checkFormToken($data['token'], $data['tokenid'], 'program')) {
+      if (!Tokens::checkFormToken($data['token'], $data['tokenid'], 'contact')) {
         throw new \RuntimeException("Fel säkerhetstoken skickad. <a href='javascript:window.location.href=window.location.href'>Prova att ladda om sidan.</a>");
       }
 
@@ -111,13 +111,19 @@ class ProgramForm {
         $data['email'] = FALSE;
       }
 
-      if ( empty($data['name']) OR empty($data['address'])) {
-        throw new \RuntimeException("Vänligen fyll i mer information och försök igen.");
+      if ( empty($data['email']) && empty($data['tel'])) {
+        throw new \RuntimeException("Vänligen fyll i antingen e-post eller telefonummer så vi kan svara dig.");
+      }
+
+      if ( empty($data['message'])) {
+        throw new \RuntimeException("Du måste fylla i ett meddelande.");
       }
 
 
       if (empty($data['name']))
         $data['name'] = "";
+      if (empty($data['tel']))
+        $data['tel'] = "";
       if (empty($data['address']))
         $data['addres'] = "";
       if (empty($data['zip']))
@@ -130,6 +136,8 @@ class ProgramForm {
       $data['address'] = filter_var(trim($data['address']), FILTER_SANITIZE_STRING);
       $data['zip'] = filter_var(trim($data['zip']), FILTER_SANITIZE_STRING);
       $data['city'] = filter_var(trim($data['city']), FILTER_SANITIZE_STRING);
+      $data['message'] = filter_var(trim($data['message']), FILTER_SANITIZE_STRING);
+      $data['tel'] = filter_var(trim($data['tel']), FILTER_SANITIZE_STRING);
 
       if ($data['email'] !== FALSE) {
         $data['email'] = filter_var(trim($data['email']), FILTER_SANITIZE_EMAIL);
@@ -138,6 +146,7 @@ class ProgramForm {
       if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL) && $data['email'] !== FALSE) {
         throw new \RuntimeException("Det här verkar inte vara en giltig e-mail. Försök igen.");
       }
+
 
 
 
@@ -152,11 +161,9 @@ class ProgramForm {
       $mailbody = "Programbeställning från hemsidan:\r\n\r\n" .
                   $data['name'] . "\r\n" .
                   $data['address'] . "\r\n" .
-                  $data['zip'] . " " . $data['city'] . "\r\n\r\n" .
-                  $data['email'] . " \r\n\r\nBeställda program:\r\n";
-      foreach ($data['category'] as $category) {
-        $mailbody .= "$category\r\n";
-      }
+                  $data['zip'] . " " . $data['city'] . "\r\n" .
+                  $data['tel'] . "\r\n\r\n" .
+                  $data['email'] . " \r\n\r\nMeddelande:\r\n" . $data['message'];
 
       $mailbody .= "\r\n\r\nSkickad: " . date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']);
 
@@ -165,8 +172,9 @@ class ProgramForm {
       $mail->setFrom('hemsidan@rekoresor.se', 'Hemsidan - Rekå Resor');
       $mail->Sender="hemsidan@rekoresor.se";
       $mail->AddReplyTo($data['email']);
-      $mail->addAddress('program@rekoresor.se');
-      $mail->Subject  = "Rekå Resor - Beställt program";
+      $mail->addAddress('info@rekoresor.se');
+      $mail->AddCC('hakan@rekoresor.se');
+      $mail->Subject  = "Meddelande från hemsidan - Rekå Resor";
       $mail->Body     = $mailbody;
 
       if(!$mail->send()) {
@@ -179,8 +187,8 @@ class ProgramForm {
         $mail->setFrom('hemsidan@rekoresor.se', 'Rekå Resor');
         $mail->AddReplyTo("info@rekoresor.se", "Rekå Resor");
         if (!empty($data['email'])) { $mail->addAddress($data['email']); }
-        $mail->Subject  = "Tack för din programbeställning.";
-        $mail->Body     = "Tack för att du beställt program.\r\nVi kommer skicka aktuella reseprogram till dig inom kort.";
+        $mail->Subject  = "Tack för ditt meddelande.";
+        $mail->Body     = "Vi svarar så snart vi kan.";
 
         if ($data['email'] !== FALSE) {
           if(!$mail->send()) {
@@ -189,7 +197,7 @@ class ProgramForm {
             throw new \Exception("Fel vid kommunikation med mailservern");
           }
         }
-          $reply .= "Tack! Vi skickar programmen snart.";
+          $reply .= "Tack! Vi svarar så snart vi kan.";
           echo json_encode($reply);
           http_response_code(200);
           return true;

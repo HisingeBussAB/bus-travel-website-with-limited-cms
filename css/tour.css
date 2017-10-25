@@ -1,4 +1,44 @@
 @import url(https://fonts.googleapis.com/css?family=Varela+Round);
+/*
+* === SASS VARIABLES ===
+*/
+h1 {
+  font-style: italic;
+  color: #0856fb;
+  font-size: 3.8rem;
+}
+
+h4.dates {
+  font-style: italic;
+  color: #0856fb;
+  font-size: 2.2rem;
+  margin-left: 20px;
+}
+
+div.quickfacts {
+  font-size: 1.7rem;
+  margin-top: 20px;
+  background-color: rgba(8, 86, 251, 0.1);
+  border-radius: 5px;
+  padding: 10px;
+  max-width: 500px;
+  font-weight: bold;
+  font-style: italic;
+}
+
+div.lead {
+  font-size: 1.65rem;
+  margin-top: 15px;
+}
+
+.main-section a.action-btn {
+  margin: 5px 15px;
+}
+
+.main-section a.action-btn:hover {
+  transform: scale(1);
+}
+
 .slides {
   padding: 0;
   width: 100%;

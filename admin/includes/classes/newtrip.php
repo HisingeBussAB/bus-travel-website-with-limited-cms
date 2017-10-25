@@ -103,11 +103,17 @@ class NewTrip
     }
   }
 
-  public static function getTripsJSON() {
+  public static function getTripsJSON($reverse = FALSE) {
 
     $pdo = DB::get();
     try {
-      $sql = "SELECT resor.id, resor.namn, resor.aktiv, MIN(datum.datum) AS datum FROM " . TABLE_PREFIX . "resor AS resor INNER JOIN " . TABLE_PREFIX . "datum AS datum ON resor.id = datum.resa_id GROUP BY resor.id ORDER BY datum ;";
+      $sql = "SELECT resor.id, resor.namn, resor.aktiv, MIN(datum.datum) AS datum FROM " . TABLE_PREFIX . "resor AS resor INNER JOIN " . TABLE_PREFIX . "datum AS datum ON resor.id = datum.resa_id GROUP BY resor.id ORDER BY datum";
+      if ($reverse) {
+        $sql .= " DESC;";
+      } else {
+        $sql .= " ASC;";
+      }
+
       $sth = $pdo->prepare($sql);
       $sth->execute();
       $result = $sth->fetchAll(\PDO::FETCH_ASSOC);

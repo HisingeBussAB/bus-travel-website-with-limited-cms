@@ -72,7 +72,7 @@ try {
 
       if (empty($toururl)) {
         echo "
-        <h1>Beställ program.</h1>
+        <h1>Beställ program</h1>
         <p>Vi producerar kontinuerligt nya resor för att hålla vårt utbud uppdaterat och relevant.
         Här kan du beställa tryckta reseprogram för våra nu aktuella resor. Vi skickar dem via post till dig.</p>";
       } else {

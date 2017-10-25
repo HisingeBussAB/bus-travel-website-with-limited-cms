@@ -1,5 +1,5 @@
 @charset "UTF-8";
-@import url("https://fonts.googleapis.com/css?family=Open+Sans|Signika|Pacifico|Courgette|Roboto");
+@import url("https://fonts.googleapis.com/css?family=PT+Sans|Courgette");
 /*
 * === SASS VARIABLES ===
 */
@@ -11,7 +11,7 @@
 }
 
 body {
-  font-family: "Roboto", sans-serif;
+  font-family: "PT Sans", sans-serif;
 }
 
 .blue {
@@ -218,6 +218,7 @@ header .header-wrap .top-logo figcaption {
 
 header .header-wrap nav {
   display: block;
+  text-rendering: optimizeLegibility;
   text-align: right;
 }
 
@@ -265,6 +266,7 @@ header #categories-wrap {
   max-width: 1500px;
   width: 90%;
   margin: auto;
+  text-rendering: optimizeLegibility;
 }
 
 header #categories-wrap li {
@@ -306,6 +308,7 @@ header #categories-wrap li a {
   font-weight: bold;
   font-size: 1.6rem;
   padding: 10px 15px;
+  text-rendering: optimizeLegibility;
 }
 
 .main-section {
@@ -477,11 +480,19 @@ header #categories-wrap li a {
   border-radius: 5px;
   background-color: #003299;
   color: #fff;
+  text-rendering: optimizeLegibility;
 }
 
-.main-section .action-btn:hover {
+.main-section .action-btn:focus {
+  background-color: #fff;
+  color: #003299;
+}
+
+.main-section .action-btn:active:focus, .main-section .action-btn:active:hover, .main-section .action-btn:hover {
   transform: scale(1.087);
   opacity: 0.95;
+  background-color: #003299;
+  color: #fff;
 }
 
 .main-section .facebook-visit {
