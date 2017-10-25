@@ -3,10 +3,7 @@
 
 $(function() {
 
-  //Random background DESIGN TESTER
-  var r = Math.floor((Math.random() * 6) + 1);
-  $("body:first").addClass("body" + r);
-  //Random background DESIGN TESTER
+  
 
 
   //Scroll listner

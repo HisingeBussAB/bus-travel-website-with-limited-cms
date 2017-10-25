@@ -37,6 +37,17 @@ if (empty($robots)) {
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <script>
+    var bgImg = new Image();
+    bgImg.src = '../upload/background-1.jpg';
+    bgImg.onload = function(){
+      var node = document.createElement('style');
+      node.setAttribute('type', 'text/css')
+      var t = document.createTextNode('body::after {background-image: url("' + bgImg.src + '");}');
+      node.appendChild(t);
+      document.head.appendChild(node);
+    };
+  </script>
   <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],

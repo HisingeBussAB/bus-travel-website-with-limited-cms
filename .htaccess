@@ -12,7 +12,7 @@ RewriteRule . index.php [L,QSA]
     ExpiresActive On
     ExpiresByType image/png "access 1 year"
     ExpiresByType image/gif "access 1 year"
-    ExpiresByType image/jpeg "access 1 year"
+    ExpiresByType image/jpeg "access 3 months"
     ExpiresByType text/css "access 3 month"
     ExpiresByType application/javascript "access 3 months"
     ExpiresByType text/html "access 10 hours"

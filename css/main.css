@@ -1,5 +1,5 @@
 @charset "UTF-8";
-@import url("https://fonts.googleapis.com/css?family=PT+Sans|Courgette");
+@import url("https://fonts.googleapis.com/css?family=Roboto|Courgette");
 /*
 * === SASS VARIABLES ===
 */
@@ -11,7 +11,7 @@
 }
 
 body {
-  font-family: "PT Sans", sans-serif;
+  font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 .blue {
@@ -121,7 +121,8 @@ ul {
 * === SPECIFIC STYLES ===
 */
 body::after {
-  content: " ";
+  content: attr(data-after);
+  background-color: rgba(8, 86, 251, 0.1);
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -131,30 +132,6 @@ body::after {
   top: 0;
   width: 100%;
   height: 100%;
-}
-
-body.body1::after {
-  background-image: url("../upload/background-1.jpg");
-}
-
-body.body2::after {
-  background-image: url("../upload/background-2.jpg");
-}
-
-body.body3::after {
-  background-image: url("../upload/background-3.jpg");
-}
-
-body.body4::after {
-  background-image: url("../upload/background-4.jpg");
-}
-
-body.body5::after {
-  background-image: url("../upload/background-5.jpg");
-}
-
-body.body6::after {
-  background-image: url("../upload/background-6.jpg");
 }
 
 /*

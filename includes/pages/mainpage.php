@@ -124,7 +124,7 @@ include __DIR__ . '/shared/header.php';
 
     ?>
       <a href="<?php echo $featuredtrip['link']; ?>">
-    <div class="trip-featured" style="background-image: url('<?php echo $featuredtrip['imgpath']; ?>')">
+    <div class="trip-featured lazy" style="background-image: url('<?php echo $featuredtrip['imgpath']; ?>')">
     <h3 class="trip-featured-head"><?php echo $featuredtrip['tour']; ?></h3>
     <div class="trip-featured-details text-center">
       <div class="trip-featured-details-wrapper text-center">
@@ -185,7 +185,7 @@ include __DIR__ . '/shared/header.php';
       $output .= "<p><i class='fa fa-calendar fa-lg blue' aria-hidden='true'></i> Avresedatum: " . $tour['departure'] . "</p>";
       $output .= "<p><i class='fa fa-money fa-lg blue' aria-hidden='true'></i> Pris per person: " . $tour['price'] . " kr</p></div>";
       $output .= "<a href='" . $tour['link'] . "'><figure class='trip-featured-img-list'>";
-      $output .= "<img src='" . $tour['imgsrc'] . "'  alt='" . $tour['tour'] . "'/> ";
+      $output .= "<img class='lazy' src='" . $tour['imgsrc'] . "'  alt='" . $tour['tour'] . "'/> ";
       $output .= "</figure></a>";
       $output .= "<div class='tour-summary'>" . $tour['summary'] . "</div></div>";
       if ($i % 2 != 0) { $output .= "</div>"; }
