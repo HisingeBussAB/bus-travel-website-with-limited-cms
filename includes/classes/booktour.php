@@ -44,41 +44,9 @@ class BookTour {
         throw new \RuntimeException("Något har ändrats, inte längre samma klient. <a href='javascript:window.location.href=window.location.href'>Prova att ladda om sidan.</a>");
       }
 
-      var_dump($data);
       //VALIDATE FORM DATA
       if (empty($data['email'])) {
         $data['email'] = FALSE;
-      }
-
-      $data['tour'] = filter_var(trim($data['tour']), FILTER_SANITIZE_STRING);
-      $data['departure'] = filter_var(trim($data['departure']), FILTER_SANITIZE_STRING);
-      $data['stop'] = filter_var(trim($data['stop']), FILTER_SANITIZE_STRING);
-      $data['room'] = filter_var(trim($data['room']), FILTER_SANITIZE_STRING);
-      $data['phone'] = filter_var(trim($data['phone']), FILTER_SANITIZE_STRING);
-
-      $data['resenar1'] = filter_var(trim($data['resenar1']), FILTER_SANITIZE_STRING);
-      $data['resenar1-pnr'] = filter_var(trim($data['resenar1-pnr']), FILTER_SANITIZE_STRING);
-      $data['resenar2'] = filter_var(trim($data['resenar2']), FILTER_SANITIZE_STRING);
-      $data['resenar2-pnr'] = filter_var(trim($data['resenar2-pnr']), FILTER_SANITIZE_STRING);
-      $data['resenar3'] = filter_var(trim($data['resenar3']), FILTER_SANITIZE_STRING);
-      $data['resenar3-pnr'] = filter_var(trim($data['resenar3-pnr']), FILTER_SANITIZE_STRING);
-      $data['resenar4'] = filter_var(trim($data['resenar4']), FILTER_SANITIZE_STRING);
-      $data['resenar4-pnr'] = filter_var(trim($data['resenar4-pnr']), FILTER_SANITIZE_STRING);
-      $data['resenar5'] = filter_var(trim($data['resenar5']), FILTER_SANITIZE_STRING);
-      $data['resenar5-pnr'] = filter_var(trim($data['resenar5-pnr']), FILTER_SANITIZE_STRING);
-      $data['resenar6'] = filter_var(trim($data['resenar6']), FILTER_SANITIZE_STRING);
-      $data['resenar6-pnr'] = filter_var(trim($data['resenar6-pnr']), FILTER_SANITIZE_STRING);
-
-      $data['terms'] = filter_var(trim($data['terms']), FILTER_SANITIZE_STRING);
-      $data['misc'] = filter_var(trim($data['misc']), FILTER_SANITIZE_STRING);
-
-      $data['name'] = filter_var(trim($data['name']), FILTER_SANITIZE_STRING);
-      $data['address'] = filter_var(trim($data['address']), FILTER_SANITIZE_STRING);
-      $data['zip'] = filter_var(trim($data['zip']), FILTER_SANITIZE_STRING);
-      $data['city'] = filter_var(trim($data['city']), FILTER_SANITIZE_STRING);
-
-      if ($data['email'] !== FALSE) {
-        $data['email'] = filter_var(trim($data['email']), FILTER_SANITIZE_EMAIL);
       }
 
       if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL) && $data['email'] !== FALSE) {
@@ -92,6 +60,121 @@ class BookTour {
       if ( empty($data['terms']) OR $data['terms'] !== 'ja' ) {
         throw new \RuntimeException("Du måste godkänna resevillkoren.");
       }
+
+
+      $data['tour'] = filter_var(trim($data['tour']), FILTER_SANITIZE_STRING);
+      $data['departure'] = filter_var(trim($data['departure']), FILTER_SANITIZE_STRING);
+
+      $data['stop'] = filter_var(trim($data['stop']), FILTER_SANITIZE_STRING);
+
+      if (!empty($data['room']))
+      $data['room'] = filter_var(trim($data['room']), FILTER_SANITIZE_STRING);
+      else
+      $data['room'] = "";
+
+      if (!empty($data['phone']))
+      $data['phone'] = filter_var(trim($data['phone']), FILTER_SANITIZE_STRING);
+      else
+      $data['phone'] = "";
+
+      if (!empty($data['resenar1']))
+      $data['resenar1'] = filter_var(trim($data['resenar1']), FILTER_SANITIZE_STRING);
+      else
+      $data['resenar1'] = "";
+
+      if (!empty($data['resenar1-pnr']))
+      $data['resenar1-pnr'] = filter_var(trim($data['resenar1-pnr']), FILTER_SANITIZE_STRING);
+      else
+      $data['resenar1-pnr'] = "";
+
+      if (!empty($data['resenar2']))
+      $data['resenar2'] = filter_var(trim($data['resenar2']), FILTER_SANITIZE_STRING);
+      else
+      $data['resenar2'] = "";
+
+      if (!empty($data['resenar2-pnr']))
+      $data['resenar2-pnr'] = filter_var(trim($data['resenar2-pnr']), FILTER_SANITIZE_STRING);
+      else
+      $data['resenar2-pnr'] = "";
+
+      if (!empty($data['resenar3']))
+      $data['resenar3'] = filter_var(trim($data['resenar3']), FILTER_SANITIZE_STRING);
+      else
+      $data['resenar3'] = "";
+
+      if (!empty($data['resenar3-pnr']))
+      $data['resenar3-pnr'] = filter_var(trim($data['resenar3-pnr']), FILTER_SANITIZE_STRING);
+      else
+      $data['resenar3-pnr'] = "";
+
+      if (!empty($data['resenar4']))
+      $data['resenar4'] = filter_var(trim($data['resenar4']), FILTER_SANITIZE_STRING);
+      else
+      $data['resenar4'] = "";
+
+      if (!empty($data['resenar4-pnr']))
+      $data['resenar4-pnr'] = filter_var(trim($data['resenar4-pnr']), FILTER_SANITIZE_STRING);
+      else
+      $data['resenar4-pnr'] = "";
+
+      if (!empty($data['resenar5']))
+      $data['resenar5'] = filter_var(trim($data['resenar5']), FILTER_SANITIZE_STRING);
+      else
+      $data['resenar5'] = "";
+
+      if (!empty($data['resenar5-pnr']))
+      $data['resenar5-pnr'] = filter_var(trim($data['resenar5-pnr']), FILTER_SANITIZE_STRING);
+      else
+      $data['resenar5-pnr'] = "";
+
+      if (!empty($data['resenar6']))
+      $data['resenar6'] = filter_var(trim($data['resenar6']), FILTER_SANITIZE_STRING);
+      else
+      $data['resenar6'] = "";
+
+      if (!empty($data['resenar6-pnr']))
+      $data['resenar6-pnr'] = filter_var(trim($data['resenar6-pnr']), FILTER_SANITIZE_STRING);
+      else
+      $data['resenar6-pnr'] = "";
+
+
+      if (!empty($data['terms']))
+      $data['terms'] = filter_var(trim($data['terms']), FILTER_SANITIZE_STRING);
+      else
+      $data['terms'] = "";
+
+      if (!empty($data['misc']))
+      $data['misc'] = filter_var(trim($data['misc']), FILTER_SANITIZE_STRING);
+      else
+      $data['misc'] = "";
+
+
+      if (!empty($data['name']))
+      $data['name'] = filter_var(trim($data['name']), FILTER_SANITIZE_STRING);
+      else
+      $data['name'] = "";
+
+      if (!empty($data['address']))
+      $data['address'] = filter_var(trim($data['address']), FILTER_SANITIZE_STRING);
+      else
+      $data['address'] = "";
+
+      if (!empty($data['zip']))
+      $data['zip'] = filter_var(trim($data['zip']), FILTER_SANITIZE_STRING);
+      else
+      $data['zip'] = "";
+
+      if (!empty($data['city']))
+      $data['city'] = filter_var(trim($data['city']), FILTER_SANITIZE_STRING);
+      else
+      $data['city'] = "";
+
+
+      if ($data['email'] !== FALSE) {
+        $data['email'] = filter_var(trim($data['email']), FILTER_SANITIZE_EMAIL);
+      }
+
+
 
 
       //FINAL HAMMER CHECK

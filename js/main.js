@@ -3,7 +3,7 @@
 
 $(function() {
 
-  
+
 
 
   //Scroll listner
@@ -11,10 +11,8 @@ $(function() {
   $(window).scroll(function() {
     var y = $(this).scrollTop();
     if (y > 700) {
-      console.log("1");
       $('#to-top-chevron').fadeTo( 0 , 1);
     } else {
-      console.log("2");
       $('#to-top-chevron').fadeTo( 0 , 0);
     }
   });

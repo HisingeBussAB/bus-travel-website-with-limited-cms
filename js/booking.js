@@ -2,15 +2,22 @@
 
 
 $(function() {
+
   $('#booktour-form').submit(function(event){
     event.preventDefault();
+    if (!$("#terms").is(':checked')) {
+      $("#terms-label").css("color", "red");
+      $( "#ajax-response" ).html( "<p>Vänligen godkänn resevillkoren</p>" );
+      return false;
+    } else {
+    $(".ajax-response").empty();
     $("#booktour-button").prop("disabled",true);
     var formData = $("#booktour-form").serialize()
     $("#booktour-form :input").prop("disabled", true);
     $("#booktour-button").hide();
     $(".ajax-loader").show();
-    $(".ajax-response").empty();
     sendForm(formData);
+    }
   });
 
 

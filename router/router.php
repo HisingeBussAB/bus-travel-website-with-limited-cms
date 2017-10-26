@@ -67,6 +67,8 @@ class Router
     $this->addRoute(  '/^adminp\/filemanager\/upload$/',     '\HisingeBussAB\RekoResor\website\admin\includes\classes\Files::uploadFile',    'POST');
     $this->addRoute(  '/^resa\/([\w-%]+)\/?$/',              '\HisingeBussAB\RekoResor\website\router\Render::tour',                         'GET');
     $this->addRoute(  '/^boka\/([\w-%]+)\/?$/',              '\HisingeBussAB\RekoResor\website\router\Render::booktour',                     'GET');
+    $this->addRoute(  '/^(boka)$/',                           '\HisingeBussAB\RekoResor\website\router\Render::booktour',                     'GET');
+    array_push($this->sitemap, "boka");
     $this->addRoute(  '/^program\/([\w-%]+)\/?$/',           '\HisingeBussAB\RekoResor\website\router\Render::ordertourprogram',             'GET');
     $this->addRoute(  '/^galleri\/([\w-%]+)\/?$/',           '\HisingeBussAB\RekoResor\website\router\Render::inc',                          'GET');
     $this->addRoute(  '/^(galleri)$/',                       '\HisingeBussAB\RekoResor\website\router\Render::inc',                          'GET');
@@ -109,32 +111,33 @@ class Router
 
 
     //REDIRECTS FROM OLD SITE STRUCTURE
-    $this->addRoute(  '/^Dagsresor$/',      $func = function() {header('Location: http://www.rekoresor.se/kategori/dagsresor/', true, 301); exit;} , 'ANY');
-    $this->addRoute(  '/^Operaresor$/',     $func = function() {header('Location: http://www.rekoresor.se/kategori/operaresor/', true, 301); exit;} , 'ANY');
-    $this->addRoute(  '/^Teater$/',         $func = function() {header('Location: http ://www.rekoresor.se/kategori/teaterresor/', true, 301); exit;} , 'ANY');
-    $this->addRoute(  '/^Storhelg$/',       $func = function() {header('Location: http://www.rekoresor.se/kategori/storhelg/', true, 301); exit;} , 'ANY');
-    $this->addRoute(  '/^Julmarknader$/',   $func = function() {header('Location: http://www.rekoresor.se/kategori/julmarknader/', true, 301); exit;} , 'ANY');
-    $this->addRoute(  '/^Noje-och-dans$/',  $func = function() {header('Location: http://www.rekoresor.se/kategori/noje-och-dans/', true, 301); exit;} , 'ANY');
-    $this->addRoute(  '/^spa-och-ma-bra$/', $func = function() {header('Location: http://www.rekoresor.se/kategori/spa-och-ma-bra/', true, 301); exit;} , 'ANY');
-    $this->addRoute(  '/^Weekend$/'         ,$func = function() {header('Location: http://www.rekoresor.se/kategori/weekend/', true, 301); exit;} , 'ANY');
+    $this->addRoute(  '/^Dagsresor$/',      $func = function() {header('Location: https://www.rekoresor.se/kategori/dagsresor/', true, 301); exit;} , 'ANY');
+    $this->addRoute(  '/^Operaresor$/',     $func = function() {header('Location: https://www.rekoresor.se/kategori/operaresor/', true, 301); exit;} , 'ANY');
+    $this->addRoute(  '/^Teater$/',         $func = function() {header('Location: https://www.rekoresor.se/kategori/teaterresor/', true, 301); exit;} , 'ANY');
+    $this->addRoute(  '/^Storhelg$/',       $func = function() {header('Location: https://www.rekoresor.se/kategori/storhelg/', true, 301); exit;} , 'ANY');
+    $this->addRoute(  '/^Julmarknader$/',   $func = function() {header('Location: https://www.rekoresor.se/kategori/julmarknader/', true, 301); exit;} , 'ANY');
+    $this->addRoute(  '/^Noje-och-dans$/',  $func = function() {header('Location: https://www.rekoresor.se/kategori/noje-och-dans/', true, 301); exit;} , 'ANY');
+    $this->addRoute(  '/^spa-och-ma-bra$/', $func = function() {header('Location: https://www.rekoresor.se/kategori/spa-och-ma-bra/', true, 301); exit;} , 'ANY');
+    $this->addRoute(  '/^Weekend$/'         ,$func = function() {header('Location: https://www.rekoresor.se/kategori/weekend/', true, 301); exit;} , 'ANY');
 
-    $this->addRoute(  '/^grupp-och-konferens$/',$func = function() {header('Location: http://www.rekoresor.se/kategori/gruppresor-och-konferens/', true, 301); exit;} , 'ANY');
-    $this->addRoute(  '/^gruppresor-dagsresor$/',$func = function() {header('Location: http://www.rekoresor.se/kategori/gruppresor-och-konferens/', true, 301); exit;} , 'ANY');
-    $this->addRoute(  '/^gruppresor-flerdagsresor$/',$func = function() {header('Location: http://www.rekoresor.se/kategori/gruppresor-och-konferens/', true, 301); exit;} , 'ANY');
-    $this->addRoute(  '/^gruppresor-foretag$/',$func = function() {header('Location: http://www.rekoresor.se/kategori/gruppresor-och-konferens/', true, 301); exit;} , 'ANY');
+    $this->addRoute(  '/^grupp-och-konferens$/',$func = function() {header('Location: https://www.rekoresor.se/kategori/gruppresor-och-konferens/', true, 301); exit;} , 'ANY');
+    $this->addRoute(  '/^gruppresor-dagsresor$/',$func = function() {header('Location: https://www.rekoresor.se/kategori/gruppresor-och-konferens/', true, 301); exit;} , 'ANY');
+    $this->addRoute(  '/^gruppresor-flerdagsresor$/',$func = function() {header('Location: https://www.rekoresor.se/kategori/gruppresor-och-konferens/', true, 301); exit;} , 'ANY');
+    $this->addRoute(  '/^gruppresor-foretag$/',$func = function() {header('Location: https://www.rekoresor.se/kategori/gruppresor-och-konferens/', true, 301); exit;} , 'ANY');
 
-    $this->addRoute(  '/^resekalender$/', $func = function() {header('Location: http://www.rekoresor.se/#resekalender', true, 301); exit;} , 'ANY');
-    $this->addRoute(  '/^vara-resor$/',   $func = function() {header('Location: http://www.rekoresor.se/#resekalender', true, 301); exit;} , 'ANY');
+    $this->addRoute(  '/^resekalender$/', $func = function() {header('Location: https://www.rekoresor.se/#resekalender', true, 301); exit;} , 'ANY');
+    $this->addRoute(  '/^vara-resor$/',   $func = function() {header('Location: https://www.rekoresor.se/#resekalender', true, 301); exit;} , 'ANY');
 
-    $this->addRoute(  '/^var-stiger-jag-pa$/',   $func = function() {header('Location: http://www.rekoresor.se/inforresan', true, 301); exit;} , 'ANY');
-    $this->addRoute(  '/^bra-att-veta$/',   $func = function() {header('Location: http://www.rekoresor.se/inforresan', true, 301); exit;} , 'ANY');
+    $this->addRoute(  '/^var-stiger-jag-pa$/',   $func = function() {header('Location: https://www.rekoresor.se/inforresan', true, 301); exit;} , 'ANY');
+    $this->addRoute(  '/^bra-att-veta$/',   $func = function() {header('Location: https://www.rekoresor.se/inforresan', true, 301); exit;} , 'ANY');
 
-    $this->addRoute(  '/^om-oss$/',     $func = function() {header('Location: http://www.rekoresor.se/bussresorgoteborg/', true, 301); exit;} , 'ANY');
+    $this->addRoute(  '/^om-oss$/',     $func = function() {header('Location: https://www.rekoresor.se/bussresorgoteborg/', true, 301); exit;} , 'ANY');
 
     $this->addRoute(  '/^bruksvallarna2016$/',  $func = function() {header('Location: https://photos.google.com/share/AF1QipN1t70VQWXPyLGwuDyf8Do9aQGoS9KMdseCw7SmQAmSJvI7594vP7RRfxb-K2_SsA?key=ZUVSWEpaUHFWOXFjcVNWUnY3U1V3VHk1YzRhNjN3', true, 301); exit;} ,'ANY');
     $this->addRoute(  '/^midsommar2016$/',      $func = function() {header('Location: https://www.flickr.com/photos/134541462@N04/sets/72157670307084845', true, 301); exit;} ,'ANY');
 
-
+    $this->addRoute(  '/^tour\/julmarknadskryss$/',     $func = function() {header('Location: https://www.rekoresor.se/resa/julmarknadskryss-kryssning-oslo-kopenhamn-malmo', true, 301); exit;} , 'ANY');
+    $this->addRoute(  '/^tour\/julmarknad-huseby$/',     $func = function() {header('Location: http://dev.rekoresor.se/resa/julmarknad-huseby', true, 301); exit;} , 'ANY');
 
 
   }

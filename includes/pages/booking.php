@@ -249,7 +249,7 @@ try {
 
       echo "<h3>Villkor</h3>";
       echo "<ul><li>";
-      echo "<input type='checkbox' name='terms' id='terms' value='ja' required /><label for='terms'>Ja, jag godkänner <a href='/resevillkor/' target='_blank'>resevillkoren</a>.</label>";
+      echo "<input type='checkbox' name='terms' id='terms' value='ja' /><label for='terms' id='terms-label'>Ja, jag godkänner <a href='/resevillkor/' target='_blank'>resevillkoren</a>.</label>";
       echo "</li></ul>";
       echo "<h3>Övriga önskemål/frågor</h3>";
       echo "<textarea maxlength='800' name='misc' placeholder='Eventuella övriga önskemål eller frågor.'></textarea>";
@@ -266,8 +266,59 @@ try {
 
 
 } catch(\UnexpectedValueException $e) {
-  if (DEBUG_MODE) echo $e->getMessage();
-  include 'error/404.php';
+
+
+  try {
+    $allowed_tags = ALLOWED_HTML_TAGS;
+    $html_ents = Functions::set_html_list();
+    $pdo = DB::get();
+
+    $sql = "SELECT resor.namn, resor.url FROM " . TABLE_PREFIX . "resor AS resor
+            LEFT OUTER JOIN " . TABLE_PREFIX . "datum AS datum ON resor.id = datum.resa_id
+            LEFT OUTER JOIN " . TABLE_PREFIX . "kategorier_resor AS k_r ON resor.id = k_r.resa_id
+            LEFT OUTER JOIN " . TABLE_PREFIX . "kategorier AS kategorier ON kategorier.id = k_r.kategorier_id
+            WHERE kategorier.kategori != 'gruppresor' AND resor.aktiv = 1 AND datum > NOW()
+            GROUP BY resor.id
+            ORDER BY datum;";
+
+
+
+    $sth = $pdo->prepare($sql);
+    $sth->execute();
+    $result = $sth->fetchAll(\PDO::FETCH_ASSOC);
+  } catch(\PDOException $e) {
+    DBError::showError($e, __CLASS__, $sql);
+    $errorType = "Databasfel";
+    throw new \RuntimeException("Databasfel vid laddning av resor.");
+  }
+
+    $pageTitle = "Boka resa";
+
+    $morestyles = "<link rel='stylesheet' href='/css/booking.min.css' >";
+
+    header('Content-type: text/html; charset=utf-8');
+    include __DIR__ . '/shared/header.php';
+
+    echo "<main class='main-section container-fluid'>";
+    echo "<div class='row-fluid'><div class='col-xs-12'>";
+
+    echo "<h1>Boka resa</h1>";
+    echo "<h4>Vänligen välj vilken resa Du vill åka på:<h4>";
+
+
+    foreach($result as $tour) {
+
+      $thistour['tour'] = strtr(strip_tags($tour['namn'], $allowed_tags), $html_ents);
+      $thistour['link'] = filter_var("http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/boka/". str_replace("'", "", $tour['url']), FILTER_SANITIZE_URL);
+      echo "<p><a href='" . $thistour['link'] . "'>" . $thistour['tour'] . "</a></p>";
+    }
+
+
+
+    echo "</div></div></main>";
+    include __DIR__ . '/shared/footer.php';
+
+
 } catch(\RuntimeException $e) {
   if (DEBUG_MODE) echo $e->getMessage();
   include 'error/500.php';

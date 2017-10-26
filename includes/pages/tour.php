@@ -282,18 +282,13 @@ echo "<main class='main-section container-fluid'>";
     //LEFT COLUMN
 
     echo "<div class='col-md-8 col-xs-12'>";
-    echo "<div>" . $tour['program'] . "</div>";
-    echo "<div>" . $tour['hotel'] . "</div>";
+    echo "<div class='program'>" . $tour['program'] . "</div>";
+    echo "<div class='hotel'>" . $tour['hotel'] . "";
 
     if (!empty($tour['hotellink']) || $tour['hotellink'] != "http://" || $tour['hotellink'] != "https://") {
-      echo "<div><a href='" . $tour['hotellink'] . "' target='_blank'><i class='fa fa-external-link' aria-hidden='true'></i> Hotellets hemsida</a></div>";
+      echo "<div class='hotel-link'><a href='" . $tour['hotellink'] . "' target='_blank'><i class='fa fa-external-link' aria-hidden='true' title='Hemsida för resans boendeanläggning'></i> Hemsida</a></div>";
     }
-    if (!empty($tour['facebook']) || $tour['facebook'] != "http://" || $tour['facebook'] != "https://") {
-      echo "<div><a href='" . $tour['facebook'] . "' target='_blank'><img src='/img/join-facebook-event.png' /></a></div>";
-    }
-
-    //echo "<div>" . $tour['personnr'] . "</div>";
-    //echo "<div>" . $tour['fysiskadress'] . "</div>";
+    echo "</div>";
     echo "</div>";
 
 
@@ -301,8 +296,9 @@ echo "<main class='main-section container-fluid'>";
   //RIGHT COLUMN
 
 
-  echo "<table>";
-  echo "<thead><tr><th>Program för nedladdning/utskrift</th></tr></thead><tbody>";
+  echo "<table class='pdfs'>";
+  echo "<caption>Program för nedladdning/utskrift</caption>";
+  echo "<tbody>";
   $flag = TRUE;
   if (!empty($pdffiles)) {
     foreach ($pdffiles as $pdf) {
@@ -319,15 +315,17 @@ echo "<main class='main-section container-fluid'>";
   echo "</tbody></table>";
 
   if (!empty($tour['ingar'])) {
-  echo "<table>";
-  echo "<thead><tr><th>Ingår i priset</th></tr></thead><tbody>";
+  echo "<table class='included'>";
+  echo "<caption>Ingår i priset</caption>";
+  echo "<tbody>";
   echo $tour['ingar'];
   echo "</tbody></table>";
   }
 
   if (!empty($tour['tillagg'])) {
-  echo "<table>";
-  echo "<thead><tr><th>Friviliiga tillägg</th></tr></thead><tbody>";
+  echo "<table class='addons'>";
+  echo "<caption>Friviliiga tillägg</caption>";
+  echo "<tbody>";
 
     foreach ($tour['tillagg'] as $key => $addon) {
       echo "<tr><td>" . $tour['tillagg'][$key]['namn'] . "</td><td>" . $tour['tillagg'][$key]['pris'] . " :-</td></tr>";
@@ -338,11 +336,12 @@ echo "<main class='main-section container-fluid'>";
   }
 
   if (!empty($tour['hlp'])) {
-  echo "<table>";
-  echo "<thead><tr><th>Turlista</th></tr></thead><tbody>";
+  echo "<table class='timetable'>";
+  echo "<caption>Turlista</caption>";
+  echo "<thead><tr><th scope='col'>Ort</th><th scope='col'>Ut</th><th scope='col'>Hem</th></tr></thead><tbody>";
 
   foreach ($tour['hlp'] as $key => $addon) {
-    echo "<tr><td>" . $tour['hlp'][$key]['ort'] . "</td><td>" . date('H:i',strtotime($tour['hlp'][$key]['ut'])) . "</td><td>" . date('H:i',strtotime($tour['hlp'][$key]['in'])) . "</td></tr>";
+    echo "<tr><th scope='row'>" . $tour['hlp'][$key]['ort'] . "</th><td>" . date('H:i',strtotime($tour['hlp'][$key]['ut'])) . "</td><td>" . date('H:i',strtotime($tour['hlp'][$key]['in'])) . "</td></tr>";
   }
 
 
@@ -351,7 +350,16 @@ echo "<main class='main-section container-fluid'>";
 
 
   echo "</div>";
+  echo "</div><div class='row-fluid'><div class='text-center col-xs-12'>";
+
+  echo "<div class='text-center bottom-btns'><a href='/boka/" . $toururl . "' class='btn btn-default action-btn'>Boka resan</a><a href='/program/" . $toururl . "' class='btn btn-default action-btn'>Beställ tryckt program</a>";
+  if (!empty($tour['facebook']) || $tour['facebook'] != "http://" || $tour['facebook'] != "https://") {
+    echo "<a href='" . $tour['facebook'] . "' target='_blank' class='facebook-event' title='Besök Facebook-eventet för resan'><img src='/img/join-facebook-event.png' alt='Besök Facebook-eventet för resan' /></a></div>";
+  }
   echo "</div>";
+
+
+
 
 
 echo "</main>";

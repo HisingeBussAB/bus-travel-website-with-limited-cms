@@ -38,10 +38,14 @@
   }
   ul li {
   	position: relative;
-  	line-height: 1.8em;
   	height: 2em;
+    margin-top: 1px;
   }
 
+  textarea {
+    min-width: 333px;
+    min-height: 200px;
+  }
 
   //Inspired by https://codepen.io/Rafiozoo/details/RrBXNx
   input[type=checkbox] {

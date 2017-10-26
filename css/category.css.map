@@ -1,0 +1,12 @@
+{
+	"version": 3,
+	"file": "category.css",
+	"sources": [
+		"sass/category.scss"
+	],
+	"sourcesContent": [
+		".main-section .tour-box .trip-featured-img-list {\r\n    float: none;\r\n    margin: 20px auto;\r\n    width: 95%;\r\n    border-radius: 0;\r\n    max-width: none;\r\n    max-height: none;\r\n    height: auto;\r\n  }\r\n"
+	],
+	"names": [],
+	"mappings": "AAAA,AAAwB,aAAX,CAAC,SAAS,CAAC,uBAAuB,CAAC;EAC5C,KAAK,EAAE,IAAI;EACX,MAAM,EAAE,SAAS;EACjB,KAAK,EAAE,GAAG;EACV,aAAa,EAAE,CAAC;EAChB,SAAS,EAAE,IAAI;EACf,UAAU,EAAE,IAAI;EAChB,MAAM,EAAE,IAAI;CACb"
+}

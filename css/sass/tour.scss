@@ -35,7 +35,9 @@ div.lead {
 
 .main-section {
   a.action-btn {
-    margin: 5px 15px;
+    font-size: 1.75rem;
+    font-weight: bold;
+    margin: 8px 20px;
 
       &:hover {
         transform: scale(1);
@@ -43,6 +45,72 @@ div.lead {
   }
 }
 
+table {
+  font-size: 1.65rem;
+}
+
+th,
+td {
+  padding-top: 2px;
+  padding-bottom: 1px;
+}
+
+caption {
+  font-weight: bold;
+  color: black;
+  padding: 4px 0;
+  white-space: nowrap;
+}
+
+.pdfs,
+.included,
+.addons,
+.timetable {
+  margin: 20px 0 10px 5px;
+  min-width: 240px;
+  width: 100%;
+  tr:hover {
+      background-color: rgba(212,212,212,0.3);
+  }
+}
+
+.included,
+.addons,
+.timetable {
+  th,
+  td {
+    text-indent: -10px;
+    padding-left: 10px;
+  }
+}
+
+
+.addons,
+.timetable {
+  max-width: 600px;
+  th,
+  td {
+    &:nth-child(n+2) {
+    padding-left: 25px; //add reverse ident 10px to desired amount
+    }
+  }
+}
+
+.facebook-event {
+  height: 45px;
+  display: inline-block;
+  img {
+      width: auto;
+      height: auto;
+  }
+}
+
+.bottom-btns {
+  margin-top: 30px;
+  a {
+    margin: 20px;
+  }
+}
 
 
 //SLIDES
@@ -53,6 +121,8 @@ div.lead {
     display: block;
     margin: 0 auto;
     position: relative;
+    margin-bottom: 15px;
+    margin-left: 5px;
 }
 
 .slides * {

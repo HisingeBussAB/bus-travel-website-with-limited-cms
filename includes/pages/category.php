@@ -21,6 +21,7 @@ try {
   $cat = str_replace("'", "", $cat); //Is urlencoded there should not be any ' and they will break the html if value is echoed and user enters a malicious query
   $cat = filter_var(trim($cat), FILTER_SANITIZE_URL);
   $allowed_tags = ALLOWED_HTML_TAGS;
+  $morestyles = "<link rel='stylesheet' href='/css/category.min.css' >";
 
   try {
     $pdo = DB::get();
@@ -117,7 +118,7 @@ try {
     foreach ($tours as $tour) {
       $output = "";
       if ($i % 2 == 0) { $output .= "<div class='row-fluid'>"; }
-      $output .= "<div class='col-lg-6 col-md-6 col-sm-12 col-xs-12'>";
+      $output .= "<div class='col-lg-6 col-md-6 col-sm-12 col-xs-12 tour-box'>";
       $output .= "<h2><a href='" . $tour['link'] . "'>" . $tour['tour'] . "</a></h2>";
 
 
