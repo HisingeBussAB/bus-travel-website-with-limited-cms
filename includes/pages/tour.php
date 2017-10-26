@@ -281,19 +281,26 @@ echo "<main class='main-section container-fluid'>";
     echo "</div><div class='row-fluid'>";
     //LEFT COLUMN
 
+    if ((!empty($tour['hotellink']) && $tour['hotellink'] != "http://" && $tour['hotellink'] != "https://") && !empty($tour['program'])) {
     echo "<div class='col-md-8 col-xs-12'>";
     echo "<div class='program'>" . $tour['program'] . "</div>";
     echo "<div class='hotel'>" . $tour['hotel'] . "";
 
-    if (!empty($tour['hotellink']) || $tour['hotellink'] != "http://" || $tour['hotellink'] != "https://") {
+    if (!empty($tour['hotellink']) && $tour['hotellink'] != "http://" && $tour['hotellink'] != "https://") {
       echo "<div class='hotel-link'><a href='" . $tour['hotellink'] . "' target='_blank'><i class='fa fa-external-link' aria-hidden='true' title='Hemsida för resans boendeanläggning'></i> Hemsida</a></div>";
     }
     echo "</div>";
     echo "</div>";
 
+    //RIGHT COLUMN
+    echo "<div class='col-md-4 col-xs-12'>";
+  } else {
+    echo "<div class='col-xs-12'>";
+  }
 
-  echo "<div class='col-md-4 col-xs-12'>";
-  //RIGHT COLUMN
+
+
+
 
 
   echo "<table class='pdfs'>";
@@ -353,7 +360,7 @@ echo "<main class='main-section container-fluid'>";
   echo "</div><div class='row-fluid'><div class='text-center col-xs-12'>";
 
   echo "<div class='text-center bottom-btns'><a href='/boka/" . $toururl . "' class='btn btn-default action-btn'>Boka resan</a><a href='/program/" . $toururl . "' class='btn btn-default action-btn'>Beställ tryckt program</a>";
-  if (!empty($tour['facebook']) || $tour['facebook'] != "http://" || $tour['facebook'] != "https://") {
+  if (!empty($tour['facebook']) && $tour['facebook'] != "http://" && $tour['facebook'] != "https://") {
     echo "<a href='" . $tour['facebook'] . "' target='_blank' class='facebook-event' title='Besök Facebook-eventet för resan'><img src='/img/join-facebook-event.png' alt='Besök Facebook-eventet för resan' /></a></div>";
   }
   echo "</div>";
