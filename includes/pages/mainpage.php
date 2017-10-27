@@ -48,6 +48,7 @@ include __DIR__ . '/shared/header.php';
     throw new \RuntimeException("Databasfel vid laddning av resor.");
   }
 
+
   $featured = [];
   $featuredcounter = 0;
   $tours = [];
@@ -88,6 +89,8 @@ include __DIR__ . '/shared/header.php';
       }
     $i++;
   }
+
+
 
   try {
     $sql = "SELECT nyheter FROM " . TABLE_PREFIX . "nyheter WHERE id = 1;";

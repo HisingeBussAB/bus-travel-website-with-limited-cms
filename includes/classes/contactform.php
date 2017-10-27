@@ -198,8 +198,10 @@ class ContactForm {
           }
         }
           $reply .= "Tack! Vi svarar så snart vi kan.";
-          echo json_encode($reply);
+          header('Content-Type: application/json; charset=utf-8');
+          header('Access-Control-Allow-Origin: http' . APPEND_SSL . '://' .$_SERVER['HTTP_HOST']);
           http_response_code(200);
+          echo json_encode($reply);
           return true;
       }
 

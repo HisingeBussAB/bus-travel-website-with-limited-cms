@@ -40,6 +40,34 @@ return: array of pdf file names in directory
 class Functions
 {
 
+  public static function _mime_content_type($filename) {
+    $mimes = array(
+    'jpg|jpeg|jpe' => 'image/jpeg',
+    'gif' => 'image/gif',
+    'png' => 'image/png',
+    'bmp' => 'image/bmp',
+    'tiff|tif' => 'image/tiff',
+    'ico' => 'image/x-icon',
+    'pdf' => 'application/pdf');
+
+    foreach ( $mimes as $ext_preg => $mime_match ) {
+        $ext_preg = '!\.(' . $ext_preg . ')$!i';
+        if ( preg_match( $ext_preg, $filename, $ext_matches ) ) {
+            $type = $mime_match;
+            $ext = $ext_matches[1];
+            break;
+        }
+    }
+
+    if (!empty($type))
+      return $type;
+    else
+      return "invalid-file";
+
+
+
+  }
+
   public static function uri_recode($string) {
     $string = strip_tags($string);
     $string = mb_strtolower(trim($string));
@@ -160,7 +188,7 @@ class Functions
     $i = 0;
     foreach($files as $file) {
       if (substr($file, 0, 1) != ".") {
-        $mime = mime_content_type($dir . $file);
+        $mime = self::_mime_content_type($dir . $file);
         if ((strpos($mime, "image") !== FALSE) && (substr($file, 0, 6) !== "small_")) {
           $results[$i]['file'] = $file;
           $results[$i]['type'] = str_replace("image/", "", $mime);
@@ -188,7 +216,7 @@ class Functions
     }
     foreach($files as $file) {
       if (substr($file, 0, 1) != ".") {
-        if (strpos(mime_content_type($dir . $file), "pdf") !== FALSE) {
+        if (strpos(self::_mime_content_type($dir . $file), "pdf") !== FALSE) {
           $results[] = $file;
         }
       }
@@ -213,5 +241,10 @@ class Functions
     echo "<pre>";
 
   }
+
+
+
+
+
 
 }

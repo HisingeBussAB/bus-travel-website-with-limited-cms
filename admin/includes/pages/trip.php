@@ -483,7 +483,7 @@ class Trip {
                     echo "<p class='picture-info'>URL: <a href='" . $web_path . $file['file'] . "' target='_blank'>" . $web_path . $file['file'] . "</a><br>";
                     echo "URL thumbnail: <a href='" . $web_path . $file['thumb'] . "' target='_blank'>" . $web_path . $file['thumb'] . "</a><br>";
                     echo "Orginalstorlek: " . (getimagesize($server_path . $file['file'])[3]) . "<br>";
-                    echo "Filtyp: " . (mime_content_type($server_path . $file['file'])) . "<br>";
+                    echo "Filtyp: " . (functions::_mime_content_type($server_path . $file['file'])) . "<br>";
                     echo "<p></div>";
                     echo "</div>";
                     $i++;
