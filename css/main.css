@@ -339,7 +339,7 @@ header #categories-wrap li a {
   border-radius: 3px 0 3px 0;
   border-right: 1px solid rgba(255, 255, 255, 0.12);
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-  font-size: 1.95vw;
+  font-size: 1.92vw;
 }
 
 .main-section .trip-featured .trip-featured-details {
@@ -416,14 +416,13 @@ header #categories-wrap li a {
 .main-section .tour-box {
   margin-top: 20px;
   padding-top: 20px;
-  border-top: 1px solid #0856fb;
 }
 
 .main-section .tour-box div.tour-quick-facts {
   font-size: 1.6rem;
   width: 63.5%;
   margin-bottom: 14px;
-  float: right;
+  float: left;
 }
 
 .main-section .tour-box div.tour-quick-facts h3 {
@@ -445,8 +444,6 @@ header #categories-wrap li a {
   font-size: 1.5rem;
   clear: both;
   margin-top: 10px;
-  float: right;
-  width: 63.5%;
 }
 
 .main-section .tour-box .trip-featured-img-list {
@@ -460,7 +457,7 @@ header #categories-wrap li a {
   display: flex;
   align-items: center;
   justify-content: center;
-  float: left;
+  float: right;
 }
 
 .main-section .action-btn {
@@ -566,7 +563,7 @@ header #categories-wrap li a {
   flex: 0 0 auto;
   border-radius: 5px;
   width: 137px;
-  height: 33px;
+  height: 34px;
   border: 2px solid rgba(255, 255, 255, 0.52);
   margin: 3px;
 }
