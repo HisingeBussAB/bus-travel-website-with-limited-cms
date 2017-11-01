@@ -26,16 +26,16 @@ include __DIR__ . '/shared/header.php';
 
 
 
-  try {
-    $pdo = DB::get();
+try {
+  $pdo = DB::get();
 
-    $sql = "SELECT resor.id, resor.utvald, resor.seo_description, resor.namn, resor.url, resor.bildkatalog, resor.antaldagar, resor.ingress,resor.pris, MIN(datum.datum) AS datum FROM " . TABLE_PREFIX . "resor AS resor
-            LEFT OUTER JOIN " . TABLE_PREFIX . "datum AS datum ON resor.id = datum.resa_id
-            LEFT OUTER JOIN " . TABLE_PREFIX . "kategorier_resor AS k_r ON resor.id = k_r.resa_id
-            LEFT OUTER JOIN " . TABLE_PREFIX . "kategorier AS kategorier ON kategorier.id = k_r.kategorier_id
-            WHERE kategorier.kategori != 'gruppresor' AND resor.aktiv = 1 AND datum > NOW()
-            GROUP BY resor.id
-            ORDER BY datum;";
+  $sql = "SELECT resor.id, resor.utvald, resor.seo_description, resor.namn, resor.url, resor.bildkatalog, resor.antaldagar, resor.ingress,resor.pris, datum.datum AS datum FROM " . TABLE_PREFIX . "resor AS resor
+          LEFT OUTER JOIN " . TABLE_PREFIX . "datum AS datum ON resor.id = datum.resa_id
+          LEFT OUTER JOIN " . TABLE_PREFIX . "kategorier_resor AS k_r ON resor.id = k_r.resa_id
+          LEFT OUTER JOIN " . TABLE_PREFIX . "kategorier AS kategorier ON kategorier.id = k_r.kategorier_id
+          WHERE kategorier.kategori != 'gruppresor' AND resor.aktiv = 1 AND datum > NOW()
+          GROUP BY datum
+          ORDER BY datum;";
 
 
 
@@ -49,13 +49,19 @@ include __DIR__ . '/shared/header.php';
   }
 
 
+
   $featured = [];
   $featuredcounter = 0;
   $tours = [];
+  $usedtours = [];
 
   $i=0;
   foreach($result as $tour) {
-    if ($tour['utvald'] && $featuredcounter < 4) {
+
+
+
+    if (($tour['utvald'] && $featuredcounter < 4) && (!in_array($tour['id'], $usedtours))) {
+      array_push($usedtours, $tour['id']);
 
       $featured[$featuredcounter]['link']    = filter_var("http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/resa/". str_replace("'", "", $tour['url']), FILTER_SANITIZE_URL);
       $featured[$featuredcounter]['days'] = strtr(strip_tags($tour['antaldagar'], $allowed_tags), $html_ents);
@@ -101,7 +107,6 @@ include __DIR__ . '/shared/header.php';
     DBError::showError($e, __CLASS__, $sql);
     throw new \RuntimeException("Databasfel vid laddning av nyheter.");
   }
-
 
 
 ?>
@@ -172,12 +177,17 @@ include __DIR__ . '/shared/header.php';
 
     $i = 0;
     $lenght = count($tours);
+    $lastmonth = false;
     foreach ($tours as $tour) {
+
+      $mon = date("F", strtotime($tour['departure']));
+      if ($mon !== $lastmonth) {
+        echo "<div class='col-xs-12'><h2>$mon</h2></div>";
+        $lastmonth = $mon;
+      }
+
       $output = "";
-      if ($i % 2 == 0) { $output .= "<div class='row-fluid'>"; }
-      $output .=  "<div class='col-lg-6 col-md-6 col-sm-12 col-xs-12 tour-box'>";
-
-
+      $output .=  "<div class='col-xs-12 tour-box'>";
       $output .= "<div class='tour-quick-facts'><h3><a href='" . $tour['link'] . "'>" . $tour['tour'] . "</a></h3>";
       $output .= "<p><i class='fa fa-hourglass fa-lg blue' aria-hidden='true'></i> Antal dagar: ";
       if ($tour['days'] == 1) {
@@ -191,8 +201,6 @@ include __DIR__ . '/shared/header.php';
       $output .= "<img class='lazy' src='" . $tour['imgsrc'] . "'  alt='" . $tour['tour'] . "'/> ";
       $output .= "</figure></a>";
       $output .= "<div class='tour-summary'>" . $tour['summary'] . "</div></div>";
-      if ($i % 2 != 0) { $output .= "</div>"; }
-      elseif ($i+1 >= $lenght) { $output .= "</div>"; }
 
       echo $output;
       $i++;

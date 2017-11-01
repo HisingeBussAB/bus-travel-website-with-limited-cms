@@ -11,6 +11,10 @@ use HisingeBussAB\RekoResor\website\includes\classes\HammerGuard;
 use HisingeBussAB\RekoResor\website\includes\classes\DB;
 use HisingeBussAB\RekoResor\website\includes\classes\DBError;
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\OAuth;
+use League\OAuth2\Client\Provider\Google;
+
 class NewsletterForm {
 
   public static function sendForm($data) {
@@ -41,26 +45,33 @@ class NewsletterForm {
 
       if ($smtpresult['mode'] === "smtp") {
 
-        $mail = new \PHPMailer;
+        $mail = new PHPMailer;
 
 
         $mail->SMTPDebug = $SMTPDebug;
         $mail->CharSet = 'UTF-8';
         $mail->isSMTP();
-        $mail->SMTPAuth   = $auth;
+        //$mail->SMTPAuth   = $auth;
+        $mail->SMTPAuth   = true;
 
-        $mail->Port       = $smtpresult['port'];
+        //$mail->Port       = $smtpresult['port'];
+        $mail->Port       = '53';
 
+        /*
         if ($smtpresult['tls'] === "tls") {
           $mail->SMTPSecure = 'tls';
         }
         elseif ($smtpresult['tls'] === "ssl") {
           $mail->SMTPSecure = 'ssl';
         }
+        */
 
-        $mail->Host       = $smtpresult['server'];
-        $mail->Username   = $smtpresult['smtpuser'];
-        $mail->Password   = $smtpresult['smtppwd'];
+        //$mail->Host       = $smtpresult['server'];
+        //$mail->Username   = $smtpresult['smtpuser'];
+        //$mail->Password   = $smtpresult['smtppwd'];
+        $mail->Host       = SMTP_HOST;
+        $mail->Username   = SMTP_USER;
+        $mail->Password   = SMTP_PASS;
 
       } elseif ($smtpresult['mode'] === "gmail") {
 
@@ -118,10 +129,10 @@ class NewsletterForm {
 
       $mailbody .= "\r\n\r\nSkickad: " . date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']);
 
-      $mail->setFrom('hemsidan@rekoresor.se', 'Hemsidan - Rekå Resor');
-      $mail->Sender="hemsidan@rekoresor.se";
-      $mail->AddReplyTo($data['email']);
-      $mail->addAddress('program@rekoresor.se');
+      $mail->setFrom('hakan@rekoresor.se', 'Hemsidan - Rekå Resor');
+      $mail->Sender='hakan@rekoresor.se';
+      $mail->AddReplyTo('hakan@rekoresor.se');
+      $mail->addAddress('hakan@rekoresor.se');
       $mail->Subject  = "Rekå Resor - Anmälan nyhetsbrev";
       $mail->Body     = $mailbody;
 
@@ -132,8 +143,8 @@ class NewsletterForm {
       } else {
         $mail->ClearAllRecipients();
         $mail->ClearReplyTos();
-        $mail->setFrom('hemsidan@rekoresor.se', 'Rekå Resor');
-        $mail->AddReplyTo("info@rekoresor.se", "Rekå Resor");
+        $mail->setFrom('hakan@rekoresor.se', 'Hemsidan - Rekå Resor');
+        $mail->AddReplyTo('hakan@rekoresor.se');
         if (!empty($data['email'])) { $mail->addAddress($data['email']); }
         $mail->Subject  = "Tack för din anmälan till vårt nyhetsbrev.";
         $mail->Body     = "\r\nVi kommer då och då e-posta nyheter och reseprogram till er.\r\n\r\nSvara på det här mailet och låt oss veta ifall ni skulle anmälts av misstag.";

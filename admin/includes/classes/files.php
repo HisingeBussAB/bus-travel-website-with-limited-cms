@@ -87,7 +87,9 @@ class Files {
 
         // DO NOT TRUST $_FILES['upfile']['mime'] VALUE !!
         // Check MIME Type by yourself.
-        $finfo = new \finfo(FILEINFO_MIME_TYPE);
+
+        /* TODO rewrite when access to live server
+        $finfo = finfo(FILEINFO_MIME_TYPE)
         if (false === $ext = array_search(
             $finfo->file($_FILES['upfile']['tmp_name']),
             array(
@@ -100,6 +102,7 @@ class Files {
         )) {
             throw new \RuntimeException('Det går bara att ladda upp .jpg .png eller .gif bilder, samt .pdf filer.');
         }
+        */
 
         //Make directory if not alredy exists
         if (!file_exists("./upload/resor/" . $dir)) {

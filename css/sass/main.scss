@@ -358,7 +358,7 @@ header {
       border-radius: 3px 0 3px 0;
       border-right: 1px solid rgba(255, 255, 255, .12);
       border-bottom: 1px solid rgba(255, 255, 255, .12);
-      font-size: 1.96vw;
+      font-size: 1.95vw;
 
 
     }
@@ -451,12 +451,15 @@ header {
   .tour-box {
 
     margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid $blue;
+
 
   div.tour-quick-facts {
     font-size: 1.6rem;
     width: 63.5%;
     margin-bottom: 14px;
-    float: left;
+    float: right;
     h3 {
       margin-top: 0;
       font-weight: bold;
@@ -479,11 +482,14 @@ header {
     font-size: 1.5rem;
     clear: both;
     margin-top: 10px;
+    float: right;
+    width: 63.5%;
+
   }
 
   .trip-featured-img-list {
     max-height: 360px;
-    max-width: 360px;
+    max-width: 460px;
     width: 32%;
     padding: 1px;
     border: solid 1px black;
@@ -493,7 +499,7 @@ header {
     display: flex;
     align-items: center;
     justify-content: center;
-    float: right;
+    float: left;
 
     }
   }
@@ -620,7 +626,7 @@ header {
       flex: 0 0 auto;
       border-radius: 5px;
       width: 137px;
-      height: 32px;
+      height: 33px;
       border: 2px solid rgba(255,255,255,.52);
       margin: 3px;
     }
