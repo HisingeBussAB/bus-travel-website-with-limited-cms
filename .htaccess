@@ -1,3 +1,7 @@
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule (.*) https://%{SERVER_NAME}/$1 [R,L]
+
 
 RewriteEngine On
 RewriteCond %{REQUEST_URI} !^/img
@@ -6,6 +10,7 @@ RewriteCond %{REQUEST_URI} !^/tests
 RewriteCond %{REQUEST_URI} !^/error
 RewriteCond %{REQUEST_URI} !^/ignore
 RewriteCond %{REQUEST_URI} !\.(gif|jpe?g|png|js|css|swf|ico|pdf|woff2|woff|otf|svg|eot|ttf|map|json)$
+RewriteCond %{REQUEST_URI} !^/google\S*.html
 RewriteRule . index.php [L,QSA]
 
 

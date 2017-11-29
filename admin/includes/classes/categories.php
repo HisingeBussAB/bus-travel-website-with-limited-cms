@@ -45,14 +45,18 @@ class Categories {
    */
   public static function getActiveCategories($nonempty = false) {
 
-
-
+  
     try {
       $pdo = DB::get();
       if (!$nonempty) {
         $sql = "SELECT * FROM " . TABLE_PREFIX . "kategorier WHERE aktiv = 1 ORDER BY sort;";
       } else {
-        $sql = "SELECT * FROM " . TABLE_PREFIX . "kategorier WHERE aktiv = 1 AND id IN (SELECT kategorier_id FROM " . TABLE_PREFIX . "kategorier_resor) ORDER BY sort;";
+        $sql = "SELECT * FROM " . TABLE_PREFIX . "kategorier WHERE aktiv = 1 AND id IN (SELECT k_r.kategorier_id FROM " . TABLE_PREFIX . "resor AS resor
+                LEFT OUTER JOIN " . TABLE_PREFIX . "datum AS datum ON resor.id = datum.resa_id
+                LEFT OUTER JOIN " . TABLE_PREFIX . "kategorier_resor AS k_r ON resor.id = k_r.resa_id
+                LEFT OUTER JOIN " . TABLE_PREFIX . "kategorier AS kategorier ON kategorier.id = k_r.kategorier_id
+                WHERE resor.aktiv = 1 AND (datum > NOW() OR kategorier.kategori = 'gruppresor')
+                GROUP BY datum) ORDER BY sort;";
       }
       $sth = $pdo->prepare($sql);
       $sth->execute();

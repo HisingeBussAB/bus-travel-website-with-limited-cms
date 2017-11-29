@@ -358,7 +358,7 @@ header {
       border-radius: 3px 0 3px 0;
       border-right: 1px solid rgba(255, 255, 255, .12);
       border-bottom: 1px solid rgba(255, 255, 255, .12);
-      font-size: 1.92vw;
+      font-size: 1.91vw;
 
 
     }
@@ -377,7 +377,7 @@ header {
       float: right;
       padding: 13px;
       margin: 5px;
-      font-size: 1.17vw;
+      font-size: 1.14vw;
       font-weight: bold;
       background-color: $pricetag-bg;
       border: 1px solid rgba(255, 255, 255, .9);
@@ -411,7 +411,7 @@ header {
     }
 
     .trip-featured-desc {
-      font-size: 1.13vw;
+      font-size: 1.119vw;
       background-color: rgba(0, 0, 0, .9);
       color: white;
       margin: 0;
@@ -481,7 +481,7 @@ header {
 
   div.tour-summary {
     font-size: 1.5rem;
-    clear: both;
+    float: left;
     margin-top: 10px;
     //float: right;
 
@@ -547,9 +547,18 @@ header {
 
 }
 
+.month {
+  padding-top: 40px;
+}
+
 /*
 * — Footer —
 */
+
+div.grecaptcha-badge {
+  margin: 0 auto;
+  transform:scale(0.65);
+}
 
 #newsletter-loader,
 #newsletter-response {

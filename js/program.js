@@ -38,6 +38,10 @@ function sendForm(formData) {
         $("#get-program-button").show();
       }, 200);
 
+      fbq('track', 'Lead');
+
+      ga('send', 'event', 'Lead', 'Program', 'Program', 0);
+
       document.getElementById("get-program-form").reset();
     })
     .fail(function(data) {

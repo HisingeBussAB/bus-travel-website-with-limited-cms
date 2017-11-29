@@ -42,6 +42,7 @@ try {
     $sth = $pdo->prepare($sql);
     $sth->execute();
     $result = $sth->fetchAll(\PDO::FETCH_ASSOC);
+    //var_dump($result);
   } catch(\PDOException $e) {
     DBError::showError($e, __CLASS__, $sql);
     $errorType = "Databasfel";
@@ -82,7 +83,7 @@ try {
     $tours[$i]['tour'] = strtr(strip_tags($tour['namn'], $allowed_tags), $html_ents);
     $tours[$i]['link'] = filter_var("http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/resa/". str_replace("'", "", $tour['url']), FILTER_SANITIZE_URL);
     $tours[$i]['days'] = strtr(strip_tags($tour['antaldagar'], $allowed_tags), $html_ents);
-    $tours[$i]['summary'] = functions::linksaver(strtr(nl2br(strip_tags($tour['ingress'], $allowed_tags)), $html_ents));
+    $tours[$i]['summary'] = Functions::linksaver(strtr(nl2br(strip_tags($tour['ingress'], $allowed_tags)), $html_ents));
     $tours[$i]['price'] = number_format(filter_var($tour['pris'], FILTER_SANITIZE_NUMBER_INT), 0, ",", " ");
     $tours[$i]['departure'] = strtr(strip_tags($tour['datum'], $allowed_tags), $html_ents);
 
@@ -115,10 +116,13 @@ try {
   <div class="row-fluid">
   <h1 class="hidden">Välkommen till Rekå Resor</h1>
   <h2 class="hidden">Utvalda resor</h2>
-  <?php foreach($featured as $featuredtrip) {
+  <?php
+
+  $x = 0;
+  foreach($featured as $featuredtrip) {
     if ($featuredcounter > 3)       { echo "<div class='col-lg-6 col-md-12 col-xs-12 featured-box'>"; }
-    elseif ($featuredcounter === 3)  { echo "<div class='col-lg-4 col-md-12 col-xs-12 featured-box'>"; }
-    elseif ($featuredcounter === 2)   { echo "<div class='col-lg-6 col-md-12 col-xs-12 featured-box'>"; }
+    elseif ($featuredcounter === 3)  { echo "<div class='col-lg-6 col-md-12 col-xs-12 featured-box'>"; }
+    elseif ($featuredcounter === 2)   { echo "<div class='col-lg-12 col-md-12 col-xs-12 featured-box'>"; }
     elseif ($featuredcounter < 2)   {
       echo "<div class='col-lg-6 col-md-12 col-xs-12 featured-box'>
             <h1>Välkommen till Rekå Resor</h1>
@@ -130,7 +134,7 @@ try {
             <div class='col-lg-6 col-md-12 col-xs-12 featured-box'>";
           }
 
-    ?>
+  ?>
       <a href="<?php echo $featuredtrip['link']; ?>">
     <div class="trip-featured lazy" style="background-image: url('<?php echo $featuredtrip['imgpath']; ?>')">
     <h3 class="trip-featured-head"><?php echo $featuredtrip['tour']; ?></h3>
@@ -143,7 +147,19 @@ try {
     <div class="trip-featured-desc" aria-label="<?php echo $featuredtrip['tour']; ?>"><p><?php echo $featuredtrip['desc']; ?></p><i class="fa fa-chevron-right pull-right" aria-hidden="true"></i></div>
   </div></a>
   </div>
-<?php } ?>
+<?php $x++;
+
+if ($x===3) {
+
+  echo "<div class='col-lg-6 col-md-12 col-xs-12 featured-box'><a href='kategori/gruppresor-och-konferens'>
+        <div class='trip-featured lazy' style='background-image: url(\"upload/resor/generic/small_1_generic.jpg\")'>
+        <h3 class='trip-featured-head'>Gruppresor</h3>
+        <div class='trip-featured-desc' aria-label='Gruppresor'><p>Med mer än 60 år av erfarenheter inom resor kan vi erbjuda något inom i stort sett vilket intresseområde som helst. Läs mer om våra erbjudanden för grupper här.</p><i class='fa fa-chevron-right pull-right' aria-hidden='true'></i></div>
+      </div></a>
+      </div>";
+}
+
+} ?>
   </div>
 
   <section class="row-fluid">
@@ -180,9 +196,9 @@ try {
     $lastmonth = false;
     foreach ($tours as $tour) {
 
-      $mon = date("F", strtotime($tour['departure']));
+      $mon = Functions::se_month($tour['departure']);
       if ($mon !== $lastmonth) {
-        echo "<div class='col-xs-12'><h2>$mon</h2></div>";
+        echo "<div class='col-xs-12'><h2 class='month'>$mon</h2></div>";
         $lastmonth = $mon;
       }
 
@@ -195,12 +211,13 @@ try {
       } else {
         $output .= $tour['days'] . " dagar</p>";
       }
+      $output .= "<p><i class='fa fa-money fa-lg blue' aria-hidden='true'></i> Pris per person: " . $tour['price'] . " kr</p>";
       $output .= "<p><i class='fa fa-calendar fa-lg blue' aria-hidden='true'></i> Avresedatum: " . $tour['departure'] . "</p>";
-      $output .= "<p><i class='fa fa-money fa-lg blue' aria-hidden='true'></i> Pris per person: " . $tour['price'] . " kr</p></div>";
+      $output .= "<div class='tour-summary'>" . $tour['summary'] . " | <a href='" . $tour['link'] . "'>Läs mer och boka.</a></div></div>";
+
       $output .= "<a href='" . $tour['link'] . "'><figure class='trip-featured-img-list'>";
       $output .= "<img class='lazy' src='" . $tour['imgsrc'] . "'  alt='" . $tour['tour'] . "'/> ";
-      $output .= "</figure></a>";
-      $output .= "<div class='tour-summary'>" . $tour['summary'] . "</div></div>";
+      $output .= "</figure></a></div>";
 
       echo $output;
       $i++;

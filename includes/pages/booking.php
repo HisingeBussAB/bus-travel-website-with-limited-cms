@@ -42,6 +42,7 @@ try {
     $tour['namn'] = htmlspecialchars($result['namn']);
     $tour['url'] = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/resa/" . rawurlencode($result['url']);
     $tour['pris'] = number_format(filter_var($result['pris'], FILTER_SANITIZE_NUMBER_INT), 0, ",", " ");
+    $tour['pris-int'] = filter_var($result['pris'], FILTER_SANITIZE_NUMBER_INT);
     $tour['personnr'] = filter_var($result['personnr'], FILTER_VALIDATE_BOOLEAN);
     $tour['fysiskadress'] = filter_var($result['fysiskadress'], FILTER_VALIDATE_BOOLEAN);
   } else {
@@ -104,7 +105,7 @@ try {
   if ((count($result) > 0) && ($result !== false)) {
     $i = 0;
     foreach ($result as $row) {
-      $tour['stops'][$i]['tid'] = date('H:m', strtotime($row['tid_ut']));
+      $tour['stops'][$i]['tid'] = date('H:i', strtotime($row['tid_ut']));
       $tour['stops'][$i]['plats'] = htmlspecialchars($row['plats']);
       $tour['stops'][$i]['ort'] = htmlspecialchars($row['ort']);
       $i++;
@@ -158,6 +159,7 @@ try {
           echo "<p>Vi skriver upp dig på påstigningslistan. Resan betalas kontant på bussen.</p>";
         }
         echo "<input type='hidden' value='" . $tour['namn'] . "' name='tour' />";
+        echo "<input type='hidden' value='" . $tour['pris-int'] . "' name='price-int' id='price-int'>";
 
       if (!empty($tour['departures'])) {
         echo "<h3>Avgångsdatum:</h3>";

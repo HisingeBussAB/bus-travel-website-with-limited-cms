@@ -44,6 +44,13 @@ function sendForm(formData) {
         $("#booktour-button").show();
       }, 200);
 
+      fbq('track', 'Purchase', {
+        currency: 'SEK',
+        value: $("#price-int").val(),
+      });
+
+      ga('send', 'event', 'Order', 'Order', 'Order', $("#price-int").val());
+
       document.getElementById("booktour-form").reset();
     })
     .fail(function(data) {

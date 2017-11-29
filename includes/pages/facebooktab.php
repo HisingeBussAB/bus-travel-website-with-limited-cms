@@ -1,33 +1,19 @@
 <?php
-/**
- * Rekå Resor (www.rekoresor.se)
- * (c) Rekå Resor AB
- *
- * Header HTML for standard pages.
- *
- * @link      https://github.com/HisingeBussAB/bus-travel-website-with-limited-cms
- * @author    Håkan Arnoldson
- */
 
- use HisingeBussAB\RekoResor\website as root;
+namespace HisingeBussAB\RekoResor\website\includes\pages;
+use HisingeBussAB\RekoResor\website as root;
+use HisingeBussAB\RekoResor\website\includes\classes\Functions;
+use HisingeBussAB\RekoResor\website\includes\classes\DB;
+use HisingeBussAB\RekoResor\website\includes\classes\DBError;
 
  //Get dynamic content for this include
  $categories = root\admin\includes\classes\Categories::getActiveCategories(true);
  if ($categories !== false) {
    $categories = json_decode($categories);
+
+   $allowed_tags = ALLOWED_HTML_TAGS;
+   $html_ents = Functions::set_html_list();
  }
-
- if (empty($meta)) {
- $meta = "<meta property='og:title' content='Rekå Resor - Bussresor i Norden och Europa'>
-
- <meta property='og:url' content='http" . APPEND_SSL . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . "' />
- <meta name='description' content='Rekå Resor erbjuder bussresor inom Sverige och till hela Europa med utgångspunkt från Göteborg. Välkommen till en trevlig bussresa och ett spännande äventyr.' />
- <meta property='og:description' content='Rekå Resor erbjuder bussresor inom Sverige och till hela Europa med utgångspunkt från Göteborg. Välkommen till en trevlig bussresa och ett spännande äventyr.' />";
-}
-
-if (empty($robots)) {
-  $robots = "<meta name='robots' content='index, follow'>";
-}
 
 
 ?>
@@ -37,7 +23,8 @@ if (empty($robots)) {
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
-
+  <meta name='description' content='Rekå Resor erbjuder bussresor inom Sverige och till hela Europa med utgångspunkt från Göteborg. Välkommen till en trevlig bussresa och ett spännande äventyr.' />
+  <meta name='robots' content='noindex, nofollow'>
   <script>
     var bgImg = new Image();
     bgImg.src = '../upload/background-1.jpg';
@@ -56,20 +43,13 @@ if (empty($robots)) {
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-TLG9DXN');</script>
   <!-- End Google Tag Manager -->
-  <!--Invisible reCAPTCHA-->
-  <script src="https://www.google.com/recaptcha/api.js?hl=sv" async defer></script>
-  <!--end Invisible reCAPTCHA-->
+
   <meta name="author" content="Håkan K Arnoldson">
-  <title><?php echo $pageTitle . " - Rekå Resor"?></title>
+  <title>Facebook - Rekå Resor</title>
 
   <meta property="og:type" content="website">
   <meta property="og:locale" content="sv_SE">
   <meta property="og:site_name" content="Rekå Resor" />
-  <?php
-  echo $meta;
-  echo $robots;
-  ?>
-
 
   <link rel="icon" href="/favicon/favicon.ico">
 
@@ -94,8 +74,6 @@ if (empty($robots)) {
   <!--FAVICON END-->
 
 
-
-
   <link rel="stylesheet" href="/dependencies/bootstrap-3.3.7-dist/css/bootstrap.min.css">
 </head>
 <body>
@@ -103,18 +81,10 @@ if (empty($robots)) {
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TLG9DXN"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- End Google Tag Manager (noscript) -->
-  <!-- Facebook Pixel Code -->
-  <noscript><img height="1" width="1" style="display:none"
-  src="https://www.facebook.com/tr?id=957297874347023&ev=PageView&noscript=1"
-/></noscript>
-<!-- End Facebook Pixel Code -->
-
-
-
 
 
   <header class="text-center hidden-print">
-    <div class="text-right header-wrap">
+    <!--<div class="text-right header-wrap">
       <figure class="top-logo clear-on-tiny center-on-tiny">
         <a href="/"><img src="/img/logo.gif" alt="Rekå Resor AB"><span class="sr-only">Välkommen till Rekå Resor</span></a>
         <figcaption>- mer än 60 år av reko resor -</figcaption>
@@ -132,7 +102,7 @@ if (empty($robots)) {
           <li role="presentation" class="visible-xs-block"><a rel="nofollow" href="tel:+4631222120"><i class="fa fa-phone" aria-hidden="true"></i><span class="sr-only">Telefon</span>&nbsp;Ring oss</a></li>
         </ul>
       </nav>
-    </div>
+    </div>-->
     <ul aria-label="Resekategorier" id="categories-wrap">
       <?php
       foreach($categories as $category){
@@ -143,3 +113,96 @@ if (empty($robots)) {
     </ul>
   </header>
   <nav class="visible-xs-block" id="to-top-chevron"><a href="#top" aria-label="Till toppen av sidan"><i class="fa fa-chevron-up fa-2x" aria-hidden="true"></i><span class="sr-only">Till toppen av sidan</span></a></nav>
+
+
+<?php
+try {
+  $pdo = DB::get();
+
+  $sql = "SELECT resor.id, resor.utvald, resor.seo_description, resor.namn, resor.url, resor.bildkatalog, resor.antaldagar, resor.ingress,resor.pris, datum.datum AS datum FROM " . TABLE_PREFIX . "resor AS resor
+          LEFT OUTER JOIN " . TABLE_PREFIX . "datum AS datum ON resor.id = datum.resa_id
+          LEFT OUTER JOIN " . TABLE_PREFIX . "kategorier_resor AS k_r ON resor.id = k_r.resa_id
+          LEFT OUTER JOIN " . TABLE_PREFIX . "kategorier AS kategorier ON kategorier.id = k_r.kategorier_id
+          WHERE kategorier.kategori != 'gruppresor' AND resor.aktiv = 1 AND datum > NOW()
+          GROUP BY datum
+          ORDER BY datum;";
+
+
+
+    $sth = $pdo->prepare($sql);
+    $sth->execute();
+    $result = $sth->fetchAll(\PDO::FETCH_ASSOC);
+  } catch(\PDOException $e) {
+    DBError::showError($e, __CLASS__, $sql);
+    $errorType = "Databasfel";
+    throw new \RuntimeException("Databasfel vid laddning av resor.");
+  }
+
+
+
+  $tours = [];
+  $usedtours = [];
+
+  $i=0;
+  foreach($result as $tour) {
+
+    $tours[$i]['tour'] = strtr(strip_tags($tour['namn'], $allowed_tags), $html_ents);
+    $tours[$i]['link'] = filter_var("http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/resa/". str_replace("'", "", $tour['url']), FILTER_SANITIZE_URL);
+    $tours[$i]['days'] = strtr(strip_tags($tour['antaldagar'], $allowed_tags), $html_ents);
+    $tours[$i]['summary'] = Functions::linksaver(strtr(nl2br(strip_tags($tour['ingress'], $allowed_tags)), $html_ents));
+    $tours[$i]['price'] = number_format(filter_var($tour['pris'], FILTER_SANITIZE_NUMBER_INT), 0, ",", " ");
+    $tours[$i]['departure'] = strtr(strip_tags($tour['datum'], $allowed_tags), $html_ents);
+
+    $server_path = __DIR__ . '/../../upload/resor/' . filter_var($tour['bildkatalog'], FILTER_SANITIZE_URL) . '/';
+    $web_path = filter_var("http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/" . $tour['bildkatalog'] . "/", FILTER_SANITIZE_URL);
+      if ($files = Functions::get_img_files($server_path)) {
+        $tours[$i]['imgsrc'] = $web_path . $files[0]['thumb'];
+      } else {
+        filter_var($tours[$i]['imgsrc'] = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/generic/small_1_generic.jpg", FILTER_SANITIZE_URL);
+      }
+    $i++;
+  }
+
+
+?>
+
+<main class="main-section clearfix container-fluid">
+  <div class="row-fluid">
+      <h2 class='col-md-12' id='resekalender'>Resekalender</h2>
+    </div>
+    <div class="row-fluid">
+
+    <?php
+
+      $i = 0;
+      $lenght = count($tours);
+      foreach ($tours as $tour) {
+        $output = "";
+        if ($i % 2 == 0) { $output .= "<div class='row-fluid'>"; }
+        $output .=  "<div class='col-lg-6 col-md-6 col-sm-12 col-xs-12 tour-box'>";
+
+
+        $output .= "<div class='tour-quick-facts'><h3><a href='" . $tour['link'] . "'>" . $tour['tour'] . "</a></h3>";
+        $output .= "<p><i class='fa fa-hourglass fa-lg blue' aria-hidden='true'></i> Antal dagar: ";
+        if ($tour['days'] == 1) {
+          $output .= "Dagsresa";
+        } else {
+          $output .= $tour['days'] . " dagar</p>";
+        }
+        $output .= "<p><i class='fa fa-calendar fa-lg blue' aria-hidden='true'></i> Avresedatum: " . $tour['departure'] . "</p>";
+        $output .= "<p><i class='fa fa-money fa-lg blue' aria-hidden='true'></i> Pris per person: " . $tour['price'] . " kr</p></div>";
+        $output .= "<a href='" . $tour['link'] . "'><figure class='trip-featured-img-list'>";
+        $output .= "<img class='lazy' src='" . $tour['imgsrc'] . "'  alt='" . $tour['tour'] . "'/> ";
+        $output .= "</figure></a>";
+        $output .= "<div class='tour-summary'>" . $tour['summary'] . "</div></div>";
+        if ($i % 2 != 0) { $output .= "</div>"; }
+        elseif ($i+1 >= $lenght) { $output .= "</div>"; }
+
+        echo $output;
+        $i++;
+    }
+    ?>
+    </div>
+  </main>
+<?php
+include __DIR__ . '/shared/footer.php';

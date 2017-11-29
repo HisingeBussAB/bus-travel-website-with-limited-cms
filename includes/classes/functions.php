@@ -105,6 +105,25 @@ class Functions
     return $list;
   }
 
+  public static function se_month($day) {
+      $mon = date("n", strtotime($day));
+      $months = array(
+              1 => "Januari",
+              2 => "Februari",
+              3 => "Mars",
+              4 => "April",
+              5 => "Maj",
+              6 => "Juni",
+              7 => "Juli",
+              8 => "Augusti",
+              9 => "September",
+              10 => "Oktober",
+              11 => "November",
+              12 => "December"
+            );
+          return ($months[$mon]);
+  }
+
   public static function swedish_long_date($day) {
     $weekday = date( "N", strtotime($day) );
     $monthday = date( "j", strtotime($day) );

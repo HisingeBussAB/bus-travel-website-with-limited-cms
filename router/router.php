@@ -31,8 +31,13 @@ class Router
   public function go() {
     $method = $_SERVER['REQUEST_METHOD'];
 
-    $uri = explode($_SERVER['SERVER_NAME'], $_SERVER['REQUEST_URI'], 2);
-    $path = $uri[0];
+    $request = explode($_SERVER['SERVER_NAME'], $_SERVER['REQUEST_URI'], 2);
+
+    $path = explode('?', $request[0], 2);
+
+    $path = $path[0];
+
+
     $path = filter_var($path, FILTER_SANITIZE_URL);
     $path = trim($path, '/');
 
@@ -67,7 +72,7 @@ class Router
     $this->addRoute(  '/^adminp\/filemanager\/upload$/',     '\HisingeBussAB\RekoResor\website\admin\includes\classes\Files::uploadFile',    'POST');
     $this->addRoute(  '/^resa\/([\w-%]+)\/?$/',              '\HisingeBussAB\RekoResor\website\router\Render::tour',                         'GET');
     $this->addRoute(  '/^boka\/([\w-%]+)\/?$/',              '\HisingeBussAB\RekoResor\website\router\Render::booktour',                     'GET');
-    $this->addRoute(  '/^(boka)$/',                           '\HisingeBussAB\RekoResor\website\router\Render::booktour',                     'GET');
+    $this->addRoute(  '/^(boka)$/',                          '\HisingeBussAB\RekoResor\website\router\Render::booktour',                     'GET');
     array_push($this->sitemap, "boka");
     $this->addRoute(  '/^program\/([\w-%]+)\/?$/',           '\HisingeBussAB\RekoResor\website\router\Render::ordertourprogram',             'GET');
     $this->addRoute(  '/^galleri\/([\w-%]+)\/?$/',           '\HisingeBussAB\RekoResor\website\router\Render::inc',                          'GET');
@@ -86,13 +91,17 @@ class Router
     array_push($this->sitemap, "kontakt");
     $this->addRoute(  '/^(resevillkor)$/',                   '\HisingeBussAB\RekoResor\website\router\Render::inc',                          'GET');
     array_push($this->sitemap, "resevillkor");
+    $this->addRoute(  '/^(facebooktab)$/',                   '\HisingeBussAB\RekoResor\website\router\Render::inc',                          'ANY');
+    array_push($this->sitemap, "facebooktab");
 
 
     //SEO landing pages
-    $this->addRoute(  '/^(pensionarsresor)$/',                        $func = function() { Render::landing(1); },                        'GET');
+    $this->addRoute(  '/^(pensionarsresor)$/',                        $func = function() { Render::landing(1); },                     'GET');
     array_push($this->sitemap, "pensionarsresor");
     $this->addRoute(  '/^(pensionarsresor-med-buss)$/',               $func = function() { Render::landing(2); },                     'GET');
     array_push($this->sitemap, "pensionarsresor-med-buss");
+    $this->addRoute(  '/^(bussresor-goteborg-2)$/',                   $func = function() { Render::landing(3); },                     'GET');
+    array_push($this->sitemap, "bussresor-goteborg-2");
 
 
     //Admin and middleware

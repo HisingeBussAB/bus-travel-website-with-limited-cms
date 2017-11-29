@@ -319,7 +319,7 @@ header #categories-wrap li a {
 
 .main-section .trip-featured {
   font-family: "Courgette", cursive;
-  min-height: 300px;
+  min-height: 350px;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center center;
@@ -339,7 +339,7 @@ header #categories-wrap li a {
   border-radius: 3px 0 3px 0;
   border-right: 1px solid rgba(255, 255, 255, 0.12);
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-  font-size: 1.92vw;
+  font-size: 1.91vw;
 }
 
 .main-section .trip-featured .trip-featured-details {
@@ -353,7 +353,7 @@ header #categories-wrap li a {
   float: right;
   padding: 13px;
   margin: 5px;
-  font-size: 1.17vw;
+  font-size: 1.14vw;
   font-weight: bold;
   background-color: rgba(0, 160, 0, 0.93);
   border: 1px solid rgba(255, 255, 255, 0.9);
@@ -379,7 +379,7 @@ header #categories-wrap li a {
 }
 
 .main-section .trip-featured .trip-featured-desc {
-  font-size: 1.13vw;
+  font-size: 1.119vw;
   background-color: rgba(0, 0, 0, 0.9);
   color: white;
   margin: 0;
@@ -442,7 +442,7 @@ header #categories-wrap li a {
 
 .main-section .tour-box div.tour-summary {
   font-size: 1.5rem;
-  clear: both;
+  float: left;
   margin-top: 10px;
 }
 
@@ -490,9 +490,18 @@ header #categories-wrap li a {
   border-radius: 5px;
 }
 
+.month {
+  padding-top: 40px;
+}
+
 /*
 * — Footer —
 */
+div.grecaptcha-badge {
+  margin: 0 auto;
+  transform: scale(0.65);
+}
+
 #newsletter-loader,
 #newsletter-response {
   display: none;

@@ -10,6 +10,7 @@ use HisingeBussAB\RekoResor\website\includes\classes\Functions;
 use HisingeBussAB\RekoResor\website\includes\classes\HammerGuard;
 use HisingeBussAB\RekoResor\website\includes\classes\DB;
 use HisingeBussAB\RekoResor\website\includes\classes\DBError;
+use HisingeBussAB\RekoResor\website\admin\includes\classes\invreCaptcha;
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\OAuth;
@@ -109,6 +110,10 @@ class NewsletterForm {
       $clienthash = md5($_SERVER['HTTP_USER_AGENT']);
       if ($clienthash !== trim($data['client'])) {
         throw new \RuntimeException("Något har ändrats, inte längre samma klient. <a href='javascript:window.location.href=window.location.href'>Prova att ladda om sidan.</a>");
+      }
+
+      if (!invreCaptcha::tryReCaptcha()) {
+        throw new \RuntimeException("reCaptcha har misslyckats. <a href='javascript:window.location.href=window.location.href'>Prova att ladda om sidan.</a>");
       }
 
 

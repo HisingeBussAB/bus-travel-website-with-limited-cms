@@ -31,8 +31,15 @@ if (!empty($morestyles)) echo $morestyles;
           <input type="email" name="email" placeholder="E-post..." />
           <input type="url" name="url" class="hidden" placeholder="Lämna tomt!" />
           <input type="hidden" name="client" value="<?php echo md5($_SERVER['HTTP_USER_AGENT']); ?>" />
-          <button type="submit" id='newsletter-form-send'><span id='newsletter-form-send-default'>Prenumerera</span><span id='newsletter-loader'><i class="fa fa-spinner fa-lg fa-spin" aria-hidden="true"></i></span></button>
+          <button type="submit" id='newsletter-form-send'>
+            <span id='newsletter-form-send-default'>Prenumerera</span><span id='newsletter-loader'><i class="fa fa-spinner fa-lg fa-spin" aria-hidden="true"></i></span>
+          </button>
           <div id='newsletter-response' class='text-center'></div>
+          <div id='recaptcha' class="g-recaptcha"
+            data-sitekey="<?php echo INV_RECAPTCHA_PUBLIC; ?>"
+            data-callback="onUserVerified"
+            data-size="invisible"
+            data-badge='inline'></div>
         </form>
 
       </section>
