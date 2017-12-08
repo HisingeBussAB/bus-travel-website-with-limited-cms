@@ -149,7 +149,7 @@ try {
   </div>
 <?php $x++;
 
-if ($x===3) {
+if ($x===3 && $featuredcounter > 4) {
 
   echo "<div class='col-lg-6 col-md-12 col-xs-12 featured-box'><a href='kategori/gruppresor-och-konferens'>
         <div class='trip-featured lazy' style='background-image: url(\"upload/resor/generic/small_1_generic.jpg\")'>
