@@ -103,6 +103,20 @@ class Files {
             throw new \RuntimeException('Det går bara att ladda upp .jpg .png eller .gif bilder, samt .pdf filer.');
         }
         */
+        $mimet = array(
+          'jpg' => 'image/jpeg',
+          'png' => 'image/png',
+          'gif' => 'image/gif',
+          'pdf' => 'application/pdf'
+        );
+
+        $ext= array_search($_FILES['upfile']["type"], $mimet);
+
+        if (empty($ext)){
+          throw new \RuntimeException('Det går bara att ladda upp .jpg .png eller .gif bilder, samt .pdf filer.');
+        }
+
+
 
         //Make directory if not alredy exists
         if (!file_exists("./upload/resor/" . $dir)) {
@@ -306,6 +320,9 @@ class Files {
 
       return true;
     }
+
+
+
 
 
 }
