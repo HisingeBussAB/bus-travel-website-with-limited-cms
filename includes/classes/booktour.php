@@ -258,6 +258,7 @@ class BookTour {
                   "Resa: " . $data['tour'] . "\r\n" .
                   "Datum: " . $data['departure'] . "\r\n" .
                   "Påstigning: " . $data['stop'] . "\r\n\r\n" .
+                  "Rum: " . $data['room'] . "\r\n\r\n" .
                   $data['name'] . "\r\n" .
                   $data['address'] . "\r\n" .
                   $data['zip'] . " " . $data['city'] . "\r\n\r\n" .
