@@ -123,7 +123,7 @@ try {
 
 
       $output .= "<a href='" . $tour['link'] . "'><figure class='trip-featured-img-list'>";
-      $output .= "<img src='" . $tour['imgsrc'] . "'  alt='" . $tour['tour'] . "'/>";
+      $output .= "<div style='background-image: url(\"" . $tour['imgsrc'] . "\");' aria-label='" . $tour['tour'] . "' titel='" . $tour['tour'] . "'/>";
       $output .= "</figure></a>";
       if ($grouptour) {
         if ($tour['days'] <= 1) {
@@ -133,13 +133,15 @@ try {
         }
         $output .= "<p class='larger'><i class='fa fa-lg fa-money blue' aria-hidden='true'></i> Pris per person: " . $tour['price'] . " kr</p>";
       } else {
-      $output .= "<p><i class='fa fa-hourglass blue' aria-hidden='true'></i> Antal dagar: " . $tour['days'] . " dagar</p>";
-      $output .= "<p><i class='fa fa-calendar blue' aria-hidden='true'></i> Avresedatum: " . $tour['departure'] . "</p>";
-      $output .= "<p><i class='fa fa-money blue' aria-hidden='true'></i> Pris per person: " . $tour['price'] . " kr</p>";
+      $output .= "<p class='larger'><i class='fa fa-hourglass blue' aria-hidden='true'></i> Antal dagar: " . $tour['days'] . " dagar</p>";
+      $output .= "<p class='larger'><i class='fa fa-calendar blue' aria-hidden='true'></i> Avresedatum: " . $tour['departure'] . "</p>";
+      $output .= "<p class='larger'><i class='fa fa-money blue' aria-hidden='true'></i> Pris per person: " . $tour['price'] . " kr</p>";
       }
 
 
-      $output .= "<p>" . $tour['summary'] . "</p></div>";
+      $output .= "<p class='summary-text'>" . $tour['summary'] . "</p>";
+      $output .= "<footer class='summary-footer'><a href='" . $tour['link'] . "'>Läs hela programmet och boka</a></footer>";
+      $output .= "</div>";
       if ($i % 2 != 0) { $output .= "</div>"; }
       elseif ($i+1 >= $lenght) { $output .= "</div>"; }
       echo $output;

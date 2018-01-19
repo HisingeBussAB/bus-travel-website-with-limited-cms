@@ -137,7 +137,13 @@ try {
   ?>
       <a href="<?php echo $featuredtrip['link']; ?>">
     <div class="trip-featured lazy" style="background-image: url('<?php echo $featuredtrip['imgpath']; ?>')">
-    <h3 class="trip-featured-head"><?php echo $featuredtrip['tour']; ?></h3>
+    <?php
+    if (strlen($featuredtrip['tour']) > 33) {
+      echo "<h3 class='trip-featured-head long-featured-head'>".  $featuredtrip['tour'] . "</h3>";
+    } else {
+      echo "<h3 class='trip-featured-head'>".  $featuredtrip['tour'] . "</h3>";
+    }
+    ?>
     <div class="trip-featured-details text-center">
       <div class="trip-featured-details-wrapper text-center">
         <div class="trip-featured-dur text-center"><?php if ($featuredtrip['days'] > 1) echo $featuredtrip['days'] . " dagar"; else echo "Dagsresa"; ?></div>
@@ -204,7 +210,7 @@ if ($x===3 && $featuredcounter > 4) {
 
       $output = "";
       $output .=  "<div class='col-xs-12 tour-box'>";
-      $output .= "<div class='tour-quick-facts'><h3><a href='" . $tour['link'] . "'>" . $tour['tour'] . "</a></h3>";
+      $output .= "<div class='tour-quick-facts'><h3><a href='" . $tour['link'] . "'>" . $tour['tour'] . " - " . date( "j/n", strtotime($tour['departure'])) . "</a></h3>";
       $output .= "<p><i class='fa fa-hourglass fa-lg blue' aria-hidden='true'></i> Antal dagar: ";
       if ($tour['days'] == 1) {
         $output .= "Dagsresa";
@@ -215,8 +221,8 @@ if ($x===3 && $featuredcounter > 4) {
       $output .= "<p><i class='fa fa-calendar fa-lg blue' aria-hidden='true'></i> Avresedatum: " . $tour['departure'] . "</p>";
       $output .= "<div class='tour-summary'>" . $tour['summary'] . " | <a href='" . $tour['link'] . "'>Läs mer och boka.</a></div></div>";
 
-      $output .= "<a href='" . $tour['link'] . "'><figure class='trip-featured-img-list'>";
-      $output .= "<img class='lazy' src='" . $tour['imgsrc'] . "'  alt='" . $tour['tour'] . "'/> ";
+      $output .= "<a href='" . $tour['link'] . "'><figure class='trip-img-list'>";
+      $output .= "<div style='background-image: url(\"" . $tour['imgsrc'] . "\");' aria-label='" . $tour['tour'] . "' titel='" . $tour['tour'] . "'/>";
       $output .= "</figure></a></div>";
 
       echo $output;

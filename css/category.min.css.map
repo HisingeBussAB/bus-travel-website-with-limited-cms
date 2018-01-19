@@ -5,8 +5,8 @@
 		"sass/category.scss"
 	],
 	"sourcesContent": [
-		".main-section .tour-box .trip-featured-img-list {\r\n    float: none;\r\n    margin: 20px auto;\r\n    width: 95%;\r\n    border-radius: 0;\r\n    max-width: none;\r\n    max-height: none;\r\n    height: auto;\r\n  }\r\n"
+		".main-section .tour-box .trip-featured-img-list {\r\n    float: none;\r\n    margin: 20px auto;\r\n    width: 95%;\r\n    border-radius: 0;\r\n    max-width: none;\r\n    max-height: auto;\r\n    height: auto;\r\n\r\n    div {\r\n      width: 100%;\r\n      height: 320px;\r\n      background-repeat: no-repeat;\r\n      background-size: cover;\r\n      background-position: center center;\r\n\r\n    }\r\n  }\r\n\r\n.tour-box {\r\n  h2 {\r\n    font-size: 2em;\r\n    font-weight: bold;\r\n  }\r\n}\r\n\r\n.larger {\r\n  font-size: 1.15em;\r\n  font-weight: bold;\r\n}\r\n\r\n.summary-text {\r\n  margin-top: 15px;\r\n}\r\n"
 	],
 	"names": [],
-	"mappings": "AAAA,AAAwB,aAAX,CAAC,SAAS,CAAC,uBAAuB,AAAC,CAC5C,KAAK,CAAE,IAAI,CACX,MAAM,CAAE,SAAS,CACjB,KAAK,CAAE,GAAG,CACV,aAAa,CAAE,CAAC,CAChB,SAAS,CAAE,IAAI,CACf,UAAU,CAAE,IAAI,CAChB,MAAM,CAAE,IAAI,CACb"
+	"mappings": "AAAA,AAAwB,aAAX,CAAC,SAAS,CAAC,uBAAuB,AAAC,CAC5C,KAAK,CAAE,IAAI,CACX,MAAM,CAAE,SAAS,CACjB,KAAK,CAAE,GAAG,CACV,aAAa,CAAE,CAAC,CAChB,SAAS,CAAE,IAAI,CACf,UAAU,CAAE,IAAI,CAChB,MAAM,CAAE,IAAI,CAUb,AAjBH,AASI,aATS,CAAC,SAAS,CAAC,uBAAuB,CAS3C,GAAG,AAAC,CACF,KAAK,CAAE,IAAI,CACX,MAAM,CAAE,KAAK,CACb,iBAAiB,CAAE,SAAS,CAC5B,eAAe,CAAE,KAAK,CACtB,mBAAmB,CAAE,aAAa,CAEnC,AAGL,AACE,SADO,CACP,EAAE,AAAC,CACD,SAAS,CAAE,GAAG,CACd,WAAW,CAAE,IAAI,CAClB,AAGH,AAAA,OAAO,AAAC,CACN,SAAS,CAAE,MAAM,CACjB,WAAW,CAAE,IAAI,CAClB,AAED,AAAA,aAAa,AAAC,CACZ,UAAU,CAAE,IAAI,CACjB"
 }

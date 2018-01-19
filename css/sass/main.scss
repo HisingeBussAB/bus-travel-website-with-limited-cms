@@ -363,6 +363,10 @@ header {
 
     }
 
+    .long-featured-head {
+      font-size: 1.52vw;
+    }
+
     .trip-featured-details {
 
       border-radius: 50%;
@@ -464,7 +468,7 @@ header {
     h3 {
       margin-top: 0;
       font-weight: bold;
-      margin-bottom: 10px;
+      margin-bottom: 15px;
 
       a {
         color: black;
@@ -489,8 +493,8 @@ header {
 
   }
 
-  .trip-featured-img-list {
-    max-height: 360px;
+  .trip-img-list {
+    max-height: 320px;
     max-width: 460px;
     width: 32%;
     padding: 1px;
@@ -501,8 +505,15 @@ header {
     display: flex;
     align-items: center;
     justify-content: center;
-    //float: left;
     float:right;
+
+    div {
+      height: 310px;
+      width: 100%;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center center;
+    }
 
     }
   }
@@ -682,6 +693,9 @@ div.grecaptcha-badge {
 
     .trip-featured-head {
       font-size: 2.5rem;
+    }
+    .long-featured-head {
+      font-size: 2.1rem;
     }
 
     .trip-featured-desc  {

@@ -342,6 +342,10 @@ header #categories-wrap li a {
   font-size: 1.91vw;
 }
 
+.main-section .trip-featured .long-featured-head {
+  font-size: 1.52vw;
+}
+
 .main-section .trip-featured .trip-featured-details {
   border-radius: 50%;
   display: inline-flex;
@@ -428,7 +432,7 @@ header #categories-wrap li a {
 .main-section .tour-box div.tour-quick-facts h3 {
   margin-top: 0;
   font-weight: bold;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 .main-section .tour-box div.tour-quick-facts h3 a {
@@ -446,8 +450,8 @@ header #categories-wrap li a {
   margin-top: 10px;
 }
 
-.main-section .tour-box .trip-featured-img-list {
-  max-height: 360px;
+.main-section .tour-box .trip-img-list {
+  max-height: 320px;
   max-width: 460px;
   width: 32%;
   padding: 1px;
@@ -458,6 +462,14 @@ header #categories-wrap li a {
   align-items: center;
   justify-content: center;
   float: right;
+}
+
+.main-section .tour-box .trip-img-list div {
+  height: 310px;
+  width: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
 }
 
 .main-section .action-btn {
@@ -601,6 +613,9 @@ div.grecaptcha-badge {
 @media (max-width: 1300px) {
   .main-section .trip-featured .trip-featured-head {
     font-size: 2.5rem;
+  }
+  .main-section .trip-featured .long-featured-head {
+    font-size: 2.1rem;
   }
   .main-section .trip-featured .trip-featured-desc {
     font-size: 1.615rem;
