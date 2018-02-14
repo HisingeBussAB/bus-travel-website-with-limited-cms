@@ -36,13 +36,6 @@ use HisingeBussAB\RekoResor\website\includes\classes\DBError;
       document.head.appendChild(node);
     };
   </script>
-  <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-TLG9DXN');</script>
-  <!-- End Google Tag Manager -->
 
   <meta name="author" content="Håkan K Arnoldson">
   <title>Facebook - Rekå Resor</title>
@@ -77,10 +70,6 @@ use HisingeBussAB\RekoResor\website\includes\classes\DBError;
   <link rel="stylesheet" href="/dependencies/bootstrap-3.3.7-dist/css/bootstrap.min.css">
 </head>
 <body>
-  <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TLG9DXN"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-  <!-- End Google Tag Manager (noscript) -->
 
 
   <header class="text-center hidden-print">

@@ -14,7 +14,27 @@ use HisingeBussAB\RekoResor\website\includes\classes\Functions;
 use HisingeBussAB\RekoResor\website\includes\classes\DB;
 use HisingeBussAB\RekoResor\website\includes\classes\DBError;
 
+function drawFeaturedItem($featuredtrip) {
+  echo "<a href='" . $featuredtrip['link'] . "'>";
+  echo "<div class='trip-featured lazy' style=\"background-image: url('" . $featuredtrip['imgpath'] . "')\">";
 
+  if (strlen($featuredtrip['tour']) > 33) {
+    echo "<h3 class='trip-featured-head long-featured-head'>".  $featuredtrip['tour'] . "</h3>";
+  } else {
+    echo "<h3 class='trip-featured-head'>".  $featuredtrip['tour'] . "</h3>";
+  }
+
+  echo "<div class='trip-featured-details text-center'>";
+  echo "<div class='trip-featured-details-wrapper text-center'>";
+  echo "<div class='trip-featured-dur text-center'>";
+  if ($featuredtrip['days'] > 1) echo $featuredtrip['days'] . " dagar"; else echo "Dagsresa";
+  echo "</div>";
+  echo "<div class='trip-featured-price text-center'>" . $featuredtrip['price'] . ":-</div>";
+  echo "</div>";
+  echo "</div>";
+  echo "<div class='trip-featured-desc' aria-label='". $featuredtrip['tour'] . "'><p>" . $featuredtrip['desc'] . "</p><i class='fa fa-chevron-right pull-right' aria-hidden='true'></i></div>";
+  echo "</div></a>";
+}
 
 try {
   $pageTitle = "Bussresor i Norden och Europa";
@@ -61,7 +81,7 @@ try {
 
 
 
-    if (($tour['utvald'] && $featuredcounter < 4) && (!in_array($tour['id'], $usedtours))) {
+    if (($tour['utvald'] && $featuredcounter < 6) && (!in_array($tour['id'], $usedtours))) {
       array_push($usedtours, $tour['id']);
 
       $featured[$featuredcounter]['link']    = filter_var("http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/resa/". str_replace("'", "", $tour['url']), FILTER_SANITIZE_URL);
@@ -86,6 +106,7 @@ try {
     $tours[$i]['summary'] = Functions::linksaver(strtr(nl2br(strip_tags($tour['ingress'], $allowed_tags)), $html_ents));
     $tours[$i]['price'] = number_format(filter_var($tour['pris'], FILTER_SANITIZE_NUMBER_INT), 0, ",", " ");
     $tours[$i]['departure'] = strtr(strip_tags($tour['datum'], $allowed_tags), $html_ents);
+    $tours[$i]['desc'] = strtr(strip_tags($tour['seo_description'], $allowed_tags), $html_ents);
 
     $server_path = __DIR__ . '/../../upload/resor/' . filter_var($tour['bildkatalog'], FILTER_SANITIZE_URL) . '/';
     $web_path = filter_var("http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/" . $tour['bildkatalog'] . "/", FILTER_SANITIZE_URL);
@@ -119,53 +140,56 @@ try {
   <?php
 
   $x = 0;
-  foreach($featured as $featuredtrip) {
-    if ($featuredcounter > 3)       { echo "<div class='col-lg-6 col-md-12 col-xs-12 featured-box'>"; }
-    elseif ($featuredcounter === 3)  { echo "<div class='col-lg-6 col-md-12 col-xs-12 featured-box'>"; }
-    elseif ($featuredcounter === 2)   { echo "<div class='col-lg-12 col-md-12 col-xs-12 featured-box'>"; }
-    elseif ($featuredcounter < 2)   {
-      echo "<div class='col-lg-6 col-md-12 col-xs-12 featured-box'>
-            <h1>Välkommen till Rekå Resor</h1>
-            <p>För att genomföra en bra bussresa så krävs det planering och genomförande, oavsett om den ska gå inom Sverige eller ut i Europa.
-            Det är där vi på Rekå Resor kommer in i bilden. Vi lyssnar på de önskemål du har och bidrar sedan med råd och idéer för bästa möjliga resultat.
-            Med mer än 60 år i branschen har vi både erfarenheten såväl som kontaktnätet och det gör att vi kan ta fram i princip vilka gruppresor som helst –
-            från korta endagsresor i närområdet runt Göteborg till veckolånga resor runt om i Europa. Alla bussresor kryddas med det lilla extra.</p>
-            <h3>Följ med oss på bussresor som har det lilla extra.</h3></div>
-            <div class='col-lg-6 col-md-12 col-xs-12 featured-box'>";
-          }
+  if ($featuredcounter === 2) {
+    foreach($featured as $featuredtrip) {
+    echo "<div class='col-lg-12 col-md-12 col-xs-12 featured-box'>";
+    drawFeaturedItem($featuredtrip);
+    echo "</div>";
+    }
+  }
+
+  elseif ($featuredcounter === 3 || $featuredcounter === 5) {
+    foreach($featured as $featuredtrip) {
+    echo "<div class='col-lg-6 col-md-12 col-xs-12 featured-box'>";
+    drawFeaturedItem($featuredtrip);
+    echo "</div>";
+    }
+    echo "<div class='col-lg-6 col-md-12 col-xs-12 featured-box'>
+          <a href='kategori/gruppresor-och-konferens'>
+          <div class='trip-featured lazy' style='background-image: url(\"upload/resor/generic/small_1_generic.jpg\")'>
+          <h3 class='trip-featured-head'>Gruppresor</h3>
+          <div class='trip-featured-desc' aria-label='Gruppresor'><p>Med mer än 60 år av erfarenheter inom resor kan vi erbjuda något inom i stort sett vilket intresseområde som helst. Läs mer om våra erbjudanden för grupper här.</p><i class='fa fa-chevron-right pull-right' aria-hidden='true'></i></div>
+          </div></a>
+          </div>";
+  }
+
+
+  elseif ($featuredcounter < 2) {
+    foreach($featured as $featuredtrip) {
+    echo "<div class='col-lg-6 col-md-12 col-xs-12 featured-box'>";
+    drawFeaturedItem($featuredtrip);
+    echo "</div>";
+    }
+    echo "<div class='col-lg-6 col-md-12 col-xs-12 featured-box'>
+          <h1>Välkommen till Rekå Resor</h1>
+          <p>För att genomföra en bra bussresa så krävs det planering och genomförande, oavsett om den ska gå inom Sverige eller ut i Europa.
+          Det är där vi på Rekå Resor kommer in i bilden. Vi lyssnar på de önskemål du har och bidrar sedan med råd och idéer för bästa möjliga resultat.
+          Med mer än 60 år i branschen har vi både erfarenheten såväl som kontaktnätet och det gör att vi kan ta fram i princip vilka gruppresor som helst –
+          från korta endagsresor i närområdet runt Göteborg till veckolånga resor runt om i Europa. Alla bussresor kryddas med det lilla extra.</p>
+          <h3>Följ med oss på bussresor som har det lilla extra.</h3></div>";
+  }
+
+  else {
+    foreach($featured as $featuredtrip) {
+    echo "<div class='col-lg-6 col-md-12 col-xs-12 featured-box'>";
+    drawFeaturedItem($featuredtrip);
+    echo "</div>";
+    }
+  }
+
+
 
   ?>
-      <a href="<?php echo $featuredtrip['link']; ?>">
-    <div class="trip-featured lazy" style="background-image: url('<?php echo $featuredtrip['imgpath']; ?>')">
-    <?php
-    if (strlen($featuredtrip['tour']) > 33) {
-      echo "<h3 class='trip-featured-head long-featured-head'>".  $featuredtrip['tour'] . "</h3>";
-    } else {
-      echo "<h3 class='trip-featured-head'>".  $featuredtrip['tour'] . "</h3>";
-    }
-    ?>
-    <div class="trip-featured-details text-center">
-      <div class="trip-featured-details-wrapper text-center">
-        <div class="trip-featured-dur text-center"><?php if ($featuredtrip['days'] > 1) echo $featuredtrip['days'] . " dagar"; else echo "Dagsresa"; ?></div>
-        <div class="trip-featured-price text-center"><?php echo $featuredtrip['price']; ?>:-</div>
-      </div>
-    </div>
-    <div class="trip-featured-desc" aria-label="<?php echo $featuredtrip['tour']; ?>"><p><?php echo $featuredtrip['desc']; ?></p><i class="fa fa-chevron-right pull-right" aria-hidden="true"></i></div>
-  </div></a>
-  </div>
-<?php $x++;
-
-if ($x===3 && $featuredcounter > 4) {
-
-  echo "<div class='col-lg-6 col-md-12 col-xs-12 featured-box'><a href='kategori/gruppresor-och-konferens'>
-        <div class='trip-featured lazy' style='background-image: url(\"upload/resor/generic/small_1_generic.jpg\")'>
-        <h3 class='trip-featured-head'>Gruppresor</h3>
-        <div class='trip-featured-desc' aria-label='Gruppresor'><p>Med mer än 60 år av erfarenheter inom resor kan vi erbjuda något inom i stort sett vilket intresseområde som helst. Läs mer om våra erbjudanden för grupper här.</p><i class='fa fa-chevron-right pull-right' aria-hidden='true'></i></div>
-      </div></a>
-      </div>";
-}
-
-} ?>
   </div>
 
   <section class="row-fluid">
@@ -191,10 +215,9 @@ if ($x===3 && $featuredcounter > 4) {
 </div>
 
   <div class="row-fluid">
-    <h2 class='col-md-12' id='resekalender'>Resekalender</h2>
-  </div>
-  <div class="row-fluid">
-
+  <table class="tour-calendar-table">
+  <thead><tr><th colspan="7"><h2 class='col-md-12' id='resekalender'>Resekalender</h2></th></tr>
+  <tbody>
   <?php
 
     $i = 0;
@@ -204,11 +227,48 @@ if ($x===3 && $featuredcounter > 4) {
 
       $mon = Functions::se_month($tour['departure']);
       if ($mon !== $lastmonth) {
-        echo "<div class='col-xs-12'><h2 class='month'>$mon</h2></div>";
+        echo "<tr><th colspan='7'><h3 class='month'>$mon</h3></th></tr>";
         $lastmonth = $mon;
       }
-
       $output = "";
+
+      $output .= "<tr>";
+
+      $output .= "<td class='tour-calendar-table-img'>";
+      $output .= "<a href='" . $tour['link'] . "'><figure class='trip-compressed-img-list'>";
+      $output .= "<div style='background-image: url(\"" . $tour['imgsrc'] . "\");' aria-label='" . $tour['tour'] . "' titel='" . $tour['tour'] . "'/>";
+      $output .= "</figure></div></a>";
+      $output .= "</td>";
+
+      $output .= "<td class='tour-calendar-table-date'>";
+      $output .= "<a href='" . $tour['link'] . "'><h3>" . date( "j/n", strtotime($tour['departure'])) . "</h3></a>";
+      $output .= "</td>";
+
+      $output .= "<th class='tour-calendar-table-title' scope='row'>";
+      $output .= "<a href='" . $tour['link'] . "'><h3>" . $tour['tour'] . "</h3></a>";
+      $output .= "</th>";
+
+
+
+      
+      $output .= "<td class='tour-calendar-table-duration'><h3>";
+      if ($tour['days'] == 1) {
+        $output .= "Dagsresa";
+      } else {
+        $output .= $tour['days'] . " dagar";
+      }
+      $output .= "</h3></td>";
+
+      $output .= "<td class='tour-calendar-table-price'><h3>";
+      $output .= $tour['price'] . ":-";
+      $output .= "</h3></td>";
+
+      $output .= "<td class='tour-calendar-table-action'>";
+      $output .= "<a class='btn btn-default action-btn' href='" . $tour['link'] . "'>Läs mer</a>";
+      $output .= "</td>";
+
+      $output .= "</tr>";
+/*
       $output .=  "<div class='col-xs-12 tour-box'>";
       $output .= "<div class='tour-quick-facts'><h3><a href='" . $tour['link'] . "'>" . $tour['tour'] . " - " . date( "j/n", strtotime($tour['departure'])) . "</a></h3>";
       $output .= "<p><i class='fa fa-hourglass fa-lg blue' aria-hidden='true'></i> Antal dagar: ";
@@ -224,11 +284,13 @@ if ($x===3 && $featuredcounter > 4) {
       $output .= "<a href='" . $tour['link'] . "'><figure class='trip-img-list'>";
       $output .= "<div style='background-image: url(\"" . $tour['imgsrc'] . "\");' aria-label='" . $tour['tour'] . "' titel='" . $tour['tour'] . "'/>";
       $output .= "</figure></a></div>";
-
+*/
       echo $output;
       $i++;
   }
   ?>
+  </tbody>
+  </table>
   </div>
 </main>
 <?php

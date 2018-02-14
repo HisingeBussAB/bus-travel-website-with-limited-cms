@@ -26,7 +26,7 @@
 }
 
 if (empty($robots)) {
-  $robots = "<meta name='robots' content='index, follow'>";
+  $robots = "<meta name='robots' content='index, follow' />";
 }
 
 
@@ -113,7 +113,7 @@ if (empty($robots)) {
 
 
 
-  <header class="text-center hidden-print">
+  <header class="text-center hidden-print" id="main-header">
     <div class="text-right header-wrap">
       <figure class="top-logo clear-on-tiny center-on-tiny">
         <a href="/"><img src="/img/logo.gif" alt="Rekå Resor AB"><span class="sr-only">Välkommen till Rekå Resor</span></a>

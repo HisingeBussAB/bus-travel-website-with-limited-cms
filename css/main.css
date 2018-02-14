@@ -283,6 +283,47 @@ header #categories-wrap li a {
   padding: 10px 14px;
 }
 
+#main-header.docked {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+#main-header.docked .header-wrap {
+  float: left;
+  width: 40px;
+  height: 44px;
+  padding: 0;
+  margin: 0;
+  background-color: red;
+}
+
+#main-header.docked .header-wrap figure {
+  display: none;
+}
+
+#main-header.docked .header-wrap nav {
+  display: none;
+  padding: 0;
+  margin: 0;
+}
+
+#main-header.docked ul#categories-wrap {
+  float: right;
+  width: calc(100% - 45px);
+  padding: 0;
+  margin: 0;
+  border-radius: 0;
+}
+
+#main-header.docked ul#categories-wrap li {
+  border-radius: 0;
+}
+
 /*
 * — Start Page —
 */
@@ -304,6 +345,7 @@ header #categories-wrap li a {
   margin: auto;
   background: #fff;
   border-radius: 10px;
+  /*old tour-box still used for facebook tab*/
 }
 
 .main-section article,
@@ -417,6 +459,86 @@ header #categories-wrap li a {
   transform: translate(-50%, -50%);
 }
 
+.main-section .month {
+  padding-top: 15px;
+  font-style: italic;
+}
+
+.main-section .tour-calendar-table {
+  width: 100%;
+  margin: 10px;
+}
+
+.main-section .tour-calendar-table .tour-calendar-table-date {
+  padding: 4px;
+  white-space: nowrap;
+  width: 1%;
+}
+
+.main-section .tour-calendar-table .tour-calendar-table-date a:hover {
+  text-decoration: none;
+}
+
+.main-section .tour-calendar-table .tour-calendar-table-title {
+  padding: 2px;
+  padding-right: 9px;
+}
+
+.main-section .tour-calendar-table .tour-calendar-table-title a:hover {
+  text-decoration: none;
+}
+
+.main-section .tour-calendar-table .tour-calendar-table-duration {
+  padding: 5px;
+  width: 1%;
+  white-space: nowrap;
+}
+
+.main-section .tour-calendar-table .tour-calendar-table-duration a:hover {
+  text-decoration: none;
+}
+
+.main-section .tour-calendar-table .tour-calendar-table-price {
+  padding: 5px;
+  width: 1%;
+  white-space: nowrap;
+  text-align: right;
+}
+
+.main-section .tour-calendar-table .tour-calendar-table-price a:hover {
+  text-decoration: none;
+}
+
+.main-section .tour-calendar-table .tour-calendar-table-action {
+  padding: 5px;
+  padding-left: 18px;
+  width: 125px;
+  white-space: nowrap;
+}
+
+.main-section .tour-calendar-table .tour-calendar-table-action a:hover {
+  text-decoration: none;
+}
+
+.main-section .tour-calendar-table .tour-calendar-table-img {
+  width: 1%;
+  padding: 3px 15px;
+}
+
+.main-section .tour-calendar-table .tour-calendar-table-img .trip-compressed-img-list {
+  border: solid 1px black;
+  border-radius: 3px;
+  padding: 1px;
+}
+
+.main-section .tour-calendar-table .tour-calendar-table-img .trip-compressed-img-list div {
+  width: 150px;
+  height: 100px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+}
+
 .main-section .tour-box {
   margin-top: 20px;
   padding-top: 20px;
@@ -500,10 +622,6 @@ header #categories-wrap li a {
   height: 42px;
   width: auto;
   border-radius: 5px;
-}
-
-.month {
-  padding-top: 40px;
 }
 
 /*
@@ -592,6 +710,86 @@ div.grecaptcha-badge {
 /*
 * === LAYOUT MEDIA QUERIES ===
 */
+@media (max-width: 880px) {
+  .main-section .tour-calendar-table {
+    width: 100%;
+    margin: 10px 5px;
+  }
+  .main-section .tour-calendar-table h3 {
+    font-size: 1.65rem;
+  }
+  .main-section .tour-calendar-table .month {
+    padding-top: 15px;
+    font-style: italic;
+    font-size: 2rem;
+  }
+  .main-section .tour-calendar-table .tour-calendar-table-date {
+    padding: 2px;
+  }
+  .main-section .tour-calendar-table .tour-calendar-table-title {
+    padding: 1px;
+  }
+  .main-section .tour-calendar-table .tour-calendar-table-duration {
+    padding: 3px;
+  }
+  .main-section .tour-calendar-table .tour-calendar-table-price {
+    padding: 3px;
+  }
+  .main-section .tour-calendar-table .tour-calendar-table-action {
+    padding: 3px;
+    padding-left: 10px;
+    width: 110px;
+  }
+  .main-section .tour-calendar-table .tour-calendar-table-action .action-btn {
+    font-size: 1.4rem;
+  }
+  .main-section .tour-calendar-table .tour-calendar-table-img {
+    width: 1%;
+    padding: 2px 10px;
+  }
+  .main-section .tour-calendar-table .tour-calendar-table-img .trip-compressed-img-list div {
+    width: 90px;
+    height: 60px;
+  }
+}
+
+@media (max-width: 600px) {
+  .main-section .tour-calendar-table {
+    margin: 8px 2px;
+  }
+  .main-section .tour-calendar-table h3 {
+    font-size: 1.5rem;
+  }
+  .main-section .tour-calendar-table .tour-calendar-table-date {
+    padding: 1px;
+  }
+  .main-section .tour-calendar-table .tour-calendar-table-title {
+    padding: 1px;
+  }
+  .main-section .tour-calendar-table .tour-calendar-table-duration {
+    padding: 1px;
+  }
+  .main-section .tour-calendar-table .tour-calendar-table-price {
+    padding: 1px;
+  }
+  .main-section .tour-calendar-table .tour-calendar-table-action {
+    padding: 1px;
+    padding-left: 5px;
+    width: 100px;
+  }
+  .main-section .tour-calendar-table .tour-calendar-table-action .action-btn {
+    font-size: 1.3rem;
+    padding: 6px;
+  }
+  .main-section .tour-calendar-table .tour-calendar-table-img {
+    width: 0;
+    padding: 0;
+  }
+  .main-section .tour-calendar-table .tour-calendar-table-img .trip-compressed-img-list {
+    display: none;
+  }
+}
+
 @media (max-width: 768px) {
   .hide-on-tiny {
     display: none !important;

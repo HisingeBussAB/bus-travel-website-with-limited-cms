@@ -8,10 +8,12 @@ $(function() {
 
   $(window).scroll(function() {
     var y = $(this).scrollTop();
-    if (y > 700) {
+    if (y > 600) {
       $('#to-top-chevron').fadeTo( 0 , 1);
+      $('#main-header').addClass("docked");
     } else {
       $('#to-top-chevron').fadeTo( 0 , 0);
+      $('#main-header').removeClass("docked");
     }
   });
 
