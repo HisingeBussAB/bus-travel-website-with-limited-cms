@@ -11,7 +11,14 @@ upload/**/*.png
 upload/**/*.pdf
 upload/**/*.jpg
 upload/**/*.jpeg
-vendor/*
+/vendor/*
 ignore/get_oauth_token.php
 .idea/*
 ignore/*
+/css/*.css
+/css/*.map
+/admin/css/*.css
+/admin//css/*.map
+!/vendor/composer/*
+!/css/sass/*
+!/admin/css/sass/*
