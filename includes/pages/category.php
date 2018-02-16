@@ -61,16 +61,17 @@ include __DIR__ . '/shared/header.php';
 
 
 try {
-  $sql = "SELECT resor.id, resor.namn, resor.url, resor.bildkatalog, resor.antaldagar, resor.ingress,resor.pris, MIN(datum.datum) AS datum FROM " . TABLE_PREFIX . "resor AS resor
-          LEFT OUTER JOIN " . TABLE_PREFIX . "datum AS datum ON resor.id = datum.resa_id
+
+  $sql = "SELECT resor.id, resor.namn, resor.url, resor.bildkatalog, resor.antaldagar, resor.ingress,resor.pris, datum.datum FROM " . TABLE_PREFIX . "resor AS resor
           LEFT OUTER JOIN " . TABLE_PREFIX . "kategorier_resor AS k_r ON resor.id = k_r.resa_id
           LEFT OUTER JOIN " . TABLE_PREFIX . "kategorier AS kategorier ON kategorier.id = k_r.kategorier_id
+          JOIN " . TABLE_PREFIX . "datum AS datum ON resor.id = datum.resa_id
           WHERE kategorier.id = :catid AND resor.aktiv = 1 ";
-          if (!$grouptour) { $sql .= "AND datum > NOW() "; }
- $sql .= "GROUP BY resor.id
+          if (!$grouptour) { $sql .= "AND datum.datum > NOW() "; }
+ $sql .= "GROUP BY resor.id, datum.datum
           ORDER BY ";
           if ($grouptour) { $sql .= "resor.antaldagar, resor.namn;"; }
-          else { $sql .= "datum;"; }
+          else { $sql .= "datum.datum;"; }
   $sth = $pdo->prepare($sql);
   $sth->bindParam(':catid', $catid, \PDO::PARAM_INT);
   $sth->execute();
@@ -80,28 +81,33 @@ try {
   throw new \RuntimeException("Databasfel.");
 }
 
-
-
   $tours = [];
-
-  $i=0;
+  $usedtours = [];
   foreach($result as $tour) {
-
-    $tours[$i]['tour'] = strtr(strip_tags($tour['namn'], $allowed_tags), $html_ents);
-    $tours[$i]['link'] = filter_var("http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/resa/". str_replace("'", "", $tour['url']), FILTER_SANITIZE_URL);
-    $tours[$i]['days'] = strtr(strip_tags($tour['antaldagar'], $allowed_tags), $html_ents);
-    $tours[$i]['summary'] = functions::linksaver(strtr(nl2br(strip_tags($tour['ingress'], $allowed_tags)), $html_ents));
-    $tours[$i]['price'] = number_format(filter_var($tour['pris'], FILTER_SANITIZE_NUMBER_INT), 0, ",", " ");
-    $tours[$i]['departure'] = strtr(strip_tags($tour['datum'], $allowed_tags), $html_ents);
-
-    $server_path = __DIR__ . '/../../upload/resor/' . $tour['bildkatalog'] . '/';
-    $web_path = filter_var("http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/" . $tour['bildkatalog'] . "/", FILTER_SANITIZE_URL);
-      if ($files = functions::get_img_files($server_path)) {
-        $tours[$i]['imgsrc'] = $web_path . $files[0]['thumb'];
-      } else {
-        $tours[$i]['imgsrc'] = filter_var("http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/generic/small_1_generic.jpg", FILTER_SANITIZE_URL);
+    if (!in_array($tour['id'], $usedtours)) {
+      $tours[$tour['id']]['departure'] = [];
+      array_push($usedtours, $tour['id']);
+      $tours[$tour['id']]['tour'] = strtr(strip_tags($tour['namn'], $allowed_tags), $html_ents);
+      $tours[$tour['id']]['link'] = filter_var("http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/resa/". str_replace("'", "", $tour['url']), FILTER_SANITIZE_URL);
+      $tours[$tour['id']]['bookurl'] = filter_var("http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/boka/". str_replace("'", "", $tour['url']), FILTER_SANITIZE_URL);
+      $tours[$tour['id']]['days'] = strtr(strip_tags($tour['antaldagar'], $allowed_tags), $html_ents);
+      $tours[$tour['id']]['summary'] = functions::linksaver(strtr(nl2br(strip_tags($tour['ingress'], $allowed_tags)), $html_ents));
+      $tours[$tour['id']]['price'] = number_format(filter_var($tour['pris'], FILTER_SANITIZE_NUMBER_INT), 0, ",", " ");
+      array_push($tours[$tour['id']]['departure'], strtr(strip_tags($tour['datum'], $allowed_tags), $html_ents));
+      $server_path = __DIR__ . '/../../upload/resor/' . $tour['bildkatalog'] . '/';
+      $web_path = filter_var("http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/" . $tour['bildkatalog'] . "/", FILTER_SANITIZE_URL);
+        if ($files = functions::get_img_files($server_path)) {
+          $tours[$tour['id']]['imgsrc'] = $web_path . $files[0]['thumb'];
+        } else {
+          $tours[$tour['id']]['imgsrc'] = filter_var("http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/generic/small_1_generic.jpg", FILTER_SANITIZE_URL);
+        }
+    } else {
+      array_push($tours[$tour['id']]['departure'], strtr(strip_tags($tour['datum'], $allowed_tags), $html_ents));
+      if ($tours[$tour['id']]['price'] < number_format(filter_var($tour['pris'], FILTER_SANITIZE_NUMBER_INT), 0, ",", " ")) {
+        $tours[$tour['id']]['price'] = number_format(filter_var($tour['pris'], FILTER_SANITIZE_NUMBER_INT), 0, ",", " ");
       }
-    $i++;
+
+    }
   }
 
 
@@ -134,13 +140,16 @@ try {
         $output .= "<p class='larger'><i class='fa fa-lg fa-money blue' aria-hidden='true'></i> Pris per person: " . $tour['price'] . " kr</p>";
       } else {
       $output .= "<p class='larger'><i class='fa fa-hourglass blue' aria-hidden='true'></i> Antal dagar: " . $tour['days'] . " dagar</p>";
-      $output .= "<p class='larger'><i class='fa fa-calendar blue' aria-hidden='true'></i> Avresedatum: " . $tour['departure'] . "</p>";
+      foreach ($tour['departure'] as $departure) {
+        $output .= "<p class='larger'><i class='fa fa-calendar blue' aria-hidden='true'></i> Avresedatum: " . $departure . "</p>";
+      }
       $output .= "<p class='larger'><i class='fa fa-money blue' aria-hidden='true'></i> Pris per person: " . $tour['price'] . " kr</p>";
       }
 
 
       $output .= "<p class='summary-text'>" . $tour['summary'] . "</p>";
-      $output .= "<footer class='summary-footer'><a href='" . $tour['link'] . "'>Läs hela programmet och boka</a></footer>";
+      $output .= "<footer class='summary-footer'><a href='" . $tour['link'] . "' class='btn btn-default action-btn btn-margin-right'>Läs mer om resan</a>
+                  <a href='" . $tour['bookurl'] . "' class='btn btn-default action-btn'>Boka resan</a></footer>";
       $output .= "</div>";
       if ($i % 2 != 0) { $output .= "</div>"; }
       elseif ($i+1 >= $lenght) { $output .= "</div>"; }

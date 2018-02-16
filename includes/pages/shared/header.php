@@ -119,15 +119,16 @@ if (empty($robots)) {
         <a href="/"><img src="/img/logo.gif" alt="Rekå Resor AB"><span class="sr-only">Välkommen till Rekå Resor</span></a>
         <figcaption>- mer än 60 år av reko resor -</figcaption>
       </figure>
-      <nav class="clear-on-tiny">
+      <div id="main-navigation-toggle"><i class="fa fa-bars fa-2x" aria-hidden="true"></i></div>
+      <nav class="clear-on-tiny hidden-collapsable-nav" id="main-navigation">
         <ul class="nav nav-pills center-on-tiny" aria-label="Meny">
           <li role="presentation"><a href="/#resekalender">Resekalender</a></li>
-          <li role="presentation"><a href="/bestall-program">Beställ program</a></li>
-          <li role="presentation"><a href="/inforresan">Inför resan</a></li>
-          <li role="presentation"><a href="/efterresan">Efter resan</a></li>
-          <li role="presentation"><a href="/galleri">Bildgalleri</a></li>
-          <li role="presentation"><a href="/bussresorgoteborg">Mer om oss</a></li>
-          <li role="presentation"><a href="https://sv-se.facebook.com/rekoresor/" aria-label="Besök oss på Facebook"><i class="fa fa-facebook-square" aria-hidden="true"></i><span class="sr-only">Facebook länk</span><span class="hidden-sm hidden-xs">&nbsp;Facebook</span></a></li>
+          <li role="presentation" class="hide-on-tiny-show-in-docked hidden-xs"><a href="/bestall-program">Beställ program</a></li>
+          <li role="presentation" class="hide-on-tiny-show-in-docked hidden-xs"><a href="/inforresan">Inför resan</a></li>
+          <li role="presentation" class="hide-on-tiny-show-in-docked hidden-xs"><a href="/efterresan">Efter resan</a></li>
+          <li role="presentation" class="hide-on-tiny-show-in-docked hidden-xs"><a href="/galleri">Bildgalleri</a></li>
+          <li role="presentation" class="hide-on-tiny-show-in-docked hidden-xs"><a href="/bussresorgoteborg">Mer om oss</a></li>
+          <li role="presentation" class="hide-on-tiny-show-in-docked hidden-xs"><a href="https://sv-se.facebook.com/rekoresor/" aria-label="Besök oss på Facebook"><i class="fa fa-facebook-square" aria-hidden="true"></i><span class="sr-only">Facebook länk</span><span class="hidden-sm hidden-xs">&nbsp;Facebook</span></a></li>
           <li role="presentation" class="hidden-xs"><a href="/kontakt">Kontakt</a></li>
           <li role="presentation" class="visible-xs-block"><a rel="nofollow" href="tel:+4631222120"><i class="fa fa-phone" aria-hidden="true"></i><span class="sr-only">Telefon</span>&nbsp;Ring oss</a></li>
         </ul>

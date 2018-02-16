@@ -180,6 +180,10 @@ header {
     overflow: hidden;
     margin: 0 auto;
 
+    #main-navigation-toggle{
+      display:none;
+    }
+
 
     .top-logo {
       float: left;
@@ -309,20 +313,61 @@ header {
 
   .header-wrap {
     float: left;
-    width: 40px;
+    width: 45px;
     height: 44px;
     padding: 0;
     margin: 0;
-    background-color: red;
+    background-color: $logo-blue;
 
     figure {
       display:none;
     }
 
-    nav {
+    #main-navigation-toggle{
+      display:block;
+      color: $textonblue;
+      text-align: center;
+      padding-top: 5px;
+      cursor: pointer;
+      border: 1px solid white;
+      height: 44px;
+    }
+
+    nav.hidden-collapsable-nav {
       display: none;
       padding: 0;
       margin: 0;
+    }
+
+    nav.shown-collapsable-nav {
+      display: block;
+      padding: 0;
+      margin: 0;
+
+      ul {
+        background-color: white;
+        border-radius: 4px;
+        border: 1px solid white;
+        position: fixed;
+        margin: 0;
+        width: 130px;
+        top: 45px;
+        left: 0;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        align-content: stretch;
+        z-index: 10000;
+        li {
+          display: flex;
+          a {
+            width: 130px;
+            border-radius: 0;
+            margin: 1px;
+
+          }
+        }
+      }
     }
 
 
@@ -330,12 +375,29 @@ header {
   ul#categories-wrap {
     float: right;
     width: calc(100% - 45px);
+    height: 44px;
     padding: 0;
     margin: 0;
     border-radius: 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
     li {
+      display: flex;
+      justify-content: center;
+      align-items:center;
       border-radius: 0;
+      flex: 3 3 auto;
+      a {
+        display: flex;
+        justify-content: center;
+        align-items:center;
+        padding: 0;
+        height: 42px;
+      }
+
     }
+    max-width: none;
   }
 }
 
@@ -840,6 +902,22 @@ div.grecaptcha-badge {
 
   }
 }
+#main-header.docked {
+
+
+  ul#categories-wrap {
+
+    li {
+      font-size: calc(0.5rem + 1vw);
+
+      a {
+        transform:scaleY(1.75);
+      }
+
+    }
+
+  }
+}
 }
 
 @media (max-width: 600px) {
@@ -893,11 +971,17 @@ div.grecaptcha-badge {
 
 @media (max-width: 768px) {
 
-
+  #main-header {
+    padding: 12px 0;
+    .header-wrap {
+      padding-bottom: 8px;
+    }
+  }
   .hide-on-tiny { display: none !important; }
   .clear-on-tiny {
     clear: both !important;
   }
+
   .center-on-tiny {
     text-align: center !important;
     margin: 0 auto !important;

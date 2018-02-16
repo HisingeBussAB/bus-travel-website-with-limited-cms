@@ -180,6 +180,10 @@ header .header-wrap {
   margin: 0 auto;
 }
 
+header .header-wrap #main-navigation-toggle {
+  display: none;
+}
+
 header .header-wrap .top-logo {
   float: left;
   display: block;
@@ -295,33 +299,92 @@ header #categories-wrap li a {
 
 #main-header.docked .header-wrap {
   float: left;
-  width: 40px;
+  width: 45px;
   height: 44px;
   padding: 0;
   margin: 0;
-  background-color: red;
+  background-color: #003299;
 }
 
 #main-header.docked .header-wrap figure {
   display: none;
 }
 
-#main-header.docked .header-wrap nav {
+#main-header.docked .header-wrap #main-navigation-toggle {
+  display: block;
+  color: #fff;
+  text-align: center;
+  padding-top: 5px;
+  cursor: pointer;
+  border: 1px solid white;
+  height: 44px;
+}
+
+#main-header.docked .header-wrap nav.hidden-collapsable-nav {
   display: none;
   padding: 0;
   margin: 0;
 }
 
+#main-header.docked .header-wrap nav.shown-collapsable-nav {
+  display: block;
+  padding: 0;
+  margin: 0;
+}
+
+#main-header.docked .header-wrap nav.shown-collapsable-nav ul {
+  background-color: white;
+  border-radius: 4px;
+  border: 1px solid white;
+  position: fixed;
+  margin: 0;
+  width: 130px;
+  top: 45px;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-content: stretch;
+  z-index: 10000;
+}
+
+#main-header.docked .header-wrap nav.shown-collapsable-nav ul li {
+  display: flex;
+}
+
+#main-header.docked .header-wrap nav.shown-collapsable-nav ul li a {
+  width: 130px;
+  border-radius: 0;
+  margin: 1px;
+}
+
 #main-header.docked ul#categories-wrap {
   float: right;
   width: calc(100% - 45px);
+  height: 44px;
   padding: 0;
   margin: 0;
   border-radius: 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  max-width: none;
 }
 
 #main-header.docked ul#categories-wrap li {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border-radius: 0;
+  flex: 3 3 auto;
+}
+
+#main-header.docked ul#categories-wrap li a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  height: 42px;
 }
 
 /*
@@ -751,6 +814,12 @@ div.grecaptcha-badge {
     width: 90px;
     height: 60px;
   }
+  #main-header.docked ul#categories-wrap li {
+    font-size: calc(0.5rem + 1vw);
+  }
+  #main-header.docked ul#categories-wrap li a {
+    transform: scaleY(1.75);
+  }
 }
 
 @media (max-width: 600px) {
@@ -791,6 +860,12 @@ div.grecaptcha-badge {
 }
 
 @media (max-width: 768px) {
+  #main-header {
+    padding: 12px 0;
+  }
+  #main-header .header-wrap {
+    padding-bottom: 8px;
+  }
   .hide-on-tiny {
     display: none !important;
   }

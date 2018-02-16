@@ -1,11 +1,17 @@
+.main-section .tour-box .btn-margin-right {
+  margin-right: 40px;
+}
+
 .main-section .tour-box .trip-featured-img-list {
   float: none;
   margin: 20px auto;
   width: 95%;
-  border-radius: 0;
+  border-radius: 3px;
+  padding: 1px;
   max-width: none;
   max-height: auto;
   height: auto;
+  border: 1px black solid;
 }
 
 .main-section .tour-box .trip-featured-img-list div {
@@ -14,6 +20,7 @@
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center center;
+  border-radius: 3px;
 }
 
 .tour-box h2 {
