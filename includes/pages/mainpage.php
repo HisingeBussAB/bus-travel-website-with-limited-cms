@@ -41,6 +41,11 @@ try {
   $allowed_tags = ALLOWED_HTML_TAGS;
   $html_ents = Functions::set_html_list();
 
+  $dataLayer = "{
+    'pageTitle': 'Home',
+    'visitorType': 'low-value',
+    }";
+
 header('Content-type: text/html; charset=utf-8');
 include __DIR__ . '/shared/header.php';
 
@@ -250,7 +255,7 @@ try {
 
 
 
-      
+
       $output .= "<td class='tour-calendar-table-duration'><h3>";
       if ($tour['days'] == 1) {
         $output .= "Dagsresa";

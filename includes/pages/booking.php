@@ -141,6 +141,12 @@ try {
   $morestyles = "<link rel='stylesheet' href='/css/booking.min.css' >";
   $morescripts = "<script src='/js/booking.js'></script>";
 
+  $dataLayer = "{
+    'pageTitle': 'Booking_Page',
+    'visitorType': 'high-value',
+    'product': '" + $tour['namn'] + "',
+    }";
+
   header('Content-type: text/html; charset=utf-8');
   include __DIR__ . '/shared/header.php';
 

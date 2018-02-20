@@ -177,6 +177,12 @@ try {
 
     $morestyles = "<link rel='stylesheet' href='/css/tour.min.css' >";
 
+    $dataLayer = "{
+      'pageTitle': '"+ $tour['namn'] +"',
+      'pageCategory': 'Tour_Details',
+      'visitorType': 'low-value',
+      }";
+
 
 header('Content-type: text/html; charset=utf-8');
 include __DIR__ . '/shared/header.php';

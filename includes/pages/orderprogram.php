@@ -49,12 +49,18 @@ try {
     }
 
     $pageTitle = "Beställ program för " . $tour['namn'];
+    $dataLayerString = $tour['namn'];
 
   } else {
     $pageTitle = "Beställ katalog";
+    $dataLayerString = "not-specified";
   }
 
-
+  $dataLayer = "{
+    'pageTitle': 'Order_Program',
+    'visitorType': 'medium-value',
+    'product': '" + $dataLayerString + "',
+    }";
 
   $morestyles = "<link rel='stylesheet' href='/css/program.min.css' >";
   $morescripts = "<script src='/js/program.js'></script>";

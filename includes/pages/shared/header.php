@@ -29,6 +29,10 @@ if (empty($robots)) {
   $robots = "<meta name='robots' content='index, follow' />";
 }
 
+if (empty($dataLayer)) {
+  $dataLayer = "{}";
+}
+
 
 ?>
 <!DOCTYPE html>
@@ -48,6 +52,8 @@ if (empty($robots)) {
       node.appendChild(t);
       document.head.appendChild(node);
     };
+    window.dataLayer = window.dataLayer || [];
+    dataLayer.push(<?php echo $dataLayer ?>)
   </script>
   <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -101,13 +107,13 @@ if (empty($robots)) {
 <body>
   <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TLG9DXN"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+      height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- End Google Tag Manager (noscript) -->
   <!-- Facebook Pixel Code -->
-  <noscript><img height="1" width="1" style="display:none"
-  src="https://www.facebook.com/tr?id=957297874347023&ev=PageView&noscript=1"
-/></noscript>
-<!-- End Facebook Pixel Code -->
+    <noscript><img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id=957297874347023&ev=PageView&noscript=1"
+      /></noscript>
+  <!-- End Facebook Pixel Code -->
 
 
 

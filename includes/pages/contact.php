@@ -29,6 +29,11 @@ try {
   $morestyles = "<link rel='stylesheet' href='/css/contact.min.css' >";
   $morescripts = "<script src='/js/contact.js'></script>";
 
+  $dataLayer = "{
+    'pageTitle': 'Contact',
+    'visitorType': 'low-value',
+    }";
+
   header('Content-type: text/html; charset=utf-8');
   include __DIR__ . '/shared/header.php';
 

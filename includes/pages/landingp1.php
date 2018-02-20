@@ -22,6 +22,11 @@ try {
 
   $morestyles = "<link rel='stylesheet' href='/css/static.min.css' >";
 
+  $dataLayer = "{
+    'pageTitle': 'LandingPage_Pensionarsresor',
+    'visitorType': 'low-value',
+    }";
+
   header('Content-type: text/html; charset=utf-8');
   include __DIR__ . '/shared/header.php';
 

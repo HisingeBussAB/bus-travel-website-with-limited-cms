@@ -1,6 +1,8 @@
 RewriteEngine On
 RewriteCond %{HTTPS} off
 RewriteRule (.*) https://%{SERVER_NAME}/$1 [R,L]
+RewriteCond %{HTTP_HOST} !^www\. [NC]
+RewriteRule ^(.*)$ https://www.%{HTTP_HOST}/$1 [R=301,L]
 
 
 RewriteEngine On
@@ -19,7 +21,7 @@ RewriteRule . index.php [L,QSA]
     ExpiresByType image/png "access 1 year"
     ExpiresByType image/gif "access 1 year"
     ExpiresByType image/jpeg "access 3 months"
-    ExpiresByType text/css "access 3 month"
+    ExpiresByType text/css "access 1 month"
     ExpiresByType application/javascript "access 3 months"
     ExpiresByType text/html "access 10 hours"
     ExpiresDefault "access 10 hours"

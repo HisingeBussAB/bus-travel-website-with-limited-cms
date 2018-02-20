@@ -15,6 +15,11 @@ use HisingeBussAB\RekoResor\website\includes\classes\DBError;
    $html_ents = Functions::set_html_list();
  }
 
+ $dataLayer = "{
+   'pageTitle': 'Facebook-tab',
+   'visitorType': 'low-value',
+   }";
+
 
 ?>
 <!DOCTYPE html>
