@@ -67,7 +67,7 @@ if (empty($dataLayer)) {
   <!--end Invisible reCAPTCHA-->
   <meta name="author" content="Håkan K Arnoldson">
   <title><?php echo $pageTitle . " - Rekå Resor"?></title>
-
+  <meta name="theme-color" content="#0856fb">    
   <meta property="og:type" content="website">
   <meta property="og:locale" content="sv_SE">
   <meta property="og:site_name" content="Rekå Resor" />
