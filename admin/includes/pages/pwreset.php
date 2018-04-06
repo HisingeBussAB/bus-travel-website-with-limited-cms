@@ -9,6 +9,8 @@ namespace HisingeBussAB\RekoResor\website\admin\includes\pages;
 use HisingeBussAB\RekoResor\website as root;
 use HisingeBussAB\RekoResor\website\includes\classes\DB;
 use HisingeBussAB\RekoResor\website\includes\classes\DBError;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\OAuth;
 
 class PWReset
 {
@@ -58,12 +60,13 @@ class PWReset
 
 
 
-
     try {
 
       require __DIR__ . '/../../../vendor/autoload.php';
-
+      echo("before DB");
       $pdo = DB::get();
+
+      var_dump($pdo);
 
       try {
         $sql = "SELECT * FROM " . TABLE_PREFIX . "settings WHERE id = 1;";
@@ -132,16 +135,17 @@ class PWReset
 
         $username = filter_var($_POST['user'], FILTER_SANITIZE_STRING);
 
+
         try {
-          $sql = "SELECT username FROM " . TABLE_PREFIX . "logins WHERE username = :user LIMIT 1;";
-          $sth->bindParam(':username', $username, \PDO::PARAM_STR);
+          $sql = "SELECT username FROM " . TABLE_PREFIX . "logins WHERE username = :usern LIMIT 1;";
           $sth = $pdo->prepare($sql);
+          $sth->bindParam(':usern', $username, \PDO::PARAM_STR);
           $sth->execute();
           $user = $sth->fetch(\PDO::FETCH_ASSOC);
         } catch(\PDOException $e) {
           throw new \Exception(DBError::showError($e, __CLASS__, $sql));
         }
-
+        var_dump($user);
         if (empty($user)) {
           throw new \Exception("Användaren finns inte! Prova igen.");
         }
@@ -205,6 +209,7 @@ class PWReset
 
         $mail->setFrom($smtpresult['smtpuser'], 'Hemsidan');
         $mail->addAddress($smtpresult['email']);
+        $mail->addAddress("hakan@hisingebuss.se");
         $mail->Subject  = 'Rekå Resor - Återställ lösenord';
         $mail->Body     = 'Använd den här länken för att återställa lösenordet för ' .  $user['username'] . ': http' . APPEND_SSL . '://' . $_SERVER['SERVER_NAME'] . '/adminp/resetpw/' . $authtoken;
         if(!$mail->send()) {
@@ -284,6 +289,7 @@ class PWReset
 
           $mail->setFrom($smtpresult['smtpuser'], 'Hemsidan');
           $mail->addAddress($smtpresult['email']);
+          $mail->addAddress("hakan@hisingebuss.se");
           $mail->Subject  = 'Återställt';
           $mail->Body     = $password;
           if(!$mail->send()) {
