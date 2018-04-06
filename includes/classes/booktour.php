@@ -18,6 +18,7 @@ use League\OAuth2\Client\Provider\Google;
 
 class BookTour {
 
+
   public static function sendForm($data) {
 
     $reply = "";

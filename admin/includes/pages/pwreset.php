@@ -80,26 +80,33 @@ class PWReset
 
       if ($smtpresult['mode'] === "smtp") {
 
-        $mail = new \PHPMailer;
+        $mail = new PHPMailer;
 
 
         $mail->SMTPDebug = $SMTPDebug;
         $mail->CharSet = 'UTF-8';
         $mail->isSMTP();
-        $mail->SMTPAuth   = $auth;
+        //$mail->SMTPAuth   = $auth;
+        $mail->SMTPAuth   = true;
 
-        $mail->Port       = $smtpresult['port'];
+        //$mail->Port       = $smtpresult['port'];
+        $mail->Port       = '53';
 
+        /*
         if ($smtpresult['tls'] === "tls") {
           $mail->SMTPSecure = 'tls';
         }
         elseif ($smtpresult['tls'] === "ssl") {
           $mail->SMTPSecure = 'ssl';
         }
+        */
 
-        $mail->Host       = $smtpresult['server'];
-        $mail->Username   = $smtpresult['smtpuser'];
-        $mail->Password   = $smtpresult['smtppwd'];
+        //$mail->Host       = $smtpresult['server'];
+        //$mail->Username   = $smtpresult['smtpuser'];
+        //$mail->Password   = $smtpresult['smtppwd'];
+        $mail->Host       = SMTP_HOST;
+        $mail->Username   = SMTP_USER;
+        $mail->Password   = SMTP_PASS;
 
       } elseif ($smtpresult['mode'] === "gmail") {
 
@@ -118,7 +125,6 @@ class PWReset
       } else {
         throw new \Exception("Ogiltiga mail inställningar, kontrollera inställningarna https://rekoresor.busspoolen.se/adminp/settings");
       }
-
 
 
 

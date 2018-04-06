@@ -14,8 +14,10 @@ use HisingeBussAB\RekoResor\website\includes\classes\Functions as functions;
 use HisingeBussAB\RekoResor\website\includes\classes\DB;
 use HisingeBussAB\RekoResor\website\includes\classes\DBError;
 
-
-
+function generateIndividualRoomSelectors($i) {
+  $return = "";
+  $return = "<select></select>"
+}
 
 try {
   root\includes\classes\Sessions::secSessionStart(TRUE);
@@ -248,7 +250,7 @@ try {
       if ($tour['personnr']) { echo "<input type='text' name='resenar5-pnr' placeholder='Fördelsedatum för resenär 5' maxlength='16' />"; }
       echo "</li><li><input type='text' name='resenar6' placeholder='Resenär 6' maxlength='120' />";
       if ($tour['personnr']) { echo "<input type='text' name='resenar6-pnr' placeholder='Fördelsedatum för resenär 6' maxlength='16' />"; }
-      echo "</li></ul>";
+      echo "</li><li><small>För bokning av större grupper vänligen ring 031 - 22 21 20</small></li></ul>";
 
       echo "<input type='hidden' value='" . $token['id'] . "' name='tokenid' id='tokenid' />
       <input type='hidden' value='" . $token['token'] . "' name='token' id='token' />
