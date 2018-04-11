@@ -8,7 +8,9 @@ upload/**/*.png
 upload/**/*.pdf
 upload/**/*.jpg
 upload/**/*.jpeg
+vendor/
 /vendor/
+vendor/**
 .idea/
 ignore/
 css/**/*.min.css
