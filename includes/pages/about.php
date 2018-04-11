@@ -20,7 +20,7 @@ try {
   $pageTitle = "Om Rekå Resor – Bussresor i Norden och Europa";
 
 
-  $morestyles = "<link rel='stylesheet' href='/css/static.min.css' >";
+  $morestyles = "<link rel='stylesheet' href='/css/static.css' >";
 
   $dataLayer = "{
     'pageTitle': 'About',

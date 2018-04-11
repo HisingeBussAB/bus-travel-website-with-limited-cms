@@ -102,7 +102,11 @@ if (empty($dataLayer)) {
 
 
 
-  <link rel="stylesheet" href="/dependencies/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/dependencies/bootstrap-3.3.7-dist/css/bootstrap.css">
+  <link rel="stylesheet" href="/css/main.css" >
+  <?php
+    if (!empty($morestyles)) echo $morestyles;
+  ?>
 </head>
 <body>
   <!-- Google Tag Manager (noscript) -->

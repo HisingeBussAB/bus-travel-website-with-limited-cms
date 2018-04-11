@@ -21,7 +21,7 @@ try {
   $cat = str_replace("'", "", $cat); //Is urlencoded there should not be any ' and they will break the html if value is echoed and user enters a malicious query
   $cat = filter_var(trim($cat), FILTER_SANITIZE_URL);
   $allowed_tags = ALLOWED_HTML_TAGS;
-  $morestyles = "<link rel='stylesheet' href='/css/category.min.css' >";
+  $morestyles = "<link rel='stylesheet' href='/css/category.css' >";
 
   try {
     $pdo = DB::get();

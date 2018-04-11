@@ -62,7 +62,7 @@ try {
     'product': '" + $dataLayerString + "',
     }";
 
-  $morestyles = "<link rel='stylesheet' href='/css/program.min.css' >";
+  $morestyles = "<link rel='stylesheet' href='/css/program.css' >";
   $morescripts = "<script src='/js/program.js'></script>";
 
   header('Content-type: text/html; charset=utf-8');

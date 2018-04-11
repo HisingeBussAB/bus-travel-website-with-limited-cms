@@ -4,16 +4,21 @@ RewriteRule (.*) https://%{SERVER_NAME}/$1 [R,L]
 RewriteCond %{HTTP_HOST} !^www\. [NC]
 RewriteRule ^(.*)$ https://www.%{HTTP_HOST}/$1 [R=301,L]
 
+# RewriteCond %{REQUEST_URI} ^/phpmyadmin2/tmp
+# RewriteCond %{REQUEST_URI} ^/phpmyadmin2/config.inc.php
+# RewriteRule . index.php [L,QSA]
 
-RewriteEngine On
 RewriteCond %{REQUEST_URI} !^/img
 RewriteCond %{REQUEST_URI} !^/favicon
 RewriteCond %{REQUEST_URI} !^/tests
 RewriteCond %{REQUEST_URI} !^/error
 RewriteCond %{REQUEST_URI} !^/ignore
+# RewriteCond %{REQUEST_URI} !^/phpmyadmin2
 RewriteCond %{REQUEST_URI} !\.(gif|jpe?g|png|js|css|swf|ico|pdf|woff2|woff|otf|svg|eot|ttf|map|json)$
 RewriteCond %{REQUEST_URI} !^/google\S*.html
 RewriteRule . index.php [L,QSA]
+
+
 
 
 <IfModule mod_expires.c>

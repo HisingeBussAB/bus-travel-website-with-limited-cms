@@ -16,7 +16,7 @@ use HisingeBussAB\RekoResor\website\includes\classes\DBError;
 
 function generateIndividualRoomSelectors($i) {
   $return = "";
-  $return = "<select></select>"
+  $return = "<select></select>";
 }
 
 try {
@@ -140,7 +140,7 @@ try {
 
   $pageTitle = "Boka resa " . $tour['namn'];
 
-  $morestyles = "<link rel='stylesheet' href='/css/booking.min.css' >";
+  $morestyles = "<link rel='stylesheet' href='/css/booking.css' >";
   $morescripts = "<script src='/js/booking.js'></script>";
 
   $dataLayer = "{

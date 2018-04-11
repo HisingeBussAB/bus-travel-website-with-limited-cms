@@ -26,7 +26,7 @@ try {
   $pageTitle = "Kontakta oss";
 
 
-  $morestyles = "<link rel='stylesheet' href='/css/contact.min.css' >";
+  $morestyles = "<link rel='stylesheet' href='/css/contact.css' >";
   $morescripts = "<script src='/js/contact.js'></script>";
 
   $dataLayer = "{

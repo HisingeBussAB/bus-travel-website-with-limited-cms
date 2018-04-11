@@ -20,5 +20,6 @@ ignore/*
 /admin/css/**.css
 /admin/css/**.map
 !/vendor/composer
-!/css/sass/*
-!/admin/css/sass/*
+!/css/scss/*
+!/admin/css/scss/*
+/node_modules/

@@ -1,0 +1,24 @@
+{
+  "name": "bus-travel-website-with-limited-cms",
+  "version": "1",
+  "description": "Travel website with CMS",
+  "main": "index.php",
+  "repository": "https://github.com/HisingeBussAB/bus-travel-website-with-limited-cms.git",
+  "author": "Håkan Kindström Arnoldson <hakan@arnoldson.net>",
+  "license": "GNU GPL 3",
+  "private": true,
+  "devDependencies": {
+    "node-sass-chokidar": "^1.2.2"
+  },
+  "scripts": {
+    "build-css": "node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/ --output-style compressed --source-map true",
+    "watch-css": "npm run build-css && node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/ --watch --recursive --output-style compressed --source-map true",
+    "build-css-prod": "node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/ --output-style compressed -x",
+    "start-js": "react-scripts start",
+    "start": "npm-run-all -p watch-css start-js",
+    "build-js": "react-scripts build",
+    "build": "npm-run-all build-css-prod build-js",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}

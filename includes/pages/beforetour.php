@@ -20,7 +20,7 @@ try {
   $pageTitle = "Inför Resan - Rekå Resor";
 
 
-  $morestyles = "<link rel='stylesheet' href='/css/static.min.css' >";
+  $morestyles = "<link rel='stylesheet' href='/css/static.css' >";
 
   $dataLayer = "{
     'pageTitle': 'Before-Tour',

@@ -24,7 +24,7 @@ $token = root\includes\classes\Tokens::getFormToken("login",1000);
 
   <link rel="stylesheet" href="/dependencies/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-  <link rel="stylesheet" href="/admin/css/admin.min.css" />
+  <link rel="stylesheet" href="/admin/css/admin.css" />
 
   <script src='https://www.google.com/recaptcha/api.js'></script>
 </head>
