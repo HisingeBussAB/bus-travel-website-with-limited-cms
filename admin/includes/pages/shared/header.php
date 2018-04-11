@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="/dependencies/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="/dependencies/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-  <link href="/admin/css/admin.css" rel="stylesheet">
+  <link href="/admin/css/admin.min.css" rel="stylesheet">
   <?php
   if(!empty($more_stylesheets)) {
     echo $more_stylesheets;

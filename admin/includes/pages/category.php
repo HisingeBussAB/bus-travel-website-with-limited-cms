@@ -30,7 +30,7 @@ class Category {
       //Is logged in
       try {
         $pageTitle = "Rekå Admin - Ändra kategori";
-        $more_stylesheets = "<link href='/admin/css/trip.css' rel='stylesheet'>";
+        $more_stylesheets = "<link href='/admin/css/trip.min.css' rel='stylesheet'>";
         $show_navigation = true;
 
         header('Content-type: text/html; charset=utf-8');

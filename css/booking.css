@@ -1,0 +1,89 @@
+/*
+* === SASS VARIABLES ===
+*/
+#booktour-form .ajax-loader {
+  width: 172px;
+  height: 38px;
+}
+
+#booktour-form input[type=email],
+#booktour-form input[type=text] {
+  width: 343px;
+  padding: 4px;
+  border-radius: 5px;
+  border: 1px solid #003299;
+  margin: 2px;
+}
+
+#booktour-form input[name=zip] {
+  width: 110px;
+}
+
+#booktour-form input[name=city] {
+  width: 230px;
+}
+
+#booktour-form h2 {
+  font-size: 2rem;
+}
+
+#booktour-form ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+#booktour-form ul li {
+  position: relative;
+  height: 2em;
+  margin-top: 1px;
+}
+
+#booktour-form textarea {
+  min-width: 333px;
+  min-height: 200px;
+}
+
+#booktour-form input[type=checkbox] {
+  display: none;
+}
+
+#booktour-form input[type=checkbox] + label {
+  font-weight: normal;
+  position: absolute;
+  right: 0;
+  left: 0;
+  padding-left: 5px;
+  cursor: pointer;
+}
+
+#booktour-form input[type=checkbox] + label:hover {
+  font-weight: bold;
+}
+
+#booktour-form input[type=checkbox] + label::before {
+  font-family: FontAwesome;
+  display: inline-block;
+  content: "\f096";
+  width: 1.5em;
+  color: #003299;
+}
+
+#booktour-form input[type=checkbox]:checked + label::before {
+  content: "\f046";
+}
+
+#booktour-form input[type=submit] {
+  background-color: #003299;
+  color: white;
+  border: 1px solid white;
+  border-radius: 5px;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 4px 7px;
+  margin-top: 10px;
+  width: 172px;
+  height: 38px;
+}
+
+/*# sourceMappingURL=booking.css.map */

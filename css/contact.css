@@ -1,0 +1,100 @@
+/*
+* === SASS VARIABLES ===
+*/
+h4 {
+  padding-top: 20px;
+}
+
+#embedded-map {
+  border: 0;
+  border-radius: 5px;
+  width: 100%;
+  height: 300px;
+}
+
+#get-contact-form .ajax-loader {
+  width: 172px;
+  height: 38px;
+}
+
+#get-contact-form textarea,
+#get-contact-form input[type=tel],
+#get-contact-form input[type=email],
+#get-contact-form input[type=text] {
+  width: 343px;
+  padding: 4px;
+  border-radius: 5px;
+  border: 1px solid #003299;
+  margin: 2px;
+}
+
+#get-contact-form textarea {
+  height: 250px;
+}
+
+#get-contact-form input[name=zip] {
+  width: 110px;
+}
+
+#get-contact-form input[name=city] {
+  width: 230px;
+}
+
+#get-contact-form h2 {
+  font-size: 2rem;
+}
+
+#get-contact-form ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+#get-contact-form ul li {
+  position: relative;
+  line-height: 1.8em;
+  height: 2em;
+}
+
+#get-contact-form input[type=checkbox] {
+  display: none;
+}
+
+#get-contact-form input[type=checkbox] + label {
+  font-weight: normal;
+  position: absolute;
+  right: 0;
+  left: 0;
+  padding-left: 5px;
+  cursor: pointer;
+}
+
+#get-contact-form input[type=checkbox] + label:hover {
+  font-weight: bold;
+}
+
+#get-contact-form input[type=checkbox] + label::before {
+  font-family: FontAwesome;
+  display: inline-block;
+  content: "\f096";
+  width: 1.5em;
+  color: #003299;
+}
+
+#get-contact-form input[type=checkbox]:checked + label::before {
+  content: "\f046";
+}
+
+#get-contact-form input[type=submit] {
+  background-color: #003299;
+  color: white;
+  border: 1px solid white;
+  border-radius: 5px;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 4px 7px;
+  margin-top: 10px;
+  height: 38px;
+}
+
+/*# sourceMappingURL=contact.css.map */

@@ -20,7 +20,7 @@ try {
   $pageTitle = "Efter resan – Rekå Resor";
 
 
-  $morestyles = "<link rel='stylesheet' href='/css/static.css' >";
+  $morestyles = "<link rel='stylesheet' href='/css/static.min.css' >";
 
   $dataLayer = "{
     'pageTitle': 'Gallery',

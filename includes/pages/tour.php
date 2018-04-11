@@ -175,7 +175,7 @@ try {
 
     $pageTitle = $tour['namn'];
 
-    $morestyles = "<link rel='stylesheet' href='/css/tour.css' >";
+    $morestyles = "<link rel='stylesheet' href='/css/tour.min.css' >";
 
     $dataLayer = "{
       'pageTitle': '"+ $tour['namn'] +"',

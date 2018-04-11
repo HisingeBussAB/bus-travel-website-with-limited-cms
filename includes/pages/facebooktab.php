@@ -73,7 +73,6 @@ use HisingeBussAB\RekoResor\website\includes\classes\DBError;
 
 
   <link rel="stylesheet" href="/dependencies/bootstrap-3.3.7-dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/css/main.css" >
 </head>
 <body>
 
