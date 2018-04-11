@@ -255,7 +255,7 @@ echo "<main class='main-section container-fluid'>";
             </div>
             </li>";
 
-      if ($i < $max) {
+      if ($i+1 < $max) {
         $i++;
         $prev = $i - 1;
         $next = $i + 1;

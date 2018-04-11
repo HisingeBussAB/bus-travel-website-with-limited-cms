@@ -20,4 +20,5 @@ admin/css/**/*.min.css
 admin/css/**/*.css
 admin/css/**/*.map
 !.vscode/settings.json
+.vscode/sftp.json
 

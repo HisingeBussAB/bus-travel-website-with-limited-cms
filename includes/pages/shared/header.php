@@ -41,7 +41,6 @@ if (empty($dataLayer)) {
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
-
   <script>
     var bgImg = new Image();
     bgImg.src = '../upload/background-1.jpg';
@@ -55,6 +54,7 @@ if (empty($dataLayer)) {
     window.dataLayer = window.dataLayer || [];
     dataLayer.push(<?php echo $dataLayer ?>)
   </script>
+<?php if (!DEBUG_MODE) { ?>
   <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -62,6 +62,7 @@ if (empty($dataLayer)) {
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-TLG9DXN');</script>
   <!-- End Google Tag Manager -->
+<?php } ?>
   <!--Invisible reCAPTCHA-->
   <script src="https://www.google.com/recaptcha/api.js?hl=sv" async defer></script>
   <!--end Invisible reCAPTCHA-->
@@ -105,6 +106,7 @@ if (empty($dataLayer)) {
   <link rel="stylesheet" href="/dependencies/bootstrap-3.3.7-dist/css/bootstrap.min.css">
 </head>
 <body>
+<?php if (!DEBUG_MODE) { ?>
   <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TLG9DXN"
       height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -114,7 +116,7 @@ if (empty($dataLayer)) {
       src="https://www.facebook.com/tr?id=957297874347023&ev=PageView&noscript=1"
       /></noscript>
   <!-- End Facebook Pixel Code -->
-
+<?php } ?>
 
 
 
