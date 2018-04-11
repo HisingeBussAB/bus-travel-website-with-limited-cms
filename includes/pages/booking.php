@@ -16,7 +16,7 @@ use HisingeBussAB\RekoResor\website\includes\classes\DBError;
 
 function generateIndividualRoomSelectors($i) {
   $return = "";
-  $return = "<select></select>"
+  $return = "<select></select>";
 }
 
 try {
