@@ -20,6 +20,10 @@ function generateIndividualRoomSelectors($i) {
 }
 
 try {
+
+  $allowed_tags = ALLOWED_HTML_TAGS;
+  $html_ents = Functions::set_html_list();
+
   root\includes\classes\Sessions::secSessionStart(TRUE);
   $token = root\includes\classes\Tokens::getFormToken('book', 2500, true);
   $clienthash = md5($_SERVER['HTTP_USER_AGENT']);
@@ -41,7 +45,7 @@ try {
 
   if ((count($result) > 0) && ($result !== false)) {
     $tourid = filter_var($result['id'], FILTER_SANITIZE_NUMBER_INT);
-    $tour['namn'] = htmlspecialchars($result['namn']);
+    $tour['namn'] = strtr(strip_tags($result['namn'], $allowed_tags), $html_ents);
     $tour['url'] = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/resa/" . rawurlencode($result['url']);
     $tour['pris'] = number_format(filter_var($result['pris'], FILTER_SANITIZE_NUMBER_INT), 0, ",", " ");
     $tour['pris-int'] = filter_var($result['pris'], FILTER_SANITIZE_NUMBER_INT);
@@ -259,7 +263,7 @@ try {
 
       echo "<h3>Villkor</h3>";
       echo "<ul><li>";
-      echo "<input type='checkbox' name='terms' id='terms' value='ja' /><label for='terms' id='terms-label'>Ja, jag godkänner <a href='/resevillkor/' target='_blank'>resevillkoren</a>.</label>";
+      echo "<input type='checkbox' name='terms' id='terms' value='ja' required /><label for='terms' id='terms-label'>Ja, jag godkänner <a href='/resevillkor/' target='_blank'>resevillkoren, samt behandling av personuppgifter.</a></label>";
       echo "</li></ul>";
       echo "<h3>Övriga önskemål/frågor</h3>";
       echo "<textarea maxlength='800' name='misc' placeholder='Eventuella övriga önskemål eller frågor.'></textarea>";

@@ -273,7 +273,7 @@ class BookTour {
                   $data['resenar5'] . " " . $data['resenar5-pnr'] . "\r\n" .
                   $data['resenar6'] . " " . $data['resenar6-pnr'] . "\r\n\r\n" .
                   "Övrigt: \r\n" . $data['misc'] .  "\r\n\r\n" .
-                  "Villkor: " . $data['terms'];
+                  "Resevillkor och GDPR: " . $data['terms'];
 
       $mailbody .= "\r\n\r\nSkickad: " . date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']);
 

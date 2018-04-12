@@ -47,9 +47,8 @@
     min-height: 200px;
   }
 
-  //Inspired by https://codepen.io/Rafiozoo/details/RrBXNx
   input[type=checkbox] {
-  	display: none;
+  	opacity: 0;
   }
   input[type=checkbox] + label {
   	font-weight: normal;
@@ -60,23 +59,22 @@
   }
   input[type=checkbox] + label:hover {
   	font-weight: bold;
-    //&::before {
-    //  content: "\f046";
-    //}
   }
-  input[type=radio] + label::before {
+  input[type=checkbox] + label::before {
   	font-family: FontAwesome;
   	display: inline-block;
   	content: "\f096";
   	width: 1.5em;
     color: $logo-blue;
   }
-  input[type=radio]:checked + label::before {
+
+
+  input[type=checkbox]:checked + label::before {
   	content: "\f046";
   }
 
   input[type=radio] {
-  	display: none;
+  	opacity: 0;
   }
   input[type=radio] + label {
   	font-weight: normal;
@@ -87,10 +85,8 @@
   }
   input[type=radio] + label:hover {
   	font-weight: bold;
-    //&::before {
-    //  content: "\f046";
-    //}
   }
+
   input[type=radio] + label::before {
   	font-family: FontAwesome;
   	display: inline-block;
@@ -98,10 +94,11 @@
   	width: 1.5em;
     color: $logo-blue;
   }
+
   input[type=radio]:checked + label::before {
   	content: "\f111";
   }
-  //END SNIPPLET
+
 
 
 

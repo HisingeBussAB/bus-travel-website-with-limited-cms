@@ -126,6 +126,10 @@ class ProgramForm {
         throw new \RuntimeException("Vänligen fyll i mer information och försök igen.");
       }
 
+      if ( empty($data['terms']) OR $data['terms'] !== 'ja' ) {
+        throw new \RuntimeException("Du måste godkänna behandling av personuppgifter för att vi skall kunna skicka dig program.");
+      }
+
 
       if (empty($data['name']))
         $data['name'] = "";
@@ -150,6 +154,11 @@ class ProgramForm {
         throw new \RuntimeException("Det här verkar inte vara en giltig e-mail. Försök igen.");
       }
 
+      if (!empty($data['terms']))
+        $data['terms'] = filter_var(trim($data['terms']), FILTER_SANITIZE_STRING);
+      else
+        $data['terms'] = "";
+
 
 
       //FINAL HAMMER CHECK
@@ -168,6 +177,7 @@ class ProgramForm {
       foreach ($data['category'] as $category) {
         $mailbody .= "$category\r\n";
       }
+      $mailbody .= "Godkänt behandling av personuppgifter: " . $data['terms'];
 
       $mailbody .= "\r\n\r\nSkickad: " . date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']);
 

@@ -83,9 +83,9 @@ try {
         Här kan du beställa tryckta reseprogram för våra nu aktuella resor. Vi skickar dem via post till dig.</p>";
       } else {
         echo "
-        <h1>Beställ tryckt program för " . htmlspecialchars($tour['namn']) . "</h1>
+        <h1>Beställ tryckt program för " . $tour['namn'] . "</h1>
         <p>Vi skickar programmet via post till dig.</p>
-        <input type='hidden' value='" . htmlspecialchars($tour['namn']) . "' name='category[]' />";
+        <input type='hidden' value='" . $tour['namn'] . "' name='category[]' />";
       }
 
 
@@ -110,6 +110,8 @@ try {
         }
         echo "</ul>";
       }
+      echo "<h4>Godkänn villkor</h4>";
+      echo "<ul class='termsBox'><li><input type='checkbox' name='terms' id='terms' value='ja' required /><label for='terms' id='terms-label'>Ja, jag godkänner <a href='/resevillkor/' target='_blank'>behandling av personuppgifter.</a></label></li></ul>";
 
 
 
