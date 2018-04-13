@@ -172,8 +172,14 @@ Parterna bör försöka lösa tvist som gäller tolkningen eller tillämpningen 
 
 Vi reserverar oss för eventuella tryckfel.</p>
 
+<h1>Personuppgifter</h1>
 
-  ";
+<p>Vi sparar personuppgifter för att kunna utföra våra tjänster. Vi delar inte några personuppgifter med tredje part för annonseringsändamål. Vi delar bara uppgifter med trejde part när detta är nödvändigt för att kunna levererea våra tjänster. 
+Exempelvis så delar vi namn på bokade resenärer med de hotell, rederier, flygbolag osv som är involverade i att utföra våra resan.</p>
+<p>Ifall uppgifter lämnas i samband med en betalning är vi oftast skyliga att spara dessa uppgifter i 10 år enligt bokförinslagen. Uppgifter sparade för bokföringslagen hålls separat och används inte för andra syften.</p>
+<p>Vi sparar uppgifter för egna informationssyften, dessa rensas kontinuerligt och används sparsamt för att skicka ut så för kunden relevant och intressant information som möjligt.</p>
+<p>Vid begärd prenumeration på vårt nyhetsbrev sparas e-postadress i prenumerationsregister till dess den begärs borttagen.</p>
+<p>För att få ut kopior på uppgifter vi har om dig eller för att begära att uppgifter raderas kontaka <a href='mailto:info@rekoresor.se'>info@rekoresor.se</a></p>";
 
   echo "</div></div></main>";
 
