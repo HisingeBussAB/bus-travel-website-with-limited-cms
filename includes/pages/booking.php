@@ -150,7 +150,7 @@ try {
   $dataLayer = "{
     'pageTitle': 'Booking_Page',
     'visitorType': 'high-value',
-    'product': '" + $tour['namn'] + "',
+    'product': '" . html_entity_decode($tour['namn']) . "',
     }";
 
   header('Content-type: text/html; charset=utf-8');

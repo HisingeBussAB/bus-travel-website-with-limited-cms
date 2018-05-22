@@ -72,6 +72,7 @@ function onUserVerified(token) {
 }
 
 function sendNewsletterForm(token) {
+  event.preventDefault();
   var formData = $("#newsletter-form").serialize();
   $("#newsletter-form :input").prop("disabled", true);
   $("#newsletter-form-send-default").hide();
@@ -92,8 +93,11 @@ function sendNewsletter(formData) {
     .done(function(data) {
       $( "#newsletter-response" ).html( data );
 
-      fbq('track', 'Lead');
-      ga('send', 'event', 'Lead', 'Nyhetsbrev', 'Nyhetsbrev', 0);
+      dataLayer.push({
+        'event': 'newsletter-sent',
+        'form_result': 'success',
+        'visitorType': 'high-value',
+        'visitor_email': $("input[name=email]").val()});
 
       setTimeout(function(){
         $( "#newsletter-form-send" ).prop("disabled",false);
@@ -105,6 +109,11 @@ function sendNewsletter(formData) {
       document.getElementById("newsletter-form").reset();
     })
     .fail(function(data) {
+      dataLayer.push({
+        'event': 'newsletter-sent',
+        'form_result': 'fail',
+        'visitorType': 'high-value',
+        'visitor_email': $("input[name=email]").val()});
       if (data.status == 404)
         $( "#newsletter-response" ).html( "Något har gått fel. Kunde inte hitta svarssidan." );
       else

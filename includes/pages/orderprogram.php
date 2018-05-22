@@ -59,7 +59,7 @@ try {
   $dataLayer = "{
     'pageTitle': 'Order_Program',
     'visitorType': 'medium-value',
-    'product': '" + $dataLayerString + "',
+    'product': '" . html_entity_decode($dataLayerString) . "',
     }";
 
   $morestyles = "<link rel='stylesheet' href='/css/program.min.css' >";

@@ -29,7 +29,13 @@ function sendForm(formData) {
     dataType: "json",
   })
     .done(function(data) {
-      console.log(data);
+      dataLayer.push({
+        'visitorType': 'high-value',
+        'event': 'contact-form-sent',
+        'form_result': 'success',
+        'visitor_email': $("input[name=email]").val().toLowerCase(),
+        'visitor_phone': Number($("input[name=tel]").val()),
+    });
       $( "#ajax-response" ).html( data );
       newtoken();
       setTimeout(function(){
@@ -43,7 +49,12 @@ function sendForm(formData) {
       document.getElementById("get-contact-form").reset();
     })
     .fail(function(data) {
-      console.log(data);
+      dataLayer.push({
+        'visitorType': 'high-value',
+        'event': 'contact-form-sent',
+        'form_result': 'fail',
+        'visitor_email': $("input[name=email]").val()
+    });
       newtoken();
       if (data.status == 404)
         $( "#ajax-response" ).html( "Något har gått fel. Kunde inte hitta svarssidan." );

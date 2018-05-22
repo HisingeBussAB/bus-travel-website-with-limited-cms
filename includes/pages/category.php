@@ -57,7 +57,7 @@ $pageTitle = $heading;
 
 $dataLayer = "{
   'pageTitle': 'Category',
-  'pageCategory': '" + $heading + "',
+  'pageCategory': '" . $heading . "',
   'visitorType': 'low-value',
   }";
 

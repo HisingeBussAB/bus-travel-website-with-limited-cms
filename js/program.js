@@ -28,7 +28,11 @@ function sendForm(formData) {
     dataType: "json",
   })
     .done(function(data) {
-      console.log(data);
+      dataLayer.push({
+        'event': 'program-form-sent',
+        'form_result': 'success',
+        'visitorType': 'high-value',
+        'visitor_email': $("input[name=email]").val()});
       $( "#ajax-response" ).html( data );
       newtoken();
       setTimeout(function(){
@@ -38,14 +42,15 @@ function sendForm(formData) {
         $("#get-program-button").show();
       }, 200);
 
-      fbq('track', 'Lead');
-
-      ga('send', 'event', 'Lead', 'Program', 'Program', 0);
-
       document.getElementById("get-program-form").reset();
     })
     .fail(function(data) {
-      console.log(data);
+      dataLayer.push({
+        'event': 'program-form-sent',
+        'form_result': 'fail',
+        'visitorType': 'high-value',
+        'visitor_email': $("input[name=email]").val().toLowerCase()
+      });
       newtoken();
       if (data.status == 404)
         $( "#ajax-response" ).html( "Något har gått fel. Kunde inte hitta svarssidan." );

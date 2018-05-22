@@ -35,6 +35,13 @@ function sendForm(formData) {
     dataType: "json",
   })
     .done(function(data) {
+      dataLayer.push({
+        'visitorType': 'high-value',
+        'form_result': 'success',
+        'conversionValue': Number($("#price-int").val()).toFixed(2),
+        'visitor_email': $("input[name=email]").val(),
+        'visitor_phone': $("input[name=phone]").val(),
+        'event': 'booking-form-sent'});
       $( "#ajax-response" ).html( data );
       newtoken();
       setTimeout(function(){
@@ -44,17 +51,16 @@ function sendForm(formData) {
         $("#booktour-button").show();
       }, 200);
 
-      fbq('track', 'Purchase', {
-        currency: 'SEK',
-        value: $("#price-int").val(),
-      });
-
-      ga('send', 'event', 'Order', 'Order', 'Order', $("#price-int").val());
-
       document.getElementById("booktour-form").reset();
     })
     .fail(function(data) {
-      console.log(data);
+      dataLayer.push({
+        'form_result': 'fail',
+        'visitorType': 'high-value',
+        'conversionValue': Number($("#price-int").val()).toFixed(2),
+        'visitor_email': $("input[name=email]").val().toLowerCase(),
+        'visitor_phone': Number($("input[name=phone]").val()),
+        'event': 'booking-form-sent'});
       newtoken();
       if (data.status == 404)
         $( "#ajax-response" ).html( "Något har gått fel. Kunde inte hitta svarssidan." );

@@ -178,7 +178,7 @@ try {
     $morestyles = "<link rel='stylesheet' href='/css/tour.min.css' >";
 
     $dataLayer = "{
-      'pageTitle': '"+ $tour['namn'] +"',
+      'pageTitle': '" . html_entity_decode($tour['namn']) . "',
       'pageCategory': 'Tour_Details',
       'visitorType': 'low-value',
       }";
