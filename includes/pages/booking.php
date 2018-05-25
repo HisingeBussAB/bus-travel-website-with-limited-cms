@@ -151,6 +151,7 @@ try {
     'pageTitle': 'Booking_Page',
     'visitorType': 'high-value',
     'product': '" . html_entity_decode($tour['namn']) . "',
+    'content_ID': '" . $tourid . "'
     }";
 
   header('Content-type: text/html; charset=utf-8');

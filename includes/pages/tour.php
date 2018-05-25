@@ -181,6 +181,7 @@ try {
       'pageTitle': '" . html_entity_decode($tour['namn']) . "',
       'pageCategory': 'Tour_Details',
       'visitorType': 'low-value',
+      'content_ID': '" . $tour['id'] . "'
       }";
 
 

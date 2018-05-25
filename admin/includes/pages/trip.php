@@ -416,8 +416,46 @@ class Trip {
           </fieldset>
 
           <fieldset>
-            <h3>Tekniska SEO &amp; social media inställningar</h3>
-            <p>Valfritt, ställs in automatiskt om det lämnas tomt.</p>
+            <h3>Facebook produktkatalog (information om destinationen på engelska)</h3>
+            <p>Valfritt men rekommenderat att fylla i. Har ingen funktion på själva sidan, behövs för att resan skall vara med i produktkatalogen på Facebook och för fullständig analysspråning av försäljning.</p>
+            <fieldset>
+              <label for="cat_addr_street" class="small-label">Gatuaddress:</label>
+              <input type="text" name="cat_addr_street" maxlength="150" value="<?php if (isset($trip)) {echo  htmlentities($trip['cat_addr_street'], ENT_QUOTES);} ?>" />
+            </fieldset>
+            <fieldset>
+              <label for="cat_addr_city" class="small-label">Stad:</label>
+              <input type="text" name="cat_addr_city" maxlength="130" value="<?php if (isset($trip)) {echo  htmlentities($trip['cat_addr_city'], ENT_QUOTES);} ?>" />
+            </fieldset>
+            <fieldset>
+              <label for="cat_addr_region" class="small-label">Region:</label>
+              <input type="text" name="cat_addr_region" maxlength="200" value="<?php if (isset($trip)) {echo  htmlentities($trip['cat_addr_region'], ENT_QUOTES);} ?>" />
+            </fieldset>
+            <fieldset>
+              <label for="cat_addr_country" class="small-label">Land (på engelska):</label>
+              <input type="text" name="cat_addr_country" maxlength="130" value="<?php if (isset($trip) && !empty($trip['cat_addr_country'])) {echo  htmlentities($trip['cat_addr_country'], ENT_QUOTES);} else {echo "Sweden";} ?>" />
+            </fieldset>
+            <fieldset>
+              <label for="cat_addr_zip" class="small-label">Postnummer:</label>
+              <input type="text" name="cat_addr_zip" maxlength="19" value="<?php if (isset($trip)) {echo  htmlentities($trip['cat_addr_zip'], ENT_QUOTES);} ?>" />
+            </fieldset>
+            <fieldset>
+              <label for="cat_lat" class="small-label">Position (valfritt):</label>
+              Lat: <input type="text" class="room-price" name="cat_lat" maxlength="10" value="<?php if (isset($trip)) {echo  htmlentities($trip['cat_lat'], ENT_QUOTES);} ?>" />
+              Long: <input type="text" class="room-price" name="cat_long" maxlength="10" value="<?php if (isset($trip)) {echo  htmlentities($trip['cat_long'], ENT_QUOTES);} ?>" />
+            </fieldset>
+            <fieldset>
+              <label for="cat_neighborhood" class="small-label">Namn/Smeknamn på områden som kommer besökas (separarede med komma):</label>
+              <input type="text" name="cat_neighborhood" maxlength="300" value="<?php if (isset($trip)) {echo  htmlentities($trip['cat_neighborhood'], ENT_QUOTES);} ?>" />
+            </fieldset>
+            <fieldset>
+              <label for="cat_type" class="small-label">Kategorier separerade med komma (ex: "city, beach, museum")</label>
+              <input type="text" name="cat_type" maxlength="300" value="<?php if (isset($trip)) {echo  htmlentities($trip['cat_type'], ENT_QUOTES);} ?>" />
+            </fieldset>
+          </fieldset>
+
+          <fieldset>
+            <h3>SEO &amp; Open Graph inställningar</h3>
+            <p>Valfritt, teknisk information för optimering på sökmotorer och i social media. Grundinställningar ställs in automatiskt om det lämnas tomt.</p>
             <fieldset>
               <label for="uri_kategori" class="small-label">Resa URL (SEO vänlig sub-url):</label>
               <input type="text" name="tour_url" maxlength="85" value="<?php if (isset($trip)) {echo  htmlentities($trip['url'], ENT_QUOTES);} ?>" />
@@ -438,7 +476,6 @@ class Trip {
               <label for="meta_data_extra" class="small-label">Extra meta taggar (skriv in full HTML för ev extra meta taggar):</label>
               <textarea type="text" name="meta_data_extra" value=""><?php if (isset($trip)) {echo  htmlentities($trip['meta_data_extra'], ENT_QUOTES);} ?></textarea>
             </fieldset>
-
           </fieldset>
 
 

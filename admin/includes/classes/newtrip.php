@@ -45,6 +45,15 @@ class NewTrip
   private $og_title; //string
   private $meta_extra; //string
   private $featured; //bool
+  private $cat_addr_street; //string
+  private $cat_addr_city; //string
+  private $cat_addr_region; //string
+  private $cat_addr_country; //string
+  private $cat_addr_zip; //string
+  private $cat_lat; //string
+  private $cat_long; //string
+  private $cat_neighborhood; //string
+  private $cat_type; //string
 
 
   public function __construct($formData) {
@@ -333,8 +342,59 @@ class NewTrip
       http_response_code(500);
     }
 
+    if (empty($input['cat_addr_street'])) {
+      $this->cat_addr_street = "";
+    } else {
+      $this->cat_addr_street = filter_var($input['cat_addr_street'], FILTER_SANITIZE_STRING);
+    }
 
+    if (empty($input['cat_addr_city'])) {
+      $this->cat_addr_city = "";
+    } else {
+      $this->cat_addr_city = filter_var($input['cat_addr_city'], FILTER_SANITIZE_STRING);
+    }
 
+    if (empty($input['cat_addr_region'])) {
+      $this->cat_addr_region = "";
+    } else {
+      $this->cat_addr_region = filter_var($input['cat_addr_region'], FILTER_SANITIZE_STRING);
+    }
+
+    if (empty($input['cat_addr_country'])) {
+      $this->cat_addr_country = "Sweden";
+    } else {
+      $this->cat_addr_country = filter_var($input['cat_addr_country'], FILTER_SANITIZE_STRING);
+    }
+
+    if (empty($input['cat_addr_zip'])) {
+      $this->cat_addr_zip = "";
+    } else {
+      $this->cat_addr_zip = filter_var($input['cat_addr_zip'], FILTER_SANITIZE_STRING);
+    }
+
+    if (empty($input['cat_lat'])) {
+      $this->cat_lat = "";
+    } else {
+      $this->cat_lat = filter_var($input['cat_lat'], FILTER_SANITIZE_STRING);
+    }
+
+    if (empty($input['cat_long'])) {
+      $this->cat_long = "";
+    } else {
+      $this->cat_long = filter_var($input['cat_long'], FILTER_SANITIZE_STRING);
+    }
+
+    if (empty($input['cat_neighborhood'])) {
+      $this->cat_neighborhood = "";
+    } else {
+      $this->cat_neighborhood = filter_var($input['cat_neighborhood'], FILTER_SANITIZE_STRING);
+    }
+
+    if (empty($input['cat_type'])) {
+      $this->cat_type = "";
+    } else {
+      $this->cat_type = filter_var($input['cat_type'], FILTER_SANITIZE_STRING);
+    }
 
     if (empty($input['og_title'])) {
       $this->og_title = strip_tags($this->heading) . " - Rekå Resor";
@@ -396,7 +456,16 @@ class NewTrip
           og_title,
           seo_keywords,
           meta_data_extra,
-          utvald
+          utvald,
+          cat_addr_street,
+          cat_addr_city,
+          cat_addr_region,
+          cat_addr_country,
+          cat_addr_zip,
+          cat_lat,
+          cat_long,
+          cat_neighborhood,
+          cat_type
         ) VALUES (
           :price,
           :name,
@@ -417,7 +486,16 @@ class NewTrip
           :og_title,
           :seo_keywords,
           :meta_data_extra,
-          :utvald
+          :utvald,
+          :cat_addr_street,
+          :cat_addr_city,
+          :cat_addr_region,
+          :cat_addr_country,
+          :cat_addr_zip,
+          :cat_lat,
+          :cat_long,
+          :cat_neighborhood,
+          :cat_type
         );";
       } else {
         $sql = "UPDATE " . TABLE_PREFIX . "resor SET
@@ -439,7 +517,16 @@ class NewTrip
           og_title = :og_title,
           seo_keywords = :seo_keywords,
           meta_data_extra = :meta_data_extra,
-          utvald = :utvald
+          utvald = :utvald,
+          cat_addr_street = :cat_addr_street,
+          cat_addr_city = :cat_addr_city,
+          cat_addr_region = :cat_addr_region,
+          cat_addr_country = :cat_addr_country,
+          cat_addr_zip = :cat_addr_zip,
+          cat_lat = :cat_lat,
+          cat_long = :cat_long,
+          cat_neighborhood = :cat_neighborhood,
+          cat_type = :cat_type
         WHERE id = :tripid
         ;";
       }
@@ -467,6 +554,15 @@ class NewTrip
       $sth->bindParam(':seo_keywords', $this->seo_keywords, \PDO::PARAM_STR);
       $sth->bindParam(':meta_data_extra', $this->meta_extra, \PDO::PARAM_STR);
       $sth->bindParam(':utvald', $this->featured, \PDO::PARAM_INT);
+      $sth->bindParam(':cat_addr_street', $this->cat_addr_street, \PDO::PARAM_STR);
+      $sth->bindParam(':cat_addr_city', $this->cat_addr_city, \PDO::PARAM_STR);
+      $sth->bindParam(':cat_addr_region', $this->cat_addr_region, \PDO::PARAM_STR);
+      $sth->bindParam(':cat_addr_country', $this->cat_addr_country, \PDO::PARAM_STR);
+      $sth->bindParam(':cat_addr_zip', $this->cat_addr_zip, \PDO::PARAM_STR);
+      $sth->bindParam(':cat_lat', $this->cat_lat, \PDO::PARAM_STR);
+      $sth->bindParam(':cat_long', $this->cat_long, \PDO::PARAM_STR);
+      $sth->bindParam(':cat_neighborhood', $this->cat_neighborhood, \PDO::PARAM_STR);
+      $sth->bindParam(':cat_type', $this->cat_type, \PDO::PARAM_STR);
       $sth->execute();
 
       if ($mode) {$this->tripid = intval($pdo->lastInsertId());}

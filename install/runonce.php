@@ -288,7 +288,16 @@ try {
     utvald BOOLEAN DEFAULT 0,
     hotel TEXT,
     hotellink VARCHAR(255),
-    facebook VARCHAR(255));";
+    facebook VARCHAR(255)),
+    cat_addr_street VARCHAR(200),
+    cat_addr_city VARCHAR(150),
+    cat_addr_region VARCHAR(220),
+    cat_addr_country VARCHAR(150),
+    cat_addr_zip VARCHAR(20),
+    cat_lat VARCHAR(20),
+    cat_long VARCHAR(20),
+    cat_neighborhood TEXT,
+    cat_type TEXT;";
   $sth = $pdo->prepare($sql);
   $sth->execute();
   echo "Table: " . $table . " created succesfully.<br>";
