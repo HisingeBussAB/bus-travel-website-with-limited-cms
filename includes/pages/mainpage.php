@@ -42,8 +42,9 @@ try {
   $html_ents = Functions::set_html_list();
 
   $dataLayer = "{
-    'pageTitle': 'Home',
+    'pageTitle': 'MainPage',
     'visitorType': 'low-value',
+    'product': false
     }";
 
 header('Content-type: text/html; charset=utf-8');

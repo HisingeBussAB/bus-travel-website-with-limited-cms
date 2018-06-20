@@ -7,7 +7,7 @@ use HisingeBussAB\RekoResor\website as root;
 use HisingeBussAB\RekoResor\website\includes\classes\Functions as functions;
 
 
-class RenderCatalog {
+class RenderDestCatalog {
 
   public static function render() {
 
@@ -43,8 +43,8 @@ class RenderCatalog {
       header('Content-type: text/xml; charset="utf-8"',true);
       echo '<?xml version="1.0" encoding="UTF-8"?>
               <listings>
-                <title>Destination Feed</title>
-                <link rel="self" href="http' . APPEND_SSL . '://' . DOMAIN . '/feed/get-products.xml"/>
+                <title>Rekå Resor Destinations</title>
+                <link rel="self" href="http' . APPEND_SSL . '://' . DOMAIN . '/feed/get-destinations.xml"/>
                 ';
                 foreach($result as $item) {
                   if (!empty($item['cat_addr_city']) && !empty($item['cat_addr_region']) && !empty($item['cat_addr_country'])

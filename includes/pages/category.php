@@ -56,9 +56,10 @@ try {
 $pageTitle = $heading;
 
 $dataLayer = "{
-  'pageTitle': 'Category',
-  'pageCategory': '" . $heading . "',
+  'pageTitle': '" . $heading . "',
+  'pageCategory': 'Category_Details',
   'visitorType': 'low-value',
+  'product': false
   }";
 
 header('Content-type: text/html; charset=utf-8');

@@ -25,6 +25,7 @@ try {
   $dataLayer = "{
     'pageTitle': 'Terms',
     'visitorType': 'high-value',
+    'product': false
     }";
 
   header('Content-type: text/html; charset=utf-8');
@@ -174,7 +175,7 @@ Vi reserverar oss för eventuella tryckfel.</p>
 
 <h1>Personuppgifter</h1>
 
-<p>Vi sparar personuppgifter för att kunna utföra våra tjänster. Vi delar inte några personuppgifter med tredje part för annonseringsändamål. Vi delar bara uppgifter med trejde part när detta är nödvändigt för att kunna levererea våra tjänster. 
+<p>Vi sparar personuppgifter för att kunna utföra våra tjänster. Vi delar inte några personuppgifter med tredje part för annonseringsändamål. Vi delar bara uppgifter med trejde part när detta är nödvändigt för att kunna levererea våra tjänster.
 Exempelvis så delar vi namn på bokade resenärer med de hotell, rederier, flygbolag osv som är involverade i att utföra våra resan.</p>
 <p>Ifall uppgifter lämnas i samband med en betalning är vi oftast skyliga att spara dessa uppgifter i 10 år enligt bokförinslagen. Uppgifter sparade för bokföringslagen hålls separat och används inte för andra syften.</p>
 <p>Vi sparar uppgifter för egna informationssyften, dessa rensas kontinuerligt och används sparsamt för att skicka ut så för kunden relevant och intressant information som möjligt.</p>

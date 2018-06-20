@@ -30,7 +30,7 @@ try {
     try {
       $pdo = DB::get();
 
-      $sql = "SELECT namn, url FROM " . TABLE_PREFIX . "resor WHERE aktiv = 1 AND url = :url;";
+      $sql = "SELECT id, namn, url FROM " . TABLE_PREFIX . "resor WHERE aktiv = 1 AND url = :url;";
       $sth = $pdo->prepare($sql);
       $sth->bindParam(':url', $toururl, \PDO::PARAM_STR);
       $sth->execute();
@@ -41,6 +41,7 @@ try {
     }
 
     if ((count($result) > 0) && ($result !== false)) {
+      $tourid = filter_var($result['id'], FILTER_SANITIZE_NUMBER_INT);
       $tour['namn'] = strtr(strip_tags($result['namn'], $allowed_tags), $html_ents);
       $tour['url'] = filter_var("http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/resa/" . rawurlencode($result['url']), FILTER_SANITIZE_URL);
 
@@ -49,17 +50,18 @@ try {
     }
 
     $pageTitle = "Beställ program för " . $tour['namn'];
-    $dataLayerString = $tour['namn'];
+    $dataLayerString = "'content_ids': '" . $tourid . "',
+    'product': '" . html_entity_decode($tour['namn']) . "',";
 
   } else {
     $pageTitle = "Beställ katalog";
-    $dataLayerString = "not-specified";
+    $dataLayerString = "";
   }
 
   $dataLayer = "{
     'pageTitle': 'Order_Program',
     'visitorType': 'medium-value',
-    'product': '" . html_entity_decode($dataLayerString) . "',
+    " . $dataLayerString . "
     }";
 
   $morestyles = "<link rel='stylesheet' href='/css/program.min.css' >";

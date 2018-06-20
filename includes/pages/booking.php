@@ -33,7 +33,7 @@ try {
   try {
     $pdo = DB::get();
 
-    $sql = "SELECT id, namn, pris, personnr, fysiskadress, url FROM " . TABLE_PREFIX . "resor WHERE aktiv = 1 AND url = :url;";
+    $sql = "SELECT id, namn, pris, personnr, fysiskadress, url, antaldagar, cat_addr_city, cat_addr_country FROM " . TABLE_PREFIX . "resor WHERE aktiv = 1 AND url = :url;";
     $sth = $pdo->prepare($sql);
     $sth->bindParam(':url', $toururl, \PDO::PARAM_STR);
     $sth->execute();
@@ -51,6 +51,9 @@ try {
     $tour['pris-int'] = filter_var($result['pris'], FILTER_SANITIZE_NUMBER_INT);
     $tour['personnr'] = filter_var($result['personnr'], FILTER_VALIDATE_BOOLEAN);
     $tour['fysiskadress'] = filter_var($result['fysiskadress'], FILTER_VALIDATE_BOOLEAN);
+    $tour['antaldagar'] = filter_var($result['antaldagar'], FILTER_SANITIZE_NUMBER_INT);
+    $tour['cat_addr_city'] = filter_var($result['cat_addr_city'], FILTER_SANITIZE_STRING);
+    $tour['cat_addr_country'] = filter_var($result['cat_addr_country'], FILTER_SANITIZE_STRING);
   } else {
     throw new \UnexpectedValueException("Resan finns inte.");
   }
@@ -147,11 +150,22 @@ try {
   $morestyles = "<link rel='stylesheet' href='/css/booking.min.css' >";
   $morescripts = "<script src='/js/booking.js'></script>";
 
+  $locationForDataLayer = "";
+  if (!empty($tour['cat_addr_city'])) {
+    $locationForDataLayer .= "'city': '" . $tour['cat_addr_city'] . "',";
+  }
+  if (!empty($tour['cat_addr_country'])) {
+    $locationForDataLayer .= "'country': '" . $tour['cat_addr_country'] . "',";
+  }
+
   $dataLayer = "{
     'pageTitle': 'Booking_Page',
     'visitorType': 'high-value',
     'product': '" . html_entity_decode($tour['namn']) . "',
-    'content_ID': '" . $tourid . "'
+    'content_ids': '" . $tourid . "',
+    'travel_start': '" . $tour['departures'][0] . "',
+    'travel_end': '" . date('Y-m-d', strtotime($row['datum']) . "+ " . $tour['antaldagar'] . " days" ) . "',
+    " . $locationForDataLayer . "
     }";
 
   header('Content-type: text/html; charset=utf-8');

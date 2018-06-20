@@ -25,6 +25,7 @@ try {
   $dataLayer = "{
     'pageTitle': 'Before-Tour',
     'visitorType': 'low-value',
+    'product': false
     }";
 
   header('Content-type: text/html; charset=utf-8');

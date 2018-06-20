@@ -110,8 +110,9 @@ class Router
 
     //Sitemap robots, data exports
     $this->addRoute(  '/^robots.txt$/',                      $func = function() {if (!include __DIR__ . '/../render-robots.php')  { require __DIR__ . '/../includes/pages/error/404.php'; } },  'GET');
-    $this->addRoute(  '/^sitemap.xml$/',                     $func = function() { root\RenderSitemap::render($this->sitemap); },                    'GET');
-    $this->addRoute(  '/^feed\/get-products.xml$/',          $func = function() { root\RenderCatalog::render(); },                                  'GET');
+    $this->addRoute(  '/^sitemap.xml$/',                     $func = function() { root\RenderSitemap::render($this->sitemap); },                        'GET');
+    $this->addRoute(  '/^feed\/get-destinations.xml$/',      $func = function() { root\RenderDestCatalog::render(); },                                  'GET');
+    $this->addRoute(  '/^feed\/get-products.xml$/',          $func = function() { root\RenderProdCatalog::render(); },                                  'GET');
 
     //INSTALL ROUTE
     $this->addRoute(  '/^installme$/',$func = function() {if (!include __DIR__ . '/../install/install.php') {require __DIR__ . '/../includes/pages/error/404.php';} },'ANY');
