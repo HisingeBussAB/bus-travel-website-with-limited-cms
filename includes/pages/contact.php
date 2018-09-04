@@ -42,7 +42,7 @@ try {
           <div class='row-fluid'>
             <div class='col-xs-12'>
               <h1>Kontakta oss</h1>
-              <iframe id='embedded-map' frameborder='0' src='https://www.google.com/maps/embed/v1/place?key=AIzaSyAvO7sP3DKP5lcOrB9Fo9FpXHFvPhfmlvg&q=Rekå+Resor,Aröds+Industriväg+30' allowfullscreen></iframe>
+              <iframe id='embedded-map' frameborder='0' src='https://www.google.com/maps/embed/v1/place?key=" . GMAPS_API_KEY . "&q=Rekå+Resor,Aröds+Industriväg+30' allowfullscreen></iframe>
             </div>
           </div>
         <form action='/ajax/contact' method='post' accept-charset='utf-8' enctype='application/json' id='get-contact-form'>
