@@ -53,6 +53,7 @@ if (empty($dataLayer)) {
     };
     window.dataLayer = window.dataLayer || [];
     dataLayer.push(<?php echo $dataLayer ?>)
+    var recaptchaSiteKey = '<?php echo INV_RECAPTCHA_PUBLIC ?>'
   </script>
 <?php if (!DEBUG_MODE) { ?>
   <!-- Google Tag Manager -->
@@ -64,7 +65,7 @@ if (empty($dataLayer)) {
   <!-- End Google Tag Manager -->
 <?php } ?>
   <!--Invisible reCAPTCHA-->
-  <script src="https://www.google.com/recaptcha/api.js?hl=sv" async defer></script>
+  <script src="https://www.google.com/recaptcha/api.js?hl=sv&onload=CaptchaCallback&render=explicit" async defer></script>
   <!--end Invisible reCAPTCHA-->
   <meta name="author" content="Håkan K Arnoldson">
   <title><?php echo $pageTitle . " - Rekå Resor"?></title>

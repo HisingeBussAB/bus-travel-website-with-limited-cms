@@ -11,6 +11,7 @@ use HisingeBussAB\RekoResor\website\includes\classes\HammerGuard;
 use HisingeBussAB\RekoResor\website\includes\classes\Tokens;
 use HisingeBussAB\RekoResor\website\includes\classes\DB;
 use HisingeBussAB\RekoResor\website\includes\classes\DBError;
+use HisingeBussAB\RekoResor\website\admin\includes\classes\invreCaptcha;
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\OAuth;
@@ -109,6 +110,10 @@ class ProgramForm {
 
       if (!empty($data['url'])) {
         throw new \RuntimeException("Inte skickad. Lämna fältet \"Leave this empty:\" tomt.");
+      }
+
+      if (!invreCaptcha::tryReCaptcha()) {
+        throw new \RuntimeException("reCaptcha har misslyckats. <a href='javascript:window.location.href=window.location.href'>Prova att ladda om sidan.</a>");
       }
 
       $clienthash = md5($_SERVER['HTTP_USER_AGENT']);

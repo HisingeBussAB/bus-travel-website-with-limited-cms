@@ -115,12 +115,16 @@ try {
       echo "<h4>Godkänn villkor</h4>";
       echo "<ul class='termsBox'><li><input type='checkbox' name='terms' id='terms' value='ja' required /><label for='terms' id='terms-label'>Ja, jag godkänner <a href='/resevillkor/' target='_blank'>behandling av personuppgifter.</a></label></li></ul>";
 
-
-
       echo "<p><input type='submit' value='Beställ program' id='get-program-button' /><button class='ajax-loader'><i class='fa fa-spinner fa-pulse fa-2x' aria-hidden='true'></i></button></p>
       <div class='ajax-response' id='ajax-response'></div>
       ";
-
+      ?>
+      <div id='recaptcha-body' class="g-recaptcha"
+                  data-sitekey="<?php echo INV_RECAPTCHA_PUBLIC; ?>"
+                  data-callback="onVerifyForm"
+                  data-size="invisible"
+                  data-badge='inline'></div>
+      <?php
 
 
   echo "</form></div>";

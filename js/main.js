@@ -30,9 +30,9 @@ $(function() {
   $('#newsletter-form').submit(function(event){
     event.preventDefault();
     $("#newsletter-form-send").prop("disabled",true);
-    var token = grecaptcha.getResponse();
+    var token = grecaptcha.getResponse(bottomCaptchaWidget);
     if (!token) {
-      grecaptcha.execute();
+      grecaptcha.execute(bottomCaptchaWidget);
     } else {
       sendNewsletterForm(token);
     }
@@ -62,10 +62,17 @@ $(function() {
 
 
 
-
 });
 
+var bottomCaptchaWidget;
+var bodyCaptchaWidget;
 
+var CaptchaCallback = function() {
+  bottomCaptchaWidget = grecaptcha.render('recaptcha-footer');
+  if ($('#recaptcha-body').length) {
+    bodyCaptchaWidget = grecaptcha.render('recaptcha-body');
+  }
+};
 
 function onUserVerified(token) {
   sendNewsletterForm(token);
@@ -107,6 +114,7 @@ function sendNewsletter(formData) {
       }, 200);
 
       document.getElementById("newsletter-form").reset();
+      grecaptcha.reset(bottomCaptchaWidget)
     })
     .fail(function(data) {
       dataLayer.push({
@@ -122,5 +130,6 @@ function sendNewsletter(formData) {
       $( "#newsletter-form :input" ).prop("disabled", false);
       $("#newsletter-loader").hide();
       $("#newsletter-form-send-default").show();
+      grecaptcha.reset(bottomCaptchaWidget)
     });
 }

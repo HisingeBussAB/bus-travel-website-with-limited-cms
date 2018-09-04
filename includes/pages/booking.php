@@ -164,7 +164,7 @@ try {
     'product': '" . html_entity_decode($tour['namn']) . "',
     'content_ids': '" . $tourid . "',
     'travel_start': '" . $tour['departures'][0] . "',
-    'travel_end': '" . date('Y-m-d', strtotime($row['datum']) . "+ " . $tour['antaldagar'] . " days" ) . "',
+    'travel_end': '" . date('Y-m-d', strtotime($tour['departures'][0] . " + " . $tour['antaldagar'] . " days" )) . "',
     " . $locationForDataLayer . "
     }";
 
@@ -242,7 +242,7 @@ try {
 
       echo "
       <h3>Dina uppgifter</h3>
-      <p><input type='text' placeholder='Namn' name='name' required /></p>";
+      <p><input id='namefield' type='text' placeholder='Namn' name='name' required /></p>";
       if ($tour['fysiskadress']) {
         echo "<p><input type='text' placeholder='Gatuadress' name='address' required='required' /></p>
               <p><input type='text' placeholder='Postnr.' name='zip' required /><input type='text' placeholder='Postort' name='city' required='required' /></p>";
@@ -257,7 +257,7 @@ try {
       if ($tour['personnr']) { echo "<br />Födelsedatum behöver anges på den här resan då den inkluderar färja eller liknande."; }
       echo "</p>";
 
-      echo "<ul><li><input type='text' name='resenar1' placeholder='Resenär 1' maxlength='120' required />";
+      echo "<ul><li><input id='firsttravellerfield' type='text' name='resenar1' placeholder='Resenär 1' maxlength='120' required />";
       if ($tour['personnr']) { echo "<input type='text' name='resenar1-pnr' placeholder='Fördelsedatum för resenär 1' maxlength='16' required />"; }
       echo "</li><li><input type='text' name='resenar2' placeholder='Resenär 2' maxlength='120' />";
       if ($tour['personnr']) { echo "<input type='text' name='resenar2-pnr' placeholder='Fördelsedatum för resenär 2' maxlength='16' />"; }
@@ -282,12 +282,18 @@ try {
       echo "</li></ul>";
       echo "<h3>Övriga önskemål/frågor</h3>";
       echo "<textarea maxlength='800' name='misc' placeholder='Eventuella övriga önskemål eller frågor.'></textarea>";
-      echo "<p><input type='submit' value='Skicka bokning' id='booktour-button' /><span class='ajax-loader'><i class='fa fa-spinner fa-pulse fa-2x' aria-hidden='true'></i></span></p>
+      echo "<p><input type='submit' value='Skicka bokning' id='booktour-button' /><button class='ajax-loader'><i class='fa fa-spinner fa-pulse fa-2x' aria-hidden='true'></i></button></p>
       <div class='ajax-response' id='ajax-response'></div>
       ";
 
 
-
+      ?>
+      <div id='recaptcha-body' class="g-recaptcha"
+                  data-sitekey="<?php echo INV_RECAPTCHA_PUBLIC; ?>"
+                  data-callback="onVerifyForm"
+                  data-size="invisible"
+                  data-badge='inline'></div>
+      <?php
   echo "</form></div>";
   echo "</main>";
 

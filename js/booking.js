@@ -12,21 +12,33 @@ $(function() {
     } else {
     $(".ajax-response").empty();
     $("#booktour-button").prop("disabled",true);
-    var formData = $("#booktour-form").serialize()
-    $("#booktour-form :input").prop("disabled", true);
-    $("#booktour-button").hide();
-    $(".ajax-loader").show();
-    sendForm(formData);
+    var token = grecaptcha.getResponse(bodyCaptchaWidget);
+    if (!token) {
+      grecaptcha.execute(bodyCaptchaWidget);
+    } else {
+      sendForm(token);
+    }
     }
   });
 
-
+  $('#namefield').blur(function(){
+    $('#firsttravellerfield').val($('#namefield').val())
+  })
 
 
 });
 
+function onVerifyForm(token) {
+  $("#booktour-button").prop("disabled",true);
+  sendForm(token);
+}
 
-function sendForm(formData) {
+
+function sendForm(token) {
+  var formData = $("#booktour-form").serialize()
+  $("#booktour-form :input").prop("disabled", true);
+  $("#booktour-button").hide();
+  $(".ajax-loader").show();
   $.ajax({
     type: 'POST',
     cache: false,
@@ -52,6 +64,7 @@ function sendForm(formData) {
       }, 200);
 
       document.getElementById("booktour-form").reset();
+      grecaptcha.reset(bodyCaptchaWidget);
     })
     .fail(function(data) {
       dataLayer.push({
@@ -70,6 +83,7 @@ function sendForm(formData) {
       $( "#booktour-form :input" ).prop("disabled", false);
       $(".ajax-loader").hide();
       $("#booktour-button").show();
+      grecaptcha.reset(bodyCaptchaWidget);
     });
 }
 

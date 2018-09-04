@@ -28,14 +28,14 @@ if (!empty($morestyles)) echo $morestyles;
       <section class='col-md-6 col-xs-12'>
         <h2 class='footer-heading'>Vill du ha information om våra resor?</h2>
         <form action='/ajax/newsletter' method='post' accept-charset='utf-8' enctype='application/json' id='newsletter-form'>
-          <input type="email" name="email" placeholder="E-post..." />
+          <input type="email" name="email" placeholder="E-post..." required />
           <input type="url" name="url" class="hidden" placeholder="Lämna tomt!" />
           <input type="hidden" name="client" value="<?php echo md5($_SERVER['HTTP_USER_AGENT']); ?>" />
           <button type="submit" id='newsletter-form-send'>
             <span id='newsletter-form-send-default'>Prenumerera</span><span id='newsletter-loader'><i class="fa fa-spinner fa-lg fa-spin" aria-hidden="true"></i></span>
           </button>
           <div id='newsletter-response' class='text-center'></div>
-          <div id='recaptcha' class="g-recaptcha"
+          <div id='recaptcha-footer' class="g-recaptcha"
             data-sitekey="<?php echo INV_RECAPTCHA_PUBLIC; ?>"
             data-callback="onUserVerified"
             data-size="invisible"

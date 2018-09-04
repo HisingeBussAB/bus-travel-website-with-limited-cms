@@ -5,13 +5,12 @@ $(function() {
   $('#get-contact-form').submit(function(event){
     event.preventDefault();
     $("#get-contact-button").prop("disabled",true);
-    var formData = $("#get-contact-form").serialize()
-    $("#get-contact-form :input").prop("disabled", true);
-    $("#contact-text").prop("disabled", true);
-    $("#get-contact-button").hide();
-    $(".ajax-loader").show();
-    $(".ajax-response").empty();
-    sendForm(formData);
+    var token = grecaptcha.getResponse(bodyCaptchaWidget);
+    if (!token) {
+      grecaptcha.execute(bodyCaptchaWidget);
+    } else {
+      sendForm(token);
+    }
   });
 
 
@@ -19,8 +18,19 @@ $(function() {
 
 });
 
+function onVerifyForm(token) {
+  $("#get-contact-button").prop("disabled",true);
+  sendForm(token);
+}
 
-function sendForm(formData) {
+
+function sendForm(token) {
+  var formData = $("#get-contact-form").serialize()
+    $("#get-contact-form :input").prop("disabled", true);
+    $("#contact-text").prop("disabled", true);
+    $("#get-contact-button").hide();
+    $(".ajax-loader").show();
+    $(".ajax-response").empty();
   $.ajax({
     type: 'POST',
     cache: false,
@@ -47,6 +57,7 @@ function sendForm(formData) {
       }, 200);
 
       document.getElementById("get-contact-form").reset();
+      grecaptcha.reset(bodyCaptchaWidget);
     })
     .fail(function(data) {
       dataLayer.push({
@@ -64,6 +75,7 @@ function sendForm(formData) {
       $( "#get-contact-form :input" ).prop("disabled", false);
       $(".ajax-loader").hide();
       $("#get-contact-button").show();
+      grecaptcha.reset(bodyCaptchaWidget);
     });
 }
 

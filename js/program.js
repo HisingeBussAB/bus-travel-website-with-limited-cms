@@ -5,12 +5,12 @@ $(function() {
   $('#get-program-form').submit(function(event){
     event.preventDefault();
     $("#get-program-button").prop("disabled",true);
-    var formData = $("#get-program-form").serialize()
-    $("#get-program-form :input").prop("disabled", true);
-    $("#get-program-button").hide();
-    $(".ajax-loader").show();
-    $(".ajax-response").empty();
-    sendForm(formData);
+    var token = grecaptcha.getResponse(bodyCaptchaWidget);
+    if (!token) {
+      grecaptcha.execute(bodyCaptchaWidget);
+    } else {
+      sendForm(token);
+    }
   });
 
 
@@ -18,8 +18,18 @@ $(function() {
 
 });
 
+function onVerifyForm(token) {
+  $("#get-program-button").prop("disabled",true);
+  sendForm(token);
+}
 
-function sendForm(formData) {
+
+function sendForm(token) {
+  var formData = $("#get-program-form").serialize()
+  $("#get-program-form :input").prop("disabled", true);
+  $("#get-program-button").hide();
+  $(".ajax-loader").show();
+  $(".ajax-response").empty();
   $.ajax({
     type: 'POST',
     cache: false,
@@ -43,6 +53,7 @@ function sendForm(formData) {
       }, 200);
 
       document.getElementById("get-program-form").reset();
+      grecaptcha.reset(bodyCaptchaWidget);
     })
     .fail(function(data) {
       dataLayer.push({
@@ -60,6 +71,7 @@ function sendForm(formData) {
       $( "#get-program-form :input" ).prop("disabled", false);
       $(".ajax-loader").hide();
       $("#get-program-button").show();
+      grecaptcha.reset(bodyCaptchaWidget);
     });
 }
 

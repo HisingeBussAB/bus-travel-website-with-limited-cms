@@ -38,72 +38,70 @@ try {
   header('Content-type: text/html; charset=utf-8');
   include __DIR__ . '/shared/header.php';
 
-  echo "<main class='main-section container-fluid'>";
+  echo "<main class='main-section container-fluid'>
+          <div class='row-fluid'>
+            <div class='col-xs-12'>
+              <h1>Kontakta oss</h1>
+              <iframe id='embedded-map' frameborder='0' src='https://www.google.com/maps/embed/v1/place?key=AIzaSyAvO7sP3DKP5lcOrB9Fo9FpXHFvPhfmlvg&q=Rekå+Resor,Aröds+Industriväg+30' allowfullscreen></iframe>
+            </div>
+          </div>
+        <form action='/ajax/contact' method='post' accept-charset='utf-8' enctype='application/json' id='get-contact-form'>
+          <div class='row-fluid'>
+            <div class='col-xs-12'>
+              <div class='row-fluid'>
+                <div class='col-md-6 col-sm-12'>
 
-  echo "<div class='row-fluid'><div class='col-xs-12'>";
+                  <h2>Skicka meddelande</h2>
 
+                  <p><input type='text' placeholder='Namn' name='name' /></p>
+                  <p><input type='text' placeholder='Gatuadress' name='address' /></p>
+                  <p><input type='text' placeholder='Postnr.' name='zip /><input type='text' placeholder='Postort' name='city' /></p>
+                  <p><input type='tel' placeholder='Telefonnummer' name='tel' /></p>
+                  <p><input type='email' placeholder='E-post' name='email' /></p>
+                  <input type='hidden' value='" . $token['id'] . "' name='tokenid' id='tokenid' />
+                  <input type='hidden' value='" . $token['token'] . "' name='token' id='token' />
+                  <input type='hidden' value='$clienthash' name='client' />
+                  <p class='antispam'>Leave this empty: <input type='text' name='url' /></p>
+                  <p><textarea placeholder='Ditt meddelande...' id='contact-text' name='message' required></textarea>
 
-      echo "
-
-
-        <h1>Kontakta oss</h1>
-        <iframe id='embedded-map'
-  frameborder='0'
-  src='https://www.google.com/maps/embed/v1/place?key=AIzaSyAko8gQvMnnoD9cIsjcjHxLJaNXQzr-xF8
-    &q=Rekå+Resor,Aröds+Industriväg+30' allowfullscreen>
-</iframe></div>
-</div><div class='row-fluid'>
-<div class='col-md-6 col-sm-12'>
-
-<h2>Skicka meddelande</h2>
-
-<form action='/ajax/contact' method='post' accept-charset='utf-8' enctype='application/json' id='get-contact-form'>
-<p><input type='text' placeholder='Namn' name='name' /></p>
-<p><input type='text' placeholder='Gatuadress' name='address' /></p>
-<p><input type='text' placeholder='Postnr.' name='zip /><input type='text' placeholder='Postort' name='city' /></p>
-<p><input type='tel' placeholder='Telefonnummer' name='tel' /></p>
-<p><input type='email' placeholder='E-post' name='email' /></p>
-<input type='hidden' value='" . $token['id'] . "' name='tokenid' id='tokenid' />
-<input type='hidden' value='" . $token['token'] . "' name='token' id='token' />
-<input type='hidden' value='$clienthash' name='client' />
-<p class='antispam'>Leave this empty: <input type='text' name='url' /></p>
-<p><textarea placeholder='Ditt meddelande...' id='contact-text' name='message' required></textarea>";
+                  <p><input type='submit' value='Skicka meddelande' id='get-contact-button' /><button class='ajax-loader'><i class='fa fa-spinner fa-pulse fa-2x' aria-hidden='true'></i></button></p>
+                  <div class='ajax-response' id='ajax-response'></div>
 
 
+                </div>
+                <div class='col-md-6 col-sm-12'>
+
+                  <h4>Telefon</h4>
+                  <p><a href='tel:+463122120'>031-22 21 20</a><br />
+                  <h5>Jourtelefon</h5>
+                  <p>Ibland kan det oförutsedda hända.
+                  Något som gör att du måste få tag på oss när kontoret är stängt.
+                  Då når du oss lättast genom vår jourtelefon via vår växel 031-22 21 20.</p></p>
+
+                  <h4>Öppettider</h4>
+                  <p>Vardagar 09:00 - 16:30<br />
+                  Lördagar och Södnagar stängt</p>
+
+                        <h4>Besöksadress</h4>
+                        <p>Aröds Industriväg 30<br />
+                        Hisings Backa</p>
 
 
-echo "<p><input type='submit' value='Skicka meddelande' id='get-contact-button' /><button class='ajax-loader'><i class='fa fa-spinner fa-pulse fa-2x' aria-hidden='true'></i></button></p>
-<div class='ajax-response' id='ajax-response'></div>
+                        <h4>Postadress</h4>
+                        <p>Rekå Resor AB<br />
+                        Box 8797<br />
+                        402 76 Göteborg</p>
 
-
-</div><div class='col-md-6 col-sm-12'>
-<h4>Telefon</h4>
-<p><a href='tel:+463122120'>031-22 21 20</a><br />
-<h5>Jourtelefon</h5>
-<p>Ibland kan det oförutsedda hända.
-Något som gör att du måste få tag på oss när kontoret är stängt.
-Då når du oss lättast genom vår jourtelefon via vår växel 031-22 21 20.</p></p>
-
-<h4>Öppettider</h4>
-<p>Vardagar 09:00 - 16:30<br />
-Lördagar och Södnagar stängt</p>
-
-      <h4>Besöksadress</h4>
-      <p>Aröds Industriväg 30<br />
-      Hisings Backa</p>
-
-
-      <h4>Postadress</h4>
-      <p>Rekå Resor AB<br />
-      Box 8797<br />
-      402 76 Göteborg</p>
-
-
-      ";
-
-
-
-  echo "</form></div>";
+                </div>
+              </div>
+              <div id='recaptcha-body' class='g-recaptcha'
+                data-sitekey='" . INV_RECAPTCHA_PUBLIC . "'
+                data-callback='onVerifyForm'
+                data-size='invisible'
+                data-badge='inline'></div>
+            </div>
+          </div>
+        </form>";
   echo "</main>";
 
   include __DIR__ . '/shared/footer.php';

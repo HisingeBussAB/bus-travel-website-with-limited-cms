@@ -100,7 +100,13 @@
   }
 
 
-
+  .ajax-loader {
+    width: 172px;
+    height: 38px;
+    padding: 4px 7px;
+    margin-top: 10px;
+    text-align: center;
+  }
 
   input[type=submit] {
     background-color: $logo-blue;

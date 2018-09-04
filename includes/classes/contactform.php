@@ -11,6 +11,7 @@ use HisingeBussAB\RekoResor\website\includes\classes\HammerGuard;
 use HisingeBussAB\RekoResor\website\includes\classes\Tokens;
 use HisingeBussAB\RekoResor\website\includes\classes\DB;
 use HisingeBussAB\RekoResor\website\includes\classes\DBError;
+use HisingeBussAB\RekoResor\website\admin\includes\classes\invreCaptcha;
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\OAuth;
@@ -157,6 +158,10 @@ class ContactForm {
 
       if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL) && $data['email'] !== FALSE) {
         throw new \RuntimeException("Det här verkar inte vara en giltig e-mail. Försök igen.");
+      }
+
+      if (!invreCaptcha::tryReCaptcha()) {
+        throw new \RuntimeException("reCaptcha har misslyckats. <a href='javascript:window.location.href=window.location.href'>Prova att ladda om sidan.</a>");
       }
 
 
