@@ -18,7 +18,7 @@ class Render
    */
   public static function inc($target) {
 
-    //LIST OF PAGES
+    //LIST OF STANDARD PAGES
 
     if (empty($target)) $target = "mainpage";
 
@@ -30,7 +30,10 @@ class Render
     if ($target === "resevillkor")        $target = "terms";
     if ($target === "galleri")            $target = "gallery";
 
-    //END LIST OF PAGES
+    //END LIST OF STANDARD PAGES
+    //START CAMPAIGNS
+    if ($target === "julbord")            $target = "campaign1";
+    //END CAMPAIGNS
 
     try {
       include __DIR__ . '/../includes/pages/' . $target . '.php';

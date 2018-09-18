@@ -103,6 +103,9 @@ class Router
     $this->addRoute(  '/^(bussresor-goteborg-2)$/',                   $func = function() { Render::landing(3); },                     'GET');
     array_push($this->sitemap, "bussresor-goteborg-2");
 
+    //Campaigns
+    $this->addRoute(  '/^(julbord)$/',                        '\HisingeBussAB\RekoResor\website\router\Render::inc',                     'GET');
+    array_push($this->sitemap, "julbord");
 
     //Admin and middleware
     $this->addRoute(  '/^ajax\/([\w-%]+)$/',                 '\HisingeBussAB\RekoResor\website\ajax\Ajax::startAjax',                        'POST');
