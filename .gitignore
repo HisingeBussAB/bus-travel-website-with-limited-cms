@@ -19,6 +19,8 @@ css/**/*.map
 admin/css/**/*.min.css
 admin/css/**/*.css
 admin/css/**/*.map
+.vscode/
 !.vscode/settings.json
 .vscode/sftp.json
+
 
