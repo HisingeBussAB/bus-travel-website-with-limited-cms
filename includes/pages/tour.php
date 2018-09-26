@@ -181,7 +181,12 @@ try {
       'pageTitle': '" . html_entity_decode($tour['namn']) . "',
       'pageCategory': 'Tour_Details',
       'visitorType': 'low-value',
-      'content_ids': '" . $tour['id'] . "'
+      'content_ids': ['" . $tour['id'] . "'],
+      'travel_start': '" . $tour['datum'][0]['short'] . "',
+      'travel_end': '" . date("Y-m-d", strtotime($tour['datum'][0]['short'] . " +" . $tour['antaldagar'] . " days")) . "',
+      'destination_catalog_id': '268103017365451',
+      'product_catalog_id': '894283487441774',
+      
       }";
 
 

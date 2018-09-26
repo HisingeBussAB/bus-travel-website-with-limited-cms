@@ -162,9 +162,11 @@ try {
     'pageTitle': 'Booking_Page',
     'visitorType': 'high-value',
     'product': '" . html_entity_decode($tour['namn']) . "',
-    'content_ids': '" . $tourid . "',
+    'content_ids': ['" . $tourid . "'],
     'travel_start': '" . $tour['departures'][0] . "',
     'travel_end': '" . date('Y-m-d', strtotime($tour['departures'][0] . " + " . $tour['antaldagar'] . " days" )) . "',
+    'destination_catalog_id': '268103017365451',
+    'product_catalog_id': '894283487441774',
     " . $locationForDataLayer . "
     }";
 

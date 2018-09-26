@@ -48,6 +48,8 @@ class RenderProdCatalog {
                 <link rel="self" href="http' . APPEND_SSL . '://' . DOMAIN . '/feed/get-products.xml"/>
                 <description>Rekå Resor Tour Catalog as products</description>
                 ';
+                $lastitemid = false;
+                $repeatitem = 0;
                 foreach($result as $item) {
                   if (!empty($item['cat_addr_city']) && !empty($item['cat_addr_region']) && !empty($item['cat_addr_country'])
                       && !empty($item['cat_addr_zip']) && !empty($item['cat_type'])) {
@@ -63,9 +65,18 @@ class RenderProdCatalog {
                     $categories = explode(",", $item['cat_type']);
                     $cat_lat = str_replace(",",".",$item['cat_lat']);
                     $cat_long = str_replace(",",".",$item['cat_long']);
-                    echo '<item>
-                    <g:id>' . htmlentities(trim($item['id']), ENT_XML1) . '</g:id>
-                    <g:availability>in stock</g:availability>
+                    echo '<item>';
+                    if ($lastitemid == $item['id']) {
+                      $repeatitem++;
+                      echo '<g:item_group_id>' . htmlentities(trim($item['id']), ENT_XML1) . '</g:item_group_id>';
+                      echo '<g:id>' . htmlentities(trim($item['id'] . '0' . $repeatitem), ENT_XML1) . '</g:id>';
+                    } else {
+                      echo '<g:item_group_id>' . htmlentities(trim($item['id']), ENT_XML1) . '</g:item_group_id>';
+                      echo '<g:id>' . htmlentities(trim($item['id']), ENT_XML1) . '</g:id>';
+                      $repeatitem = 0;
+                    }
+                    $lastitemid = $item['id'];
+                    echo '<g:availability>in stock</g:availability>
                     <g:condition>new</g:condition>
                     <g:brand>Rekå Resor</g:brand>
                     <g:title>' . htmlentities(trim($item['namn']), ENT_XML1) . '</g:title>
@@ -87,13 +98,15 @@ class RenderProdCatalog {
                       ';
                     }
                     echo '<g:price>' . htmlentities(trim($item['pris']), ENT_XML1) . ' SEK</g:price>
+                    <g:google_product_category>Arts &amp; Entertainment &gt; Event Tickets</g:google_product_category>
+
                     <g:link>http' . APPEND_SSL . '://' . DOMAIN . '/resa/' . rawurlencode(trim($item['url'])) . '</g:link>
                     </item>
                     ';
                   }
                 }
               echo '
-              <channel>
+              </channel>
               </rss>
               ';
 

@@ -7,7 +7,7 @@ use HisingeBussAB\RekoResor\website as root;
 use HisingeBussAB\RekoResor\website\includes\classes\Functions as functions;
 
 
-class RenderDestCatalog {
+class RenderCatalog {
 
   public static function render() {
 
@@ -43,8 +43,8 @@ class RenderDestCatalog {
       header('Content-type: text/xml; charset="utf-8"',true);
       echo '<?xml version="1.0" encoding="UTF-8"?>
               <listings>
-                <title>Rekå Resor Destinations</title>
-                <link rel="self" href="http' . APPEND_SSL . '://' . DOMAIN . '/feed/get-destinations.xml"/>
+                <title>Destination Feed</title>
+                <link rel="self" href="http' . APPEND_SSL . '://' . DOMAIN . '/feed/get-products.xml"/>
                 ';
                 foreach($result as $item) {
                   if (!empty($item['cat_addr_city']) && !empty($item['cat_addr_region']) && !empty($item['cat_addr_country'])
@@ -61,18 +61,9 @@ class RenderDestCatalog {
                     $categories = explode(",", $item['cat_type']);
                     $cat_lat = str_replace(",",".",$item['cat_lat']);
                     $cat_long = str_replace(",",".",$item['cat_long']);
-                    echo '<listing>';
-                    if ($lastitemid == $item['id']) {
-                      $repeatitem++;
-                      echo '<item_group_id>' . htmlentities(trim($item['id']), ENT_XML1) . '</item_group_id>';
-                      echo '<destination_id>' . htmlentities(trim($item['id'] . '0' . $repeatitem), ENT_XML1) . '</destination_id>';
-                    } else {
-                      echo '<item_group_id>' . htmlentities(trim($item['id']), ENT_XML1) . '</item_group_id>';
-                      echo '<destination_id>' . htmlentities(trim($item['id']), ENT_XML1) . '</destination_id>';
-                      $repeatitem = 0;
-                    }
-                    $lastitemid = $item['id'];
-                    echo '<name>' . htmlentities(trim($item['namn']), ENT_XML1) . '</name>
+                    echo '<listing>
+                    <destination_id>' . htmlentities(trim($item['id']), ENT_XML1) . '</destination_id>
+                    <name>' . htmlentities(trim($item['namn']), ENT_XML1) . '</name>
                     <description>' . htmlentities(trim($item['seo_description']), ENT_XML1) . '</description>
                     <address format="simple">
                       <component name="addr1">' . htmlentities(trim($item['cat_addr_street']), ENT_XML1) . '</component>
