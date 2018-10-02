@@ -43,7 +43,7 @@ if (empty($dataLayer)) {
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <script>
     var bgImg = new Image();
-    bgImg.src = '../upload/background-1.jpg';
+    bgImg.src = '../upload/background-host.jpg';
     bgImg.onload = function(){
       var node = document.createElement('style');
       node.setAttribute('type', 'text/css')
