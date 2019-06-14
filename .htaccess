@@ -18,11 +18,70 @@ RewriteRule . index.php [L,QSA]
 
 <IfModule mod_expires.c>
     ExpiresActive On
-    ExpiresByType image/png "access 1 year"
-    ExpiresByType image/gif "access 1 year"
-    ExpiresByType image/jpeg "access 3 months"
+    ExpiresByType image/png "access 1 month"
+    ExpiresByType image/gif "access 1 month"
+    ExpiresByType image/jpeg "access 2 months"
+    ExpiresByType image/jpg "access 2 months"
     ExpiresByType text/css "access 1 month"
-    ExpiresByType application/javascript "access 3 months"
-    ExpiresByType text/html "access 10 hours"
-    ExpiresDefault "access 10 hours"
+    ExpiresByType application/pdf "access 1 month"
+    ExpiresByType application/javascript "access 4 days"
+    ExpiresByType application/x-javascript "access 4 days"
+    ExpiresByType text/html "access 1 hours"
+    ExpiresDefault "access 5 hours"
+</IfModule>
+
+<IfModule mod_deflate.c>
+
+
+    <IfModule mod_setenvif.c>
+        <IfModule mod_headers.c>
+            SetEnvIfNoCase ^(Accept-EncodXng|X-cept-Encoding|X{15}|~{15}|-{15})$ ^((gzip|deflate)\s*,?\s*)+|[X~-]{4,13}$ HAVE_Accept-Encoding
+            RequestHeader append Accept-Encoding "gzip,deflate" env=HAVE_Accept-Encoding
+        </IfModule>
+    </IfModule>
+
+
+    <IfModule mod_filter.c>
+        AddOutputFilterByType DEFLATE "application/atom+xml" \
+                                      "application/javascript" \
+                                      "application/json" \
+                                      "application/ld+json" \
+                                      "application/manifest+json" \
+                                      "application/rdf+xml" \
+                                      "application/rss+xml" \
+                                      "application/schema+json" \
+                                      "application/geo+json" \
+                                      "application/vnd.ms-fontobject" \
+                                      "application/wasm" \
+                                      "application/x-font-ttf" \
+                                      "application/x-javascript" \
+                                      "application/x-web-app-manifest+json" \
+                                      "application/xhtml+xml" \
+                                      "application/xml" \
+                                      "font/eot" \
+                                      "font/opentype" \
+                                      "font/otf" \
+                                      "image/bmp" \
+                                      "image/svg+xml" \
+                                      "image/vnd.microsoft.icon" \
+                                      "text/cache-manifest" \
+                                      "text/calendar" \
+                                      "text/css" \
+                                      "text/html" \
+                                      "text/javascript" \
+                                      "text/plain" \
+                                      "text/markdown" \
+                                      "text/vcard" \
+                                      "text/vnd.rim.location.xloc" \
+                                      "text/vtt" \
+                                      "text/x-component" \
+                                      "text/x-cross-domain-policy" \
+                                      "text/xml"
+
+    </IfModule>
+
+    <IfModule mod_mime.c>
+        AddEncoding gzip              svgz
+    </IfModule>
+
 </IfModule>

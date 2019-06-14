@@ -117,6 +117,11 @@ class Router
     $this->addRoute(  '/^feed\/get-destinations.xml$/',      $func = function() { root\RenderDestCatalog::render(); },                                  'GET');
     $this->addRoute(  '/^feed\/get-products.xml$/',          $func = function() { root\RenderProdCatalog::render(); },                                  'GET');
 
+
+  $this->addRoute(  '/^api\/resor$/',                            $func = function() { root\Api::resor(); },         'GET');
+    $this->addRoute(  '/^api\/boenden$/',                            $func = function() { root\Api::boenden(); },                                               'GET');
+    $this->addRoute(  '/^api\/kategorier$/',                         $func = function() { root\Api::kategorier(); },                                               'GET');
+
     //INSTALL ROUTE
     $this->addRoute(  '/^installme$/',$func = function() {if (!include __DIR__ . '/../install/install.php') {require __DIR__ . '/../includes/pages/error/404.php';} },'ANY');
 
