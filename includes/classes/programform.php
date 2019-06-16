@@ -175,7 +175,8 @@ class ProgramForm {
                   $data['address'] . "\r\n" .
                   $data['zip'] . " " . $data['city'] . "\r\n\r\n" .
                   $data['email'] . " \r\n\r\nBeställda program:\r\n";
-      foreach ($data['category'] as $category) {
+      $categories = isset($data['category']) ? $data['category'] : array();
+      foreach ($categories as $category) {
         $mailbody .= "$category\r\n";
       }
       $mailbody .= "Godkänt behandling av personuppgifter: " . $data['terms'];

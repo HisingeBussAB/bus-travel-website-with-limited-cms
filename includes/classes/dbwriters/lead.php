@@ -23,7 +23,6 @@ class Lead {
     $ip = empty($_SERVER['REMOTE_ADDR']) ? "" : $_SERVER['REMOTE_ADDR'];
     $tourid = empty($data['tourid']) ? NULL : filter_var($data['tourid'], FILTER_SANITIZE_NUMBER_INT);
     $category = empty($data['category']) || !is_array($data['category']) ? array() : $data['category'];
-    $leadid = NULL;
     $sqlmain = "INSERT INTO leads(tourid, name, street, zip, city, email, gdpr, processed, ip)
           VALUES (
             :tourid
@@ -52,24 +51,28 @@ class Lead {
       $sth->bindParam(':gdpr', $terms, \PDO::PARAM_INT);
       $sth->bindParam(':ip', $ip, \PDO::PARAM_STR);
       $sth->execute();
-      $sql = "SELECT LAST_INSERT_ID() as id;";
-      $sth = $pdoBooking->prepare($sql);
-      $sth->execute(); 
-      $leadid = $sth->fetch(\PDO::FETCH_ASSOC); 
+      $sql = "INSERT INTO leads_categories(leadid, category)
+      VALUES ";
         foreach ($category as $cat) {
           if (!empty($cat)) {
-            $sql = "INSERT INTO leads_categories(leadid, category)
-            VALUES (
-              :id
-              ,:category
-            )
-          ;";
-          $sth = $pdoBooking->prepare($sql);
-          $sth->bindParam(':id', $leadid['id'], \PDO::PARAM_INT);
-          $sth->bindParam(':category', $cat, \PDO::PARAM_STR);
+            $sql .= "(
+              LAST_INSERT_ID()
+              ,?),";
+            }
+          }
+          $sql = trim($sql,',');
+          $sql .=  ";";
+          $i = 0;
+          foreach ($category as $cat) {
+            if (!empty($cat)) {
+            $i++;
+            if ($i == 1) {$sth = $pdoBooking->prepare($sql);}
+            $sth->bindParam($i, $cat, \PDO::PARAM_STR);
+            }
+          }
+          if ($i > 0) {
           $sth->execute();
           }
-        }
       $pdoBooking->commit();
     } catch(\PDOException $e) {
       $pdoBooking->rollBack();
@@ -99,25 +102,29 @@ class Lead {
     $sth->bindParam(':gdpr', $terms, \PDO::PARAM_INT);
     $sth->bindParam(':ip', $ip, \PDO::PARAM_STR);
     $sth->execute();
-    $sql = "SELECT LAST_INSERT_ID() as id;";
-      $sth = $pdoBookingTest->prepare($sql);
-      $sth->execute(); 
-      $leadid = $sth->fetch(\PDO::FETCH_ASSOC); 
+    $sql = "INSERT INTO leads_categories(leadid, category)
+      VALUES ";
         foreach ($category as $cat) {
           if (!empty($cat)) {
-            $sql = "INSERT INTO leads_categories(leadid, category)
-            VALUES (
-              :id
-              ,:category
-            )
-          ;";
-          $sth = $pdoBookingTest->prepare($sql);
-          $sth->bindParam(':id', $leadid['id'], \PDO::PARAM_INT);
-          $sth->bindParam(':category', $cat, \PDO::PARAM_STR);
+            $sql .= "(
+              LAST_INSERT_ID()
+              ,?),";
+            }
+          }
+          $sql = trim($sql,',');
+          $sql .=  ";";
+          $i = 0;
+          foreach ($category as $cat) {
+            if (!empty($cat)) {
+            $i++;
+            if ($i == 1) {$sth = $pdoBookingTest->prepare($sql);}
+            $sth->bindParam($i, $cat, \PDO::PARAM_STR);
+            }
+          }
+          if ($i > 0) {
           $sth->execute();
           }
-        }
-    $pdoBookingTest->commit();
+      $pdoBookingTest->commit();
   } catch(\PDOException $e) {
     $pdoBookingTest->rollBack();
     if (DEBUG_MODE) {throw new \Exception($reply .= DBError::showError($e, __CLASS__, $sql));} else {throw new \Exception("Internt serverfel!");}

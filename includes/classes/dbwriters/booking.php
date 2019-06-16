@@ -119,28 +119,34 @@ class Booking {
       $sth->bindParam(':request', $request, \PDO::PARAM_STR);
       $sth->bindParam(':ip', $ip, \PDO::PARAM_STR);
       $sth->execute();
-      $sql = "SELECT LAST_INSERT_ID() as id;";
-      $sth = $pdoBooking->prepare($sql);
-      $sth->execute(); 
-      $bokid = $sth->fetch(\PDO::FETCH_ASSOC); 
+      $sql = "INSERT INTO extrapax(bokningar_id, name, pnr)
+      VALUES ";
+        foreach ($paxlist as $pax) {
+          if (!empty($pax)) {
+            $sql .= "(
+              LAST_INSERT_ID()
+              ,?
+              ,?
+            ),";
+          }
+        }
+        $sql = trim($sql,',');
+        $sql .=  ";";
+        $i = 0;
         foreach ($paxlist as $pax) {
           if (!empty($pax)) {
             $name = empty($pax[0]) ? '' : $pax[0];
             $pnr = empty($pax[1]) ? '' : $pax[1];
-            $sql = "INSERT INTO extrapax(bokningar_id, name, pnr)
-            VALUES (
-              :id
-              ,:name
-              ,:pnr
-            )
-          ;";
-          $sth = $pdoBooking->prepare($sql);
-          $sth->bindParam(':id', $bokid['id'], \PDO::PARAM_INT);
-          $sth->bindParam(':name', $name, \PDO::PARAM_STR);
-          $sth->bindParam(':pnr', $pnr, \PDO::PARAM_STR);
-          $sth->execute();
+            $i++;
+            if ($i == 1) {$sth = $pdoBooking->prepare($sql);}
+            $sth->bindParam($i, $name, \PDO::PARAM_STR);
+            $i++;
+            $sth->bindParam($i, $pnr, \PDO::PARAM_STR);
+            }
           }
-        }
+          if ($i > 0) {
+            $sth->execute();
+          }
       $pdoBooking->commit();
     } catch(\PDOException $e) {
       $pdoBooking->rollBack();
@@ -180,30 +186,36 @@ class Booking {
       $sth->bindParam(':request', $request, \PDO::PARAM_STR);
       $sth->bindParam(':ip', $ip, \PDO::PARAM_STR);
       $sth->execute();
-      $sql = "SELECT LAST_INSERT_ID() as id;";
-      $sth = $pdoBookingTest->prepare($sql);
-      $sth->execute(); 
-      $bokid = $sth->fetch(\PDO::FETCH_ASSOC); 
+      $sql = "INSERT INTO extrapax(bokningar_id, name, pnr)
+      VALUES ";
+        foreach ($paxlist as $pax) {
+          if (!empty($pax)) {
+            $sql .= "(
+              LAST_INSERT_ID()
+              ,?
+              ,?
+            ),";
+          }
+        }
+        $sql = trim($sql,',');
+        $sql .=  ";";
+        $i = 0;
         foreach ($paxlist as $pax) {
           if (!empty($pax)) {
             $name = empty($pax[0]) ? '' : $pax[0];
             $pnr = empty($pax[1]) ? '' : $pax[1];
             $name = 'test' . substr(md5($name),0,10);
             $pnr = '000000-0000';
-            $sql = "INSERT INTO extrapax(bokningar_id, name, pnr)
-            VALUES (
-              :id
-              ,:name
-              ,:pnr
-            )
-          ;";
-          $sth = $pdoBookingTest->prepare($sql);
-          $sth->bindParam(':id', $bokid['id'], \PDO::PARAM_INT);
-          $sth->bindParam(':name', $name, \PDO::PARAM_STR);
-          $sth->bindParam(':pnr', $pnr, \PDO::PARAM_STR);
-          $sth->execute();
+            $i++;
+            if ($i == 1) {$sth = $pdoBookingTest->prepare($sql);}
+            $sth->bindParam($i, $name, \PDO::PARAM_STR);
+            $i++;
+            $sth->bindParam($i, $pnr, \PDO::PARAM_STR);
+            }
           }
-        }
+          if ($i > 0) {
+            $sth->execute();
+          }
         $pdoBookingTest->commit();
     } catch(\PDOException $e) {
       $pdoBookingTest->rollBack();
