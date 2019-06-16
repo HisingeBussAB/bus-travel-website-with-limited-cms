@@ -89,7 +89,7 @@ function sendForm(token) {
 
 function newtoken() {
   var dataObj = {};
-  dataObj["form"] = 'program';
+  dataObj["form"] = 'book';
   dataObj["expiration"] = 2000;
   dataObj["unique"] = true;
   $.ajax({

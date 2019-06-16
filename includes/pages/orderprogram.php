@@ -23,14 +23,19 @@ try {
   $token = root\includes\classes\Tokens::getFormToken('program', 2000, true);
   $clienthash = md5($_SERVER['HTTP_USER_AGENT']);
   $html_ents = Functions::set_html_list();
-
+  $tour['id'] = '';
+  $tour['namn'] = '';
+  $tour['url'] = '';
+  $tour['datum'] = '';
+  $tour['antaldagar'] = 0;
   if (!empty($toururl)) {
     $toururl = str_replace("'", "", $toururl); //Is urlencoded there should not be any ' and they will break the html if value is echoed and user enters a malicious query
     $toururl = filter_var(trim($toururl), FILTER_SANITIZE_URL);
     try {
       $pdo = DB::get();
-
-      $sql = "SELECT id, namn, url FROM " . TABLE_PREFIX . "resor WHERE aktiv = 1 AND url = :url;";
+      $sql = "SELECT resor.id as id, namn, url, datum.datum as datum, antaldagar FROM " . TABLE_PREFIX . "resor as resor
+        LEFT JOIN " . TABLE_PREFIX . "datum as datum on datum.resa_id = resor.id
+        WHERE aktiv = 1 AND url = :url LIMIT 1;";
       $sth = $pdo->prepare($sql);
       $sth->bindParam(':url', $toururl, \PDO::PARAM_STR);
       $sth->execute();
@@ -39,9 +44,8 @@ try {
       DBError::showError($e, __CLASS__, $sql);
       throw new \RuntimeException("Databasfel.");
     }
-
     if ((count($result) > 0) && ($result !== false)) {
-      $tourid = filter_var($result['id'], FILTER_SANITIZE_NUMBER_INT);
+      $tour['id'] = filter_var($result['id'], FILTER_SANITIZE_NUMBER_INT);
       $tour['namn'] = strtr(strip_tags($result['namn'], $allowed_tags), $html_ents);
       $tour['url'] = filter_var("http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/resa/" . rawurlencode($result['url']), FILTER_SANITIZE_URL);
 
@@ -51,8 +55,8 @@ try {
 
     $pageTitle = "Beställ program för " . $tour['namn'];
     $dataLayerString = "'content_ids': ['" . $tour['id'] . "'],
-    'travel_start': '" . $tour['datum'][0]['short'] . "',
-    'travel_end': '" . date("Y-m-d", strtotime($tour['datum'][0]['short'] . " +" . $tour['antaldagar'] . " days")) . "',
+    'travel_start': '" . $tour['datum'] . "',
+    'travel_end': '" . date("Y-m-d", strtotime($tour['datum'] . " +" . $tour['antaldagar'] . " days")) . "',
     'destination_catalog_id': '268103017365451',
     'product_catalog_id': '894283487441774',
     'product': '" . html_entity_decode($tour['namn']) . "',
@@ -92,7 +96,8 @@ try {
         echo "
         <h1>Beställ tryckt program för " . $tour['namn'] . "</h1>
         <p>Vi skickar programmet via post till dig.</p>
-        <input type='hidden' value='" . $tour['namn'] . "' name='category[]' />";
+        <input type='hidden' value='" . $tour['namn'] . "' name='category[]' />
+        <input type='hidden' value='" . $tour['id'] . "' name='tourid' />";
       }
 
 

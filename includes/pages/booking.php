@@ -188,7 +188,8 @@ try {
           echo "<p>Vi skriver upp dig på påstigningslistan. Resan betalas kontant på bussen.</p>";
         }
         echo "<input type='hidden' value='" . $tour['namn'] . "' name='tour' />";
-        echo "<input type='hidden' value='" . $tour['pris-int'] . "' name='price-int' id='price-int'>";
+        echo "<input type='hidden' value='" . $tour['pris-int'] . "' name='price-int' id='price-int' />";
+        echo "<input type='hidden' value='" . $tourid . "' name='tourid' />";
 
       if (!empty($tour['departures'])) {
         echo "<h3>Avgångsdatum:</h3>";
@@ -214,9 +215,7 @@ try {
       if (!empty($tour['stops'])) {
         echo "<h3>Påstigningsplats:</h3>";
         echo "<ul>";
-
           foreach ($tour['stops'] as $stops) {
-
             echo "<li><input type='radio' name='stop' value='" . $stops['ort'];
             if (!empty($stops['plats'])) { echo ", " . $stops['plats']; }
             echo "' id='" . $stops['plats'] . $stops['ort'] . "' required />";
@@ -224,7 +223,6 @@ try {
             if (!empty($stops['plats'])) { echo ", " . $stops['plats']; }
             echo " - kl " . $stops['tid'] . "</label></li>";
           }
-
         echo "</ul>";
       }
 

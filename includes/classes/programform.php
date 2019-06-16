@@ -11,6 +11,7 @@ use HisingeBussAB\RekoResor\website\includes\classes\HammerGuard;
 use HisingeBussAB\RekoResor\website\includes\classes\Tokens;
 use HisingeBussAB\RekoResor\website\includes\classes\DB;
 use HisingeBussAB\RekoResor\website\includes\classes\DBError;
+use HisingeBussAB\RekoResor\website\includes\classes\dbwriters\Lead;
 use HisingeBussAB\RekoResor\website\admin\includes\classes\invreCaptcha;
 
 use PHPMailer\PHPMailer\PHPMailer;
@@ -24,11 +25,8 @@ class ProgramForm {
 
 
     try {
-
       $reply = "";
-
       $pdo = DB::get();
-
       try {
         $pdo = DB::get();
         $sql = "SELECT * FROM " . TABLE_PREFIX . "settings WHERE id = 1;";
@@ -36,29 +34,26 @@ class ProgramForm {
         $sth->execute();
         $smtpresult = $sth->fetch(\PDO::FETCH_ASSOC);
       } catch(\PDOException $e) {
-        if (DEBUG_MODE) {throw new \Exception($reply .= DBError::showError($e, __CLASS__, $sql));} else {throw new \Exception("Internt serverfel!");}
+        if (DEBUG_MODE) {throw new \Exception($reply .= DBError::showError($e, __CLASS__, $sql));} else {throw new \Exception($reply .= "Databasfel.");}
       }
 
       if (!require __DIR__ . '/../../vendor/autoload.php') { throw new \Exception("Internt serverfel!"); };
-
       $auth = ($smtpresult['auth'] === '1');
-
       $SMTPDebug = 0; //Should always be 0 or the authtoken/password will show on the page directly. Set to 2 if specifc problems with this piece of code
-
-      if ($smtpresult['mode'] === "smtp") {
-
+     	//$smtpresult['mode'] === "smtp"
+      if (true) {
         $mail = new PHPMailer;
-
-
         $mail->SMTPDebug = $SMTPDebug;
         $mail->CharSet = 'UTF-8';
         $mail->isSMTP();
         //$mail->SMTPAuth   = $auth;
         $mail->SMTPAuth   = true;
-
         //$mail->Port       = $smtpresult['port'];
-        $mail->Port       = '53';
-
+        $mail->Port       = '587';
+	$mail->SMTPSecure = 'tls';
+        /*
+        if ($smtpresult['tls'] === "tls") {
+          $mail->SMTPSecure = 'tls';
         /*
         if ($smtpresult['tls'] === "tls") {
           $mail->SMTPSecure = 'tls';
@@ -67,27 +62,21 @@ class ProgramForm {
           $mail->SMTPSecure = 'ssl';
         }
         */
-
         //$mail->Host       = $smtpresult['server'];
         //$mail->Username   = $smtpresult['smtpuser'];
         //$mail->Password   = $smtpresult['smtppwd'];
         $mail->Host       = SMTP_HOST;
         $mail->Username   = SMTP_USER;
         $mail->Password   = SMTP_PASS;
-
       } elseif ($smtpresult['mode'] === "gmail") {
-
         $mail = new \PHPMailerOAuth;
-
         $mail->CharSet = 'UTF-8';
         $mail->SMTPDebug = $SMTPDebug;
-
         $mail->oauthUserEmail = $smtpresult['googleemail'];
         $mail->oauthClientId = $smtpresult['oauth_clientid'];
         $mail->oauthClientSecret = $smtpresult['oauth_clientsecret'];
         $mail->oauthRefreshToken = $smtpresult['oauth_refreshtoken'];
         $smtpresult['smtpuser'] = $smtpresult['googleemail'];
-
 
       } else {
         throw new \Exception("Felkonfigurerade e-post inställningar för sidan.");
@@ -164,14 +153,21 @@ class ProgramForm {
       else
         $data['terms'] = "";
 
-
-
       //FINAL HAMMER CHECK
       if (HammerGuard::hammerGuard($_SERVER['REMOTE_ADDR'])) {
         throw new \RuntimeException("För många försök. Vänta lite innan du försöker igen.");
       }
 
-
+      try {
+        Lead::save($data);
+      } catch (\Exception $e) {
+        header('Content-Type: text/html; charset=utf-8');
+        echo $e->getMessage();
+        echo "Något gick fel när vi försökte spara beställningen! Prova gärna igen eller<br />vänligen skicka e-post till <a href='mailto:info@rekoresor.se'>info@rekoresor.se</a> eller ring oss på <a href='tel:+4631222120'>031-22 21 20</a> istället.";
+        if (DEBUG_MODE) echo $reply;
+        http_response_code(500);
+        return false;
+      }
 
       $mail->ClearAllRecipients();
       $mailbody = "Programbeställning från hemsidan:\r\n\r\n" .
