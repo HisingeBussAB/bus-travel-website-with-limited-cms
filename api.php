@@ -33,7 +33,7 @@ class Api {
     header("Accept-Charset: utf-8");
     header("Cache-Control: no-cache, must-revalidate");
     header("Content-Language: sv-SE");
-    header('Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With');
+    header('Access-Control-Allow-Headers: Access-Control-Allow-Methods, Content-Type, Access-Control-Allow-Origin, Access-Control-Allow-Headers, Authorization, X-Requested-With');
     header('X-Robots-Tag: noindex, nofollow');
     header('Allow: OPTIONS, GET');
     header('Access-Control-Allow-Methods: GET, OPTIONS');
@@ -166,6 +166,7 @@ class Api {
         $resor[$key]['tillagg'] = $tillagg;
       }
       echo json_encode($resor);
+      http_response_code (200);
     }
 
     public static function boenden() {
@@ -173,7 +174,7 @@ class Api {
       header("Accept-Charset: utf-8");
       header("Cache-Control: no-cache, must-revalidate");
       header("Content-Language: sv-SE");
-      header('Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With');
+      header('Access-Control-Allow-Headers: Access-Control-Allow-Methods, Content-Type, Access-Control-Allow-Origin, Access-Control-Allow-Headers, Authorization, X-Requested-With');
       header('X-Robots-Tag: noindex, nofollow');
       header('Allow: OPTIONS, GET');
       header('Access-Control-Allow-Methods: GET, OPTIONS');
@@ -199,6 +200,7 @@ class Api {
       
         
         echo json_encode($boenden);
+        http_response_code (200);
     }
 
 
@@ -208,16 +210,14 @@ class Api {
       header("Accept-Charset: utf-8");
       header("Cache-Control: no-cache, must-revalidate");
       header("Content-Language: sv-SE");
-      header('Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With');
+      header('Access-Control-Allow-Headers: Access-Control-Allow-Methods, Content-Type, Access-Control-Allow-Origin, Access-Control-Allow-Headers, Authorization, X-Requested-With');
       header('X-Robots-Tag: noindex, nofollow');
       header('Allow: OPTIONS, GET');
       header('Access-Control-Allow-Methods: GET, OPTIONS');
       header("Access-Control-Allow-Origin: *");
-  
 
-        
-  
-          try {
+
+            try {
             $pdo = DB::get();
             $sql = "SELECT 	
 kategori
@@ -242,6 +242,7 @@ kategori
       
         
         echo json_encode($kategorier);
+        http_response_code (200);
     }
 
   }

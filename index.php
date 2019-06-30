@@ -25,6 +25,7 @@ if (DEBUG_MODE) {
   error_reporting(E_ALL);
 }
 
+
 //START AUTOLOADER
 spl_autoload_register(function($class){
   $class = strtolower(str_replace(__NAMESPACE__, '', $class));
