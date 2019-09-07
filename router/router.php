@@ -147,6 +147,7 @@ class Router
     $this->addRoute(  '/^om-oss$/',     $func = function() {header('Location: https://www.rekoresor.se/bussresorgoteborg/', true, 301); exit;} , 'ANY');
     $this->addRoute(  '/^bruksvallarna2016$/',  $func = function() {header('Location: https://photos.google.com/share/AF1QipN1t70VQWXPyLGwuDyf8Do9aQGoS9KMdseCw7SmQAmSJvI7594vP7RRfxb-K2_SsA?key=ZUVSWEpaUHFWOXFjcVNWUnY3U1V3VHk1YzRhNjN3', true, 301); exit;} ,'ANY');
     $this->addRoute(  '/^midsommar2016$/',      $func = function() {header('Location: https://www.flickr.com/photos/134541462@N04/sets/72157670307084845', true, 301); exit;} ,'ANY');
+    $this->addRoute(  '/^bruksvallarna2019$/',  $func = function() {header('Location: https://photos.google.com/u/2/share/AF1QipOo7ipc7WaIyqthLW-0e4f9OlUB5LgjJ-bOd-Gtr8AQDnab-7eP3PBQbtJyxNIoSg?key=OFNRc3RmR1NkdlJyS1NOenZfWGZ4UWdSNjNoRzlB', true, 301); exit;} ,'ANY');
 
   }
 }

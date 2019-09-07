@@ -182,7 +182,8 @@ try {
           Det är där vi på Rekå Resor kommer in i bilden. Vi lyssnar på de önskemål du har och bidrar sedan med råd och idéer för bästa möjliga resultat.
           Med mer än 60 år i branschen har vi både erfarenheten såväl som kontaktnätet och det gör att vi kan ta fram i princip vilka gruppresor som helst –
           från korta endagsresor i närområdet runt Göteborg till veckolånga resor runt om i Europa. Alla bussresor kryddas med det lilla extra.</p>
-          <h3>Följ med oss på bussresor som har det lilla extra.</h3></div>";
+          <h3>Följ med oss på bussresor som har det lilla extra.</h3>
+          </div>";
   }
 
   else {
