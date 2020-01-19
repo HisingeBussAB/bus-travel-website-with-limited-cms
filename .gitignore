@@ -22,5 +22,6 @@ admin/css/**/*.map
 .vscode/
 !.vscode/settings.json
 .vscode/sftp.json
-
-
+google9712e65b822a6daa.html
+.ftpquota
+composer.lock

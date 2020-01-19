@@ -1,0 +1,271 @@
+$font-stack: 'Open Sans', sans-serif;
+$interactive-color: #0d61de;
+$interactive-hover-color: #0000ff;
+$border-radius: 3px;
+
+
+body {
+  font-family: $font-stack;
+  margin: 4px;
+}
+
+h1 {
+  padding: 10px;
+  padding-bottom: 15px;
+  font-weight: bold;
+  font-size: 2.1em;
+  text-align: center;
+}
+
+h2 {
+  font-size: 1.6em;
+  padding: 0;
+}
+
+input {
+  border: 1px solid #999;
+  border-radius: $border-radius;
+  float: left;
+  width: calc(100% - 58px);
+  margin-bottom: 8px;
+  padding: 1px;
+}
+
+textarea {
+  border-radius: $border-radius;
+}
+
+button {
+  border: 1px solid $interactive-hover-color;
+  background-color: $interactive-color;
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 1em;
+  border-radius: $border-radius;
+  margin-bottom: 8px;
+
+  &:hover {
+    background-color: $interactive-hover-color;
+  }
+}
+
+a {
+  color: $interactive-color;
+  &:hover {
+    color: $interactive-hover-color;
+    text-decoration: underline;
+  }
+}
+
+
+
+.button-right {
+    float: right;
+  }
+
+nav.main-nav-admin {
+  margin: 0 auto;
+  text-align: center;
+  width: 95%;
+
+  >a>button {
+    padding: 5px 20px;
+    font-weight: bold;
+    font-size: 1.12em;
+
+  }
+}
+
+nav.nav-small-float {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+
+
+
+  >a>button {
+    padding: 1px 2px;
+    font-size: 0.78em;
+    margin-left: 4px;
+    background-color: transparent;
+    color: #555;
+    border-color: #555;
+    &:hover {
+      background-color: $interactive-hover-color;
+      color: #fff;
+      border-color: $interactive-hover-color;
+
+    }
+  }
+}
+
+#trip-list,
+#category-list,
+#stop-list,
+#roomopt-list,
+#extra-list {
+  display: none; //Hide on start, loaders are shown instead.
+  list-style-type: none;
+  padding: 0;
+
+  li {
+    padding-top: 10px;
+    width: 100%;
+
+    table {
+      width: 100%;
+
+      tr {
+        border-bottom: 1px solid #ccc;
+
+        &:hover {
+          background-color: rgba(225, 225, 225, 0.5);
+        }
+      }
+
+      td,
+      th {
+        padding: 4px 0;
+        text-align: left;
+      }
+
+      .table-name {
+        padding: 4px;
+      }
+
+      [class^="table-state-"] {
+        width: 23px;
+        text-align: center;
+        padding: 4px 5px 4px 7px;
+      }
+
+      [class^="table-reorder-"] {
+        width: 12px;
+        text-align: center;
+        padding: 4px 3px;
+      }
+
+      .table-delete {
+        width: 23px;
+        text-align: center;
+        padding: 4px 0 4px 5px;
+      }
+
+
+    }
+  }
+}
+
+.php-error {
+  position:absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  text-align: center;
+  z-index: 10000;
+  padding: 20px;
+  color: #f00;
+  font-weight: bold;
+}
+
+img.login-screen {
+  margin: 100px auto 50px auto;
+  width: 180px;
+  display: block;
+}
+
+#login-form {
+
+
+  >fieldset {
+    display: block;
+    text-align: center;
+    width: 100%;
+    width: 400px;
+    margin: 10px auto;
+  }
+  label {
+    display: block;
+    margin: 2px auto;
+  }
+  input#login-user,
+  input#loginpwd,
+  button#login-submit {
+
+    display: block;
+    width: 400px;
+    padding: 2px;
+    margin: 2px auto;
+  }
+  div.g-recaptcha>div {
+    margin: 10px auto;
+  }
+
+}
+
+.settings-form {
+  width: 350px;
+  margin: 2px auto;
+
+  input {
+    width: 100%;
+  }
+
+  select {
+    margin-bottom: 6px;
+  }
+
+  #smtp-auth-label {
+    display: inline;
+    margin-bottom: 7px;
+    margin-left: 5px;
+  }
+  #smtp-auth-box {
+    display: inline;
+    height: 15px;
+    width: 15px;
+    margin-bottom: 7px;
+  }
+}
+
+.new-password-div {
+  display: none;
+  margin-left: 6px;
+  margin-bottom: 7px;
+}
+
+#form-new-stop-name,
+#form-new-stop-ort {
+  width: 40%;
+  &:not(:first-child) {
+    margin-left: 4px;
+  }
+
+}
+
+
+.sort-stop {
+  float: left;
+  display: inline-block;
+  width: 40%;
+  font-size: 0.75em;
+  padding-left: 2px;
+
+  &:not(:first-child) {
+    margin-left: 4px;
+  }
+}
+
+#form-news-submit-spinner {
+  display: none;
+}
+
+#form-news-error {
+  color: red;
+}
+
+textarea[name=nyheter] {
+  width: 100%;
+  height: 250px;
+}
