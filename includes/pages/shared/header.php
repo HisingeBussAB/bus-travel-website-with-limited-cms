@@ -32,7 +32,7 @@ if (empty($robots)) {
 if (empty($dataLayer)) {
   $dataLayer = "{}";
 }
-
+header('Content-Language: sv');
 
 ?>
 <!DOCTYPE html>
@@ -135,7 +135,7 @@ if (empty($dataLayer)) {
           <li role="presentation" class="hide-on-tiny-show-in-docked hidden-xs"><a href="/bestall-program">Beställ program</a></li>
           <li role="presentation" class="hide-on-tiny-show-in-docked hidden-xs"><a href="/inforresan">Inför resan</a></li>
           <li role="presentation" class="hide-on-tiny-show-in-docked hidden-xs"><a href="/efterresan">Efter resan</a></li>
-          <li role="presentation" class="hide-on-tiny-show-in-docked hidden-xs"><a href="/galleri">Bildgalleri</a></li>
+          <!--<li role="presentation" class="hide-on-tiny-show-in-docked hidden-xs"><a href="/galleri">Bildgalleri</a></li>-->
           <li role="presentation" class="hide-on-tiny-show-in-docked hidden-xs"><a href="/bussresorgoteborg">Mer om oss</a></li>
           <li role="presentation" class="hide-on-tiny-show-in-docked hidden-xs"><a href="https://sv-se.facebook.com/rekoresor/" aria-label="Besök oss på Facebook"><i class="fa fa-facebook-square" aria-hidden="true"></i><span class="sr-only">Facebook länk</span><span class="hidden-sm hidden-xs">&nbsp;Facebook</span></a></li>
           <li role="presentation" class="hidden-xs"><a href="/kontakt">Kontakt</a></li>

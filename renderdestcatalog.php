@@ -18,7 +18,7 @@ class RenderDestCatalog {
 
       $sql = "SELECT resor.id, resor.seo_description, resor.namn, resor.url, resor.bildkatalog, resor.pris, resor.cat_addr_street, resor.cat_addr_city,
                      resor.cat_addr_region, resor.cat_addr_country, resor.cat_addr_zip, resor.cat_lat, resor.cat_long, resor.cat_neighborhood, resor.cat_type,
-                     datum.datum AS datum FROM " . TABLE_PREFIX . "resor AS resor
+                     datum.datum AS datum, resor.antaldagar FROM " . TABLE_PREFIX . "resor AS resor
               LEFT OUTER JOIN " . TABLE_PREFIX . "datum AS datum ON resor.id = datum.resa_id
               LEFT OUTER JOIN " . TABLE_PREFIX . "kategorier_resor AS k_r ON resor.id = k_r.resa_id
               LEFT OUTER JOIN " . TABLE_PREFIX . "kategorier AS kategorier ON kategorier.id = k_r.kategorier_id
@@ -72,7 +72,11 @@ class RenderDestCatalog {
                       $repeatitem = 0;
                     }
                     $lastitemid = $item['id'];
-                    echo '<name>' . htmlentities(trim($item['namn']), ENT_XML1) . '</name>
+                    $destname = trim($item['namn']);
+                    if ($item['antaldagar'] > 1) {
+                      $destname = $destname . ' - ' .  trim($item['antaldagar']) . ' dgr';
+                    }
+                    echo '<name>' . htmlentities($destname, ENT_XML1) .  '</name>
                     <description>' . htmlentities(trim($item['seo_description']), ENT_XML1) . '</description>
                     <address format="simple">
                       <component name="addr1">' . htmlentities(trim($item['cat_addr_street']), ENT_XML1) . '</component>

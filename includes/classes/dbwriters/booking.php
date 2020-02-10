@@ -14,7 +14,10 @@ class Booking {
   
 
   public static function save($data) {
-  
+    //dont save booking if we are on testsite
+    if (DEBUG_MODE) {
+      return true;
+    }
 
     $paxlist = array();
     if (!empty($data['resenar1'] && $data['resenar1'] != $data['name'])) { array_push($paxlist, array($data['resenar1'], $data['resenar1-pnr'])); }

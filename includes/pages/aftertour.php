@@ -34,21 +34,27 @@ try {
   echo "<main class='main-section container-fluid'><div class='row-fluid'><div class='col-xs-12 col-lg-12'>";
 
   echo "<h1>Efter resan</h1>
-  <p>Efter resan lägger vi ut eventuella <a href='#bilder'>bilder</a> från den på <a href='https://plus.google.com/collection/Qt0SWE'>Google Photos</a>. Du får gärna sända bilder som du skulle vilja kommer andra resenärer till del genom att vi lägger in dem. Skicka i så fall bilderna eller länk till dessa till <a href='mailto:info@rekoresor.se'>info@rekoresor.se</a>.
+  <p>Efter resan lägger vi ut eventuella <a href='#bilder'>bilder</a> från den på Google Photos.<br />
+  Du får gärna sända bilder som du skulle vilja kommer andra resenärer till del genom att vi lägger in dem. 
+  Skicka i så fall bilderna eller länk till dessa till <a href='mailto:info@rekoresor.se'>info@rekoresor.se</a>.
+  <br />Vi frågar alltid om bildpublicering är ok under resans gång på de resor vi publicerar bilder ifrån.
   </p>
-  <p>Eftersom många av våra resor kommer igen då och då är vi tacksamma för förslag som skulle kunna förädla innehållet i resan, vilket innebär att vi mottar sådana synpunkter med största intresse. Ett riktigt bra förslag som vi tar in i nästa program kan till och med ge dig en rabatt vi nästa bokning av den eller annan resa!
+  
 
 <h2>Synpunkter</h2>
-<p>För att våra resor skall bli så bra som möjligt är era synpunkter av stort värde. Vi är väldigt tacksamma om ni tar er tiden att fylla i ett litet formulär om resan.</p>
-<p>Vilken resan har ni åkt på? (Länk och val av resa och formulär här)</p>
+<p>Eftersom många av våra resor kommer igen då och då är vi tacksamma för förslag som skulle kunna förädla innehållet i resan, vilket innebär att vi mottar sådana synpunkter med största intresse. Ett riktigt bra förslag som vi tar in i nästa program kan till och med ge dig en rabatt vi nästa bokning av den eller annan resa!</p>
+<p>För att våra resor skall bli så bra som möjligt är era synpunkter av stort värde.</p>
+<p>Vi tar gärna emot era synpunkter på e-post <a href='mailto:info@rekoresor.se'>info@rekoresor.se</a></p>
 
 
+
+<!--
 <h2 id='bilder'>Bilder</h2>
 <p><a href='https://photos.app.goo.gl/bWRfR6Xmm5UQ1nwV8'>Bruksvallarna 2018</a></p>
 <p><a href='https://photos.google.com/share/AF1QipN1t70VQWXPyLGwuDyf8Do9aQGoS9KMdseCw7SmQAmSJvI7594vP7RRfxb-K2_SsA?key=ZUVSWEpaUHFWOXFjcVNWUnY3U1V3VHk1YzRhNjN3'>Bruksvallarna 2016</a></p>
 <p><a href='https://www.flickr.com/photos/134541462@N04/sets/72157670307084845'>Midsommar 2016</a></p>
 <p><a href='https://www.flickr.com/photos/134541462@N04/collections/72157658328450860/'>Bruksvallarna 2015</a></p>
-
+-->
 
 
 

@@ -292,13 +292,13 @@ class NewsletterForm {
 
 
 
-      $mail->setFrom('hakan@rekoresor.se', 'Hemsidan - Rekå Resor');
+      $mail->setFrom('noreply@rekoresor.se', 'Hemsidan - Rekå Resor');
 
-      $mail->Sender='hakan@rekoresor.se';
+      $mail->Sender='noreply@rekoresor.se';
 
-      $mail->AddReplyTo('hakan@rekoresor.se');
+      $mail->AddReplyTo('britt@rekoresor.se');
 
-      $mail->addAddress('hakan@rekoresor.se');
+      $mail->addAddress('britt@rekoresor.se');
 
       $mail->Subject  = "Rekå Resor - Anmälan nyhetsbrev";
 
@@ -320,9 +320,9 @@ class NewsletterForm {
 
         $mail->ClearReplyTos();
 
-        $mail->setFrom('hakan@rekoresor.se', 'Hemsidan - Rekå Resor');
+        $mail->setFrom('noreply@rekoresor.se', 'Hemsidan - Rekå Resor');
 
-        $mail->AddReplyTo('hakan@rekoresor.se');
+        $mail->AddReplyTo('britt@rekoresor.se');
 
         if (!empty($data['email'])) { $mail->addAddress($data['email']); }
 

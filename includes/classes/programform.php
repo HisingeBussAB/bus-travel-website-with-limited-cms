@@ -185,10 +185,10 @@ class ProgramForm {
 
 
 
-      $mail->setFrom('hakan@rekoresor.se', 'Hemsidan - Rekå Resor');
-      $mail->Sender='hakan@rekoresor.se';
-      $mail->AddReplyTo('hakan@rekoresor.se');
-      $mail->addAddress('hakan@rekoresor.se');
+      $mail->setFrom('noreply@rekoresor.se', 'Hemsidan - Rekå Resor');
+      $mail->Sender='noreply@rekoresor.se';
+      $mail->AddReplyTo('britt@rekoresor.se');
+      $mail->addAddress('britt@rekoresor.se');
       $mail->Subject  = "Rekå Resor - Beställt program";
       $mail->Body     = $mailbody;
 
@@ -199,8 +199,8 @@ class ProgramForm {
       } else {
         $mail->ClearAllRecipients();
         $mail->ClearReplyTos();
-        $mail->setFrom('hakan@rekoresor.se', 'Hemsidan - Rekå Resor');
-        $mail->AddReplyTo("hakan@rekoresor.se", "Rekå Resor");
+        $mail->setFrom('noreply@rekoresor.se', 'Hemsidan - Rekå Resor');
+        $mail->AddReplyTo("britt@rekoresor.se", "Rekå Resor");
         if (!empty($data['email'])) { $mail->addAddress($data['email']); }
         $mail->Subject  = "Tack för din programbeställning.";
         $mail->Body     = "Tack för att du beställt program.\r\nVi kommer skicka aktuella reseprogram till dig inom kort.";

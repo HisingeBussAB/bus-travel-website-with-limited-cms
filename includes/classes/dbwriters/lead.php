@@ -14,6 +14,12 @@ class Lead {
   
 
   public static function save($data) {
+
+    //dont save booking if we are on testsite
+    if (DEBUG_MODE) {
+      return true;
+    }
+
     $email = empty($data['email']) ? "" : $data['email'];
     $name = empty($data['name']) ? "" : $data['name'];
     $street = empty($data['address']) ? "" : $data['address'];

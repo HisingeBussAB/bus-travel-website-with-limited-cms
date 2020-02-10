@@ -48,7 +48,6 @@ if (!empty($morestyles)) echo $morestyles;
       <div class='koncern-logo-container'>
           <a href="http://www.hisingebuss.se"><img class='lazy' src="/img/hb-logga.png" alt="Hisinge Buss AB" /></a>
           <a href="http://www.rekoresor.se"><img class='lazy' src="/img/reka-logga.jpg" alt="Rekå Resor AB" /></a>
-          <a href="http://www.busspoolen.se"><img class='lazy' src="/img/bp-logga.png" alt="Buss- och Resepoolen i Göteborg AB" /></a>
       </div>
       </section>
     </div>
