@@ -166,7 +166,7 @@ try {
     'travel_start': '" . $tour['departures'][0] . "',
     'travel_end': '" . date('Y-m-d', strtotime($tour['departures'][0] . " + " . $tour['antaldagar'] . " days" )) . "',
     'destination_catalog_id': '268103017365451',
-    'product_catalog_id': '894283487441774',
+    'product_catalog_id': '576404639873615',
     " . $locationForDataLayer . "
     }";
 

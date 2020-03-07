@@ -51,8 +51,7 @@ class RenderProdCatalog {
                 $lastitemid = false;
                 $repeatitem = 0;
                 foreach($result as $item) {
-                  if (!empty($item['cat_addr_city']) && !empty($item['cat_addr_region']) && !empty($item['cat_addr_country'])
-                      && !empty($item['cat_addr_zip']) && !empty($item['cat_type'])) {
+                  if (!empty($item['cat_addr_city']) && !empty($item['cat_addr_region'])) {
                     $server_path = __DIR__ . '/upload/resor/' . $item['bildkatalog'] . '/';
                     $web_path = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/" . rawurlencode($item['bildkatalog']) . "/";
                     $imgfiles = functions::get_img_files($server_path);

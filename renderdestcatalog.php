@@ -19,7 +19,7 @@ class RenderDestCatalog {
       $sql = "SELECT resor.id, resor.seo_description, resor.namn, resor.url, resor.bildkatalog, resor.pris, resor.cat_addr_street, resor.cat_addr_city,
                      resor.cat_addr_region, resor.cat_addr_country, resor.cat_addr_zip, resor.cat_lat, resor.cat_long, resor.cat_neighborhood, resor.cat_type,
                      datum.datum AS datum, resor.antaldagar FROM " . TABLE_PREFIX . "resor AS resor
-              LEFT OUTER JOIN " . TABLE_PREFIX . "datum AS datum ON resor.id = datum.resa_id
+              LEFT OUTER JOIN site17test_datum AS datum ON resor.id = datum.resa_id and datum = (select min(datum) from site17test_datum where resa_id = datum.resa_id)
               LEFT OUTER JOIN " . TABLE_PREFIX . "kategorier_resor AS k_r ON resor.id = k_r.resa_id
               LEFT OUTER JOIN " . TABLE_PREFIX . "kategorier AS kategorier ON kategorier.id = k_r.kategorier_id
               WHERE kategorier.kategori != 'gruppresor' AND resor.aktiv = 1 AND datum > NOW()
@@ -47,8 +47,7 @@ class RenderDestCatalog {
                 <link rel="self" href="http' . APPEND_SSL . '://' . DOMAIN . '/feed/get-destinations.xml"/>
                 ';
                 foreach($result as $item) {
-                  if (!empty($item['cat_addr_city']) && !empty($item['cat_addr_region']) && !empty($item['cat_addr_country'])
-                      && !empty($item['cat_addr_zip']) && !empty($item['cat_type'])) {
+                  if (!empty($item['cat_addr_city']) && !empty($item['cat_addr_region'])) {
                     $server_path = __DIR__ . '/upload/resor/' . $item['bildkatalog'] . '/';
                     $web_path = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/" . rawurlencode($item['bildkatalog']) . "/";
                     $imgfiles = functions::get_img_files($server_path);
