@@ -47,7 +47,7 @@ class RenderDestCatalog {
                 <link rel="self" href="http' . APPEND_SSL . '://' . DOMAIN . '/feed/get-destinations.xml"/>
                 ';
                 foreach($result as $item) {
-                  if (!empty($item['cat_addr_city']) && !empty($item['cat_addr_region'])) {
+                  if (!empty($item['cat_addr_city']) || !empty($item['cat_addr_region'])) {
                     $server_path = __DIR__ . '/upload/resor/' . $item['bildkatalog'] . '/';
                     $web_path = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/" . rawurlencode($item['bildkatalog']) . "/";
                     $imgfiles = functions::get_img_files($server_path);
