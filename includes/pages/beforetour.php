@@ -121,7 +121,7 @@ När du rest med oss sparas personuppgifterna i ett kundregister. Vill du inte a
 
 <h3>Samtliga resor</h3>
 
-<p>Göteborg / First Hotell G Centralstationen</p>
+<p>Göteborg / Clarion Post Hotel</p>
 
 <h3>Södergående resor</h3>
 
