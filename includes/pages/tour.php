@@ -222,7 +222,7 @@ echo "<main class='main-section container-fluid'>";
     if (!empty($tour['datum'])) {
       foreach ($tour['datum'] as $datum) {
         echo "<p><i class='fa fa-calendar blue' aria-hidden='true'></i> ";
-        if ($grouptour) { echo "Enlight önskemål"; } else { echo $datum['long'] . "</p>"; }
+        if ($grouptour) { echo "Enligt önskemål"; } else { echo $datum['long'] . "</p>"; }
       }
     }
 
