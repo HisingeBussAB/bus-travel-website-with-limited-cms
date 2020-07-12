@@ -72,8 +72,12 @@ class Category {
                 <input type="text" name="kategori" maxlength="80" value="<?php echo $cat['kategori']; ?>" />
               </fieldset>
               <fieldset>
-                <label for="ingress">Ingress (text på kategorisidan):</label>
+                <label for="ingress">Ingress (text överst på kategorisidan):</label>
                 <textarea type="text" name="ingress" value=""><?php echo $cat['ingress']; ?></textarea>
+              </fieldset>
+              <fieldset>
+                <label for="brödtext">Brödtext (ytterligare text, visas under resorna):</label>
+                <textarea type="text" name="brödtext" value=""><?php echo $cat['brödtext']; ?></textarea>
               </fieldset>
               <fieldset>
                 <label for="uri_kategori">Kategori URL (SEO vänlig sub-url):</label>

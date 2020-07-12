@@ -26,7 +26,7 @@ try {
   try {
     $pdo = DB::get();
 
-    $sql = "SELECT id,kategori,ingress,seo_description,og_description,og_title,seo_keywords,meta_data_extra FROM " . TABLE_PREFIX . "kategorier WHERE aktiv = 1 AND uri_kategori = :cat;";
+    $sql = "SELECT id,kategori,ingress,`brödtext`,seo_description,og_description,og_title,seo_keywords,meta_data_extra FROM " . TABLE_PREFIX . "kategorier WHERE aktiv = 1 AND uri_kategori = :cat;";
     $sth = $pdo->prepare($sql);
     $sth->bindParam(':cat', $cat, \PDO::PARAM_STR);
     $sth->execute();
@@ -41,6 +41,7 @@ try {
       $catid = $thiscategory['id'];
       $heading = strtr(strip_tags($thiscategory['kategori'], $allowed_tags), $html_ents);
       $text = Functions::linksaver(strtr(nl2br(strip_tags($thiscategory['ingress'], $allowed_tags)), $html_ents));
+      $textbottom = Functions::linksaver(strtr(nl2br(strip_tags($thiscategory['brödtext'], $allowed_tags)), $html_ents));
     } else {
       include __DIR__ . '/shared/header.php';
       throw new \UnexpectedValueException("Kategorin finns inte");
@@ -163,7 +164,13 @@ try {
       echo $output;
       $i++;
   }
+
+  echo "<div class='row-fluid'>
+  <div class='col-md-12 col-xs-12'>
+<p>" . $textbottom . "</p>
+</div></div>";
   ?>
+    
 </main>
 <?php
 include __DIR__ . '/shared/footer.php';

@@ -135,6 +135,7 @@ class Categories {
       $id               = filter_var(trim($_POST['id']), FILTER_SANITIZE_NUMBER_INT);
       $kategori         = filter_var(trim($_POST['kategori']), FILTER_SANITIZE_STRING);
       $ingress          = strip_tags(trim($_POST['ingress']), ALLOWED_HTML_TAGS);
+      $brodtext         = strip_tags(trim($_POST['brödtext']), ALLOWED_HTML_TAGS);
       $uri_kategori     = filter_var(trim($_POST['uri_kategori']), FILTER_SANITIZE_URL);
       $seo_description  = filter_var(trim($_POST['seo_description']), FILTER_SANITIZE_STRING);
       $og_description   = filter_var(trim($_POST['og_description']), FILTER_SANITIZE_STRING);
@@ -148,6 +149,7 @@ class Categories {
         $sql = "UPDATE " . TABLE_PREFIX . "kategorier SET
           kategori = :kategori,
           ingress = :ingress,
+          `brödtext` = :brodtext,
           uri_kategori = :uri_kategori,
           seo_description = :seo_description,
           og_description = :og_description,
@@ -159,6 +161,7 @@ class Categories {
         $sth->bindParam(':id', $id, \PDO::PARAM_STR);
         $sth->bindParam(':kategori', $kategori, \PDO::PARAM_STR);
         $sth->bindParam(':ingress', $ingress, \PDO::PARAM_STR);
+        $sth->bindParam(':brodtext', $brodtext, \PDO::PARAM_STR);
         $sth->bindParam(':uri_kategori', $uri_kategori, \PDO::PARAM_STR);
         $sth->bindParam(':seo_description', $seo_description, \PDO::PARAM_STR);
         $sth->bindParam(':og_description', $og_description, \PDO::PARAM_STR);
