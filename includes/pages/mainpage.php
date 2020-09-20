@@ -55,12 +55,12 @@ include __DIR__ . '/shared/header.php';
 try {
   $pdo = DB::get();
 
-  $sql = "SELECT resor.id, resor.utvald, resor.seo_description, resor.namn, resor.url, resor.bildkatalog, resor.antaldagar, resor.ingress,resor.pris, datum.datum AS datum FROM " . TABLE_PREFIX . "resor AS resor
+  $sql = "SELECT resor.id, resor.utvald, resor.seo_description, resor.namn, resor.url, resor.bildkatalog, resor.antaldagar, resor.ingress,resor.pris, datum.datum AS datum,datum.grundpris as datumgrundpris,datum.antaldagar as datumantaldagar FROM " . TABLE_PREFIX . "resor AS resor
           LEFT OUTER JOIN " . TABLE_PREFIX . "datum AS datum ON resor.id = datum.resa_id
           LEFT OUTER JOIN " . TABLE_PREFIX . "kategorier_resor AS k_r ON resor.id = k_r.resa_id
           LEFT OUTER JOIN " . TABLE_PREFIX . "kategorier AS kategorier ON kategorier.id = k_r.kategorier_id
-          WHERE kategorier.kategori != 'gruppresor' AND resor.aktiv = 1 AND datum > NOW()
-          GROUP BY datum
+          WHERE kategorier.kategori != 'gruppresor' AND resor.aktiv = 1 AND datum >= NOW()
+          GROUP BY datum,datumgrundpris,datumantaldagar
           ORDER BY datum;";
 
 
@@ -113,7 +113,8 @@ try {
     $tours[$i]['price'] = number_format(filter_var($tour['pris'], FILTER_SANITIZE_NUMBER_INT), 0, ",", " ");
     $tours[$i]['departure'] = strtr(strip_tags($tour['datum'], $allowed_tags), $html_ents);
     $tours[$i]['desc'] = strtr(strip_tags($tour['seo_description'], $allowed_tags), $html_ents);
-
+    $tours[$i]['datumantaldagar'] = strtr(strip_tags($tour['datumantaldagar'], $allowed_tags), $html_ents);
+    $tours[$i]['datumgrundpris'] = strtr(strip_tags($tour['datumgrundpris'], $allowed_tags), $html_ents);
     $server_path = __DIR__ . '/../../upload/resor/' . filter_var($tour['bildkatalog'], FILTER_SANITIZE_URL) . '/';
     $web_path = filter_var("http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/" . $tour['bildkatalog'] . "/", FILTER_SANITIZE_URL);
       if ($files = Functions::get_img_files($server_path)) {
@@ -262,12 +263,14 @@ try {
       if ($tour['days'] == 1) {
         $output .= "Dagsresa";
       } else {
-        $output .= $tour['days'] . " dagar";
+        if (empty($tour['datumantaldagar'])) {$output .=  $tour['days'];} else {$output .= $tour['datumantaldagar'];}
+        $output .= " dagar";
       }
       $output .= "</h3></td>";
 
       $output .= "<td class='tour-calendar-table-price'><h3>";
-      $output .= $tour['price'] . ":-";
+      if (empty($tour['datumgrundpris'])) {$output .=  $tour['price'];} else {$output .= number_format(filter_var($tour['datumgrundpris'], FILTER_SANITIZE_NUMBER_INT), 0, ",", " ");}
+      $output .= ":-";
       $output .= "</h3></td>";
 
       $output .= "<td class='tour-calendar-table-action'>";

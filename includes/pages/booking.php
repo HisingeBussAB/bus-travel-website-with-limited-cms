@@ -124,7 +124,7 @@ try {
 
   try {
     $sql = "SELECT boende, pris FROM " . TABLE_PREFIX . "boenden AS b
-      LEFT OUTER JOIN " . TABLE_PREFIX . "boenden_resor AS b_r ON b.id = b_r.boenden_id WHERE resa_id = :tourid ORDER BY pris;";
+      LEFT OUTER JOIN " . TABLE_PREFIX . "boenden_resor AS b_r ON b.id = b_r.boenden_id WHERE resa_id = :tourid ORDER BY boende,pris;";
     $sth = $pdo->prepare($sql);
     $sth->bindParam(':tourid', $tourid, \PDO::PARAM_STR);
     $sth->execute();
@@ -182,6 +182,7 @@ try {
 
         echo "
         <h1>Boka " . $tour['namn'] . "</h1>";
+        echo "<p>Bokningstelefon: 031 - 22 21 20</p>";
         if ($tour['fysiskadress']) {
           echo "<p>Vi skickar bekräftelse och inbetalningskort till dig med posten.</p>";
         } else {
