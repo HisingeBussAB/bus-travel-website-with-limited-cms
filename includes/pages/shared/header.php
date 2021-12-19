@@ -43,7 +43,7 @@ header('Content-Language: sv');
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <script>
     var bgImg = new Image();
-    bgImg.src = 'https://www.rekoresor.se/upload/background-host2.jpg';
+    bgImg.src = 'https://www.rekoresor.se/upload/background-host2-winter.jpg';
     bgImg.onload = function(){
       var node = document.createElement('style');
       node.setAttribute('type', 'text/css')

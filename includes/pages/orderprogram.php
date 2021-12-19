@@ -33,7 +33,7 @@ try {
     $toururl = filter_var(trim($toururl), FILTER_SANITIZE_URL);
     try {
       $pdo = DB::get();
-      $sql = "SELECT resor.id as id, namn, url, datum.datum as datum, antaldagar FROM " . TABLE_PREFIX . "resor as resor
+      $sql = "SELECT resor.id as id, namn, url, datum.datum as datum, datum.antaldagar as antaldagar FROM " . TABLE_PREFIX . "resor as resor
         LEFT JOIN " . TABLE_PREFIX . "datum as datum on datum.resa_id = resor.id
         WHERE aktiv = 1 AND url = :url LIMIT 1;";
       $sth = $pdo->prepare($sql);
