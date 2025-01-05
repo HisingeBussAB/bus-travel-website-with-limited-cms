@@ -25,3 +25,10 @@ admin/css/**/*.map
 google9712e65b822a6daa.html
 .ftpquota
 composer.lock
+.well-known/
+upload/
+vendor/
+config.php
+cgi-bin/
+
+
