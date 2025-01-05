@@ -1,9 +1,6 @@
 RewriteEngine On
 RewriteCond %{HTTPS} off
 RewriteRule (.*) https://%{SERVER_NAME}/$1 [R,L]
-RewriteCond %{HTTP_HOST} !^www\. [NC]
-RewriteRule ^(.*)$ https://www.%{HTTP_HOST}/$1 [R=301,L]
-
 
 RewriteEngine On
 RewriteCond %{REQUEST_URI} !^/img
@@ -14,7 +11,6 @@ RewriteCond %{REQUEST_URI} !^/ignore
 RewriteCond %{REQUEST_URI} !\.(gif|jpe?g|png|js|css|swf|ico|pdf|woff2|woff|otf|svg|eot|ttf|map|json)$
 RewriteCond %{REQUEST_URI} !^/google\S*.html
 RewriteRule . index.php [L,QSA]
-
 
 <IfModule mod_expires.c>
     ExpiresActive On
@@ -32,14 +28,12 @@ RewriteRule . index.php [L,QSA]
 
 <IfModule mod_deflate.c>
 
-
     <IfModule mod_setenvif.c>
         <IfModule mod_headers.c>
             SetEnvIfNoCase ^(Accept-EncodXng|X-cept-Encoding|X{15}|~{15}|-{15})$ ^((gzip|deflate)\s*,?\s*)+|[X~-]{4,13}$ HAVE_Accept-Encoding
             RequestHeader append Accept-Encoding "gzip,deflate" env=HAVE_Accept-Encoding
         </IfModule>
     </IfModule>
-
 
     <IfModule mod_filter.c>
         AddOutputFilterByType DEFLATE "application/atom+xml" \
@@ -85,3 +79,24 @@ RewriteRule . index.php [L,QSA]
     </IfModule>
 
 </IfModule>
+RewriteCond %{HTTP_HOST} ^xn\-\-rekresor\-c0a\.se\.hisingebusstest\.hemsida\.eu$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.xn\-\-rekresor\-c0a\.se\.hisingebusstest\.hemsida\.eu$
+RewriteRule ^(.*)$ "https\:\/\/www\.rekoresor\.se\/$1" [R=301,L]
+RewriteCond %{HTTP_HOST} ^xn\-\-rekresor\-c0a\.se$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.xn\-\-rekresor\-c0a\.se$
+RewriteRule ^(.*)$ "https\:\/\/www\.rekoresor\.se\/$1" [R=301,L]
+RewriteCond %{HTTP_HOST} ^rekoresor\.se\.hisingebusstest\.hemsida\.eu$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.rekoresor\.se\.hisingebusstest\.hemsida\.eu$
+RewriteRule ^(.*)$ "https\:\/\/www\.rekoresor\.se\/$1" [R=301,L]
+RewriteCond %{HTTP_HOST} ^rekoresor\.com\.hisingebusstest\.hemsida\.eu$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.rekoresor\.com\.hisingebusstest\.hemsida\.eu$
+RewriteRule ^(.*)$ "https\:\/\/www\.rekoresor\.se\/$1" [R=301,L]
+RewriteCond %{HTTP_HOST} ^rekoresor\.com$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.rekoresor\.com$
+RewriteRule ^(.*)$ "https\:\/\/www\.rekoresor\.se\/$1" [R=301,L]
+RewriteCond %{HTTP_HOST} ^rekaresor\.se\.hisingebusstest\.hemsida\.eu$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.rekaresor\.se\.hisingebusstest\.hemsida\.eu$
+RewriteRule ^(.*)$ "https\:\/\/www\.rekoresor\.se\/$1" [R=301,L]
+RewriteCond %{HTTP_HOST} ^rekaresor\.se$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.rekaresor\.se$
+RewriteRule ^(.*)$ "https\:\/\/www\.rekoresor\.se\/$1" [R=301,L]

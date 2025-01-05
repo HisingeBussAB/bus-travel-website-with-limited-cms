@@ -22,7 +22,7 @@ class RenderDestCatalog {
               LEFT OUTER JOIN site17test_datum AS datum ON resor.id = datum.resa_id and datum = (select min(datum) from site17test_datum where resa_id = datum.resa_id)
               LEFT OUTER JOIN " . TABLE_PREFIX . "kategorier_resor AS k_r ON resor.id = k_r.resa_id
               LEFT OUTER JOIN " . TABLE_PREFIX . "kategorier AS kategorier ON kategorier.id = k_r.kategorier_id
-              WHERE kategorier.kategori != 'gruppresor' AND resor.aktiv = 1 AND datum > NOW()
+              WHERE kategorier.kategori != 'gruppresor' AND resor.aktiv = 1 AND datum > (NOW() - INTERVAL 1 DAY)
               GROUP BY datum
               ORDER BY datum;";
 
@@ -47,7 +47,7 @@ class RenderDestCatalog {
                 <link rel="self" href="http' . APPEND_SSL . '://' . DOMAIN . '/feed/get-destinations.xml"/>
                 ';
                 foreach($result as $item) {
-                  if (!empty($item['cat_addr_city']) || !empty($item['cat_addr_region'])) {
+                  if (!empty($item['cat_addr_city']) && !empty($item['cat_addr_region'])) {
                     $server_path = __DIR__ . '/upload/resor/' . $item['bildkatalog'] . '/';
                     $web_path = "http" . APPEND_SSL . "://" . $_SERVER['SERVER_NAME'] . "/upload/resor/" . rawurlencode($item['bildkatalog']) . "/";
                     $imgfiles = functions::get_img_files($server_path);

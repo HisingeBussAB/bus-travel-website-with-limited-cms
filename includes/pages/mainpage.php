@@ -57,7 +57,7 @@ try {
 
   $sql = "SELECT resor.id, resor.utvald, resor.seo_description, resor.namn, resor.url, resor.bildkatalog, resor.antaldagar, resor.ingress,resor.pris, datum.datum AS datum,datum.grundpris as datumgrundpris,datum.antaldagar as datumantaldagar FROM " . TABLE_PREFIX . "resor AS resor
           LEFT OUTER JOIN " . TABLE_PREFIX . "datum AS datum ON resor.id = datum.resa_id
-          WHERE resor.aktiv = 1 AND datum >= NOW()
+          WHERE resor.aktiv = 1 AND datum > (NOW() - INTERVAL 1 DAY)
           and not exists (select 1 from " . TABLE_PREFIX . "kategorier_resor kr inner join " . TABLE_PREFIX . "kategorier k on kr.kategorier_id = k.id 
                           where k.kategori = 'gruppresor' and kr.resa_id = resor.id)
           ORDER BY datum;";

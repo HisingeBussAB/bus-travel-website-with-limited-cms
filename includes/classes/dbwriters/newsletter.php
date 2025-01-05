@@ -13,13 +13,6 @@ use HisingeBussAB\RekoResor\website\includes\classes\DBError;
 class Newsletter {
 
   public static function save($data) {
-
-
-    //dont save booking if we are on testsite
-    if (DEBUG_MODE) {
-      return true;
-    }
-
     $email = empty($data['email']) ? "" : $data['email'];
     $ip = empty($_SERVER['REMOTE_ADDR']) ? "" : $_SERVER['REMOTE_ADDR'];
     $sqlmain = "INSERT INTO newsletter(email, processed, ip)

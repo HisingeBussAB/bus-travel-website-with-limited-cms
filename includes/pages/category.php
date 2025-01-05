@@ -75,7 +75,7 @@ try {
           LEFT OUTER JOIN " . TABLE_PREFIX . "kategorier AS kategorier ON kategorier.id = k_r.kategorier_id
           JOIN " . TABLE_PREFIX . "datum AS datum ON resor.id = datum.resa_id
           WHERE kategorier.id = :catid AND resor.aktiv = 1 ";
-          if (!$grouptour) { $sql .= "AND datum.datum > NOW() "; }
+          if (!$grouptour) { $sql .= "AND datum.datum > (NOW() - INTERVAL 1 DAY) "; }
  $sql .= "GROUP BY resor.id, datum.datum
           ORDER BY ";
           if ($grouptour) { $sql .= "resor.antaldagar, resor.namn;"; }

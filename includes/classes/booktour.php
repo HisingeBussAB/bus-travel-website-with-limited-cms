@@ -628,7 +628,7 @@ class BookTour {
 
         $mail->Subject  = "Tack för din bokning.";
 
-        $mail->Body     = "Tack för att du bokat en resa.\r\nIfall det är en fleragarsresa kommer bokningsbekräftelse och inbetalningskort på posten inom kort.\r\nNedan är en kopia på uppgifterna vi tagit emot.\r\n\r\n" . $mailbody;
+        $mail->Body     = "Tack för att du bokat en resa.\r\nIfall det är en fleragarsresa kommer bokningsbekräftelse och inbetalningsuppgiter på mail inom kort.\r\nNedan är en kopia på uppgifterna vi tagit emot.\r\n\r\n" . $mailbody;
 
 
 

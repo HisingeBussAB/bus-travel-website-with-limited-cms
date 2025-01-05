@@ -22,7 +22,7 @@ class RenderProdCatalog {
               LEFT OUTER JOIN " . TABLE_PREFIX . "datum AS datum ON resor.id = datum.resa_id
               LEFT OUTER JOIN " . TABLE_PREFIX . "kategorier_resor AS k_r ON resor.id = k_r.resa_id
               LEFT OUTER JOIN " . TABLE_PREFIX . "kategorier AS kategorier ON kategorier.id = k_r.kategorier_id
-              WHERE kategorier.kategori != 'gruppresor' AND resor.aktiv = 1 AND datum > NOW()
+              WHERE kategorier.kategori != 'gruppresor' AND resor.aktiv = 1 AND datum > (NOW() - INTERVAL 1 DAY)
               GROUP BY datum
               ORDER BY datum;";
 

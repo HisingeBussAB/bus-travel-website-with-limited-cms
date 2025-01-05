@@ -43,7 +43,7 @@ header('Content-Language: sv');
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <script>
     var bgImg = new Image();
-    bgImg.src = 'https://www.rekoresor.se/upload/background-host2-winter.jpg';
+    bgImg.src = 'https://www.rekoresor.se/upload/background-host2.jpg';
     bgImg.onload = function(){
       var node = document.createElement('style');
       node.setAttribute('type', 'text/css')
@@ -73,6 +73,7 @@ header('Content-Language: sv');
   <meta property="og:type" content="website">
   <meta property="og:locale" content="sv_SE">
   <meta property="og:site_name" content="Rekå Resor" />
+  <meta property="og:image"           content="https://www.rekoresor.se/upload/background-host2.jpg" /> 
   <?php
   echo $meta;
   echo $robots;
